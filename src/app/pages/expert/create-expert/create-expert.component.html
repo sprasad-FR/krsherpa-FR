@@ -1,0 +1,620 @@
+<div class="container-fluid">
+  <app-page-title title="{{ pageTitle }}"></app-page-title>
+
+  <app-loader [isLoading]="isLoading"></app-loader>
+
+  <div class="row">
+    <div class="col-md-7">
+      <form [formGroup]="leadFormGrp" (ngSubmit)="submitData()" id="ngForm">
+      <ngb-alert type="danger" *ngIf="error?.details?.length == 0" [dismissible]="false">
+          {{ error.message }}
+        </ngb-alert>
+        <div class="alert alert-danger errors-list" *ngIf="error?.details.length > 0">
+          <strong>Errors!</strong>
+          <ul class="list-group list-group-flush">
+            <li *ngFor="let err of error.details" class="list-group-item">
+              {{ err.path.substring(1) }} {{ err.message }}
+            </li>
+          </ul>
+        </div> 
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-2 form-group">
+                <label for="salutation">Salutation <span class="required-asterisk"></span></label>
+                <ng-select
+                  [items]="salutation"
+                  bindLabel="salutation"
+                  bindValue="salutation"
+                  placeholder="Mr/Mrs/Miss"
+                  name="salutation"
+                  formControlName="salutation"
+                >
+                </ng-select>
+                <!-- <input type="text" placeholder="Mr/Mrs/Miss" class="form-control" formControlName="salutation" /> -->
+              </div>
+              <div class="col-md-5 form-group">
+                <label for="firstName">First Name <span class="required-asterisk">*</span></label>
+                <input type="text" placeholder="Eg. John" class="form-control" formControlName="firstName" />
+              </div>
+              <div class="col-md-5 form-group">
+                <label for="lastName">Last Name <span class="required-asterisk">*</span></label>
+                <input type="text" placeholder="Eg. Doe" class="form-control" formControlName="lastName" />
+              </div>
+            </div>
+
+
+            
+            <div class="row">
+              <div class="col-md-3 form-group">
+                <label>Country Code <span class="required-asterisk">*</span></label>
+                <ng-select
+                  formControlName="phoneCode"
+                  [items]="countryArray"
+                  bindLabel="label"
+                  bindValue="phonecode"
+                  [multiple]="false"
+                  [closeOnSelect]="true"
+                  [selectableGroup]="false"
+                  placeholder="Select"
+                  [markFirst]="true"
+                  [searchFn]="aphSearchFn"
+                  [title]="leadFormGrp.get('phoneCode').value"
+                >
+                  <ng-template ng-option-tmp let-item="item" let-search="isoCode">                 
+                  
+                    <div title="{{ item?.name }}({{item?.isoCode}}-{{item?.phonecode }})"> {{ item?.name }}({{item?.isoCode}}-{{item?.phonecode }})</div>
+                  </ng-template>
+                </ng-select>
+              </div>
+              <div class="col-md-4 form-group">
+                <label for="contactNo">Contact Number <span class="required-asterisk">*</span></label>
+                <input type="text"  maxlength="12" (blur)="checkPhone( false)" required  placeholder="Eg 908789826" class="form-control" formControlName="contactNo" />
+                <span class='alert text-danger'  *ngIf="leadFormGrp.get('contactNo').touched && !isContactnoValid">Invalid Contact Number</span>
+              </div>
+              <div class="col-md-5 form-group">
+                <label for="primaryEmail">Email <span class="required-asterisk">*</span></label>
+                <input
+                  type="email"
+                  placeholder="Eg. johndoe@gmail.com"                 
+                  class="form-control"
+                  formControlName="primaryEmail"
+                 
+                  (keyup)="checkEmail($event)" required
+                />
+               
+                <span *ngIf="emailMatch != ''" class="alert text-danger">
+                  
+                  <a class='alert text-danger'   href="{{ hrefMatch }}" > {{ emailMatch }} </a>  
+                    </span>
+                <span
+                  *ngIf="(leadFormGrp.get('primaryEmail').touched && leadFormGrp.get('primaryEmail').invalid)||!isMail1Valid"
+                  class="text-danger"
+                >
+                  Please enter valid Email Id
+                </span>
+              </div>
+              <!--   
+                  <a class='alert text-danger' target='_blank' href={{ hrefMatch }}>    {{ emailMatch }}</a> 
+          -->
+            </div>
+
+            <div class="row">
+              <div class="col-md-3 form-group">
+                <label>Country Code <span class="required-asterisk"></span></label>
+                <ng-select
+                  formControlName="alternatePhoneCountryCode"
+                  [items]="countryArray"
+                  bindLabel="label"
+                  bindValue="phonecode"
+                  [multiple]="false"                           
+                  [closeOnSelect]="true"
+                  [selectableGroup]="false"
+                  placeholder="Select"
+                  [markFirst]="true"
+                  [searchFn]="aphSearchFn"
+
+                >
+                  <ng-template ng-option-tmp let-item1="item" let-search="name">
+                    {{ item1?.name }}({{item1?.isoCode}}-{{item1?.phonecode }})
+                  </ng-template>    
+                </ng-select>
+                <span class='alert text-danger'  *ngIf=" !isContactnoCodeValid">Invalid Code</span>
+     
+              </div>      
+              
+              <div class="col-md-4 form-group">
+                <label for="alternatePhone"> Alternate Contact Number  <span class="required-asterisk"></span></label>
+                <input type="text"   maxlength="12" (blur)="checkPhone( true)" placeholder="Eg 908789826" class="form-control" formControlName="alternatePhone" />
+                <span class='alert text-danger'  *ngIf="leadFormGrp.get('alternatePhone').touched && !isAlterNatenoValid">Invalid Contact Number</span>
+          
+              </div>
+              <div class="col-md-5 form-group">
+                <label for="alternateEmail">Alternate Email <span class="required-asterisk"></span></label>
+                <input
+                  type="email"
+                  placeholder="Eg. johndoe@gmail.com"                
+                  class="form-control"
+                  formControlName="alternateEmail"
+                  (keyup)="checkEmail($event)"
+                />        
+               
+                <span *ngIf="emailMatch != ''" class="alert text-danger">
+                  
+                  <a class='alert text-danger'   href="{{ hrefMatch }}" > {{ emailMatch }} </a>  
+                    </span>
+                <span
+                  *ngIf="(leadFormGrp.get('alternateEmail').touched && leadFormGrp.get('alternateEmail').invalid)||!isMail2Valid"
+                  class="text-danger"
+                >
+                  Please enter valid Email Id
+                  </span>
+              </div>
+              <!--   
+                  <a class='alert text-danger' target='_blank' href={{ hrefMatch }}>    {{ emailMatch }}</a> 
+              -->
+            </div>
+            
+            
+
+            
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="password">Password <span class="required-asterisk"></span></label>
+                <input
+                  type="password"
+                  placeholder="Eg. ************"
+                  class="form-control"
+                  formControlName="password"
+                  readonly
+                />
+              </div>
+              <div class="col-md-6 form-group">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label for="status">Status </label>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="right" for="status"
+                      >{{ expertData && expertData?.terms ? ' Signed Up ' : 'T&C Pending ' }}
+                      <i class="fas fa-check-double" [ngClass]="expertData && expertData?.terms ? 'green' : ''"></i>
+                    </label>
+                  </div>
+                </div>
+
+                <ng-select
+                  [items]="status"
+                  bindLabel="status"
+                  bindValue="status"
+                  placeholder="Select Status"
+                  name="status"
+                  formControlName="status"
+                  (change)="changeStatus($event)"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="designation">Current  Designation <span class="required-asterisk"></span></label>
+                <input
+                  type="text"
+                  placeholder="Software Developer"
+                  class="form-control"
+                  formControlName="designation"
+                />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Country <span class="required-asterisk"></span></label>
+                <ng-select
+                  formControlName="country"
+                  [items]="countryArray"
+                  bindLabel="name"
+                  bindValue="name"
+                  [multiple]="false"
+                  [closeOnSelect]="true"
+                  [selectableGroup]="false"
+                  placeholder="Select Country"
+                  (change)="CountryId($event)"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label>State <span class="required-asterisk"></span></label>
+                <ng-select
+                  formControlName="state"
+                  [items]="stateArray"
+                  bindLabel="name"
+                  bindValue="name"
+                  [multiple]="false"
+                  [addTag]="true"
+                  [closeOnSelect]="true"
+                  [selectableGroup]="false"
+                  placeholder="Select State"
+                  (change)="StateId($event)"
+                >
+                </ng-select>
+              </div>
+              <div class="col-md-6 form-group">
+                <label>City <span class="required-asterisk"></span></label>
+                <ng-select
+                  formControlName="city"
+                  [items]="cityList"
+                  bindLabel="name"
+                  bindValue="name"
+                  [addTag]="true"
+                  [multiple]="false"
+                  [closeOnSelect]="true"
+                  [selectableGroup]="false"
+                  placeholder="Select City"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="sector">Sectors <span class="required-asterisk"></span></label>
+                <ng-select
+                  [items]="sectors"
+                  bindLabel="text"
+                  bindValue="text"
+                  placeholder="Select Sector"
+                  name="sector"
+                  formControlName="sector"
+                  (change)="onSelectSector($event)"
+                >
+                </ng-select>
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="industryGroup">Industry Group<span class="required-asterisk"></span></label>
+                <ng-select
+                  [items]="industryGroupList"
+                  bindLabel="text"
+                  bindValue="text"
+                  placeholder="Select Industry Group"
+                  name="industryGroup"
+                  formControlName="industryGroup"
+                  (change)="onIndustryGroup($event)"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="industry">Industry <span class="required-asterisk"></span></label>
+                <ng-select
+                  [items]="industryList"
+                  bindLabel="text"
+                  bindValue="text"
+                  [addTag]="true"
+                  placeholder="Select Industry"
+                  name="industry"
+                  formControlName="industry"
+                  (change)="onSelectIndustry($event)"
+                >
+                </ng-select>
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="subindustry">Sub Industry <span class="required-asterisk"></span></label>
+                <ng-select
+                  [items]="subIndustry"
+                  bindLabel="text"
+                  [addTag]="true"
+                  bindValue="text"
+                  placeholder="Select Sub Industry"
+                  name="industry"
+                  formControlName="subindustry"
+                  (change)="onSelectSubindustry($event)"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="row" *ngIf="summary">
+              <div class="col-md-12">
+                <label for="subIndustry">Sub Industry Summary</label>
+                <p>{{ summary }}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="rate">Rate<span class="required-asterisk"></span></label>
+                <input type="number"  maxlength="5"  min="100" max="50000" required aria-errormessage="Please Enter a Valid Number" placeholder="200"  class="form-control" formControlName="rate" />
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="rateType">Rate Type <span class="required-asterisk"></span></label>
+                <ng-select
+                  [items]="rateTypes"
+                  bindLabel="rateTypes"
+                  bindValue="rateTypes"
+                  placeholder="Select Rate Type"
+                  name="rateType"
+                  formControlName="rateType"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="keyword">Currency <span class="required-asterisk"></span> </label>
+                <ng-select
+                  formControlName="currency"
+                  [items]="currenciesList"
+                  bindLabel="name"
+                  bindValue="code"
+                  [multiple]="false"
+                  [closeOnSelect]="true"
+                  [selectableGroup]="false"
+                  placeholder="Select"
+                >
+                  <ng-template ng-option-tmp let-item="item" let-search="name">
+                    {{ item?.name }} ({{ item?.code }})
+                  </ng-template>
+                </ng-select>
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="krRelationshipMgr">KR Relationship Mgr</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="krRelationshipMgr"
+                  name="krRelationshipMgr"
+                  placeholder="krRelationshipMgr"
+                  readonly
+                />
+              </div>
+            </div>
+             <!-- pattern="[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"-->
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="sourceUrl">Source Url</label>
+                <input
+                  type="url"
+                  placeholder="Eg. http://www.xyz.com"                
+                  class="form-control"
+                  formControlName="sourceUrl"                  
+                />
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="sourceType">Source Type</label>
+                <ng-select
+                  [items]="leadSourceArray"
+                  bindLabel="lead"
+                  bindValue="lead"
+                  placeholder="Select Source Type"
+                  name="sourceType"
+                  formControlName="sourceType"
+                  [readonly]="isweb"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="keyword">Keyword <span class="required-asterisk"></span> </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="keyword"
+                  name="keyword"
+                  placeholder="keyword"
+                />
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="paymentPreference">Payment Preference <span class="required-asterisk"></span></label>
+                <ng-select
+                  formControlName="paymentPreference"
+                  name="paymentPreference"
+                  [items]="paymentPreference"
+                  bindValue="text"
+                  bindLabel="text"
+                  placeholder="Select Payment Preference"
+                  (change)="verifyPaymentPrefferenceCountry($event)"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div *ngIf="leadFormGrp.value.sourceType == 'Refferal'" class="row">
+              <div class="col-md-6 form-group">
+                <label for="sourceType">Referrer Name</label>
+                <input type="text" placeholder="Name" class="form-control" formControlName="referrerName" />
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="sourceType">Referrer Email</label>
+                <input type="text" placeholder="Email" class="form-control" formControlName="referrerEmail" />
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="sourceType">Referrer Phone</label>
+                <input type="text" placeholder="Phone" class="form-control" formControlName="referrerPhone" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 form-group">
+                <label for="sourceType">Biography</label>
+                <ckeditor [editor]="Editor" formControlName="biography" id="short-content" data="<p></p>"></ckeditor>
+              </div>
+            </div>
+
+            <div class="col-md-12 form-group">
+              <label for="sourceType">Notes</label>
+              <textarea formControlName="notes" id="notes" class="form-control" cols="30" rows="10"> </textarea>
+            </div>
+          </div>
+          <div>
+            <div class="row"></div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-md-5">
+      <div class="row">
+        
+          <div class="col-4">
+
+          <button  *ngIf="ispoc=='true'|| ((whoiam.roles.includes('admin') ||
+          whoiam?.id == expertData?.krRelationshipMgrId ) && (expertData?.status== 'Recruited') &&  ( expertData?.userId!=null && expertData?.userId!=undefined && expertData?.userId!=''))" type="button" (click)="sendPWDMail()" class="btn btn-primary ">Send Password</button>
+        
+       
+        </div> 
+         <div class="col-4">
+          <button  *ngIf=" expertData?.terms==false && ( (whoiam.roles.includes('admin') ||
+          whoiam?.id == expertData?.krRelationshipMgrId ) && (expertData?.status== 'Recruited') &&  ( expertData?.userId!=null && expertData?.userId!=undefined && expertData?.userId!=''))" type="button" (click)="sendSUPMail()" class="btn btn-primary ">Send signup link </button>
+       
+       
+        </div> 
+        
+        <div class="col-4 text-right">
+          <button type="button" style="display: none;" (click)="cancelForm()" class="btn btn-outline-link bg-white pl-5 pr-5">Cancel</button>
+          <button type="submit"  (click)="submitData()"   class="btn btn-primary " form="ngForm" >
+            {{ btnName }}
+          </button>
+        </div>
+        
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Work Details <span class="required-asterisk"></span></h4>
+          <form [formGroup]="workForm">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group mb-4">
+                  <label for="companyName">Company Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="companyName"
+                    name="companyName"
+                    placeholder="Company Name"
+                  />
+                  <span class="mt-2"
+                    >Is current employer
+                    <input
+                      type="checkbox"
+                      formControlName="isCurrentEmployeer"
+                      class="mt-2"
+                      (click)="checkEmployer($event)"
+                    />
+                  </span>
+                </div>
+              </div>
+              <div class="col-6">
+                <label for="companyType">Type</label>
+                <ng-select
+                  [items]="expertCompanyType"
+                  bindLabel="expertCompanyType"
+                  bindValue="expertCompanyType"
+                  placeholder="Select Company Type"
+                  name="companyType"
+                  formControlName="companyType"
+                >
+                </ng-select>
+                <!-- <select
+                  class="form-control"
+                  formControlName="companyType"
+                  name="companyType"
+                  placeholder="Company Type"
+                >
+                <option selected disabled>Select Company Type</option>
+                  <option>Public</option>
+                  <option>Private</option>
+                </select> -->
+              </div>
+              <div class="col-6">
+                <label for="jobTitle">Job Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="jobTitle"
+                  name="jobTitle"
+                  placeholder="Job Title"
+                />
+              </div>
+              <div class="col-3 mt-3">
+                <div class="form-group mb-4">
+                  <label for="startMonth">start Month</label>
+                  <ng-select
+                    [items]="months"
+                    bindLabel="name"
+                    bindValue="id"
+                    placeholder="Start Month"
+                    formControlName="startMonth"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-3 mt-3">
+                <div class="form-group mb-4">
+                  <label for="startYear">start Year</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="startYear"
+                    name="startYear"
+                    placeholder="Start Year"
+                  />
+                </div>
+              </div>
+              <div class="col-3 mt-3" *ngIf="showEnd == true">
+                <div class="form-group mb-4">
+                  <label for="endMonth">End Month</label>
+                  <ng-select
+                    [items]="months"
+                    bindLabel="name"
+                    bindValue="id"
+                    placeholder="End Month"
+                    formControlName="endMonth"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-3 mt-3" *ngIf="showEnd == true">
+                <div class="form-group mb-4">
+                  <label for="endYear">End Year</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="endYear"
+                    name="endYear"
+                    placeholder="End Year"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="mt-4"><button class="btn btn-success" (click)="addDetails()">Add</button></div>
+          </form>
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-bordered" *ngIf="workingDetailsArray?.length > 0">
+                <thead>
+                  <tr>
+                    <th>Company Name</th>
+                    <th>Company Type</th>
+                    <th>Job Title</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of workingDetailsArray">
+                    <td>{{ item?.companyName }}</td>
+                    <td>{{ item?.companyType }}</td>
+                    <td>{{ item?.jobTitle }}</td>
+                    <td>{{ item?.startMonth }} - {{ item?.startYear }}</td>
+                    <td>{{ item?.endMonth }} - {{ item?.endYear }}</td>
+                    <td>
+                      <i class="bx bx-trash" (click)="delete(item?.id)"> </i>
+                      <i class="bx bx-pencil" (click)="edit(item?.companyName)"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

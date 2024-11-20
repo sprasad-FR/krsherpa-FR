@@ -1,0 +1,35 @@
+<div class="card mt-3">
+    <div class="card-body">
+This page is used to see all latest projects from McKinsey.If a project is present in our databasse, you can click 'Request  Project' button to get that project in our database
+
+        <div style="display: flex;align-items: center;gap: 15px;margin-bottom: 15px; margin-top: 15px;">
+            <div style="display: flex;align-items: center;gap: 10px; flex: 1;">
+                <label for="limt" style="margin: 0px;">Limit</label>
+                <input type="number" id="limt"  [ngModelOptions]="{ standalone: true }" [(ngModel)]="limt">
+            </div>
+            <div style="flex: 2;">
+                <button class="btn btn-border btn-soft-info" style="display: flex;align-items: center;gap: 10px; padding: 3px 10px;" (click)="GetRecord()">Get Projects <i class=" ri-arrow-right-line"></i></button>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th style="text-align: center;">Workstreams</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let record of RecordsList;let i=index;">
+                    <th>{{i+1}}</th>
+                    <td>{{record?.name}}</td>
+                    <td style="text-align: center;">{{record?.workstreams?.length}}</td>
+                    <td>
+                        <button *ngIf="ishidebtn[record?.internal_project_id]" class="btn btn-border btn-soft-danger" style="display: flex;align-items: center;gap: 10px; padding: 3px 10px;" (click)="GetRequest(record)">Request Project <i class="ri-error-warning-line" style="font-size: 15px;"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

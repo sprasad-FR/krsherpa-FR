@@ -1,0 +1,123 @@
+<div class="card-body">
+    <div class="row align-items-center">
+      <div class="col">
+        <!-- Nav tabs -->
+        <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav nav-tabs-custom card-header-tabs border-bottom-0">
+          <li [ngbNavItem]="1">
+              <a ngbNavLink>
+                <h5>PENDING</h5>
+              </a>
+              <ng-template ngbNavContent>
+                                <div class="mt-3">
+                  <div class="table-card gridjs-border-none">
+                    <div class="table-responsive" >
+                      <table class="table align-middle custom-datatable" id="datatableexample">
+                        <thead>
+                        <tr class="bg-light text-muted">
+                          <th scope="col">#</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">ExpectedNumEvent</th>
+                          <th scope="col">LeadAttached</th>
+                          <th scope="col" >GTAM Count</th>
+                          <th scope="col">GTC Count</th> <!-- sortable="publishedDate" (sort)="onSort($event)"-->
+                          
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor ="let item of  pendinglist ; let i = index" (click)="editemp(item._id)" >
+                          <td>
+                            {{i+1}}
+                          </td>
+                          
+                          <td>{{item.name}}</td>
+                          <td><span class="badge badge-gradient-primary">{{item.expectedNumEvent}}</span></td>
+                          <td><span *ngIf="item.leadAttached?.length>0" class="badge badge-gradient-secondary">{{item.leadAttached?.length}}</span></td>
+                          <td><span *ngIf="item.givenToAccMgr?.length>0" class="badge badge-gradient-dark">{{item.givenToAccMgr?.length}}</span></td>
+                          <td><span *ngIf="item.givenToClient?.length>0" class="badge badge-gradient-secondary">{{item.givenToClient?.length}}</span></td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="px-3">
+                      <div class="row justify-content-md-between align-items-md-center g-0">
+                        <div class="col-sm-12 col-md-5">
+                            <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                                                   </div>
+                        </div>
+                        <!-- Pagination -->
+                        
+                        <!-- End Pagination -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+              <a ngbNavLink>
+               <h5>COMPLETED</h5>
+              </a>
+              <ng-template ngbNavContent>
+                              <div class="mt-3">
+                  <div class="table-card gridjs-border-none">
+                    <div class="table-responsive">
+                      <table class="table align-middle">
+                        <thead>
+                        <tr class="bg-light text-muted"> 
+                          <th scope="col">#</th>
+                          <th scope="col">Name</th>
+                          <th scope="col" >ExpectedNumEvent</th>
+                          <th scope="col">LeadAttached</th>
+                          <th scope="col" >GTAM COUNT</th>
+                          <th scope="col" >GTC COUNT</th>                                               
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr *ngFor="let items of completedlist; let i = index " (click)="editemp(items._id)" >
+                          
+                            <td>
+                              {{i+1}}
+                            </td>
+                            <td>{{items.name}}</td>
+                            <td><span class="badge badge-gradient-primary">{{items.expectedNumEvent}}</span></td>
+                            <td><span *ngIf="items.leadAttached?.length>0" class="badge badge-gradient-secondary">{{items.leadAttached?.length}}</span></td>
+                            <td><span *ngIf="items.givenToAccMgr?.length>0" class="badge badge-gradient-dark">{{items.givenToAccMgr?.length}}</span></td>
+                            <td><span *ngIf="items.givenToClient?.length>0" class="badge badge-gradient-secondary">{{items.givenToClient?.length}}</span></td>
+                          
+                        
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                                  <div class="px-3">
+                      <div class="row justify-content-md-between align-items-md-center g-0">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                              
+                            </div>
+                        </div>
+                        <!-- Pagination -->
+                        
+                        <!-- End Pagination -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+          </li>
+        </ul>
+      </div>
+      <div class="col-auto">
+        <div id="selection-element">
+            <div class="my-n1 d-flex align-items-center text-muted">
+                Select <div id="select-content" class="text-body fw-semibold px-1">1</div> Result <button type="button" class="btn btn-link link-danger p-0 ms-3" data-bs-toggle="modal" data-bs-target="#removeItemModal" >Remove</button>
+            </div>                            <!--(click)="confirm(content,'')"-->
+        </div>
+      </div>
+        <!-- Tab panes -->
+        <div class="tab-content text-muted mt-3">
+          <div [ngbNavOutlet]="nav"></div>
+        </div>
+    </div>
+</div>

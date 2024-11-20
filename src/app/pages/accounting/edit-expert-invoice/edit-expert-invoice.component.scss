@@ -1,0 +1,32 @@
+table {
+  border-collapse: separate;
+  border-spacing: 0px 12px;
+  tr {
+    th {
+      &:last-child {
+        border-radius: 0 4px 4px 0;
+      }
+      &:first-child {
+        border-radius: 4px 0 0px 4px;
+      }
+      vertical-align: middle;
+    }
+    td {
+      vertical-align: middle !important;
+      &:last-child {
+        border-radius: 0 4px 4px 0;
+      }
+      &:first-child {
+        border-radius: 4px 0 0px 4px;
+      }
+    }
+  }
+}
+thead {
+  background-color: #05335f;
+  color: #fff;
+}
+.table-bordered th,
+.table-bordered td {
+  border: 0px solid #eff2f7;
+}

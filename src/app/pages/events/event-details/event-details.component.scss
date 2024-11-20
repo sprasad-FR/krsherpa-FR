@@ -1,0 +1,68 @@
+.container-fluid {
+  .box1 {
+    color: #33428a;
+    background-color: #dde2fa;
+    border-color: #ccd4f8;
+    border: 1px solid transparent;
+    padding: 10px;
+    border-radius: 5px;
+    transition: 1s;
+    button {
+      background: #33428a;
+      border: 1px solid #33428a;
+    }
+  }
+  .box2 {
+    color: #306391;
+    background-color: #dcedfc;
+    border-color: #cbe4fb;
+    border: 1px solid transparent;
+    padding: 10px;
+    border-radius: 5px;
+    transition: 1s;
+    button {
+      background: #33428a;
+      border: 1px solid #33428a;
+    }
+  }
+  .initial-img {
+    background-color: #16aecf;
+    color: #fff;
+    line-height: 3rem;
+    text-align: center;
+    font-size: 1.25rem;
+  }
+  .avatar-xs {
+    background-color: #f6f6f6;
+  }
+}
+
+.modal-header {
+  .modal-header {
+    border-radius: 5px;
+  }
+
+  .modal-title,
+  .close {
+    color: white;
+  }
+}
+
+.required-asterisk {
+  color: red;
+  font-weight: bold;
+  margin-left: 3px;
+  font-size: 13px;
+}
+
+.mdmail {
+  max-width: 60%;
+}
+
+  @media (min-width: 992px)
+  {
+ .modal-xl {
+  max-width: 950px;
+}
+
+}

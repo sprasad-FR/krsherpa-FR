@@ -1,0 +1,22 @@
+.download-card {
+  padding: 0.25rem !important;
+
+  .file-icon {
+    background: rgb(238, 182, 182);
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+    margin-left: 5px;
+    color: rgba(255, 0, 0, 0.897);
+  }
+  .download-icon {
+    margin-right: 15px;
+  }
+}
+.file-label {
+  word-break: break-all;
+}

@@ -1,0 +1,178 @@
+<div class="row">
+    <div class="card-body">
+
+        <hr>
+        <div class="col-xxl-9 order-xxl-0 order-first">
+            <div class="d-flex flex-column h-100">
+                <div class="row h-100">
+                    <div class="col-lg-4 col-md-6" *ngFor="let stat of statData">
+                        <app-crypto-stat [title]="stat.title" [value]="stat.value" [icon]="stat.icon" [persantage]="stat.persantage" [profit]="stat.profit"></app-crypto-stat>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+
+        <div class="row project-wrapper">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="card-header border-0 align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Organization Wide Stats</h4>
+                                <div class="d-flex gap-1">      
+                                    <button type="button" (click)="changesr()"
+                                        class="btn btn-soft-primary btn-sm">
+                                        1Y
+                                    </button>
+                                    <button type="button" class="btn btn-soft-secondary btn-sm">
+                                        1M
+                                    </button>
+                                </div>
+                            </div><!-- end card header -->
+                            <div class="row col-md-12">
+                                <div class="col-md-4" > 
+
+                                <div >
+                                    <label class="align-items-center">Live Projects </label>
+                                  
+                                  <!--      <apx-chart [series]="portfolioChart.series" [labels]="portfolioChart.labels"
+                                                [chart]="portfolioChart.chart" [plotOptions]="portfolioChart.plotOptions"
+                                                [dataLabels]="portfolioChart.dataLabels" [legend]="portfolioChart.legend"
+                                                [stroke]="portfolioChart.stroke" [yaxis]="portfolioChart.yaxis"
+                                                [colors]="portfolioChart.colors" dir="ltr"></apx-chart>
+                          --> 
+                                        
+                                    
+                             </div>
+                             <div class="col-md-4" > 
+
+                                <div class="">
+                                    <label>Live Events </label>
+                                 <!--       <apx-chart [series]="portfolioChart.series" [labels]="portfolioChart.labels"
+                                                [chart]="portfolioChart.chart" [plotOptions]="portfolioChart.plotOptions"
+                                                [dataLabels]="portfolioChart.dataLabels" [legend]="portfolioChart.legend"
+                                                [stroke]="portfolioChart.stroke" [yaxis]="portfolioChart.yaxis"
+                                                [colors]="portfolioChart.colors" dir="ltr"></apx-chart>
+                                   -->  </div>
+                             </div>
+                             <div class="col-md-4" > 
+
+                                <div class="">
+                                    <label>Experts Demand</label>
+                                 <!-- -     <apx-chart [series]="portfolioChart.series" [labels]="portfolioChart.labels"
+                                                [chart]="portfolioChart.chart" [plotOptions]="portfolioChart.plotOptions"
+                                                [dataLabels]="portfolioChart.dataLabels" [legend]="portfolioChart.legend"
+                                                [stroke]="portfolioChart.stroke" [yaxis]="portfolioChart.yaxis"
+                                                [colors]="portfolioChart.colors" dir="ltr"></apx-chart>
+                                        -->      </div>
+                             </div>
+                        </div>
+                    
+                        
+                            <div class="card-body p-0 pb-2">
+                               
+                            </div><!-- end card body -->
+                        </div><!-- end card -->
+                    </div><!-- end col -->
+
+                </div><!-- end row -->
+            </div><!-- end col -->
+        </div>
+
+
+        <div class="row project-wrapper">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="card-header border-0 align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Organization wide stats</h4>
+                                <div class="d-flex gap-1">      
+                                    <button type="button" (click)="changesr()"
+                                        class="btn btn-soft-primary btn-sm">
+                                        1Y
+                                    </button>
+                                    <button type="button" class="btn btn-soft-secondary btn-sm">
+                                        1M
+                                    </button>
+                                </div>
+                            </div><!-- end card header  app-bar -->
+                            <div class="row col-md-12">
+                                <div class="col-md-4" > 
+
+                                <div >
+                                    <label class="align-items-center">Live Projects </label>
+                                    <app-bar
+                                    [xAxisData]="['Label 1', 'Label 2', 'Label 3']"
+                                    [yAxisData]="[40, 30, 20]"
+                                    [colors]="['#FF0000', '#00FF00', '#0000FF']"
+                                  ></app-bar>            </div>
+                             </div>
+                             <div class="col-md-4" > 
+
+                                <div class="">
+                                    <label>Live Events </label>
+                                    <apx-chart [series]="OverviewChart11.series"
+                                        [chart]="OverviewChart11.chart" [stroke]="OverviewChart11.stroke"
+                                        [fill]="OverviewChart11.fill" [markers]="OverviewChart11.markers"
+                                        [xaxis]="OverviewChart11.xaxis" [grid]="OverviewChart11.grid"
+                                        [legend]="OverviewChart11.legend"
+                                        [plotOptions]="OverviewChart11.plotOptions"
+                                        [colors]="OverviewChart11.colors"
+                                        [tooltip]="OverviewChart11.tooltip" dir="ltr"></apx-chart>
+                                </div>
+                             </div>
+                             <div class="col-md-4" > 
+
+                                <div class="">
+                                    <label>Experts Demand</label>
+                                    <app-pie
+                                    [xAxisData]="['Label 1', 'Label 2', 'Label 3']"
+                                    [yAxisData]="[40, 30, 20]"
+                                    [colors]="['#376b5b', '#634a1f', '#0000FF']"
+                                  ></app-pie>      </div>
+                             </div>
+                        </div>
+                    
+                        
+                            <div class="card-body p-0 pb-2">
+                               
+                            </div><!-- end card body -->
+                        </div><!-- end card -->
+                    </div><!-- end col -->
+
+                </div><!-- end row -->
+            </div><!-- end col -->
+        </div>
+        
+<app-myevents></app-myevents>
+<app-myprojects></app-myprojects>
+<app-area   [xAxisData]="['Label 1', 'Label 2', 'Label 3','Label 21','Label 34']" 
+[yAxisData]="ydata"
+[colors]="['#376b5b', '#634a1f', '#0000FF']" ></app-area>
+
+<app-nbar  [xAxisData]="['Label 1', 'Label 2', 'Label 3','Label 21','Label 34']" 
+[series]="ydata"
+[colors]="['#a2a8e0', '#cb99d1']"  ></app-nbar>
+
+
+        <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-pills bg-light rounded">
+            <li [ngbNavItem]="1">
+                <a ngbNavLink></a>
+                <ng-template ngbNavContent>
+                   
+                    <!--For team-->
+                </ng-template>
+            </li>
+        </ul>
+        <div [ngbNavOutlet]="nav" class="mt-4"></div>
+    </div>
+</div>
+
+<app-calendar [selectedDates]="mySelectedDates"></app-calendar>
+
+
+
+
+

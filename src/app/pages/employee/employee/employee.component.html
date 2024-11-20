@@ -1,0 +1,1219 @@
+<!-- Start Breadcrumbs -->
+
+<div>
+<form [formGroup]="leadForm"   (ngSubmit)="submitData()" ngNativeValidate>
+   <fieldset [disabled]="readonly">  
+    <div class="row">
+      <div class="col-xl-7">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title mb-4">Personal Details</h4>
+
+                <div class="form-group mb-4">
+                  <label>Name <span class="required-asterisk">*</span></label>
+                  <input
+                    name="name"
+                    formControlName="name"
+                    type="text"
+                    class="form-control"
+                    autocomplete="off"
+                    placeholder="Name"
+                    required
+                  />
+                </div>
+                <div class="row">
+                  <div class="col-2">
+                    <div class="form-group mb-4">
+                      <label>Country Code</label>
+                      <ng-select
+                        formControlName="phonecode"
+                        [items]="countryArray"
+                        bindLabel="label"
+                        bindValue="phonecode"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select"
+                      >
+                        <ng-template ng-option-tmp let-item="item" let-search="isoCode">
+                          {{ item?.isoCode }} ({{ item?.phonecode }})
+                        </ng-template>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group mb-4">
+                      <label>Mobile Number</label>
+                      <input
+                        formControlName="contactNo"
+                        name="contactNo"
+                        type="text"
+                        class="form-control"
+                        placeholder="+91 9098769977"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Alternate Mobile Number</label>
+                      <input
+                        formControlName="alternateMobile"
+                        name="alternateMobile"
+                        type="text"
+                        class="form-control"
+                        placeholder="+91 9098769977"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Email Id <span class="required-asterisk">*</span></label>
+                      <input
+                        formControlName="email"
+                        name="email"
+                        type="email"
+                        class="form-control"
+                        placeholder="abc@gmail.com"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Designation <span class="required-asterisk">*</span></label>
+                      <select
+                        class="form-control"
+                        formControlName="designation"
+                        required
+                        name="designation"
+                        (change)="saveDesignationStr($event)"
+                      >
+                        <option selected value="">Select Designation</option>
+                        <option [value]="item?.id" *ngFor="let item of designation">{{ item?.role }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Password <span class="required-asterisk">*</span></label>
+                      <input
+                        formControlName="password"
+                        name="password"
+                        type="text"
+                        class="form-control"
+                        placeholder="Password"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label for="repotingManagerId">Reporting Manager <span class="required-asterisk">*</span></label>
+                      <ng-select
+                        [items]="repotingManagerList"
+                        bindLabel="name"
+                        bindValue="userId"
+                        placeholder="Select Reporting Manager"
+                        name="repotingManagerId"
+                        formControlName="repotingManagerId"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Address Line 1</label>
+                      <input
+                        formControlName="addressLine1"
+                        name="addressLine1"
+                        type="text"
+                        class="form-control"
+                        placeholder="addressLine1"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Address Line 2</label>
+                      <input
+                        formControlName="addressLine2"
+                        name="addressLine2"
+                        type="text"
+                        class="form-control"
+                        placeholder="addressLine2"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Country</label>
+                      <ng-select
+                        formControlName="country"
+                        [items]="countryArray"
+                        bindLabel="name"
+                        bindValue="name"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select Country"
+                        (change)="CountryId($event)"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>State</label>
+                      <ng-select
+                        formControlName="state"
+                        [items]="stateArray"
+                        bindLabel="name"
+                        bindValue="name"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select State"
+                        (change)="StateId($event)"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>City</label>
+                      <ng-select
+                        formControlName="city"
+                        [items]="cityList"
+                        bindLabel="name"
+                        bindValue="name"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select City"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Pin code</label>
+                      <input
+                        formControlName="zipCode"
+                        name="zipCode"
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter Pin code"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label> Status<span class="required-asterisk">*</span></label>
+                      <select class="form-control" formControlName="status" required name="status">
+                        <option selected value="Confirmed">Confirmed</option>
+                        <option value="Probation">Probation</option>
+                        <option value="Contract ">Contract</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Type<span class="required-asterisk">*</span></label>
+                      <select class="form-control" formControlName="type" required name="type">
+                        <option selected value="Recruitment">Recruitment</option>
+                        <option value="Consultant">Consultant</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" style="width: 0px;display:none;">
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Incentives</label>
+                      <input
+                        formControlName="incentives"
+                        name="Incentives"
+                        type="number"
+                        class="form-control"
+                        placeholder="Enter incentives"
+                        value="1"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row" >
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Variable Salary</label>
+                      <input
+                        formControlName="variablesalary"
+                        name="variablesalary"
+                        type="number"
+                        class="form-control"
+                        placeholder="Enter Variable Salary"
+                        value="5"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6"> 
+                  <div class="form-group mb-4">
+                    <label>Region<span class="required-asterisk">*</span></label>
+                    <select class="form-control" formControlName="region" required name="region">
+                      <option selected value="APAC">APAC</option>
+                      <option value="EMEA">EMEA</option>
+                      <option value="AMERICAS ">AMERICAS</option>
+                      <option value="GLOBAL ">GLOBAL</option>
+                    </select>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!---gs--->
+     <div class="col-12" > 
+            <div class="card">
+              <div class="card-body">
+                  <div class=" mb-4">
+                  <label> <b>Incentives Applied</b></label>
+                  <div class="row">
+                    <div class="col-12">
+                 
+               <div  *ngFor="let item of this.employeeData?.incentiveids"  >  <label >{{item.rulename}}</label> <br>
+</div>
+                  <div class="col-xl-12 mb-4 text-right">            
+            <button type="button" class="btn btn-primary pl-5 pr-5 ml-3" (click)="getrules(incentiveupdateFormModal)"  >Manage Incentives </button>
+          </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+                  </div>
+                </div> 
+<!---gs--->
+
+      </div>
+      <div class="col-xl-5">
+        <div class="row">
+          <div class="col-xl-12 mb-4 text-right">
+               <button type="submit" class="btn btn-primary pl-5 pr-5 ml-3">{{ btnName }}</button>
+          </div>
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title mb-4">Account Details</h4>
+
+                <div class="form-group mb-4">
+                  <label>Aadhar Card No.</label>
+                  <div class="row">
+                    <div class="col-12">
+                      <input
+                        formControlName="aadharCardNo"
+                        name="aadharCardNo"
+                        type="text"
+                        class="form-control"
+                        placeholder="Aadhar Card No."
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>PAN card No</label>
+                      <input
+                        formControlName="panCard"
+                        name="panCard"
+                        type="text"
+                        class="form-control"
+                        placeholder="PAN No"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Account Type</label>
+                      <input
+                        formControlName="bankAccountType"
+                        name="bankAccountType"
+                        type="text"
+                        class="form-control"
+                        placeholder="Account Type"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="form-group mb-4">
+                      <label>Account Number</label>
+                      <input
+                        formControlName="bankAccountNumber"
+                        name="bankAccountNumber"
+                        type="text"
+                        class="form-control"
+                        placeholder="Account Number"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Bank Name</label>
+                      <input
+                        formControlName="bankName"
+                        name="bankName"
+                        type="text"
+                        class="form-control"
+                        placeholder="Bank Name"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Branch Name</label>
+                      <input
+                        formControlName="branchName"
+                        name="branchName"
+                        type="text"
+                        class="form-control"
+                        placeholder="Branch"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>IFSC Code</label>
+                      <input
+                        formControlName="ifscCode"
+                        name="ifscCode"
+                        type="text"
+                        class="form-control"
+                        placeholder="IFSC Code"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Shift Code</label>
+                      <input
+                        formControlName="shiftCode"
+                        name="shiftCode"
+                        type="text"
+                        class="form-control"
+                        placeholder="Branch"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!---gs--->
+      <div class="col-12" > 
+            <div class="card">
+              <div class="card-body">
+                  <div class=" mb-4">
+                  <label>Roles</label>
+                  <div class="row">
+                    <div class="col-12">
+                 
+                  <ng-select
+                    class="disable-remove-items disable-arrow disable-dropdown disable-clear-all"
+                    [items]="roles"
+                    bindLabel="role"
+                    bindValue="role"
+                    placeholder="Select Roles"
+                  [(ngModel)]="selectedroles"
+                  [ngModelOptions]="{standalone: true}"
+                    [multiple]="true"
+                    [clearable]="false"                 
+                  >
+                  </ng-select>
+
+                  <div class="col-xl-12 mb-4 text-right">            
+            <button type="button" class="btn btn-primary pl-5 pr-5 ml-3" (click)="submitRoles()"  >Save</button>
+          </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+                  </div>
+                </div> 
+
+      <div class="col-12"> 
+            <div class="card">
+              <div class="card-body">
+                <div class=" mb-4">
+                  <label>User Access Enabled ?</label>
+                  <div class="row">
+                    <div class="col-12">
+                    
+                  <div class="row">
+                    <div class="col-4">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="isEnabled"                        
+                          [checked]="isenabled"
+                           [(ngModel)]="isenabled"
+                            [ngModelOptions]="{standalone: true}"
+                          #isEnabled
+                        />
+                        <label class="custom-control-label" for="isEnabled">{{
+                          isEnabled.checked ? 'Yes' : 'No'
+                        }}</label>
+                      </div>
+                    </div>
+
+
+
+                  </div>
+
+                  <div class="col-xl-12 mb-4 text-right">            
+            <button type="button" class="btn btn-primary pl-5 pr-5 ml-3"   (click)="submitaccess()" >Save</button>
+          </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+                  </div>
+                </div>  
+
+ <div class="col-12"> 
+            <div class="card">
+              <div class="card-body">
+                <div class=" mb-4">
+                  <label>Reset user Password ?. When clicked, user will be forced to reset the password in the next login</label>
+                  <div class="row">
+                    <div class="col-12">
+                    
+                  
+
+                  <div class="col-xl-12 mb-4 text-right">            
+            <button type="button" class="btn btn-primary pl-5 pr-5 ml-3"   (click)="submitaccessrest()" >Force Reset Password</button>
+          </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+                  </div>
+                </div> 
+
+                <!---gs--->
+
+
+
+        </div>
+      </div>
+    </div>
+</fieldset>
+  </form>
+</div>
+<ng-template #incentiveupdateFormModal let-modal> 
+
+<div>
+
+   <div class="card">
+    <div class="card-body">
+      <div >
+        <div class="text-left">
+          <h5>Applicable Incentives</h5>
+        </div>
+         
+        <!-- <div *ngIf="role === 'admin-compliance'"> -->
+
+        <div class="row" >
+          <div class="col-12 mb-2">
+           </div>
+        </div>
+
+        
+       
+          <div class="col-12"  *ngIf="checkifruleexists('1')"> <!-- Rule start  1-->
+            <div class="row">
+                   
+
+ <div class="col-9"> <span class="accordion" (click) = "expand(panel1)">1.  No Incentives:  <div _ngcontent-mng-c168="" class="arrow-down"></div> </span></div>
+
+  <div class="col-3">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="is1Enabledx"
+                           name="is1Enabledx"
+                                          
+                          [checked]="is1enabled"
+                            [(ngModel)]="is1enabled"
+                      
+                          #is1Enabledx
+                        />
+                        <label class="custom-control-label" for="is1Enabledx">Incentive Applied - {{
+                          is1Enabledx.checked ? 'Yes' : 'No'
+                        }}</label> </div>
+
+   
+          </div>
+            </div>
+                      
+  <div class="row">
+    <div class="col-12">
+<div #panel1 class="panel1" style="display:none;background-color: #ebebeb; padding:15px;">
+  <p>Employees under ‘No Incentives” only earn a fixed salary. They do not earn any additional income irrespective of their productivity. 
+
+Usually, only employees from the Support Team like IT, Finance & HR are under ‘No Incentives’
+</p>
+</div>   </div>
+                    </div>
+        </div> <!-- Rule end -->
+
+
+
+<br>
+       <div class="col-12" *ngIf="checkifruleexists('2')"> <!-- Rule start 2 -->
+            <div class="row">
+                   
+
+ <div class="col-9"> <span class="accordion" (click) = "expand(panel2)">2. Researcher’s Incentives: (TRR & Hon based) : <div _ngcontent-mng-c168="" class="arrow-down"></div> </span></div>
+ 
+  <div class="col-3">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="is2Enabledx" 
+                                                   
+                          
+                           [(ngModel)]="is2enabled"
+
+                          #is2Enabledx
+                        />
+                        <label class="custom-control-label" for="is2Enabledx">Incentive Applied - {{
+                          is2Enabledx.checked ? 'Yes' : 'No'
+                        }}</label> </div>
+
+   
+          </div>
+            </div>
+                      
+  <div class="row">
+    <div class="col-12">
+
+ 
+<div #panel2 class="panel2" style="display:none;background-color: #ebebeb; padding:15px;">
+   <p>4 designations come under “Researcher’s Incentives” </p>
+  <p>
+• Research Associate 
+• Research Analyst 
+• Sr. Research Analyst 
+• Research Specialist </p> <p>
+( is Honorarium avg amt paid to expert)  yes
+( Is TRR taken only from projects that with completed events) trr- timely relevent recruite
+( what happens if TRR taken  and events fall in different month)
+( How variable component is calculated with two incentives)
+( 4. Where Target is fixed for team member)
+(5. managing are 2 or fewer researchers where to get that)</p>
+
+<p>
+Their incentive break-up is as below
+CTC (100%) = Fixed Component (80% of CTC) + Variable Component (20% of CTC) </p>
+
+<p>
+Further, the Variable Component is broken down as below:
+Variable Component = TRR Productivity (80% of VC) + Hon Productivity (20% of VC)
+ </p>
+  <p> 
+  <p> Incentives Slabs  - Researchers</p>
+  <p>  TRR (80%)   Honorarium (20%) </p>
+<p> Research Associate   Less than 10   No Incentives  More than 300              -  </p> 
+ <p>   11 to 15 TRRs  50%  250 to 299   50%</p>
+  <p>  16 to 20 TRRs  75%  200 to 249   75%</p>
+  <p>  More than 20   100%   Less than 200  100%</p>
+         
+<p> Research Analyst   Less than 15   No Incentives  More than 300              -   </p>
+ <p>   16 to 20 TRRs  50%  250 to 299   50%</p>
+  <p>  21 to 25 TRRs  75%  200 to 249   75%</p>
+  <p>  More than 25   100%   Less than 200  100%</p>
+         
+<p> Sr. Research Analyst   Less than 20   No Incentives  More than 300              -   </p>
+ <p>   21 to 25 TRRs  50%  250 to 299   50%</p>
+  <p>  26 to 30 TRRs  75%  200 to 249   75%</p>
+  <p>  More than 30   100%   Less than 200  100%</p>
+    <p>     
+Research Specialist    Less than 25   No Incentives  More than 300              -   
+   26 to 30 TRRs  50%  250 to 299   50%
+   31 to 35 TRRs  75%  200 to 249   75%
+   More than 35   100%   Less than 200  100%
+         
+</p>
+      
+</div>
+</div>   </div>
+                    
+        </div> <!-- Rule end 2 -->
+
+
+<br>
+    <div class="col-12" *ngIf="checkifruleexists('3')"  > <!-- Rule start  3-->
+            <div class="row">
+                   
+
+ <div class="col-3"> <span class="accordion" (click) = "expand(panel3)">3.  Researcher’s Incentives: (GP Based)   <div _ngcontent-mng-c168="" class="arrow-down"></div> </span></div>
+ <div class="col-6">                       
+<div class="form-group mb-4">
+                 
+                  Percentage :  <input
+                    name="RIGPPercet"
+                    width="10"
+                    type="text"
+                   [(ngModel)]="rule3perc"
+                    autocomplete="off"
+                    placeholder="5"
+                    style="width:35px;"
+                    readonly=true;
+                  />
+                </div>
+                    </div>
+  <div class="col-3">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="is3Enabled"                        
+                          [checked]="is3enabled"
+                             
+                           [(ngModel)]="is3enabled"
+                       
+                          #is3Enabled
+                        />
+                        <label class="custom-control-label" for="is3Enabled">Incentive Applied - {{
+                          is3Enabled.checked ? 'Yes' : 'No'
+                        }}</label> </div>
+
+   
+          </div>
+            </div>
+                      
+  <div class="row">
+    <div class="col-12">
+<div #panel3 class="panel3" style="display:none;background-color: #ebebeb; padding:15px;">
+  <p>  % on total GP for that researcher 
+</p>
+</div>   </div>
+                    </div>
+        </div> <!-- Rule end -->    
+
+        <!-- <a (click)="addRule()"><i class="bx bx-plus-circle"></i></a> -->
+   
+       <div class="col-12" *ngIf="checkifruleexists('4')"> <!-- Rule start 4 -->
+            <div class="row">
+                   
+
+ <div class="col-9"> <span class="accordion" (click) = "expand(panel4)">4.  Research Manager Incentives <div _ngcontent-mng-c168="" class="arrow-down"></div> </span></div>
+ 
+  <div class="col-3">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="is4Enabled"                        
+                          [checked]="is4enabled"
+                         [(ngModel)]="is4enabled"
+                        
+                          #is4Enabled
+                        />
+                        <label class="custom-control-label" for="is4Enabled">Incentive Applied - {{
+                          is4Enabled.checked ? 'Yes' : 'No'
+                        }}</label> </div>
+
+   
+          </div>
+            </div>
+                      
+  <div class="row">
+    <div class="col-12">
+
+ 
+<div #panel4 class="panel4" style="display:none;background-color: #ebebeb; padding:15px;">
+  <p>Every Research Manager will get INR 6,000/- (can be dynamic) per team member depending on their productivity 
+</p>
+<p> 
+Name of Team Member   Target (as per their designation) Actuals </p>
+<p>X 21  15</p>
+<p>Y   26  11</p>
+<p>  81  51</p>
+<p>% Productivity  63% </p>
+<p>Research Manager should get INR 6,000 * 3 = 18,000/- 
+But productivity is 63%, hence incentives earned will be 11,340/- 
+
+ </p>
+      <p>•  For every team member that is reporting to ARM under this Research Manager will get INR 3,000/- (can be dynamic). For e.g. 
+
+Avani is Sr. Research Manager 
+Aishwarya is Associate Research Manager 
+Muskan is Research Associate (Her target is 21 TRRs, and she gave 15 TRRs in the month of April) 
+
+Hence, Avani will get as 3,000/- i.e., 71.42% of 3k which is INR 2,143/- 
+Aishwarya will get 6,000/- i.e., 71.42% of 6k which is INR INR 4,285/-
+ </p>
+      <p> </p>
+      <p> </p>
+      <p> </p>
+      <p> </p>
+</div>
+</div>   </div>
+                    
+        </div> <!-- Rule end 4 -->
+<br>
+      <div class="col-12" *ngIf="checkifruleexists('5')"> <!-- Rule start5 -->
+            <div class="row">
+                   
+
+ <div class="col-9"> <span class="accordion" (click) = "expand(panel5)">5.  Asso. Research Manager Incentives <div _ngcontent-mng-c168="" class="arrow-down"></div> </span></div>
+ 
+  <div class="col-3">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="is5Enabled"                        
+                          [checked]="is5enabled"
+                            [(ngModel)]="is5enabled"
+                        
+                          #is5Enabled
+                        />
+                        <label class="custom-control-label" for="is5Enabled">Incentive Applied - {{
+                          is5Enabled.checked ? 'Yes' : 'No'
+                        }}</label> </div>
+
+   
+          </div>
+            </div>
+                      
+  <div class="row">
+    <div class="col-12">
+
+ 
+<div #panel5 class="panel5" style="display:none;background-color: #ebebeb; padding:15px;">
+<p> Associate Research Managers are managers that also are involved in delivering TRRs. Their combined tasks and incentives are based on team productivity and also deliver recruits. </p>
+
+<p>Asso. Research Managers Incentives (managing are 2 or fewer researchers are): </p>
+
+<p>1.  Research Incentives: Aligned with Research Analyst Incentives</p>
+<p>2.  RM Incentives: INR 6,000/- per team member </p>
+
+<p>Asso. Research Managers Incentives (managing are 3 to 4 researchers are): </p>
+
+<p>3.  Research Incentives: Aligned with Research Associate Incentives</p>
+<p>4.  RM Incentives: INR 6,000/- per team member </p>
+<p> </p>
+</div>
+</div>   </div>
+                    
+        </div> <!-- Rule end 5 -->
+<br>
+<div class="col-12"  *ngIf="checkifruleexists('6')"  > <!-- Rule start6 -->
+            <div class="row">
+                   
+
+ <div class="col-9"> <span class="accordion" (click) = "expand(panel6)">6.  Asso. Account Manager Incentives <div _ngcontent-mng-c168="" class="arrow-down"></div> </span></div>
+ 
+  <div class="col-3">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="is6Enabled"                        
+                          [checked]="is6enabled"
+                            [(ngModel)]="is6enabled"
+                      
+                          #is6Enabled
+                        />
+                        <label class="custom-control-label" for="is6Enabled">Incentive Applied - {{
+                          is6Enabled.checked ? 'Yes' : 'No'
+                        }}</label> </div>
+
+   
+          </div>
+            </div>
+                      
+  <div class="row">
+    <div class="col-12">
+
+ 
+<div #panel6 class="panel6" style="display:none;background-color: #ebebeb; padding:15px;">
+<p> Associate Account Managers are managers that also are involved in delivering TRRs. Their combined tasks and incentives are based on client management and also deliver recruits </p>
+
+<p>Asso. Account Managers Incentives (managing 1 client is):  </p>
+
+<p>1. Research Incentives: Aligned with Research Analyst Incentives</p>
+<p>2. AM Incentives: Aligned with AAM Incentives  </p>
+
+<p>Asso. Account Managers Incentives (managing 2 to 4 clients are):  </p>
+
+<p>3. Research Incentives: Aligned with Research Associate Incentives</p>
+<p>4. AM Incentives: Aligned with AAM Incentives  </p>
+<p> 
+**If reporting to KAM, KAM will get incentivized on the profit / GP / revenue/conversion of AAM’s clients (currently none reporting to KAM) 
+ </p>
+</div>
+</div>   </div>
+                    
+        </div> <!-- Rule end 6 -->
+     <br>
+      <div class="col-12" *ngIf="checkifruleexists('7')"  > <!-- Rule start7 -->
+            <div class="row">
+                   
+
+ <div class="col-9"> <span class="accordion" (click) = "expand(panel7)">7.  Account Manager Incentives  - Key Account Manager <div _ngcontent-mng-c168="" class="arrow-down"></div> </span></div>
+ 
+  <div class="col-3">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="is7Enabled"                        
+                          [checked]="is7enabled"
+                            [(ngModel)]="is7enabled"
+                       
+                          #is7Enabled
+                        />
+                        <label class="custom-control-label" for="is7Enabled">Incentive Applied - {{
+                          is7Enabled.checked ? 'Yes' : 'No'
+                        }}</label> </div>
+
+   
+          </div>
+            </div>
+                      
+  <div class="row">
+    <div class="col-12">
+
+ 
+<div #panel7 class="panel7" style="display:none;background-color: #ebebeb; padding:15px;">
+<p>Key Account Manager </p>
+<p>Incentives     </p>
+  <p>2% on GP  No CAP</p>
+<p>Research  15,000  triggers at 4 hours of event duration, paid at 1500 rs per hour up to 10 hours</p>
+     
+     
+<p>Bonus Revenue - Triggers at USD 12,000/-  (Below this, no Bonus)</p>
+  <p> INR 15,000/-   Min 65% Conversion</p>
+  <p> INR 15,000/-   Min $550 Average GP per call</p>
+  
+     
+
+<p> </p>
+</div>
+</div>   </div>
+                    
+        </div> <!-- Rule end 7 -->
+
+<br>
+      <div class="col-12" *ngIf="checkifruleexists('8')"   > <!-- Rule start8 -->
+            <div class="row">
+                   
+
+ <div class="col-9"> <span class="accordion" (click) = "expand(panel8)">8.  Account Manager Incentives - Account Manager  <div _ngcontent-mng-c168="" class="arrow-down"></div> </span></div>
+ 
+  <div class="col-3">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="is8Enabled"                        
+                          [checked]="is8enabled"
+                            [(ngModel)]="is8enabled"
+                          
+                          #is8Enabled
+                        />
+                        <label class="custom-control-label" for="is8Enabled">Incentive Applied - {{
+                          is8Enabled.checked ? 'Yes' : 'No'
+                        }}</label> </div>
+
+   
+          </div>
+            </div>
+                      
+  <div class="row">
+    <div class="col-12">
+
+ 
+<div #panel8 class="panel8" style="display:none;background-color: #ebebeb; padding:15px;">
+
+    
+ <p>Account Manager </p>
+     
+<p>Incentives    </p> 
+ <p> 2% on GP  No CAP</p>
+<p>Research  15,000  triggers at 4 hour, paid at 1500 rs per hour upto 10 hours</p>
+     
+     
+<p>Bonus Revenue - Triggers at USD 10,000/-  (Below this, no Bonus)</p>
+  <p> INR 10,000/-   Min 60% Conversion</p>
+  <p> INR 10,000/-   Min $500 Average GP per call</p>
+     
+
+    
+
+<p> </p>
+</div>
+</div>   </div>
+                    
+        </div> <!-- Rule end 8 -->
+
+
+<br>
+      <div class="col-12" *ngIf="checkifruleexists('9')"   > <!-- Rule start8 -->
+            <div class="row">
+                   
+
+ <div class="col-9"> <span class="accordion" (click) = "expand(panel9)">9.  Account Manager Incentives - Associate Account Manager  <div _ngcontent-mng-c168="" class="arrow-down"></div> </span></div>
+ 
+  <div class="col-3">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="is9Enabled"                        
+                          [checked]="is9enabled"
+                            [(ngModel)]="is9enabled"
+                         
+                          #is9Enabled
+                        />
+                        <label class="custom-control-label" for="is9Enabled">Incentive Applied - {{
+                          is9Enabled.checked ? 'Yes' : 'No'
+                        }}</label> </div>
+
+   
+          </div>
+            </div>
+                      
+  <div class="row">
+    <div class="col-12">
+
+ 
+<div #panel9 class="panel9" style="display:none;background-color: #ebebeb; padding:15px;">
+
+    
+<p>Associate Account Manager</p>
+     
+<p>Incentives     </p>
+  <p>2% on GP  No CAP</p>
+     
+<p>Bonus Revenue - Triggers at USD 8,000/- (Below this, no Bonus)</p>
+  <p>INR 7,500/-  Min 55% Conversion</p>
+  <p> INR 7,500/-  Min $500 Average GP per call </p>
+     
+
+<p> </p>
+</div>
+</div>   </div>
+                    
+        </div> <!-- Rule end 9 -->
+<br>
+      <div class="col-12"  *ngIf="checkifruleexists('10')" > <!-- Rule start10 -->
+            <div class="row">
+                   
+
+ <div class="col-3"> <span class="accordion" (click) = "expand(panel10)">10. AVP Incentives   <div _ngcontent-mng-c168="" class="arrow-down"></div> </span></div>
+ <div class="col-6">                       
+<div class="form-group mb-4">
+                 
+                  Percentage :  <input
+                    name="RIGPPercet"
+                    width="10"
+                    type="text"
+                  [(ngModel)]="rule10perc"
+                    autocomplete="off"
+                    placeholder="5"
+                    style="width:35px;"
+                     readonly=true;
+                  />
+                </div>
+                    </div>
+ 
+  <div class="col-3">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="is10Enabled"                        
+                          [checked]="is10enabled"
+                            [(ngModel)]="is10enabled"
+                       
+                          #is10Enabled
+                        />
+                        <label class="custom-control-label" for="is10Enabled">Incentive Applied - {{
+                          is10Enabled.checked ? 'Yes' : 'No'
+                        }}</label> </div>
+
+   
+          </div>
+            </div>
+                      
+  <div class="row">
+    <div class="col-12">
+
+ 
+<div #panel10 class="panel10" style="display:none;background-color: #ebebeb; padding:15px;">
+Incentives Slabs - Associate Vice President  ----  
+x% (10) on Net Profit of resp. team/vertical
+
+   
+
+<p> </p>
+</div>
+</div>   </div>
+                    
+        </div> <!-- Rule end 10 -->
+
+<br>
+      <div class="col-12" *ngIf="checkifruleexists('11')"  > <!-- Rule start11 -->
+            <div class="row">
+                   
+
+ <div class="col-3"> <span class="accordion" (click) = "expand(panel11)">11. VP Incentives   <div _ngcontent-mng-c168="" class="arrow-down"></div> </span></div>
+ <div class="col-6">                       
+<div class="form-group mb-4">
+                 
+                  Percentage :  <input
+                    name="RIGPPercet"
+                    width="10"
+                    type="text"
+                    [(ngModel)]="rule11perc"
+                    autocomplete="off"
+                    placeholder="5"
+                    style="width:35px;"
+                     readonly=true;
+                  />
+                </div>
+                    </div>
+ 
+  <div class="col-3">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="is11Enabled"                        
+                          [checked]="is11enabled"
+                            [(ngModel)]="is11enabled"
+                         
+                          #is11Enabled
+                        />
+                        <label class="custom-control-label" for="is11Enabled">Incentive Applied - {{
+                          is11Enabled.checked ? 'Yes' : 'No'
+                        }}</label> </div>
+
+   
+          </div>
+            </div>
+                      
+  <div class="row">
+    <div class="col-12">
+
+ 
+<div #panel11 class="panel11" style="display:none;background-color: #ebebeb; padding:15px;">
+Incentives Slabs - Vice President    ----  
+x% (10) on Net Profit of resp. team/vertical
+
+
+     
+
+<p> </p>
+</div>
+</div>   </div>
+                    
+        </div> <!-- Rule end 11 -->
+
+<br>
+      <div class="col-12" *ngIf="checkifruleexists('12')"  > <!-- Rule start12 -->
+            <div class="row">
+                   
+
+ <div class="col-3"> <span class="accordion" (click) = "expand(panel12)">12.  SVP Incentives   <div _ngcontent-mng-c168="" class="arrow-down"></div> </span></div>
+ <div class="col-6">                       
+<div class="form-group mb-4">
+                 
+                  Percentage :  <input
+                    name="RIGPPercet"
+                    width="10"
+                    type="text"
+                    [(ngModel)]="rule12perc"
+                    autocomplete="off"
+                    placeholder="5"
+                    style="width:35px;"
+                     readonly=true;
+                  />
+                </div>
+                    </div>
+ 
+  <div class="col-3">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="is12Enabled"                        
+                          [checked]="is12enabled"
+                            [(ngModel)]="is12enabled"
+                         
+                          #is12Enabled
+                        />
+                        <label class="custom-control-label" for="is12Enabled">Incentive Applied - {{
+                          is12Enabled.checked ? 'Yes' : 'No'
+                        }}</label> </div>
+
+   
+          </div>
+            </div>
+                      
+  <div class="row">
+    <div class="col-12">
+
+ 
+<div #panel12 class="panel12" style="display:none;background-color: #ebebeb; padding:15px;">
+Incentives Slabs – Sr. VP   --- 
+x% (10) on Net Profit on all clients covered
+
+
+     
+
+<p> </p>
+</div>
+</div>   </div>
+                    
+        </div> <!-- Rule end 12 -->
+
+
+
+    </div>
+  </div>
+    <div class="modal-footer">
+      <button type="submit"  data-dismiss="incentiveupdateFormModal"  (click)="submitincentive()" class="btn btn-success">
+        Submit
+       
+      </button>
+    </div>
+  </div>
+
+  </div>
+
+
+
+</ng-template>

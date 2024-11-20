@@ -1,0 +1,176 @@
+
+
+<div class="row">
+    <div class="card">
+        <div class="card-header border-0 align-items-center d-flex" style="background-color:#6495ED">
+            <i class=" ri-user-star-fill text-white" style="line-height: 16px; font-size: 16px; margin-right: 5px;"></i>
+            <h4 class="card-title mb-0 flex-grow-1 text-white">Productivity</h4>
+    
+        </div><!-- end card header -->
+    
+        </div> 
+
+    <div class="col-12">
+        <div class="Product-table ">
+            <table>
+                <tr class="teble-head">
+                    <td>Productivity</td>
+                    <td>GTAM (From Researcher)</td>
+                    <td>GTC (To Clients)</td>
+                    <td>Events</td>
+                    <td>Conversion rate (from clients to events)</td>
+                    <td>Average GP/hour</td>
+                </tr>
+                <tr>
+                    <td> previous day</td>
+                    <td>{{pgivenToAccMgrcountt}}</td>
+                    <td>{{pgivenToClientcount}}</td>
+                    <td>{{Previouscomplete[0]?.count}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                    <tr>
+                        <td>Cumulative Monthly -Till Today</td>   
+                        <td>{{givenToAccMgrcountt}}</td>
+                        <td>{{givenToClientcount}}</td>
+                    <td>{{eventcomplete[0]?.count}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div class="Profit-table">
+            <table>
+                <tr class="teble-head">
+                    <td>Profitability</td>
+                    <td>Calls Scheduled</td>
+                    <td>Completed Events</td>
+                    <td>Revenue Earned</td>
+                    <td>GP Earned</td>
+                </tr>
+                <tr>
+                    <td>Previous day</td>
+                    <td>{{Previouscomplete[0]?.count + Previousupcoming[0]?.count}}</td>
+                    <td>{{Previouscomplete[0]?.count}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Comulative Monthly </td>
+                    <td>{{eventcomplete[0]?.count + eventupcoming[0]?.count}}</td>
+                    <td>{{eventcomplete[0]?.count}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="row ">
+    <div class="card">
+    <div class="card-header border-0 align-items-center d-flex" style="background-color:#6495ED">
+        <i class=" ri-user-star-fill text-white" style="line-height: 16px; font-size: 16px; margin-right: 5px;"></i>
+        <h4 class="card-title mb-0 flex-grow-1 text-white">My Clients- with projects Count</h4>
+
+    </div><!-- end card header -->
+
+    </div> 
+    <div class="col-sm-4">      
+            <div class="pie-chart">
+                                         
+
+                    <apx-chart id="prjpieChart" [series]="pieChart3?.series" [labels]="pieChart3?.labels"
+                    [chart]="pieChart3?.chart" [plotOptions]="pieChart3?.plotOptions"
+                    [dataLabels]="pieChart3?.dataLabels" [legend]="pieChart3?.legend"
+                    [stroke]="pieChart3?.stroke" [yaxis]="pieChart3?.yaxis"
+                    [colors]="pieChart3?.colors" dir="ltr"></apx-chart>
+
+
+            </div>
+        </div>
+        <div class="col-sm-8">   
+
+
+            <div class=""    >
+                <div class="card-body">
+            <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav nav-pills arrow-navtabs nav-success bg-light mb-3">
+                <li [ngbNavItem]="1">
+                  <a ngbNavLink  >Chart View</a>
+                   <ng-template ngbNavContent>
+            
+                    <div class="align-items-center">
+                      
+                        <apx-chart  id="prjcolChart"  [series]="OverviewChart112?.series" [chart]="OverviewChart112?.chart"
+                            [stroke]="OverviewChart112?.stroke" [fill]="OverviewChart112?.fill"
+                            [markers]="OverviewChart112?.markers" [xaxis]="OverviewChart112?.xaxis"
+                            [grid]="OverviewChart112?.grid" [legend]="OverviewChart112?.legend"
+                            [plotOptions]="OverviewChart112?.plotOptions"
+                            [colors]="OverviewChart112?.colors" [tooltip]="OverviewChart112?.tooltip"
+                            dir="ltr"></apx-chart>
+                    </div>
+            
+            </ng-template>
+            </li>
+            <li [ngbNavItem]="2">
+                <a ngbNavLink  >List View</a>
+                 <ng-template ngbNavContent>
+                    <hr>
+                    <div>
+
+                        <div class="col-sm-12">
+                          <div class="form-group Profit-table">
+                            <table class="table">
+                                <tr class="table-head ">
+                                  <td><span class="badge badge-gradient-primary"> Client</span></td>
+                                  <td><span class="badge badge-gradient-primary">  No Of Projects</span></td>
+                                </tr>
+                                <tr class="table-head"  *ngFor="let data of projectcounts">
+                                    <td>{{ getclientname(data._id )}}</td>
+                                    <td>{{ data.count }}</td>
+                                  </tr>
+
+                            </table>
+
+                            </div>
+                        </div>
+              
+              
+                      </div>
+               
+                </ng-template>
+            </li>
+            </ul>
+            <div [ngbNavOutlet]="nav" class="mt-1"></div>
+            </div>
+            </div>
+
+
+
+
+
+           
+
+
+        </div>
+        
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+

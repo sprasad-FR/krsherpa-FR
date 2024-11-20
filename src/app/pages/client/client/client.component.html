@@ -1,0 +1,1566 @@
+<div class="row">
+  <div class="col-md-12">
+      <div class="card mt-n4" style="background-color: #f7f5f5ee; ">
+          <div class="bg-soft-project"  style="background-color: rgb(60, 71, 105);">
+              <div class="card-body pb-0 px-4">
+                  <div class="row mb-3">
+                      <div class="col-md">
+                          <div class="row align-items-center g-3">
+                              <div class="col-md-auto">
+                                  <div class="avatar-md">
+                                      <div class="avatar-title bg-white rounded-circle">
+
+                                        <h4 class="" style="color:blue;" >  {{ getInitials( clientData?.companyName ) }}</h4>
+                                                                           </div>
+                                  </div>
+                              </div>
+                              <div class="col-md">
+                                  <div>
+                                      <h4 class="fw-bold">{{ clientData?.companyName }} <span class="badge rounded-pill bg-primary fs-12"></span> </h4>    
+                                      <div class="hstack gap-3 flex-wrap">
+                                          <div><i class="align-bottom me-1"></i>  {{ clientData?.city }} {{ clientData?.state }} {{ clientData?.country }} </div>
+                                          <div class="vr"></div>
+                                         
+                                          
+                                      </div>
+                                  </div>
+
+                                 
+
+
+
+                              </div>
+                          </div>
+                      </div>
+                     
+                  </div>
+                  <div>
+                    <div class="row ">
+                      <div class="col-md-2"></div>
+                      <div class="col-md-2">
+                        <div class="text-primary mb-2">Profit and Loss Head</div>
+                        <div class="d-flex align-items-center">
+                          <!-- <img alt="" class="rounded-circle avatar-xs" src="//dummyimage.com/50x50/e8e8e8/5a5a63" /> -->
+                                                  <div class="ml-2 font-weight-bold">
+                            {{ getUserName(clientData?.plheadId) || 'Not assigned' }}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="text-primary mb-2">Sub PnL</div>
+                        <div class="d-flex align-items-center">
+                          <!-- <img alt="" class="rounded-circle avatar-xs" src="//dummyimage.com/50x50/e8e8e8/5a5a63" /> -->
+                       
+                          <div class="ml-2 font-weight-bold">
+                            {{ getUserName(clientData?.subPnlHeadId) || 'Not assigned' }}
+                          </div>
+                        </div>
+                      </div>
+          
+                      <div class="col-md-2">
+                        <div class="text-primary mb-2">Key Account Manager</div>
+                        <div class="d-flex align-items-center">
+                          <!-- <img alt="" class="rounded-circle avatar-xs" src="//dummyimage.com/50x50/e8e8e8/5a5a63" /> -->
+                       
+                          <div class="ml-2 font-weight-bold">
+                            {{ getUserName(clientData?.accountManagerId) || 'Not assigned' }}
+                          </div>
+                        </div>
+                      </div>
+          
+                      <div class="col-md-2">
+                        <div class="text-primary mb-2">Addl. Acc Mgrs</div>
+                        <div class="d-flex align-items-center">
+                          <!-- <img alt="" class="rounded-circle avatar-xs" src="//dummyimage.com/50x50/e8e8e8/5a5a63" /> -->
+                         
+                          <div class="ml-2 font-weight-bold">
+                           <span *ngFor="let media of clientData?.keyaccmanagers;" > 
+                            {{ getUserName(media)  }} ,</span>
+          
+                          </div>
+                        </div>
+                      </div>
+          
+                      <div class="col-md-2">
+                        <div class="text-primary mb-2">Sales Owner & Associates</div>
+                        <div class="d-flex align-items-center">
+                          <!-- <img alt="" class="rounded-circle avatar-xs" src="//dummyimage.com/50x50/e8e8e8/5a5a63" /> -->
+                      
+                          <div class="ml-2 font-weight-bold">
+                            {{ getUserName(clientData?.assigneeId) || 'Not assigned' }}
+                            <br/>-
+                            <span *ngFor="let media of clientData?.salesassociates;" > 
+                             {{ getUserName(media)}}, </span>
+            
+                          </div>
+                        
+                        </div>
+                      </div>
+                    
+          
+          
+                      <div *ngIf="clientData?.leadReference" class="col-of-5">
+                        <div class="text-primary mb-2">Sales Reference</div>
+                        <div class="d-flex align-items-center">
+                          <!-- <img alt="" class="rounded-circle avatar-xs" src="//dummyimage.com/50x50/e8e8e8/5a5a63" /> -->
+                       
+                          <div class="ml-2 font-weight-bold">
+                            {{ getUserName(clientData?.leadReference) || 'Not assigned' }}
+                          </div>
+                        </div>
+                      </div>
+          
+                      <!-- <div class="col-of-5">
+                        <div class="text-muted mb-2">Sales Introducer</div>
+                        <div class="d-flex align-items-center">
+                          <img alt="" class="rounded-circle avatar-xs" src="//dummyimage.com/50x50/e8e8e8/5a5a63" />
+                          <div class="ml-2 font-weight-bold">
+                            {{ getUserName(clientData?.plheadId) }}
+                          </div>
+                        </div>
+                      </div> -->
+                    </div>
+                    
+                  </div>
+                  <ul ngbNav #customNav="ngbNav" [activeId]="1"  class="nav nav-pills nav-customs nav-danger mb-1" role="tablist">
+                    <li [ngbNavItem]="1" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                          Client Profile
+                        </a>
+                        <ng-template ngbNavContent>
+                          <div class="row">
+                           
+  <form [formGroup]="clientForm" (ngSubmit)="submitData()">
+    <ngb-alert type="danger" *ngIf="error?.details?.length == 0" [dismissible]="false">
+      {{ error.message }}
+    </ngb-alert>
+
+    <div class="alert alert-danger errors-list" *ngIf="error?.details?.length > 0">
+      <strong>Errors!</strong>
+      <ul class="list-group list-group-flush">
+        <li *ngFor="let err of error.details" class="list-group-item">{{ err.path.substring(1) }} {{ err.message }}</li>
+      </ul>
+    </div>
+
+    <div class="row">
+      <div class="col-xl-8">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="mb-4">
+                  <h4 class="card-title">Company Details</h4>
+                </div>
+                <div class="form-group mb-4">
+                  <label>Company Name<span class="required-asterisk">*</span></label>
+                  <input
+                    name="companyName"
+                    formControlName="companyName"
+                    type="text"
+                    class="form-control"
+                    autocomplete="off"
+                    placeholder="Name of the Company"
+                    list="companyName"
+                  />
+
+                  <datalist id="companyName">
+                    <option *ngFor="let company of companies">{{ company.companyName }}</option>
+                  </datalist>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group mb-4">
+                      <label>Company Type<span class="required-asterisk">*</span></label>
+                      <select class="form-control" name="companyType" formControlName="companyType">
+                        <option value="" selected>Select Company Type</option>
+                        <option *ngFor="let c of companyType" [ngValue]="c.id">{{ c.type }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-4 ">
+                    <label>Country Code <span class="required-asterisk">*</span></label>
+                    <ng-select
+                      formControlName="phoneCode"
+                      [items]="countryArray"
+                      [(ngModel)]="phoneCodeCU1"
+                      bindLabel="label"
+                      bindValue="phonecode"
+                      [multiple]="false"
+                      [closeOnSelect]="true"
+                      [selectableGroup]="false"
+                      placeholder="Select"
+                      [searchFn]="aphSearchFn"
+                      [title]="phoneCodeCU1"
+                      
+                    >
+                      <ng-template ng-option-tmp let-item="item" let-search="isoCode">
+                        <div title="{{ item?.name }}({{item?.isoCode}}-{{item?.phonecode }})"> {{ item?.name }}({{item?.isoCode}}-{{item?.phonecode }})</div>
+      
+                      </ng-template>
+                    </ng-select>
+                  </div>
+
+
+                  <div class="col-md-4">
+                    <div class="form-group mb-4">
+                      <label>Contact Number<span class="required-asterisk">*</span></label>
+                      <input
+                        formControlName="contactNo"
+                        name="contactNo"
+                        type="text"
+                        class="form-control"
+                        placeholder="+91 9000090000"
+                        (keyup)="checkPhone(phoneCodeCU1,$event,'leadContactGroup_mob1');"
+               
+                        />
+                        <span id="leadContactGroup_mob1" class="alert text-danger p-0"></span>
+                
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group mb-4">
+                      <label>Email Id<span class="required-asterisk">*</span></label>
+                      <input
+                        formControlName="email"
+                        name="email"
+                        type="email"
+                        class="form-control"
+                        placeholder="abc@gmail.com"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-4">
+                      <label>Fax<span class="required-asterisk"></span></label>
+                      <input
+                        formControlName="fax"
+                        name="fax"
+                        type="text"
+                        class="form-control"
+                        placeholder="#123 456 789"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group mb-4">
+                  <label>Address<span class="required-asterisk">*</span></label>
+                  <input
+                    formControlName="addressLine1"
+                    name="addressLine1"
+                    type="text"
+                    class="form-control"
+                    placeholder="Plot no. 2"
+                  />
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group mb-4">
+                      <label>Country <span class="required-asterisk">*</span></label>
+                      <ng-select
+                        formControlName="country"
+                        [items]="countryArray"
+                        bindLabel="name"
+                        bindValue="name"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select Country"
+                        (change)="CountryId($event)"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-4">
+                      <label>State <span class="required-asterisk">*</span></label>
+                      <ng-select
+                        formControlName="state"
+                        [items]="stateArray"
+                        bindLabel="name"
+                        bindValue="name"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select State"
+                        (change)="StateId($event)"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group mb-4">
+                      <label>City <span class="required-asterisk">*</span></label>
+                      <ng-select
+                        formControlName="city"
+                        [items]="cityList"
+                        bindLabel="name"
+                        bindValue="name"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select City"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-4">
+                      <label>Pin code</label>
+                      <input
+                        formControlName="zipCode"
+                        name="zipCode"
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter Pin code"
+                      />
+                    </div>
+                  </div>
+
+                 
+
+                </div>
+
+<div class="row">
+   <div class="col-md-8">
+                    <div class="form-group mb-4">
+                      <label>Website URL<span class="required-asterisk">*</span></label>
+                      <input
+                        formControlName="url"
+                        name="url"
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter website url"
+                      />
+                    </div>
+                  </div>
+  <div class="col-4">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <br> <br> 
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="isparent"                        
+                        name="isparent"
+                             formControlName="isparent"
+                         
+                         
+                          #isparent
+                        />
+                        <label class="custom-control-label" for="isparent">Is Head Quarters(Parent) ? - {{
+                          isparent.checked ? 'Yes' : 'No'
+                        }}</label> </div>
+
+   
+          </div>
+
+
+                 </div> 
+
+                 <div class="row">
+   <div class="col-md-6">
+                    <div class="form-group mb-4">
+                      <label>Select Parent Company(If Any)<span class="required-asterisk">*</span></label>
+                     
+                
+                  <ng-select
+                    [items]="clientsList"
+                    bindLabel="companyName"
+                    bindValue="id"
+                    placeholder="Select Client"
+                    formControlName="parentid"
+                    id="parentid"
+                    name="parentid"
+                 
+                  >
+                  </ng-select>
+               
+           
+                    </div>
+                  </div>  </div>
+ <div class="row">
+  <div class="col-md-6">
+                
+                <div class="form-group  mb-4 ">
+                  <label>Client Status</label>
+                   <ng-select style="width:200px;"
+                    [items]="cstatusArray"
+                    bindLabel="status"
+                    bindValue="status"
+                     placeholder="Select status"
+                    formControlName="status"
+                    name="status"
+                    id="status"
+                 
+                  >
+                  </ng-select>
+                 
+                </div>     
+
+   
+          </div>
+
+
+                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="mb-4">
+                  <h4 class="card-title">Billing Details</h4>
+                </div>
+                <div class="form-group mb-4">
+                  <label>Is Agreement Done?</label>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="isAgreementDone"
+                          formControlName="isAgreementDone"
+                          checked
+                          #isAgreementDone
+                        />
+                        <label class="custom-control-label" for="isAgreementDone">{{
+                          isAgreementDone.checked ? 'Yes' : 'No'
+                        }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="form-group mb-4">
+                    <label>Agreement Type</label>
+                    <div class="custom-control custom-switch mb-2" dir="ltr">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="agreementType"
+                        formControlName="agreementType"
+                        checked
+                        #agreementTypecheck
+                      />
+                      <label class="custom-control-label" for="agreementType">{{
+                        agreementTypecheck.checked ? 'MSA' : 'Non MSA'
+                      }}</label>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group mb-4">
+                        <label>Service Start Date</label>
+                        <input
+                          class="form-control"
+                          type="date"
+                          formControlName="serviceStartDate"
+                          name="serviceStartDate"
+                          placeholder="mm-dd-yyyy"
+                          (change)="setEndDate($event)"
+                          min="{{ today }}"
+                          
+                        />
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group mb-4">
+                        <label>Service End Date</label>
+                        <input
+                          class="form-control"
+                          type="date"
+                          formControlName="serviceEndDate"
+                          name="serviceEndDate"
+                          id="serviceEndDate"
+                          (change)="setInvoiceDate($event)"
+                          placeholder="mm-dd-yyyy"
+                          min="{{ startDate }}"
+                          
+                        />
+                      </div>
+                    </div>
+                  </div>
+ <div class="row">
+  <div class="col-6">
+    <div class="form-group mb-4">
+      <label>Currency</label>
+      <ng-select
+        formControlName="currency"
+        [items]="currenciesList"
+        bindLabel="name"
+        bindValue="code"
+        [multiple]="false"
+        [closeOnSelect]="true"
+        [selectableGroup]="false"
+        placeholder="Select"
+      >
+        <ng-template ng-option-tmp let-item="item" let-search="name">
+          {{ item?.name }} ({{ item?.code }})
+        </ng-template>
+      </ng-select>
+    </div>
+  </div>
+                    <div class="col-6">
+   </div>
+
+                  </div>
+
+                      
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group mb-4">
+                        <label>Billing Cycle</label>
+                        <select class="form-control" name="billingCycle" formControlName="billingCycle">
+                          <option value="" selected>Select Billing Cycle</option>
+                          <option *ngFor="let b of billingCycleData" value="{{ b }}">{{ b }}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group mb-4">
+                        <label>Initial Invoice Date</label>
+                        <input
+                          class="form-control"
+                          type="date"
+                          formControlName="initialInvoiceDate"
+                          name="initialInvoiceDate"
+                          placeholder="mm-dd-yyyy"
+                          min="{{ startDate }}"
+                          max="{{ endDate }}"
+                          
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+
+                  
+                  <div *ngIf="agreementTypecheck.checked">
+                    <div class="form-group mb-4">
+                      <label>Package Type</label>
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="packageType"
+                          formControlName="packageType"
+                          checked
+                          #packageTypecheck
+                        />
+                        <label class="custom-control-label" for="packageType">{{
+                          packageTypecheck.checked ? 'Credit' : 'Wallet'
+                        }}</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-6">
+                      
+                      </div>
+                      <div class="col-6">
+                        <div *ngIf="packageTypecheck.checked" class="form-group mb-4">
+                          <label>No. of Credits</label>
+                          <input
+                            formControlName="availableCredits"
+                            name="availableCredits"
+                            type="number"
+                            class="form-control"
+                            min="0"
+                            placeholder="No. of Credits"
+                          />
+                        </div>
+                        <div *ngIf="!packageTypecheck.checked" class="form-group mb-4">
+                          <label>Amount</label>
+                          <input
+                            formControlName="amount"
+                            name="amount"
+                            type="number"
+                            min="0"
+                            class="form-control"
+                            placeholder="Amount"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="packageTypecheck.checked" class="row">
+                      <div class="col-6">
+                        <div class="form-group mb-4">
+                          <label>Cost Per Credit</label>
+                          <input
+                            formControlName="costPerCredit"
+                            name="costPerCredit"
+                            type="number"
+                            min="0"
+                            class="form-control"
+                            placeholder="Cost Per Credit"
+                            #costPerCredit
+                          />
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="form-group mb-4">
+                          <label>MSA Value</label>
+                          <input
+                            readonly
+                            formControlName="msaValue"
+                            name="msaValue"
+                            type="number"
+                            class="form-control disabled"
+                            placeholder="MSA Value"
+                            [(ngModel)]="clientForm.value.availableCredits * clientForm.value.costPerCredit"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                      <label>KRPI Access</label>
+                      <div class="custom-control custom-switch mb-2" dir="ltr">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="krpiAccess"
+                          formControlName="krpiAccess"
+                          checked
+                          #krpiAccesscheck
+                        />
+                        <label class="custom-control-label" for="krpiAccess">{{
+                          krpiAccesscheck.checked ? 'Yes' : 'No'
+                        }}</label>
+                      </div>
+                    </div>
+                    <div *ngIf="krpiAccesscheck.checked">
+                      <div class="row">
+                        <div class="col-6">
+                          <div class="form-group mb-4">
+                            <label>KRPI Event Access Number</label>
+                            <input
+                              formControlName="krpiEventAccessNumber"
+                              name="krpiEventAccessNumber"
+                              type="text"
+                              class="form-control"
+                              placeholder="KRPI Event Access Number"
+                              (keyup)="onKeypressEvent($event); checkNumber($event)"
+                            />
+                            <span *ngIf="alreadyExist != ''" class="alert text-danger">
+                              {{ alreadyExist }}
+                            </span>
+                            <span *ngIf="validNumberString != ''" class="alert text-danger">
+                              {{ validNumberString }}
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="form-group mb-4">
+                            <label>Users Per Event</label>
+                            <input
+                              formControlName="usersPerEvent"
+                              name="usersPerEvent"
+                              type="number"
+                              min="0"
+                              class="form-control"
+                              placeholder="Users Per Event"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-6">
+                          <div class="form-group mb-4">
+                            <label>On Demand Topics</label>
+                            <select class="form-control" name="onDemandTopics" formControlName="onDemandTopics">
+                              <option value="" selected disabled>Select</option>
+                              <option value="1">Yes</option>
+                              <option value="0">No</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="form-group mb-4">
+                            <label>Pre Event Counsultation</label>
+                            <select
+                              class="form-control"
+                              name="preEventCounsultation"
+                              formControlName="preEventCounsultation"
+                              required
+                            >
+                              <option value="" selected disabled>Select</option>
+                              <option value="1">Yes</option>
+                              <option value="0">No</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Base Rate</label>
+
+                      <input
+                        class="form-control"
+                        type="number"
+                        placeholder="Eg. USD 20000"
+                        formControlName="baseRate"
+                        name="baseRate"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Base Rate Type</label>
+                      <ng-select
+                        [items]="rateTypes"
+                        bindLabel="rateTypes"
+                        bindValue="rateTypes"
+                        placeholder="Select Rate Type"
+                        name="baseRateType"
+                        formControlName="baseRateType"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="mb-4">
+                  <h4 class="card-title">Incentives & Accounting</h4>
+                </div>
+
+                <div class="form-group mb-4">
+                  <label>Lead Source <span class="required-asterisk">*</span></label>
+                  <ng-select
+                    formControlName="leadSource"
+                    [items]="leadSourceArray"
+                    bindLabel="lead"
+                    bindValue="id"
+                    name="leadSource"
+                    id="leadSource"
+                    [multiple]="false"
+                    [closeOnSelect]="true"
+                    [selectableGroup]="false"
+                    placeholder="Select Lead Source"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+ <div class="col-12" style="display:none;">
+            <div class="card">
+              <div class="card-body">
+                 <div class="mb-4">
+                  <h4 class="card-title">Client Taxes</h4> 
+                </div>
+                  <label> </label>
+
+            <button type="button"  (click)="addtax(taxes)"  class="btn btn-primary pl-5 pr-5 ml-3">Add Taxes</button>
+           </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4">
+        <div class="row">
+          <div class="col-xl-12 mb-4 text-right">
+            <button type="button" (click)="cancelForm()" class="btn btn-outline-link bg-white pl-5 pr-5">Cancel</button>
+            <button type="submit" [disabled]="clientBtn" class="btn btn-primary pl-5 pr-5 ml-3">{{ btnName }}</button>
+          </div>
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Sales Profile</h4>
+                <div class="form-group mb-4">
+                  <label>Sales Owner <span class="required-asterisk">*</span></label>
+
+                  <ng-select
+                    formControlName="assigneeId"
+                    [items]="empList"
+                    bindLabel="name"
+                    bindValue="userId"
+                    [multiple]="false"
+                    [closeOnSelect]="true"
+                    [selectableGroup]="false"
+                    placeholder="Select Sales Owner"
+                    [readonly]="disableSalesOwner"
+                  >
+                  </ng-select>
+                </div>
+                <div class="form-group mb-4">
+                  <label>Sales Associates</label>
+
+                  <ng-select
+                    formControlName="salesassociates"
+                    name="salesassociates"
+                    [items]="empList"
+                    bindLabel="name"
+                    bindValue="userId"
+                    placeholder="Select sales associates"
+                    [multiple]="true"
+                    [closeOnSelect]="true"
+                    [selectableGroup]="false"
+                    [readonly]="disableSalesOwner"
+                  >
+                  </ng-select>
+                </div>
+                <div class="form-group mb-4">
+                  <label>Profit and Loss Head</label>
+
+                  <ng-select
+                    formControlName="plheadId"
+                    name="plheadId"
+                    [items]="pnlHeadList"
+                    bindLabel="name"
+                    bindValue="userId"
+                    placeholder="Select PnlHead"
+                    [multiple]="false"
+                    [closeOnSelect]="true"
+                    [selectableGroup]="false"
+                    [readonly]="disablePnL"
+                  >
+                  </ng-select>
+                </div>
+                <div class="form-group mb-4">
+                  <label> Sub Profit and Loss Head</label>
+
+                  <ng-select
+                    formControlName="subPnlHeadId"
+                    name="subPnlHeadId"
+                    [items]="subPnlHeadList"
+                    bindLabel="name"
+                    bindValue="userId"
+                    placeholder="Select Sub PnlHead"
+                    [multiple]="false"
+                    [closeOnSelect]="true"
+                    [selectableGroup]="false"
+                    [readonly]="disableSPnL"
+                  >
+                  </ng-select>
+                </div>
+
+                   <div class="form-group mb-4">
+                  <label>  Additional Sub PnL</label>
+
+                  <ng-select
+                    formControlName="additionalSubPnls"
+                    name="additionalSubPnls"
+                    [items]="subPnlHeadList"
+                    bindLabel="name"
+                    bindValue="userId"
+                    placeholder="Select Sub PnlHead"
+                    [multiple]="true"
+                    [closeOnSelect]="true"
+                    [selectableGroup]="false"
+                    [readonly]="disableSPnL"
+                  >
+                  </ng-select>
+                </div>
+                <div class="form-group mb-4">
+                  <label>Key Account Manager</label>
+
+                  <ng-select
+                    formControlName="accountManagerId"
+                    name="accountManagerId"
+                    [items]="keyAccountMgrList"
+                    bindLabel="name"
+                    bindValue="userId"
+                    [multiple]="false"
+                    [closeOnSelect]="true"
+                    [selectableGroup]="false"
+                    placeholder="Select Key Account Manager"
+                    [readonly]="disableKAM"
+                  >
+                  </ng-select>
+                </div>
+                <div class="form-group mb-4">
+                  <label> Additional Key Account Managers</label>
+
+                  <ng-select
+                    formControlName="keyaccmanagers"
+                    name="keyaccmanagers"
+                    [items]="keyAccountMgrList"
+                    bindLabel="name"
+                    bindValue="userId"
+                    [multiple]="true"
+                    [closeOnSelect]="true"
+                    [selectableGroup]="false"
+                    placeholder="Select Key Account Manager"
+                    [readonly]="disableKAM"
+                  >
+                  </ng-select>
+                </div>
+                <div  class="row">
+                  <div class="col-md-6 text-right">
+                    <a
+                      href="javascript:void(0)"
+                      (click)="createClientUser(clientUserFormModal)"
+                      class="btn btn-primary btn-block"
+                    >
+                      Create Client User
+                    </a>
+                  </div>
+                  <div class="col-md-6 text-right">
+                    <a
+                      href="javascript:void(0)"
+                      (click)="selectClientUser(selectClientUserModal)"
+                      class="btn btn-primary btn-block"
+                    >
+                      Update Client User
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+       
+        <div class="row">
+          <div class="col-md-12">
+            <div style="width: auto; overflow-x: auto" class="card">
+              <div class="card-body">
+                <div class="cart-title">
+                  <h5>Attachments</h5>
+                </div>
+                <div >
+                 
+                    <div class="mb-3">
+                      <div class="form-group mb-4">
+                      </div>
+                    <!--- <form  enctype="multipart/form-data" method="post"> ---> 
+                       
+            
+                         Document Type: <input
+                                name="filetype"
+                                value="{{filetype}}"
+                                type="text"
+                                class="form-control"
+                                autocomplete="off"
+                                placeholder="Doc Type (ex. MSA)"                   
+                              />
+                     
+                      <div class="text-left">
+                         Select File : <input #fileUploadInput class="form-control" type="file" 
+                                  (change)="onChange($event)">
+                        
+                          <button (click)="onUpload()" 
+                              class="btn btn-success">
+                              Upload
+                          </button>
+                      </div>
+                    <!--</form>-->  
+                        
+                      
+                    </div>
+            
+            
+                    <div class="mt-4 mb-4">
+                      <div class="hori-timeline">
+            
+            
+            
+            
+                        <div class="row" *ngIf="clientData?.attachments?.length > 0">
+                          <div class="col-12 mt-4">
+                            <h5>Uploaded files</h5>
+                          </div>
+                          <div class="col-sm-12" *ngFor="let media of clientData?.attachments; let i = index">
+                                           
+                                <div class="media align-items-center">
+                                  
+                                  <div class="media-body file-name w-75">
+                                    <h6 class="text-muted font-size-12 text-break">{{i+1}} . {{media.filename}} </h6>
+                                    <!-- <p class="mb-0 font-size-12">Size: --</p> -->
+                                  </div>
+                                  <div class="media-body file-name w-75">
+                                    <h6 class="text-muted font-size-12 text-break"> {{media.filetype}} </h6>
+                                    <!-- <p class="mb-0 font-size-12">Size: --</p> -->
+                                  </div>
+                                  <div style="margin-right:15px;" >
+                                   
+                                      <i (click)="removeattachment(media.filename)" class="bx bx-bin font-size-10 ">X  </i> 
+                                  
+                                  </div>
+                                  <div class="download-icon">
+                                    <a href={{url+media.filename}} download>
+                                      <i class="bx bx-download font-size-16"></i> 
+                                    </a>
+                                  </div>
+                                </div>
+                              
+                              <!-- end card-body -->
+                          
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                 
+                </div>  
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+      </div>
+    </div>
+  </form>
+
+
+<ng-template #clientUserFormModal let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">{{ modalBtn }}</h5>
+    xxxxx
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="clientUserName">Name</label>
+          <input
+            name="clientUserName"
+            [(ngModel)]="clientUserName"
+            type="text"
+            class="form-control"
+            placeholder="Eg. John Doe"
+          />
+          <input name="cid" [(ngModel)]="cid" type="hidden" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="clientUserDesignation">Designation</label>
+          <input
+            name="clientUserDesignation"
+            [(ngModel)]="clientUserDesignation"
+            type="text"
+            class="form-control"
+            placeholder="Eg. Software Developer"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 ">
+        <label>Country Code <span class="required-asterisk">*</span></label>
+        <ng-select
+          name="phoneCodeCU"
+          [(ngModel)]="phoneCodeCU"
+          [items]="countryArray"
+          bindLabel="label"
+          bindValue="phonecode"
+          [multiple]="false"
+          [closeOnSelect]="true"
+          [selectableGroup]="false"
+          placeholder="Select"
+          [searchFn]="aphSearchFn"
+          [title]="phoneCodeCU"
+
+        >
+          <ng-template ng-option-tmp let-item="item" let-search="isoCode">
+            {{ item?.isoCode }} ({{ item?.phonecode }})
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="clientUserMobile">Contact No</label>
+          <input
+            name="clientUserMobile"
+            [(ngModel)]="clientUserMobile"
+            type="number"
+            class="form-control"
+            placeholder="Eg. 8089989876"
+            (keyup)="checkPhone(phoneCodeCU,$event,'leadContactGroup_mob');"
+               
+          />
+          <span id="leadContactGroup_mob" class="alert text-danger p-0"></span>
+                
+        </div>
+      </div>
+
+      
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="clientUserEmail">Email</label>
+          <input
+            [disabled]="modalBtn == 'Update'"
+            name="clientUserEmail"
+            [(ngModel)]="clientUserEmail"
+            type="email"
+            class="form-control"
+            placeholder="Eg. johndoe@gmail.com"
+          />
+        </div>
+      </div>
+     
+
+
+    </div>
+<div class="row">
+<div class="col-md-10">
+  <div class="form-group">
+    <label ></label>
+    <label for="linkedinurl">LinkedIn Url<span class="required-asterisk">*</span></label>
+    <input
+      name="linkedinurl"    
+      [(ngModel)]="linkedinurl"
+      type="text"
+      class="form-control"
+    />
+  </div>
+</div>
+</div>    
+
+<div class="row">
+<div class="col-md-10">
+  <div class="form-group">
+    <label for="Notes">Notes</label>
+    <input
+      name="Notes"
+      [disabled]="modalBtn == 'Update'"
+      [(ngModel)]="Notes"
+      type="text"
+      class="form-control"
+    />
+  </div>
+</div>
+</div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <!-- <div class="form-group"> -->
+
+        <label for="Notes"
+          ><input name="isCompliance" [(ngModel)]="isCompliance" type="checkbox" class="largerCheckbox" /><span
+            class="ml-2"
+            >Is compliance user</span
+          >
+        </label>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+    <button type="submit" (click)="submitClientUser()" class="btn btn-success">{{ modalBtn }}</button>
+  </div>
+  <!-- </form> -->
+</ng-template>
+
+<ng-template #selectClientUserModal let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Update Client User</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="select-clientUser"></label>
+      <ng-select
+        [items]="clientData?.clientUser"
+        bindLabel="name"
+        bindValue="id"
+        [(ngModel)]="clientUser"
+        (change)="updateClientUser(clientUserFormModal, '')"
+        id="select-clientUser"
+        name="select-clientUser"
+        placeholder="Select Client User"
+      >
+      </ng-select>
+    </div>
+  </div>
+</ng-template>
+
+
+
+<ng-template #taxes let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Update Client Taxes</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="taxName">Tax Name</label>
+          <input
+            name="taxName"
+            [(ngModel)]="taxname"
+            type="text"
+            class="form-control"
+            placeholder="Tax Name"
+          />
+          <input name="cid1"  type="hidden" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="Tax Percentage">Tax Percentage</label>
+          <input
+            name="taxpercent"
+            [(ngModel)]="taxpercent"
+            type="text"
+            class="form-control"
+            placeholder="Tax Name"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+   <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+    <button type="submit" (click)="submitClienttax()" class="btn btn-success">Submit</button>
+  </div>
+</ng-template>
+                          </div>
+                          <!-- end row -->
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                          Client Users ({{ clientData?.clientUser?.length || '0' }})
+                        </a>
+                        <ng-template ngbNavContent >
+                          <div class="row" style="min-height:40vh">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div style="width: auto;height:50vh; overflow-x: scroll" class="card">
+                                  <div class="card-body">
+                                    <div class="cart-title">
+                                      <h5>Client Users ({{ clientData?.clientUser?.length || '0' }})</h5>
+                                    </div>
+                                    <table
+                                      id="basic-datatable"
+                                      class="table table-bordered cards-table dt-responsive nowrap no-footer dtr-inline"
+                                    >
+                                      <thead>
+                                        <tr>
+                                          <th style="width: 20%">
+                                            <p class="mb-0">Name</p>
+                                          </th>
+                                          <th style="width: 20%">
+                                            <p class="mb-0">Designation</p>
+                                          </th>
+                                          <th style="width: 25%">
+                                            <p class="mb-0">Email</p>
+                                          </th>
+                                          <th style="width: 25%">
+                                            <p class="mb-0">LinkedIn URL</p>
+                                          </th>
+                                          <th style="width: 25%">
+                                            <p class="mb-0">Notes</p>
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr class="m-2 row-card align-items-center" *ngFor="let item of clientData?.clientUser"    >
+                                          <td style="width: 30%" (click)="updateClientUser(clientUserFormModal1,item?.id)">
+                                            <p class="mb-0">{{ item?.name }}</p>
+                                          </td>
+                                          <td style="width: 25%" (click)="updateClientUser(clientUserFormModal1,item?.id)">
+                                            <p class="mb-0">{{ item?.designation }}</p>
+                                          </td>
+                                          <td style="width: 25%">
+                                            <p class="mb-0">{{ item?.email }}</p>
+                                          </td>
+                                          <td style="width: 25%">
+                                            <p class="mb-0">{{ item?.linkedinurl }}</p>
+                                          </td>
+                                          <td style="width: 25%">
+                                            <p class="mb-0">{{ item?.notes }}</p>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                              <!-- end col -->
+                          </div>
+                          <!-- end row -->
+                        </ng-template>
+                    </li>
+                 
+                 <li [ngbNavItem]="3" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                          Attachments
+                        </a>
+                        <ng-template ngbNavContent >
+                          <div class="row" style="min-height:40vh">
+                            <div class="col-md-10 m-5">
+                              <div class="form-group mb-4">
+                              </div>
+                            <!--- <form  enctype="multipart/form-data" method="post"> ---> 
+                               
+                    
+                                 Document Type: <input
+                                        name="filetype"
+                                        value="{{filetype}}"
+                                        type="text"
+                                        class="form-control"
+                                        autocomplete="off"
+                                        placeholder="Doc Type (ex. MSA)"                   
+                                      />
+                              
+                              <div class="text-left">
+                                 Select File : <input #fileUploadInput class="form-control" type="file" 
+                                          (change)="onChange($event)">
+                                
+                                  <button (click)="onUpload()" 
+                                      class="btn btn-success">
+                                      Upload
+                                  </button>
+                              </div>
+                            <!--</form>-->  
+                                
+                              
+                            </div>
+                    
+                            <div class="col-md-10 m-5">
+                              <h5>
+                                Attachments
+                                
+                              </h5>
+                              <table width="100%"  *ngIf="clientData?.attachments?.length>0"  class="table-responsive table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th></th>
+                                   
+                                    
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let item of clientData?.attachments; let i = index">
+                                    <td>  <a
+                                      class="btn btn-basic"
+                                      (click)="openNewTab('https://krcrm-sherpa-s3-app.s3.us-west-2.amazonaws.com/Client/' + item?.s3name)"
+                                      routerLinkActive="active"
+                                   
+                                    >  {{i+1}} . {{item.filename}}    {{ item?.mediatype }}  {{ item?.filetype }}   </a>  </td>
+                                    
+                                   
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <span *ngIf="clientData?.attachments?.length<1" > No Attachments Available</span>
+                            </div>
+                            
+                              <!-- end col -->
+                          </div>
+                          <!-- end row -->
+                        </ng-template>
+                    </li>
+
+                 <li [ngbNavItem]="4" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                          Projects
+                        </a>
+                        <ng-template ngbNavContent>
+                          <div class="row">
+                            <app-projectslist   [itemid]="empid"  [type]="'client'"  [typeid]="empid"   ></app-projectslist>
+                            
+                              <!-- end col -->
+                          </div>
+                          <!-- end row -->
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="5" class="nav-item">
+                      <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                        Compliance
+                      </a>
+                      <ng-template ngbNavContent>
+                        <div class="row">
+                          <app-client-compliance   [itemid]="empid"   ></app-client-compliance>
+                          
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                      </ng-template>
+                  </li>
+
+
+
+
+                  </ul>
+              </div>
+              <!-- end card body app-client-compliance-->
+          </div>
+      </div>
+      <!-- end card -->
+  </div>
+  <!-- end col -->
+</div>
+<div class="row">
+  <div class="col-lg-12">
+      <div class="tab-content text-dark">
+        <div class="bg-soft-project-view" style="min-height:40vh" [ngbNavOutlet]="customNav"></div>
+      </div>
+  </div>
+  <!-- end col -->
+</div>
+
+<ng-template #clientUserFormModal1 let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">{{ modalBtn }}</h5>
+    xxxxx
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="clientUserName">Name</label>
+          <input
+            name="clientUserName"
+            [(ngModel)]="clientUserName"
+            type="text"
+            class="form-control"
+            placeholder="Eg. John Doe"
+          />
+          <input name="cid" [(ngModel)]="cid" type="hidden" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="clientUserDesignation">Designation</label>
+          <input
+            name="clientUserDesignation"
+            [(ngModel)]="clientUserDesignation"
+            type="text"
+            class="form-control"
+            placeholder="Eg. Software Developer"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 ">
+        <label>Country Code <span class="required-asterisk">*</span></label>
+        <ng-select
+          name="phoneCodeCU"
+          [(ngModel)]="phoneCodeCU"
+          [items]="countryArray"
+          bindLabel="label"
+          bindValue="phonecode"
+          [multiple]="false"
+          [closeOnSelect]="true"
+          [selectableGroup]="false"
+          placeholder="Select"
+          [searchFn]="aphSearchFn"
+          [title]="phoneCodeCU"
+
+        >
+          <ng-template ng-option-tmp let-item="item" let-search="isoCode">
+            {{ item?.isoCode }} ({{ item?.phonecode }})
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="clientUserMobile">Contact No</label>
+          <input
+            name="clientUserMobile"
+            [(ngModel)]="clientUserMobile"
+            type="number"
+            class="form-control"
+            placeholder="Eg. 8089989876"
+            (keyup)="checkPhone(phoneCodeCU,$event,'leadContactGroup_mob');"
+               
+          />
+          <span id="leadContactGroup_mob" class="alert text-danger p-0"></span>
+                
+        </div>
+      </div>
+
+      
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="clientUserEmail">Email</label>
+          <input
+            [disabled]="modalBtn == 'Update'"
+            name="clientUserEmail"
+            [(ngModel)]="clientUserEmail"
+            type="email"
+            class="form-control"
+            placeholder="Eg. johndoe@gmail.com"
+          />
+        </div>
+      </div>
+     
+
+
+    </div>
+<div class="row">
+<div class="col-md-10">
+  <div class="form-group">
+    <label ></label>
+    <label for="linkedinurl">LinkedIn Url<span class="required-asterisk">*</span></label>
+    <input
+      name="linkedinurl"    
+      [(ngModel)]="linkedinurl"
+      type="text"
+      class="form-control"
+    />
+  </div>
+</div>
+</div>    
+
+<div class="row">
+<div class="col-md-10">
+  <div class="form-group">
+    <label for="Notes">Notes</label>
+    <input
+      name="Notes"
+      [disabled]="modalBtn == 'Update'"
+      [(ngModel)]="Notes"
+      type="text"
+      class="form-control"
+    />
+  </div>
+</div>
+</div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <!-- <div class="form-group"> -->
+
+        <label for="Notes"
+          ><input name="isCompliance" [(ngModel)]="isCompliance" type="checkbox" class="largerCheckbox" /><span
+            class="ml-2"
+            >Is compliance user</span
+          >
+        </label>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+    <button type="submit" (click)="submitClientUser()" class="btn btn-success">{{ modalBtn }}</button>
+  </div>
+  <!-- </form> -->
+</ng-template>

@@ -1,0 +1,270 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Experts" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+<app-loader [isLoading]="isLoading"></app-loader>
+<div class="row"> 
+  <div class="col-md-12">
+<div class="float-end">
+  <p class="text-primary"> <a href="javascript:void(0);" class="popover-test fw-medium text-decoration-underline link-success" data-bs-toggle="popover" title="If you have linkedin URL &#013; you can  add profile from linkedIn, &#013; or you can click this button &#013; to add Expert manually" data-bs-content="" data-bs-container="body" data-bs-placement="left" data-bs-original-title="">
+                                                      
+  <button type="button" (click)="editemp('0',empmodel1)"class="btn btn-primary m-1">Add</button> </a> </p>
+</div>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+      
+ <div class="card">
+       
+<hr>     
+       
+<div  style="display: none;" >
+  <form [formGroup]="leadFormGrp" id="ngForm">
+    <div class="row mt-2">
+      <div class="col-md form-group">
+        <label for="sector">Keywords <i class='bx bx-info-circle' title="Give multiple words separated by comma"></i></label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder="Keyword"
+          name="searchKeyword"
+          id="searchTerm"
+          formControlName="searchKeyword"
+        />
+        <input style="display:none;"  type="checkbox" [(ngModel)]="isAnd" [ngModelOptions]="{standalone: true}" /> 
+  
+      </div>
+      <div class="col-md form-group">
+        <label for="industryGroup">First Name</label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder="First Name "
+          name="fname"
+          formControlName="fname"
+        />
+      </div>
+      <div class="col-md form-group">
+        <label for="industryGroup">Last Name</label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder=" Last Name"
+          name="lname"
+          formControlName="lname"
+        />
+        <input type="checkbox" [(ngModel)]="isExact" [ngModelOptions]="{standalone: true}" /> Exact
+      </div>
+      <div class="col-md form-group">
+        <label for="designation">Employer</label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder="Company"
+          name="Company"
+          [(ngModel)]="Company" 
+          [ngModelOptions]="{standalone: true}"
+        />
+      </div>
+      <div class="col-md form-group">
+        <label for="designation">Designation</label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder="Designation"
+          name="designation"
+          formControlName="designation"
+        />
+      </div>
+      <!-- <div class="col-md form-group">
+        <label for="subindustry">Company Name</label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder="Company Name"
+          name="companyName"
+          formControlName="companyName"
+        />
+      </div> -->
+      <div class="col-md form-group">
+        <label for="country">Country</label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder="Country"
+          name="country"
+          formControlName="country"
+        />
+      </div>
+      <div class="col-md form-group">
+        <label for="industry">Industry </label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder="Industry"
+          name="industry"
+          formControlName="industry"
+        />
+      </div>
+      <div class="col-md form-group">
+        <label for="industry">Status </label>
+        <ng-select
+          [items]="status"
+          bindLabel="status"
+          bindValue="status"
+          placeholder="Status"
+          name="status"
+          formControlName="status"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md form-group">
+        <label for="industry">Source Type </label>
+        <ng-select
+          [items]="sourceType"
+          bindLabel="lead"
+          bindValue="lead"
+          placeholder="sourceType"
+          name="sourceType"
+          formControlName="sourceType"
+        >
+        </ng-select>
+      </div>
+  
+      <div class="col-md form-group mt-0 d-flex align-items-center justify-content-start">
+        <button class="btn btn-success" (click)="search()">Search</button>
+        <button class="btn btn-secondary ml-4" (click)="clear()">Clear</button>
+      </div>
+    </div>
+    <!-- End search -->
+  </form>
+
+</div>
+<hr>
+
+
+            
+            <div class="card-body">
+              <div class="search-box d-inline-block mb-2">
+                  <input type="text" class="form-control search" placeholder="Filter..." [(ngModel)]="service.searchTerm">
+                  <i class="ri-filter-line search-icon"></i>
+              </div>
+              <div class="row justify-content-md-between align-items-md-center border-light">
+                <div class="col-sm-12 col-md-4">
+                    <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                        Showing
+                        {{service.startIndex}} to
+                        {{service.endIndex}} of {{service.totalRecords}}
+                        entries from {{qrycount}} Results
+                    </div>
+                </div>
+                  <div class="col-sm-12 col-md-3">
+                    <div class="form-check form-switch form-switch-custom form-switch-warning">
+                      <input class="form-check-input" type="checkbox" [(ngModel)]="isnewTab" role="switch" id="SwitchCheck1" checked>
+                      <label class="form-check-label" for="SwitchCheck1">Open in new Tab</label>
+                      </div>
+
+
+                  </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-5">
+                    <div class="text-md-right float-md-end gridjs-pagination">
+                      <ngb-pagination
+                      [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                    </ngb-pagination>
+                    </div>
+                </div>
+                <!-- End Pagination -->
+              </div>
+              <div class="table-responsive table-dark table-striped table-nowrap">
+                <table class="table table-gridjs">
+                  <thead>
+                  <tr>
+                  <th class="sort" sortable="id" (sort)="onSort($event)">No</th>
+                  <th class="sort" sortable="firstName" (sort)="onSort($event)">Name</th>
+                  <th class="sort" sortable="updatedAt" (sort)="onSort($event)">Date</th>
+                  <th class="sort" sortable="status" (sort)="onSort($event)">Status</th>
+                  <th class="sort" sortable="country" (sort)="onSort($event)">Country</th>
+                  <th class="sort" sortable="industry" (sort)="onSort($event)">Industry</th>
+                  <th class="sort" sortable="designation" (sort)="onSort($event)">Designation</th>
+                  <th class="sort" sortable="currentEmployer" (sort)="onSort($event)">Employer</th>
+                  <th class="sort" sortable="krRelationshipMgr" (sort)="onSort($event)">KR RS Manager</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr style="cursor: pointer !IMPORTANT;"  *ngFor="let data of gridjsList$ | async ; let i = index " (click)="editemp(data.id,empmodel)">
+                    <td ><ngb-highlight [result]="data.id" [term]="service.searchTerm">{{i+1}}</ngb-highlight></td>
+                    <td>
+                     
+                      <ngb-highlight >{{data.firstName}},{{data.lastName}}</ngb-highlight></td>
+                    <td><ngb-highlight >{{data.updatedAt |localDateTime}}</ngb-highlight></td>
+                    <td><ngb-highlight >{{ data.terms == true ? 'Signed Up' : data.status }}</ngb-highlight></td>
+                    <td><ngb-highlight >{{data.country}}</ngb-highlight></td>
+                    <td title="{{data.industry}}"><ngb-highlight >{{data.industry | getShort}}</ngb-highlight></td>
+                   <!-- <td title="{{data.designation}}" ><ngb-highlight >{{data.designation | getShort}}</ngb-highlight></td>
+                   
+                    <td  title="{{data.currentEmployer}}"><ngb-highlight>{{data.currentEmployer}}</ngb-highlight></td>
+                   -->
+
+                    <td title="{{data.designation}}" ><ngb-highlight *ngIf="data['workingDetails'] !=null && data['workingDetails'][0]?.['jobTitle']  !=null " >{{data["workingDetails"][0].jobTitle|getShort}}</ngb-highlight></td>
+                   
+                    <td  title="{{data.currentEmployer}}"><ngb-highlight *ngIf="data['workingDetails'] !=null  && data['workingDetails'][0]?.['companyName'] !=null "  >{{data["workingDetails"][0].companyName|getShort}}</ngb-highlight></td>
+                   
+
+                    <td><ngb-highlight >{{data.krRelationshipMgr}}</ngb-highlight></td>
+                   
+                  
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row justify-content-md-between align-items-md-center">
+                
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                        Showing
+                        {{service.startIndex}} to
+                        {{service.endIndex}} of {{service.totalRecords}}
+                        entries from {{qrycount}} Results
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-5">
+                    <div class="text-md-right float-md-end gridjs-pagination">
+                      <ngb-pagination
+                      [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                    </ngb-pagination>
+                    </div>
+                </div>
+                <!-- End Pagination -->
+              </div>
+              <div  class=" container fixed-bottom" style="background-color:white;"> 
+             
+               </div>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+  
+  <ng-template #empmodel let-modal>
+    <div class="modal-content" width="98%">
+      <div class="modal-header">
+          <button type="button" class="btn-close"   style=" z-index:500;" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        
+   
+        <app-expert [itemid]="selectedid" ></app-expert>
+  
+  </div>
+</div>
+  </ng-template>
+
+
+
+  <ng-template #empmodel1 let-modal>
+    <div class="modal-content" width="98%">
+      <div class="modal-header">
+          <button type="button" class="btn-close"   style=" z-index:500;" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        
+        <app-create-expert [itemid]="selectedid" ></app-create-expert>
+  
+  </div>
+</div>
+  </ng-template>

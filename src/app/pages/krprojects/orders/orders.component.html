@@ -1,0 +1,681 @@
+<!-- Start Breadcrumbs -->
+
+<!-- End Breadcrumbs -->
+
+<div class="row">
+  <div class="col-lg-12">
+      <div class="card"  id="orderList" > 
+          <div class="card-header  border-1"  style="color:rgb(39, 47, 83);" >
+              <div class="d-flex align-items-center">
+                  <h5 class="card-title mb-0 flex-grow-1">Project History</h5>
+                  <div class="flex-shrink-0 hstack gap-2">
+                      <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
+                          data-bs-target="#showModal" (click)="openModal(content)"><i class="ri-add-line align-bottom me-1"></i> Submit
+                          Project</button>
+                      <button type="button" class="btn btn-info" (click)="csvFileExport()"><i class="ri-file-download-line align-bottom me-1"></i> </button>
+ 
+                  </div>
+              </div>
+          </div>
+          <div class="card-body border border-dashed border-end-0 border-start-0">
+         
+                  <div class="row g-3">
+                      <div class="col-xxl-5 col-sm-6">
+                          <div class="search-box">
+                              <input type="text"  name="searchTerm" class="form-control" placeholder="Search for order ID, customer, order status or something..." [(ngModel)]="service.searchTerm">
+                              <i class="ri-search-line search-icon"></i>
+                          </div>
+                      </div>
+                      <!--end col-->
+                     
+                      <!--end col-->
+                     
+                      <!--end col-->
+                     
+                      <!--end col-->
+                     
+                      <!--end col-->
+                  </div>
+                  <!--end row-->
+          
+          </div>
+         
+          <div class="card-body pt-0">
+              <div>
+                  <!-- Nav tabs -->
+                  <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav nav-tabs nav-tabs-custom nav-success mb-3">
+                    <li [ngbNavItem]="1">
+                        <a ngbNavLink>
+                          <i class="ri-store-2-fill me-1 align-bottom"></i> All Projects
+                        </a>
+                        <ng-template ngbNavContent>
+                            <div class="table-responsive table-card mb-0">
+                              <table class="table">
+                                <thead>
+                                <tr class="bg-light text-muted text-uppercase">
+                                  <th scope="col" style="width: 25px;">
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
+                                    </div>
+                                </th>
+                                <th class="sort" data-sort="id">Project ID</th>
+                                <th class="sort" data-sort="customer_name">Project Name</th>
+                                <th class="sort" data-sort="product_name">Subject</th>
+                                <th class="sort" data-sort="date">Start  Date</th>
+                                <th class="sort" data-sort="amount">Exp. Events</th>                               
+                                <th class="sort" data-sort="status">Status</th>
+                                <th class="sort" data-sort="city">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let data of orderes" id="o_{{data._id}}">
+                                    <th scope="row">
+                                      <div class="form-check">
+                                          <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
+                                      </div>
+                                    </th>
+                                    <td><a routerLink="/krprojects/overview"><ngb-highlight [result]="data.orderId" [term]="service.searchTerm"></ngb-highlight></a></td>
+                                    <td><ngb-highlight [result]="data.customer" [term]="service.searchTerm"></ngb-highlight></td>
+                                    <td><ngb-highlight [result]="data.product" [term]="service.searchTerm"></ngb-highlight></td>
+                                    <td><ngb-highlight [result]="data.orderDate | date :'longDate'" [term]="service.searchTerm"></ngb-highlight></td>
+                                    <td><ngb-highlight [result]="data.amount" [term]="service.searchTerm"></ngb-highlight></td>
+                                    <td><ngb-highlight [result]="data.payment" [term]="service.searchTerm"></ngb-highlight></td>
+                                    <td class="status"><span class="badge text-uppercase" [ngClass]=" { 'badge-soft-warning': data.status === 'Pending', 'badge-soft-danger': data.status === 'Cancelled', 'badge-soft-secondary': data.status === 'Inprogress', 'badge-soft-info': data.status === 'Pickups', 'badge-soft-primary': data.status === 'Returns', 'badge-soft-success': data.status === 'Delivered' }">{{data.status}}</span>
+                                    </td>
+                                    <td>
+                                      <ul class="list-inline hstack gap-2 mb-0">
+                                          <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="View" placement="top">
+                                              <a routerLink="/krprojects/overview" class="text-primary d-inline-block">
+                                                  <i class="ri-eye-fill fs-16"></i>
+                                              </a>
+                                          </li>
+                                          <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="Edit" placement="top">
+                                              <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal" id="create-btn"
+                                              data-bs-target="#showModal" (click)="editDataGet(data._id,content)">
+                                                  <i class="ri-pencil-fill fs-16"></i>
+                                              </a>
+                                          </li>
+                                        
+                                      </ul>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div  class="row justify-content-md-between align-items-md-center gy-2">
+                              <div class="col col-sm-6">
+                                  <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                                      Showing 
+                                      {{service.startIndex}} to
+                                      {{service.endIndex}} of {{service.totalRecords}}
+                                      entries
+                                  </div>
+                              </div>
+                              <!-- Pagination -->
+                              <div class="col col-sm-6">
+                                  <div class="text-sm-right float-end listjs-pagination">
+                                    <ngb-pagination
+                                    [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                                  </ngb-pagination>
+                                  </div>
+                              </div>
+                              <!-- End Pagination -->
+                            </div>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2">
+                        <a ngbNavLink >
+                          <i class="ri-checkbox-circle-line me-1 align-bottom"></i> Completed
+                        </a>
+                        <ng-template ngbNavContent>
+                          <div class="table-responsive table-card mb-0">
+                            <table class="table">
+                              <thead>
+                              <tr class="bg-light text-muted text-uppercase">
+                                <th scope="col" style="width: 25px;">
+                                  <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
+                                  </div>
+                              </th>
+                              <th class="sort" data-sort="id">Project ID</th>
+                              <th class="sort" data-sort="customer_name">Customer</th>
+                              <th class="sort" data-sort="product_name">Product</th>
+                              <th class="sort" data-sort="date">Project Date</th>
+                              <th class="sort" data-sort="amount">Amount</th>
+                              <th class="sort" data-sort="payment">Payment Method</th>
+                              <th class="sort" data-sort="status">Delivery Status</th>
+                              <th class="sort" data-sort="city">Action</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                                <tr  *ngFor="let data of orderes">
+                                  <ng-template [ngIf]="data.status == 'Delivered'">
+                                    <th scope="row">
+                                      <div class="form-check">
+                                          <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
+                                      </div>
+                                    </th>
+                                    <td><a routerLink="/krprojects/overview"><ngb-highlight [result]="data.orderId" [term]="service.searchTerm"></ngb-highlight></a></td>
+                                    <td><ngb-highlight [result]="data.customer" [term]="service.searchTerm"></ngb-highlight></td>
+                                    <td><ngb-highlight [result]="data.product" [term]="service.searchTerm"></ngb-highlight></td>
+                                    <td><ngb-highlight [result]="data.orderDate | date :'longDate'" [term]="service.searchTerm"></ngb-highlight></td>
+                                    <td><ngb-highlight [result]="data.amount" [term]="service.searchTerm"></ngb-highlight></td>
+                                    <td><ngb-highlight [result]="data.payment" [term]="service.searchTerm"></ngb-highlight></td>
+                                    <td class="status"><span class="badge text-uppercase" [ngClass]=" { 'badge-soft-warning': data.status === 'Pending', 'badge-soft-danger': data.status === 'Cancelled', 'badge-soft-secondary': data.status === 'Inprogress', 'badge-soft-info': data.status === 'Pickups', 'badge-soft-primary': data.status === 'Returns', 'badge-soft-success': data.status === 'Delivered' }">{{data.status}}</span>
+                                    </td>
+                                    <td>
+                                      <ul class="list-inline hstack gap-2 mb-0">
+                                          <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="View" placement="top">
+                                              <a routerLink="/krprojects/overview" class="text-primary d-inline-block">
+                                                  <i class="ri-eye-fill fs-16"></i>
+                                              </a>
+                                          </li>
+                                          <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="Edit" placement="top">
+                                              <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal" id="create-btn"
+                                              data-bs-target="#showModal" (click)="editDataGet(data._id,content)">
+                                                  <i class="ri-pencil-fill fs-16"></i>
+                                              </a>
+                                          </li>
+                                         
+                                      </ul>
+                                    </td>
+                                  </ng-template>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="row justify-content-md-between align-items-md-center gy-2">
+                            <div class="col col-sm-6">
+                                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                                    Showing 
+                                    {{service.startIndex}} to
+                                    {{service.endIndex}} of {{service.totalRecords}}
+                                    entries
+                                </div>
+                            </div>
+                            <!-- Pagination -->
+                            <div class="col col-sm-6">
+                                <div class="text-sm-right float-end listjs-pagination">
+                                  <ngb-pagination
+                                  [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                                </ngb-pagination>
+                                </div>
+                            </div>
+                            <!-- End Pagination -->
+                          </div>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="3">
+                        <a ngbNavLink >
+                          <i class="ri-truck-line me-1 align-bottom"></i> In Progress <span class="badge bg-danger align-middle ms-1">2</span>
+                        </a>
+                        <ng-template ngbNavContent>
+                            <div class="table-responsive">
+                              <table class="table ">
+                                <thead>
+                                <tr class="bg-light text-muted text-uppercase">
+                                  <th scope="col" style="width: 25px;">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
+                                    </div>
+                                </th>
+                                <th class="sort" data-sort="id">Project ID</th>
+                                <th class="sort" data-sort="customer_name">Customer</th>
+                                <th class="sort" data-sort="product_name">Product</th>
+                                <th class="sort" data-sort="date">Project Date</th>
+                                <th class="sort" data-sort="amount">Amount</th>
+                                <th class="sort" data-sort="payment">Payment Method</th>
+                                <th class="sort" data-sort="status">Delivery Status</th>
+                                <th class="sort" data-sort="city">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                  <tr  *ngFor="let data of orderes">
+                                    <ng-template [ngIf]="data.status == 'Pickups'">
+                                      <th scope="row">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
+                                        </div>
+                                      </th>
+                                      <td><a routerLink="/krprojects/overview"><ngb-highlight [result]="data.orderId" [term]="service.searchTerm"></ngb-highlight></a></td>
+                                      <td><ngb-highlight [result]="data.customer" [term]="service.searchTerm"></ngb-highlight></td>
+                                      <td><ngb-highlight [result]="data.product" [term]="service.searchTerm"></ngb-highlight></td>
+                                      <td><ngb-highlight [result]="data.orderDate | date :'longDate'" [term]="service.searchTerm"></ngb-highlight></td>
+                                      <td><ngb-highlight [result]="data.amount" [term]="service.searchTerm"></ngb-highlight></td>
+                                      <td><ngb-highlight [result]="data.payment" [term]="service.searchTerm"></ngb-highlight></td>
+                                      <td class="status"><span class="badge text-uppercase" [ngClass]=" { 'badge-soft-warning': data.status === 'Pending', 'badge-soft-danger': data.status === 'Cancelled', 'badge-soft-secondary': data.status === 'Inprogress', 'badge-soft-info': data.status === 'Pickups', 'badge-soft-primary': data.status === 'Returns', 'badge-soft-success': data.status === 'Delivered' }">{{data.status}}</span>
+                                      </td>
+                                      <td>
+                                        <ul class="list-inline hstack gap-2 mb-0">
+                                            <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="View" placement="top">
+                                                <a routerLink="/krprojects/overview" class="text-primary d-inline-block">
+                                                    <i class="ri-eye-fill fs-16"></i>
+                                                </a>
+                                            </li>
+                                            <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="Edit" placement="top">
+                                                <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal" id="create-btn"
+                                                data-bs-target="#showModal" (click)="editDataGet(data._id,content)">
+                                                    <i class="ri-pencil-fill fs-16"></i>
+                                                </a>
+                                            </li>
+                                           
+                                        </ul>
+                                      </td>
+                                    </ng-template>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="row justify-content-md-between align-items-md-center gy-2">
+                              <div class="col col-sm-6">
+                                  <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                                      Showing  
+                                      {{service.startIndex}} to
+                                      {{service.endIndex}} of {{service.totalRecords}}
+                                      entries
+                                  </div>
+                              </div>
+                              <!-- Pagination -->
+                              <div class="col col-sm-6">
+                                  <div class="text-sm-right float-end listjs-pagination">
+                                    <ngb-pagination
+                                    [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                                  </ngb-pagination>
+                                  </div>
+                              </div>
+                              <!-- End Pagination -->
+                            </div>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="4">
+                      <a ngbNavLink >
+                        <i class="ri-arrow-left-right-fill me-1 align-bottom"></i> 
+                      </a>
+                      <ng-template ngbNavContent>
+                        <div class="table-responsive table-card mb-0">
+                          <table class="table">
+                            <thead>
+                            <tr class="bg-light text-muted text-uppercase">
+                              <th scope="col" style="width: 25px;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
+                                </div>
+                            </th>
+                            <th class="sort" data-sort="id">Order ID</th>
+                            <th class="sort" data-sort="customer_name">Customer</th>
+                            <th class="sort" data-sort="product_name">Product</th>
+                            <th class="sort" data-sort="date">Order Date</th>
+                            <th class="sort" data-sort="amount">Amount</th>
+                            <th class="sort" data-sort="payment">Payment Method</th>
+                            <th class="sort" data-sort="status">Delivery Status</th>
+                            <th class="sort" data-sort="city">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                              <tr  *ngFor="let data of orderes">
+                                <ng-template [ngIf]="data.status == 'Returns'">
+                                  <th scope="row">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
+                                    </div>
+                                  </th>
+                                  <td><a routerLink="/krprojects/overview"><ngb-highlight [result]="data.orderId" [term]="service.searchTerm"></ngb-highlight></a></td>
+                                  <td><ngb-highlight [result]="data.customer" [term]="service.searchTerm"></ngb-highlight></td>
+                                  <td><ngb-highlight [result]="data.product" [term]="service.searchTerm"></ngb-highlight></td>
+                                  <td><ngb-highlight [result]="data.orderDate | date :'longDate'" [term]="service.searchTerm"></ngb-highlight></td>
+                                  <td><ngb-highlight [result]="data.amount" [term]="service.searchTerm"></ngb-highlight></td>
+                                  <td><ngb-highlight [result]="data.payment" [term]="service.searchTerm"></ngb-highlight></td>
+                                  <td class="status"><span class="badge text-uppercase" [ngClass]=" { 'badge-soft-warning': data.status === 'Pending', 'badge-soft-danger': data.status === 'Cancelled', 'badge-soft-secondary': data.status === 'Inprogress', 'badge-soft-info': data.status === 'Pickups', 'badge-soft-primary': data.status === 'Returns', 'badge-soft-success': data.status === 'Delivered' }">{{data.status}}</span>
+                                  </td>
+                                  <td>
+                                    <ul class="list-inline hstack gap-2 mb-0">
+                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="View" placement="top">
+                                            <a routerLink="/krprojects/overview" class="text-primary d-inline-block">
+                                                <i class="ri-eye-fill fs-16"></i>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="Edit" placement="top">
+                                            <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal" id="create-btn"
+                                            data-bs-target="#showModal" (click)="editDataGet(data._id,content)">
+                                                <i class="ri-pencil-fill fs-16"></i>
+                                            </a>
+                                        </li>
+                                       
+                                    </ul>
+                                  </td>
+                                </ng-template>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="row justify-content-md-between align-items-md-center gy-2">
+                          <div class="col col-sm-6">
+                              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                                  Showing
+                                  {{service.startIndex}} to
+                                  {{service.endIndex}} of {{service.totalRecords}}
+                                  entries
+                              </div>
+                          </div>
+                          <!-- Pagination -->
+                          <div class="col col-sm-6">
+                              <div class="text-sm-right float-end listjs-pagination">
+                                <ngb-pagination
+                                [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                              </ngb-pagination>
+                              </div>
+                          </div>
+                          <!-- End Pagination -->
+                        </div>
+                      </ng-template>
+                    </li>
+                    <li [ngbNavItem]="5">
+                      <a ngbNavLink >
+                        <i class="ri-close-circle-line me-1 align-bottom"></i> 
+                      </a>
+                      <ng-template ngbNavContent>
+                        <div class="table-responsive table-card mb-0">
+                          <table class="table">
+                            <thead>
+                            <tr class="bg-light text-muted text-uppercase">
+                              <th scope="col" style="width: 25px;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
+                                </div>
+                            </th>
+                            <th class="sort" data-sort="id">Order ID</th>
+                            <th class="sort" data-sort="customer_name">Customer</th>
+                            <th class="sort" data-sort="product_name">Product</th>
+                            <th class="sort" data-sort="date">Order Date</th>
+                            <th class="sort" data-sort="amount">Amount</th>
+                            <th class="sort" data-sort="payment">Payment Method</th>
+                            <th class="sort" data-sort="status">Delivery Status</th>
+                            <th class="sort" data-sort="city">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                              <tr  *ngFor="let data of orderes">
+                                <ng-template [ngIf]="data.status == 'Cancelled'">
+                                  <th scope="row">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
+                                    </div>
+                                  </th>
+                                  <td><a routerLink="/krprojects/overview"><ngb-highlight [result]="data.orderId" [term]="service.searchTerm"></ngb-highlight></a></td>
+                                  <td><ngb-highlight [result]="data.customer" [term]="service.searchTerm"></ngb-highlight></td>
+                                  <td><ngb-highlight [result]="data.product" [term]="service.searchTerm"></ngb-highlight></td>
+                                  <td><ngb-highlight [result]="data.orderDate | date :'longDate'" [term]="service.searchTerm"></ngb-highlight></td>
+                                  <td><ngb-highlight [result]="data.amount" [term]="service.searchTerm"></ngb-highlight></td>
+                                  <td><ngb-highlight [result]="data.payment" [term]="service.searchTerm"></ngb-highlight></td>
+                                  <td class="status"><span class="badge text-uppercase" [ngClass]=" { 'badge-soft-warning': data.status === 'Pending', 'badge-soft-danger': data.status === 'Cancelled', 'badge-soft-secondary': data.status === 'Inprogress', 'badge-soft-info': data.status === 'Pickups', 'badge-soft-primary': data.status === 'Returns', 'badge-soft-success': data.status === 'Delivered' }">{{data.status}}</span>
+                                  </td>
+                                  <td>
+                                    <ul class="list-inline hstack gap-2 mb-0">
+                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="View" placement="top">
+                                            <a routerLink="/krprojects/overview" class="text-primary d-inline-block">
+                                                <i class="ri-eye-fill fs-16"></i>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="Edit" placement="top">
+                                            <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal" id="create-btn"
+                                            data-bs-target="#showModal" (click)="editDataGet(data._id,content)">
+                                                <i class="ri-pencil-fill fs-16"></i>
+                                            </a>
+                                        </li>
+                                        
+                                    </ul>
+                                  </td>
+                                </ng-template>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="row justify-content-md-between align-items-md-center gy-2">
+                          <div class="col col-sm-6">
+                              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                                  Showing
+                                  {{service.startIndex}} to
+                                  {{service.endIndex}} of {{service.totalRecords}}
+                                  entries
+                              </div>
+                          </div>
+                          <!-- Pagination -->
+                          <div class="col col-sm-6">
+                              <div class="text-sm-right float-end listjs-pagination">
+                                <ngb-pagination
+                                [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                              </ngb-pagination>
+                              </div>
+                          </div>
+                          <!-- End Pagination -->
+                        </div>
+                      </ng-template>
+                    </li>
+                  </ul>
+
+                  <!-- Tab panes -->
+                  <div class="tab-content text-muted">
+                    <div [ngbNavOutlet]="nav"></div>
+                  </div>
+
+              <!-- Order Create Model -->
+              <ng-template #content role="document" let-modal>
+                <div class="modal-header bg-light p-3">
+                  <h5 class="modal-title" id="exampleModalLabel">Add Project</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+                </div>
+                <form (ngSubmit)="saveUser()" [formGroup]="ordersForm">
+                  <div class="modal-body">
+                    <input type="hidden" name="id" value="" formControlName="ids"/>
+                      <div class="mb-3">
+                          <label for="customername-field" class="form-label">Project Name</label>
+                          <input type="text" id="customername-field" class="form-control" placeholder="Enter Name" required  formControlName="customer" [ngClass]="{ 'is-invalid': submitted && form['customer'].errors }"/>
+                          <div *ngIf="submitted && form['customer'].errors" class="invalid-feedback" align="left">
+                            <div *ngIf="form['customer'].errors['required']">Project Name is required</div>
+                          </div>
+                      </div>
+
+                      <div class="mb-3">
+                          <label for="productname-field" class="form-label">KR Manager</label>
+                          <ng-select [items]="Defaultp" bindLabel="name" [multiple]="true" [disabled]="disable"
+                          [(ngModel)]="selectedPeople">
+                      </ng-select>
+                          <div *ngIf="submitted && form['product'].errors" class="invalid-feedback" align="left">
+                            <div *ngIf="form['product'].errors['required']">Name is required</div>
+                          </div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="productname-field" class="form-label">Priority</label>
+                        <ng-select [items]="DefaultStatus" bindLabel="name" [multiple]="false" [disabled]="disable"
+                        [(ngModel)]="selectedPeople" >
+                    </ng-select>
+                        <div *ngIf="submitted && form['product'].errors" class="invalid-feedback" align="left">
+                          <div *ngIf="form['product'].errors['required']">Name is required</div>
+                        </div>
+                    </div>
+                      <div class="mb-3">
+                        <div>
+                          <label>Product Description</label>
+                          <ckeditor [editor]="Editor" data="
+                            <p>McKinsey & Company has a new workstream forming part of project Digital Platform. If you have any questions regarding this workstream, please respond to this email without changing the 'subject'. You can CC your colleagues on this communication if you would like to add them to future communications.</p>
+                            
+                            ">
+                          </ckeditor>
+                      </div>
+                      </div>
+                       <div class="mb-3">
+                        <div>
+                          <label>Attachments</label>
+                          <button type="button" class="btn btn-info"><span class="d-none d-sm-inline-block me-2">Attach a document</span> <i class="mdi mdi-send float-end"></i></button>
+               
+                      </div>
+                      </div>
+
+                      <div class="row gy-4 mb-3">
+                          <div class="col-md-6">
+                              <div>
+                                  <label for="amount-field" class="form-label">Expected No of Events</label>
+                                  <div class="input-step step-primary">
+                                    <button type="button" class="minus" (click)="primarydecrement()">–</button>
+                                    <input type="number" class="product-quantity" value="{{primarycounter}}" min="0" max="100" readonly>
+                                    <button type="button" class="plus" (click)="primaryincrement()">+</button>
+                                </div>
+                                 
+                                  <div *ngIf="submitted && form['amount'].errors" class="invalid-feedback" align="left">
+                                    <div *ngIf="form['amount'].errors['required']">No  is required</div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div>
+                                  
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div>
+                            <label for="payment-field" class="form-label">  Notes
+                                </label>
+                                <input type="text" id="amount-field" class="form-control"  placeholder="Enter Notes" required formControlName="amount" [ngClass]="{ 'is-invalid': submitted && form['amount'].errors }"/>
+                     
+                        </div>
+                    </div>
+
+                      <div>
+                         
+                      </div>
+
+                      <div class="row">
+                        
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="compnayNameinput" class="form-label">Tenure</label>
+                                <input type="text" class="form-control" placeholder="Enter Tenure" id="compnayNameinput">
+                            </div>
+                        </div><!--end col-->
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="phonenumberInput" class="form-label">Geographies</label>
+                                      <ng-select appearance="outline" [searchable]="false" [clearable]="false" labelForId="heroId">
+                                    <ng-option value="batman" *ngFor="let data of Default">
+                                        <img src="{{data.flagImg}}" alt="country flag" class="options-flagimg" height="20">
+                                        {{data.countryName}}
+                                        <span class="countrylist-codeno text-muted">{{data.countryCode}}</span>
+                                    </ng-option>
+                                </ng-select>        </div>
+                        </div><!--end col-->
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="emailidInput" class="form-label">Seniority</label>
+                                <input type="email" class="form-control" placeholder="Enter Seniority" id="emailidInput">
+                            </div>
+                        </div><!--end col-->
+                        <div class="col-12">
+                          <div class="mb-6">
+                              <label for="phonenumberInput" class="form-label">Timezone</label>
+                              <ng-select [items]="Defaultt" bindLabel="name" [multiple]="true" [disabled]="disable"
+                              [(ngModel)]="selectedZones">
+                          </ng-select>    </div>
+                      </div><!--end col-->
+                      <div class="col-6">
+                          <div class="mb-3">
+                              <label for="emailidInput" class="form-label">Start Date</label>
+                              <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true"
+                              [enableTime]="true" [convertModelValue]="true" [dateFormat]="'Y-m-d H:i'">
+                                        </div>
+                         
+                      </div><!--end col-->
+                      <div class="col-6">
+                       
+                        <div class="mb-3">
+                          <label for="emailidInput" class="form-label">End Date</label>
+                          <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true"
+                          [enableTime]="true" [convertModelValue]="true" [dateFormat]="'Y-m-d H:i'">
+                       </div>
+                    </div><!--end col-->
+                        
+                    <div class="mb-3">
+                      <div>
+                        <label>Screening questions</label>
+                        <ckeditor [editor]="Editor" data="
+                        • Would your company be open to partnering with a chronic disease management program (e.g., Twinhealth, BeatO diabetes programs)?
+
+                        • What will it take for your company to sponsor such a program for your target audience?
+                        
+                        • Would your company be willing to split marketing costs in the beginning for reaching out to your customers through your telecallers, SMS/email blasts?
+                          ">
+                        </ckeditor>
+                    </div>
+                    </div>
+
+
+                    </div><!--end row-->
+
+
+                  </div>
+
+                
+
+
+
+                  <div class="modal-footer">
+                      <div class="hstack gap-2 justify-content-end">
+                          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">Close</button>
+                          <button type="submit" class="btn btn-success" id="add-btn">Submit Project</button>
+                      </div>
+                  </div>
+              </form>
+              </ng-template>
+              <!--End Modal -->
+        </div>
+      </div>
+
+  </div><!--end col-->
+</div><!--end row-->
+
+<!-- removeItemModal -->
+<ng-template #deleteModel let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                <h4>You are about to delete a order ?</h4>
+                <p class="text-muted mx-4 mb-0">Deleting your order will remove all of your information from our database.</p>
+            </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"  id="deleteRecord-close" (click)="modal.close('Close click')"><i class="ri-close-line me-1 align-middle"></i> Close</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteData(deleteId)" (click)="modal.close('Close click')">Yes, Delete It!</button>
+        </div>
+    </div>
+  </div><!-- /.modal-content -->
+</ng-template>
+
+<ng-template #prj let-modal>
+ 
+  <div class="modal-content">
+  <div class="modal-header">
+  <h5 class="modal-title" id="myModalLabel"></h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="modal.close('Close click')" aria-label="Close"> </button>
+  </div>
+  <div class="modal-body">
+  <br>
+   <app-overview> </app-overview>
+  
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="modal.close('Close click')" aria-label="Close"> </button>
+
+  </div>
+  
+  </div><!-- /.modal-content -->
+
+ 
+
+</ng-template>
+
+ <button (click)="openprj(prj)"  > open test</button>-

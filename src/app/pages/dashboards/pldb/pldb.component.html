@@ -1,0 +1,168 @@
+<div class="row">
+    <div class="card-body">
+
+        <hr>
+        <div class="col-xxl-9 order-xxl-0 order-first">
+            <div class="d-flex flex-column h-100">
+                <div class="row h-100">
+                    <div class="col-lg-4 col-md-6" *ngFor="let stat of statData">
+                        <app-crypto-stat [title]="stat.title" [value]="stat.value" [icon]="stat.icon"
+                            [persantage]="stat.persantage" [profit]="stat.profit"></app-crypto-stat>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+
+        <div class="row project-wrapper">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="card-header border-0 align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Organization Wide Stats</h4>
+                                <div class="d-flex gap-1">
+                                    <button type="button" (click)="changesr()" class="btn btn-soft-primary btn-sm">
+                                        1Y
+                                    </button>
+                                    <button type="button" class="btn btn-soft-secondary btn-sm">
+                                        1M
+                                    </button>
+                                </div>
+                            </div><!-- end card header -->
+                            <div class="row col-md-12">
+                                <div class="col-md-4">
+
+                                    <div class="align-items-center">
+                                        <label class="align-items-center">Live Projects </label>
+                                        <apx-chart [series]="OverviewChart11?.series" [chart]="OverviewChart11?.chart"
+                                            [stroke]="OverviewChart11?.stroke" [fill]="OverviewChart11?.fill"
+                                            [markers]="OverviewChart11?.markers" [xaxis]="OverviewChart11?.xaxis"
+                                            [grid]="OverviewChart11?.grid" [legend]="OverviewChart11?.legend"
+                                            [plotOptions]="OverviewChart11?.plotOptions"
+                                            [colors]="OverviewChart11?.colors" [tooltip]="OverviewChart11?.tooltip"
+                                            dir="ltr"></apx-chart>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+
+                                    <div class="">
+                                        <label>KACWiseExpEventCnt </label>
+                                        <apx-chart [series]="OverviewChart11?.series" [chart]="OverviewChart11?.chart"
+                                            [stroke]="OverviewChart11?.stroke" [fill]="OverviewChart11?.fill"
+                                            [markers]="OverviewChart11?.markers" [xaxis]="OverviewChart11?.xaxis"
+                                            [grid]="OverviewChart11?.grid" [legend]="OverviewChart11?.legend"
+                                            [plotOptions]="OverviewChart11?.plotOptions"
+                                            [colors]="OverviewChart11?.colors" [tooltip]="OverviewChart11?.tooltip"
+                                            dir="ltr"></apx-chart>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+
+                                    <div class="">
+                                        <label>getProjectGTAMGTCCount4EmpPeriod</label>
+                                        <apx-chart [series]="OverviewChartgtam?.series"
+                                            [chart]="OverviewChartgtam?.chart" [stroke]="OverviewChartgtam?.stroke"
+                                            [fill]="OverviewChartgtam?.fill" [markers]="OverviewChartgtam?.markers"
+                                            [xaxis]="OverviewChartgtam?.xaxis" [grid]="OverviewChartgtam?.grid"
+                                            [legend]="OverviewChartgtam?.legend"
+                                            [plotOptions]="OverviewChartgtam?.plotOptions"
+                                            [colors]="OverviewChartgtam?.colors" [tooltip]="OverviewChartgtam?.tooltip"
+                                            dir="ltr"></apx-chart>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <div class="">
+                                        <label>eventcount4periodByemp</label>
+                                        <apx-chart [series]="getProjectevent?.series" [chart]="getProjectevent?.chart"
+                                            [stroke]="getProjectevent?.stroke" [fill]="getProjectevent?.fill"
+                                            [markers]="getProjectevent?.markers" [xaxis]="getProjectevent?.xaxis"
+                                            [grid]="getProjectevent?.grid" [legend]="getProjectevent?.legend"
+                                            [plotOptions]="getProjectevent?.plotOptions"
+                                            [colors]="getProjectevent?.colors" [tooltip]="getProjectevent?.tooltip"
+                                            dir="ltr"></apx-chart>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="">
+                                        <label>KACWiseExpEventCnt</label>
+                                        <apx-chart [series]="KACWiseExpEventChart?.series"
+                                            [chart]="KACWiseExpEventChart?.chart"
+                                            [stroke]="KACWiseExpEventChart?.stroke" [fill]="KACWiseExpEventChart?.fill"
+                                            [markers]="KACWiseExpEventChart?.markers"
+                                            [xaxis]="KACWiseExpEventChart?.xaxis" [grid]="KACWiseExpEventChart?.grid"
+                                            [legend]="KACWiseExpEventChart?.legend"
+                                            [plotOptions]="KACWiseExpEventChart?.plotOptions"
+                                            [colors]="KACWiseExpEventChart?.colors"
+                                            [tooltip]="KACWiseExpEventChart?.tooltip" dir="ltr"></apx-chart>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="col-md-4">
+                                    <div class="">
+                                        <label>KACWiseExpEvent</label>
+                                        <apx-chart [series]="KACWiseExpEventChart?.series" [chart]="KACWiseExpEventChart?.chart"
+                                            [stroke]="KACWiseExpEventChart?.stroke" [fill]="KACWiseExpEventChart?.fill"
+                                            [markers]="KACWiseExpEventChart?.markers" [xaxis]="KACWiseExpEventChart?.xaxis"
+                                            [grid]="KACWiseExpEventChart?.grid" [legend]="KACWiseExpEventChart?.legend"
+                                            [plotOptions]="KACWiseExpEventChart?.plotOptions"
+                                            [colors]="KACWiseExpEventChart?.colors" [tooltip]="KACWiseExpEventChart?.tooltip"
+                                            dir="ltr"></apx-chart>
+                                    </div>
+                                </div> -->
+
+                            </div>
+
+
+                            <div class="card-body p-0 pb-2">
+                            </div><!-- end card body -->
+                        </div><!-- end card -->
+                    </div><!-- end col -->
+
+                </div><!-- end row -->
+            </div><!-- end col -->
+        </div>
+
+
+
+        <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-pills bg-light rounded">
+            <li [ngbNavItem]="1">
+                <a ngbNavLink></a>
+                <ng-template ngbNavContent>
+
+                    <!--For team-->
+                </ng-template>
+            </li>
+        </ul>
+        <div [ngbNavOutlet]="nav" class="mt-4"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="margin-box">
+                <div class="box" style=" margin:0px 10px 20px 0px; display: inline-block;"
+                    *ngFor="let data of member">
+                    <div class="card brdr-card">
+                        <div class="card-body">
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="col-12 image">
+                                    <div class=" avatar-lg rounded-circle img-thumbnail">
+                                        <i class=" ri-account-circle-fill"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="display: grid; justify-content: space-evenly;">
+                                <div class="col-12">
+                                    <h5>{{data}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

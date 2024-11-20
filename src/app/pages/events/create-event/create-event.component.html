@@ -1,0 +1,194 @@
+<div class="container-fluid" *ngIf="!done">
+  <app-page-title title="Create New Event"></app-page-title>
+
+  <div class="row mt-1">
+    <div class="col-6">
+      <aw-wizard [navBarLayout]="'large-empty-symbols'">
+        <aw-wizard-step stepTitle="Summary">
+          <ng-template awWizardStepSymbol>1</ng-template>
+          <div class="card">
+            <div class="card-body">
+              <div class="row mt-3">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group mb-4">
+                        <label>Event Id</label>
+                        <input name="companyName" type="text" class="form-control" placeholder="EVNT342889" />
+                      </div>
+                      <div class="form-group mb-4">
+                        <label>Event Type</label>
+                        <input name="companytype" type="text" class="form-control" placeholder="Eg. Phone Call" />
+                      </div>
+                      <div class="form-group mb-4">
+                        <label>Event Time</label>
+                        <input name="eventtime" type="text" class="form-control" placeholder="Eg. 5:00PM IST" />
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group mb-4">
+                        <label>Event Status</label>
+                        <input name="eventstatus" type="text" class="form-control" placeholder="Scheduled" />
+                      </div>
+                      <div class="form-group mb-4">
+                        <label>Event Date</label>
+                        <input name="eventdate" type="date" class="form-control" placeholder="Eg. 01-01-2021" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group mb-4">
+                        <label>Project Name</label>
+                        <input name="projectname" type="text" class="form-control" placeholder="Name of Company" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group mb-4">
+                        <label>Client Name</label>
+                        <input name="clientname" type="text" class="form-control" placeholder="Medical" />
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group mb-4">
+                        <label>Client User</label>
+                        <input name="clientuser" type="text" class="form-control" placeholder="Medical" />
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group mb-4">
+                        <label>Expert Name</label>
+                        <input name="expertname" type="text" class="form-control" placeholder="johndoe@gmail.com" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ul class="list-inline wizard text-center">
+                <li class="list-inline-item mr-4">
+                  <button class="btn btn-secondary" awPreviousStep>Cancel</button>
+                </li>
+                <li class="next list-inline-item"><button class="btn btn-primary" awNextStep>Next</button></li>
+              </ul>
+            </div>
+          </div>
+        </aw-wizard-step>
+
+        <aw-wizard-step stepTitle="Accounting Information">
+          <ng-template awWizardStepSymbol>2</ng-template>
+          <div class="card">
+            <div class="card-body">
+              <div class="row mt-3">
+                <div class="col-12">
+                  <h5 class="title font-weight-bold mb-3">EXPERT DETAILS</h5>
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group mb-4">
+                        <label>Rate Type</label>
+                        <input name="" type="text" class="form-control" placeholder="Eg. Fixed" />
+                      </div>
+                      <div class="form-group mb-4">
+                        <label>Rate</label>
+                        <input name="rate" type="text" class="form-control" placeholder="2,000" />
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group mb-4">
+                        <label>Minimum Duration</label>
+                        <input name="minduration" type="text" class="form-control" placeholder="Eg. 15 mins" />
+                      </div>
+                      <div class="form-group mb-4">
+                        <label>Currency</label>
+                        <input name="currency" type="text" class="form-control" placeholder="Eg." />
+                      </div>
+                    </div>
+                  </div>
+                  <h5 class="title font-weight-bold mb-3">CLIENT DETAILS</h5>
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group mb-4">
+                        <label>Rate Type</label>
+                        <input name="" type="text" class="form-control" placeholder="Eg. Fixed" />
+                      </div>
+                      <div class="form-group mb-4">
+                        <label>Rate</label>
+                        <input name="rate" type="text" class="form-control" placeholder="2,000" />
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group mb-4">
+                        <label>Minimum Duration</label>
+                        <input name="minduration" type="text" class="form-control" placeholder="Eg. 15 mins" />
+                      </div>
+                      <div class="form-group mb-4">
+                        <label>Currency</label>
+                        <input name="currency" type="text" class="form-control" placeholder="Eg." />
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group mb-4">
+                        <label>Multiplication Factor</label>
+                        <input name="multiplication" type="text" class="form-control" placeholder="Eg. " />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ul class="list-inline wizard text-center">
+                <li class="list-inline-item mr-4">
+                  <button class="btn btn-secondary" awPreviousStep>Back</button>
+                </li>
+                <li class="next list-inline-item"><button class="btn btn-primary" awNextStep>Next</button></li>
+              </ul>
+            </div>
+          </div>
+        </aw-wizard-step>
+
+        <aw-wizard-step stepTitle="Additional Information">
+          <ng-template awWizardStepSymbol>3</ng-template>
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group mb-4 mt-5">
+                    <label>Additional Information</label>
+                    <textarea name="" type="text" class="form-control"></textarea>
+                  </div>
+                </div>
+              </div>
+              <ul class="list-inline wizard text-center">
+                <li class="list-inline-item mr-4">
+                  <button class="btn btn-secondary" awPreviousStep>Back</button>
+                </li>
+                <li class="next list-inline-item"><button class="btn btn-success" (click)="next()">Save</button></li>
+              </ul>
+            </div>
+          </div>
+        </aw-wizard-step>
+      </aw-wizard>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid" *ngIf="done">
+  <app-page-title title="Create New Events"></app-page-title>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row justify-content-center mt-5">
+        <div class="col-6">
+          <div class="text-center">
+            <div class="mb-3">
+              <i class="mdi mdi-check-circle-outline text-success display-4"></i>
+            </div>
+            <div>
+              <h3 class="mb-4">Successfull!</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

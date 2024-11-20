@@ -1,0 +1,54 @@
+<div class="chat-container" [ngClass]="{ 'open': showChatBox }">
+  
+
+  
+  <button *ngIf="showicon" class="chat-icon" (click)="toggleChatBox()">
+    <i  style="color:rgb(8, 148, 8);" class='bx bxs-chat'></i><!-- Replace with your desired chat icon -->
+  </button>
+
+  <div class="chat-box">
+
+<div class="chat-box">
+  <div style="text-align:end;">
+<span class="clo" (click)="toggleChatBox()" style="text-align:end;font-size: 30px;"><i class='bx bx-x'></i></span>
+</div>
+
+    <div  class="messages">
+      <div *ngFor="let message of inmessage" class="message">
+       <span style="font-weight:bold ;"><i  style="color:rgb(8, 10, 8);" class='bx bxs-user'></i> {{ message.name }}&nbsp;&nbsp;&nbsp;&nbsp;{{ message.time }}</span><br>
+       <label class="badge rounded-pill bg-danger fs-12">{{message.ws}}</label><br>
+       <label class="badge rounded-pill bg-info fs-12">{{message.exp}}</label><br>
+        <p><br>{{ message.message }}</p>
+       <hr>
+      </div>
+    </div>
+    <label for="">Select Workstream</label>
+    <ng-select
+      [items]="workstreams"
+      bindLabel="name"
+      bindValue="id"
+      placeholder="Select Workstream"
+      name="status"
+     [(ngModel)]="selectedWS"
+    >
+    </ng-select>
+    <label for="">Select Experts</label>
+    <ng-select
+    [items]="gtcExperts"
+    bindLabel="name" 
+    bindValue="id"
+    placeholder="Select Expert"
+    name="status"
+    [(ngModel)]="selectedExpert"
+   
+  >
+  </ng-select>
+    <div class="input-area">      
+    
+      <input [(ngModel)]="newMessage" placeholder="Type your message..." (keyup.enter)="sendMessage()">
+      <button (click)="sendMessage()">Send</button>
+    </div>
+  </div>
+  
+</div>
+</div>

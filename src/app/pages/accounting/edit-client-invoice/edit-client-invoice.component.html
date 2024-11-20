@@ -1,0 +1,49 @@
+<div class="container-fluid">
+  <div class="row mb-md-2">
+    <div class="col-sm-12">
+      <div class="table-responsive">
+        <ng-container *ngIf="eventlistForClient?.length > 0">
+          <table
+            id="basic-datatable"
+            class="table table-bordered cards-table dt-responsive nowrap no-footer dtr-inline"
+          >
+            <thead>
+              <tr>
+                <th><input type="checkbox" (change)="checkAllCheckBox($event)" /></th>
+                <th>#</th>
+                <th>Event Date</th>
+                <th>Expert Name</th>
+                <th>Client Payable Amount</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr class="m-2 row-card" *ngFor="let event of eventlistForClient; let i = index">
+                <td>
+                  <input
+                    type="checkbox"
+                    value="{{ event?.id }}"
+                    [(ngModel)]="eventlistForClient[i].checked"
+                    (change)="createInvoiceBtn()"
+                  />
+                </td>
+                <td>{{ event?.eventId }}</td>
+                <td>{{ event?.eventAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}</td>
+                <td>{{ getExpert(event?.expertId) }}</td>
+                <td>{{ event?.clientPayableAmount }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
+        <ng-container *ngIf="eventlistForClient?.length == 0">
+          <p class="text-center mt-2 mb-0">No data available.</p>
+        </ng-container>
+      </div>
+      <div class="row mb-md-2" *ngIf="showBtn">
+        <div class="col-xl-12 mb-1 mt-3 text-right">
+          <button type="submit" class="btn btn-success" (click)="addEventintoInvoice()">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

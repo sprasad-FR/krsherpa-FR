@@ -1,0 +1,118 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Events" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+<app-loader [isLoading]="isLoading"></app-loader>
+<div class="row"> 
+  <div class="col-md-12">
+<div class="float-end">
+  </div>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+      
+        <div class="card">
+          <div    > Filter :  &nbsp; 
+            <input checked (change)="setfilterstatus($event)"  type ="radio" id="stRdoNo"  name="stRdo" text="Unallocated" value="0"    > 
+            <label    for ="stRdoNo"  class="d-inline-flex align-items-center"
+            > upcoming &nbsp;&nbsp;  </label> 
+            <input (change)="setfilterstatus($event)" type ="radio" id="stRdoyes" name="stRdo" text="Allocated" value="1"   > 
+            <label for ="stRdoyes"  class="d-inline-flex align-items-center"
+            > All &nbsp;&nbsp; </label> 
+            
+           </div>
+            <hr>
+            <div class="card-body">
+              <div class="search-box d-inline-block mb-2">
+                  <input type="text" class="form-control search" placeholder="Filter..." [(ngModel)]="service.searchTerm">
+                  <i class="ri-search-line search-icon"></i>
+              </div>
+              <div class="row justify-content-md-between align-items-md-center border-light">
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                        Showing
+                        {{service.startIndex}} to
+                        {{service.endIndex}} of {{service.totalRecords}}
+                        entries
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-5">
+                    <div class="text-md-right float-md-end gridjs-pagination">
+                      <ngb-pagination
+                      [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                    </ngb-pagination>
+                    </div>
+                </div>
+                <!-- End Pagination -->
+              </div>
+              <div class="table-responsive table-dark table-striped table-nowrap">
+                <table class="table table-gridjs">
+                  <thead>
+                  <tr>
+                  <th class="sort" sortable="id" (sort)="onSort($event)">No</th>
+                  <th class="sort" sortable="projects" (sort)="onSort($event)">Projects</th>
+                  <th class="sort" sortable="krcontact" (sort)="onSort($event)">KR Manager</th>
+                  <th class="sort" sortable="status" (sort)="onSort($event)">Status</th>
+                  <th class="sort" sortable="duration" (sort)="onSort($event)">Duration</th>
+                  <th class="sort" sortable="eventAt" (sort)="onSort($event)">Event Date</th>
+                 
+               
+
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr style="cursor:pointer;" *ngFor="let data of gridjsList$ | async ;let i=index" (click)="editemp(data.id,empmodel)">
+                    <td   (click)="editemp(data.id,empmodel)"><ngb-highlight [result]="data.id" [term]="service.searchTerm">{{i+1}}</ngb-highlight></td>
+                    <td title="{{data.projects}}"><ngb-highlight [result]="data.projects" [term]="service.searchTerm">{{data.projects|getShort}}</ngb-highlight></td>
+                    <td><ngb-highlight [result]="data.krcontact" [term]="service.searchTerm">{{data.krcontact}}</ngb-highlight></td>
+                    <td><ngb-highlight [result]="data.status" [term]="service.searchTerm">{{data.status}}</ngb-highlight></td>
+                    <td><ngb-highlight [result]="data.duration" [term]="service.searchTerm">{{data.duration}}</ngb-highlight></td>
+                    <td><ngb-highlight [result]="data.eventAt" [term]="service.searchTerm">{{data.eventAt |localDateTime}}</ngb-highlight></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row justify-content-md-between align-items-md-center">
+                
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                        Showing
+                        {{service.startIndex}} to
+                        {{service.endIndex}} of {{service.totalRecords}}
+                        entries
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-5">
+                    <div class="text-md-right float-md-end gridjs-pagination">
+                      <ngb-pagination
+                      [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                    </ngb-pagination>
+                    </div>
+                </div>
+                <!-- End Pagination -->
+              </div>
+              <div  class=" container fixed-bottom" style="background-color:white;"> 
+             
+               </div>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+  
+  <ng-template #empmodel let-modal>
+    <div class="modal-content" width="98%">
+      <div class="modal-header">
+          <button type="button" class="btn-close  " style=" z-index:500;" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+    
+        </div>
+      <div class="modal-body">
+       
+        <app-eventtab [itemid]="selectedid" ></app-eventtab>
+  
+  </div>
+</div>
+  </ng-template>

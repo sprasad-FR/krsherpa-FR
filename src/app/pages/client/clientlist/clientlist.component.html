@@ -1,0 +1,112 @@
+<!-- Start Breadcrumbs -->
+
+<!-- End Breadcrumbs -->
+<div class="row">
+  <div class="col-md-6">
+    <app-breadcrumbs title="Client" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+
+  </div>
+  <div class="col-md-6">
+<div class="float-end">
+ </div>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+      
+        <div class="card">
+           
+       
+           
+            <div class="card-body">
+              <div class="search-box d-inline-block mb-2">
+                  <input type="text" class="form-control search" placeholder="Search..." [(ngModel)]="service.searchTerm">
+                  <i class="ri-search-line search-icon"></i>
+              </div>
+              <div class="row justify-content-md-between align-items-md-center border-light">
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                        Showing
+                        {{service.startIndex}} to
+                        {{service.endIndex}} of {{service.totalRecords}}
+                        entries
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-5">
+                    <div class="text-md-right float-md-end gridjs-pagination">
+                      <ngb-pagination
+                      [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                    </ngb-pagination>
+                    </div>
+                </div>
+                <!-- End Pagination -->
+              </div>
+              <div class="table-responsive table-dark table-striped table-nowrap">
+                <table class="table table-gridjs">
+                  <thead>
+                  <tr>
+                  <th class="sort" sortable="id" (sort)="onSort($event)">ID</th>
+                  <th class="sort" sortable="companyName" (sort)="onSort($event)">companyName</th>
+                  <th class="sort" sortable="companyType" (sort)="onSort($event)">companyType</th>
+                  <th class="sort" sortable="contactNo" (sort)="onSort($event)">Contact</th>
+                  <th class="sort" sortable="email" (sort)="onSort($event)">email</th>
+                  <th class="sort" sortable="serviceStartDate" (sort)="onSort($event)">serviceStartDate</th>
+                 
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr style="cursor: pointer;" *ngFor="let data of gridjsList$ | async; let i = index" (click)="editemp(data.id,empmodel)">
+                    <td   (click)="editemp(data.id,empmodel)"><ngb-highlight [result]="data.id" [term]="service.searchTerm">{{i+1}}</ngb-highlight></td>
+                    <td><ngb-highlight [result]="data.companyName" [term]="service.searchTerm" title="{{data.companyName}}">{{data.companyName}}</ngb-highlight></td>
+                    <td><ngb-highlight [result]="data.companyType" [term]="service.searchTerm">{{getCompanyType(data.companyType)}}</ngb-highlight></td>
+                    <td><ngb-highlight [result]="data.contactNo" [term]="service.searchTerm">{{data.contactNo}}</ngb-highlight></td>
+                    <td><ngb-highlight [result]="data.email" [term]="service.searchTerm">{{data.email}}</ngb-highlight></td>
+                    <td><ngb-highlight [result]="data.serviceStartDate" [term]="service.searchTerm">{{data.serviceStartDate | localDateTime}}</ngb-highlight></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row justify-content-md-between align-items-md-center">
+                
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                        Showing
+                        {{service.startIndex}} to
+                        {{service.endIndex}} of {{service.totalRecords}}
+                        entries
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-5">
+                    <div class="text-md-right float-md-end gridjs-pagination">
+                      <ngb-pagination
+                      [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                    </ngb-pagination>
+                    </div>
+                </div>
+                <!-- End Pagination -->
+              </div>
+              <div  class=" container fixed-bottom" style="background-color:white;"> 
+             
+               </div>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+  
+  <ng-template #empmodel let-modal>
+    <div class="modal-content" width="98%">
+      <div class="modal-header">
+          <button type="button" class="btn-close  " style=" z-index:500;" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+    
+        </div>
+      <div class="modal-body">
+       
+        <app-client [empid]="selectedid" >   </app-client>
+  
+  </div>
+</div>
+  </ng-template>

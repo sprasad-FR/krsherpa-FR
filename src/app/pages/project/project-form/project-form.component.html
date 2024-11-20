@@ -1,0 +1,514 @@
+<div class="container-fluid">
+   <!-- <app-page-title title="{{ pageTitle }}"></app-page-title>
+  <app-loader [isLoading]="isLoading"></app-loader> -->
+
+  <!-- <div class="container-fluid mt-4"> -->
+    <app-loader [isLoading]="isLoading"></app-loader>
+    
+  <form [formGroup]="projectFormGrp" (ngSubmit)="submitData()" *ngIf="!isLoading">
+    <ngb-alert type="danger" *ngIf="error?.details.length == 0" [dismissible]="false">
+      {{ error.message }}
+    </ngb-alert>
+
+    <div class="alert alert-danger errors-list" *ngIf="error?.details.length > 0">
+      <strong>Errors!</strong>
+      <ul class="list-group list-group-flush">
+        <li *ngFor="let err of error.details" class="list-group-item">{{ err.path.substring(1) }} {{ err.message }}</li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col-md-10">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="name">Name <span class="required-asterisk">*</span></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="name"
+                    placeholder="Eg. Social Media and Gaming"
+                  />
+                </div>
+              </div>
+
+              
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="clientId">Client Name <span class="required-asterisk">*</span></label>
+                  <ng-select
+                    [items]="clientsList"
+                    bindLabel="companyName"
+                    bindValue="id"
+                    placeholder="Select Client"
+                    formControlName="clientId"
+                    id="clientId"
+                    name="clientId"
+                    (change)="fetchClientUsers()"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="clientUsers">Client Users</label>
+                  <ng-select
+                    [items]="clientUsers"
+                    bindLabel="name"
+                    bindValue="userId"
+                    placeholder="Select Client Users"                  
+                    [multiple]="true"
+                    formControlName="clientUsers"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+
+
+            
+
+
+
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="keyAccMgrId">Key Account Manager <span class="required-asterisk">*</span></label>
+                  <ng-select
+                    [items]="keyAccMgrList"
+                    bindLabel="name"
+                    bindValue="userId"
+                    placeholder="Select Key Account Manager"
+                    formControlName="keyAccMgrId"
+                    name="keyAccMgrId"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="keyAccMgrId">Addnl. Key Account Managers <span class="required-asterisk">*</span></label>
+                  <ng-select
+                    [items]="keyAccMgrList"
+                    bindLabel="name"
+                    bindValue="userId"
+                    placeholder="Select Key Account Managers"
+                    formControlName="additionalkeyAccMgrIds"
+                    name="additionalkeyAccMgrIds"
+                    [multiple]="true"
+                    [clearable]="false"
+                   
+                  >
+                  </ng-select>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="researchAnalysts">KR Research Analyst</label>
+                  <ng-select
+                  
+                    [items]="rAList"
+                    bindLabel="name"
+                    bindValue="userId"
+                    placeholder="Select KR Research Analyst"
+                  
+                    [multiple]="true"
+                  
+                    formControlName="researchAnalyst"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+             
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="researchManagerId">KR Research Manager <span class="required-asterisk">*</span></label>
+                  <ng-select
+                      [items]="researchMgrList"
+                    bindLabel="name"
+                    bindValue="userId"
+                    placeholder="Select KR Research Manager"
+                    formControlName="researchManagerId"
+                    [multiple]="true"
+                    [clearable]="false"
+                   
+                  >
+                  </ng-select>
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="projectType">Project Type</label>
+                  <ng-select
+                    [items]="projectTypes"
+                    bindLabel="text"
+                    bindValue="id"
+                    placeholder="Select Project"
+                    formControlName="projectType"
+                    id="projectType"
+                    name="projectType"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="status">Project Status <span class="required-asterisk">*</span></label>
+
+                  <ng-select
+                    [items]="projectStatus"
+                    bindLabel="text"
+                    bindValue="id"
+                    placeholder="Select Project Status"
+                    name="status"
+                    formControlName="status"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="engagementType">Engagement Type</label>
+                  <ng-select
+                    [items]="engagementTypes"
+                    bindLabel="text"
+                    bindValue="id"
+                    placeholder="Select Engagement Type"
+                    name="engagementType"
+                    id="engagementType"
+                    formControlName="engagementType"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="startDate">Start Date <span class="required-asterisk">*</span></label>
+                  <input
+                    class="form-control"
+                    type="date"
+                    formControlName="startDate"
+                    name="startDate"
+                    (change)="setDueDate($event)"
+                    min="{{ today }}"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="dueDate">Due Date</label>
+                  <input
+                    class="form-control"
+                    type="date"
+                    formControlName="dueDate"
+                    name="dueDate"
+                    min="{{ startDate }}"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="expectedNumEvent">Expected No. of events</label>
+                  <input
+                    type="number"
+                    min="0"
+                    id="expectedNumEvent"
+                    class="form-control"
+                    formControlName="expectedNumEvent"
+                    placeholder="Eg. 10"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="sector">Sectors <span class="required-asterisk">*</span></label>
+                  <ng-select
+                    [items]="sectors"
+                    bindLabel="text"
+                    bindValue="text"
+                    placeholder="Select Sector"
+                    name="sector"
+                    formControlName="sector"
+                    (change)="onSelectSector($event)"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="industryGroup">Industry Group<span class="required-asterisk">*</span></label>
+                <ng-select
+                  [items]="industryGroupList"
+                  bindLabel="text"
+                  bindValue="text"
+                  placeholder="Select Industry Group"
+                  name="industryGroup"
+                  formControlName="industryGroup"
+                  (change)="onIndustryGroup($event)"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="industry">Industry <span class="required-asterisk">*</span></label>
+                  <ng-select
+                    [items]="industryList"
+                    bindLabel="text"
+                    bindValue="text"
+                    [addTag]="true"
+                    placeholder="Select Industry"
+                    name="industry"
+                    formControlName="industry"
+                    (change)="onSelectIndustry($event)"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="subIndustry">Sub Industry <span class="required-asterisk">*</span></label>
+                  <ng-select
+                    [items]="subIndustryList"
+                    bindLabel="text"
+                    bindValue="text"
+                    [addTag]="true"
+                    placeholder="Select Sub Industry"
+                    name="industry"
+                    formControlName="subIndustry"
+                    (change)="onSelectSubindustry($event)"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+  <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="billingclientId">Client Billing Name <span class="required-asterisk">*</span></label>
+                  <ng-select
+                    [items]="clientsBillingList"
+                    bindLabel="companyName"
+                    bindValue="id"
+                    placeholder="Select Billing Client"
+                    formControlName="billingclientId"
+                    id="billingclientId"
+                    name="billingclientId"
+                   
+                  >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="geographyFocus">Geography focus <span class="required-asterisk"></span></label>
+                  <input
+                  type="text"
+                    id="geographyFocus"
+                    class="form-control"
+                    formControlName="geographyFocus"
+                    placeholder="Eg. USA"
+                  />
+                </div>
+              </div>
+
+ </div>
+<div class="row"     >
+  <div class="card">
+  <div class="col-md-12">
+    <div class="form-group">
+      <label for="screeningQuestions">Screening questions <span class="required-asterisk"></span></label>
+      <div class="row" *ngFor="let data of screening_questions">
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+          <strong> {{data }}</strong> 
+          <button type="button" class="btn-close"  (click)="removeq(data)" aria-label="Close"></button>
+          </div>
+      </div>
+      <div class="input-group">
+          <input type="text" class="form-control" placeholder=""  [ngModelOptions]="{standalone: true}" [(ngModel)]="newq"  />
+          <button class="btn btn-outline-primary" type="button" (click)="addq()"  id="button-addon1">Add</button>
+     
+        </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+ <div class="row"   >
+
+  <div class="col-md-12" *ngIf=" projectData?.screeningQuestions && projectData?.screeningQuestions !=null">
+    <div class="form-group">
+      <label for="screeningQuestions">Screening questions (old) <span class="required-asterisk"></span></label>
+      <ckeditor
+      [editor]="Editor"
+      name="screeningQuestions"
+      formControlName="screeningQuestions"
+      id="screeningQuestions"
+      data="<p></p>"
+    ></ckeditor>
+     
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="form-group">
+      <label for="billingclientId">DO NOT CONTACT companies <span class="required-asterisk"></span></label>
+      <input
+        type="text"
+      
+        id="doNotContactCompanies"
+        class="form-control"
+        formControlName="doNotContactCompanies"
+        placeholder=""
+      />
+    </div>
+  </div>
+
+</div>
+
+
+            <div class="row" *ngIf="summary">
+              <div class="col-md-12">
+                <label for="subIndustry">Sub Industry Summary</label>
+                <p>{{ summary }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body pb-2">
+                <div class="card">
+                  <div class="card-body">
+                    <div *ngIf="!notes || notes?.length == 0" class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="notes">Project Description</label>
+                          <ckeditor
+                            [editor]="Editor"
+                            name="notes"
+                            formControlName="firstTempNote"
+                            id="notes"
+                            data="<p></p>"
+                          ></ckeditor>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="notes?.length > 0" class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                         
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+      </div>
+            </div>
+          </div>
+        </div>
+
+
+                
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body pb-2">
+                <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav-tabs nav-tabs-custom">
+                  <li [ngbNavItem]="1">
+                    <a ngbNavLink class="no-bgc">
+                      <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                      <span class="d-none d-sm-block">Attachments</span>
+                    </a>
+                    <ng-template ngbNavContent>
+                      <ng-template [ngTemplateOutlet]="Attachments"></ng-template>
+                    </ng-template>
+                  </li>
+                </ul>
+                <div [ngbNavOutlet]="customNav"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="row">
+          <div class="col-xl-12 mb-4 text-right">
+            <button type="button" (click)="cancelForm()" class="btn btn-outline-link bg-white pl-5 pr-5">Cancel</button>
+            <button type="submit"    class="btn btn-primary pl-5 pr-5 ml-3">{{ btnName }}</button>
+          </div>
+        </div>
+           <div class="row"> 
+            <div class="row" *ngFor="let note of notes">
+              <div class="col-12 mb-3 pt-1">
+                <div class="bg-light p-2 text-muted">
+                  <p class="mt-4 bg-light p-2 text-muted" [innerHTML]="note?.content"></p>
+                </div>
+    
+                <div *ngIf="note?.createdAt" class="pt-2">
+                  {{ note?.createdAt | localDateTime: 'DD MMM YYYY | hh:mm A' }}
+                </div>
+              </div>
+            </div>
+           </div>
+      </div>
+    </div>
+
+    <ng-template #Attachments>
+      <div class="mt-4 mb-4">
+        <div class="hori-timeline">
+          <div class="row">
+            <div class="col-12">
+              <h5>Upload file</h5>
+              <!-- <angular-file-uploader
+            [config]="afuConfig"
+            >
+            </angular-file-uploader>   --> 
+
+              <ngx-dropzone (change)="onSelect($event)">
+                <ngx-dropzone-label>Click here to upload file</ngx-dropzone-label>
+                <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+                  <ngx-dropzone-label
+                    ><div class="file-label">
+                      <h6>{{ f.name }} ({{ f.type }})</h6>
+                    </div></ngx-dropzone-label
+                  >
+                </ngx-dropzone-preview>  
+              </ngx-dropzone>  
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </form>
+</div>

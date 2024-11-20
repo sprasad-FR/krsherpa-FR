@@ -1,0 +1,135 @@
+// Color Vars
+$sapling: #ffffff;
+$space: #ffffff;
+$cream: #ffffff;
+
+.auth-one-bg {
+    background: linear-gradient(to right, #03045e, #0c4a6e) !important;
+}
+
+.auth-one-bg-position {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 380px;
+}
+
+.auth-one-bg .bg-overlay {
+    background: url(../../../assets/images/cover-pattern.png);
+    opacity: 0.9;
+}
+
+.shape>svg {
+    width: 100%;
+    height: auto;
+    fill: #f1f3f8;
+}
+
+.bg-overlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    opacity: .7;
+    background-color: #000
+}
+
+.particle-container {
+    position: absolute;
+    top:0px;
+    left:0px;
+    width:100%;
+    height: 500px;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .circle {
+    border-radius: 50%;
+    position:absolute;
+    z-index: 12;
+  }
+  //use a for loop to create a unique keyframe for each element
+  //then apply randomized styles to them all
+  @for $i from 1 through 100 {
+    @-webkit-keyframes particle-animation-#{$i} {
+      0% {
+        -webkit-transform:translate3d((random(110) * 1vw), (random(100) * 1vh), (random(400) * 1px)) rotate(random(90) + deg);
+        transform:translate3d((random(110) * 1vw), (random(100) * 1vh), (random(400) * 1px)) rotate(random(90) + deg);
+      }
+      100% {
+        -webkit-transform: translate3d((random(110) * 1vw), (random(100) * 1vh), (random(400) * 1px)) rotate(random(180) + deg);
+        transform: translate3d((random(110) * 1vw), (random(100) * 1vh), (random(400) * 1px)) rotate(random(180) + deg);
+          }
+      }
+    @keyframes particle-animation-#{$i} {
+      0% {
+        -webkit-transform:translate3d((random(110) * 1vw), (random(100) * 1vh), (random(110) * 1px)) rotate(random(90) + deg);
+        transform:translate3d((random(110) * 1vw), (random(100) * 1vh), (random(400) * 1px)) rotate(random(90) + deg);
+      }
+      100% {
+        -webkit-transform: translate3d((random(110) * 1vw), (random(100) * 1vh), (random(400) * 1px)) rotate(random(180) + deg);
+        transform: translate3d((random(110) * 1vw), (random(100) * 1vh), (random(400) * 1px)) rotate(random(180) + deg);
+          }
+      }
+    
+    //fade in and out
+      @-webkit-keyframes fade-frames {
+      0% {
+        opacity: 0;
+      }
+      25% {
+        opacity: .5;
+      }
+      100% {
+        opacity: 1;
+      }
+      75% {
+        opacity: .5;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @keyframes fade-frames {
+        0% {
+          opacity: 0;
+        }
+        25% {
+          opacity: .5;
+        }
+        100% {
+          opacity: 1;
+        }
+        75% {
+          opacity: .5;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+  
+    //apply keyframes to children of .particles - the circles
+    //and make them a random size, color, and delay
+      .particles span:nth-child(#{$i}){
+      -webkit-animation: particle-animation-#{$i} 10s ease-in infinite, fade-frames 10s ease-in-out infinite;
+      animation: particle-animation-#{$i} 10s ease-in infinite, fade-frames 10s ease-in-out infinite;
+          $size: random(5) + 5 + px;
+          height: $size;
+          width: $size;
+      $color: random(255);
+      //this will make them all a random shade of greyish
+      background-color: rgb(255, 255, 255);
+      -webkit-animation-delay: -$i + s;
+      animation-delay: -$i + s;
+      // -webkit-transform: translate3d((random(90) * 1vw), (random(90) * 1vh), (random(100) * 1px));
+      // transform: translate3d((random(90) * 1vw), (random(90) * 1vh), (random(100) * 1px));
+    }
+  }
+  
+  /********* End particle Animation Styles ***********/

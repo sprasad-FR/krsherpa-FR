@@ -1,0 +1,18 @@
+<div class="card card-animate bg-primary">
+    <div class="card-body {{type}}">
+        <div class="d-flex align-items-center">
+            <div class="avatar-sm flex-shrink-0">
+                <span class="avatar-title  text-primary rounded-2 fs-2" [ngClass]=" { 'bg-soft-primary': icon === 'briefcase', 'bg-soft-warning': icon === 'award', 'bg-soft-info': icon === 'clock'}">
+                    <i-feather style="color:white" name="{{icon}}" ></i-feather>
+                </span>
+            </div>
+            <div class="flex-grow-1 overflow-hidden ms-3">
+                <p class="text-uppercase fw-medium text-muted text-truncate mb-3" style="color:white" >{{title}}</p>
+                <div class="d-flex align-items-center mb-3" style="color:white" >
+                    <h4 class="fs-4 flex-grow-1 mb-0"><span [CountTo]="value" style="color:white" [from]="0" [duration]="1"></span></h4> {{month}} this month
+                                 </div>
+                
+            </div>
+        </div>
+    </div><!-- end card body -->
+</div>

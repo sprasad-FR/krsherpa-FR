@@ -1,0 +1,60 @@
+<form class="form-horizontal" name="filterForm" [formGroup]="filterForm" novalidate>
+  <div class="row">
+    <!-- <div class="form-group mb-0 col-md-3 col-lg-3" *ngIf="isSearchable">
+      <input
+        type="text"
+        formControlName="searchTicket"
+        class="form-control pb-1"
+        id="search-ticket"
+        placeholder="Search Ticket"
+        autocomplete="off"
+      />
+    </div> -->
+    <!--
+    <div class="form-group mb-0 col-md-6 col-lg-3 d-flex align-items-center" *ngIf="sortBy != null">
+      <label class="col-md-3 m-0 pr-0" for="sort-by">Sort by</label>
+      <select formControlName="sort_by" id="sort-by" name="sortBy" class="form-control">
+        <option value="">Any</option>
+        <option *ngFor="let sort of sortBy" [value]="sort.id">
+          {{ sort.name }}
+        </option>
+      </select>
+    </div>
+
+     -->
+    <div class="form-group mb-0 d-flex align-items-center" *ngIf="salesOwnerArray != null">
+      <label class="col-md-5 mr-2 mb-0 text-right" for="salesOwner" style="white-space: nowrap">Sales owner</label>
+      <select
+        formControlName="salesOwner"
+        id="salesOwner"
+        name="salesOwner"
+        class="form-control"
+        (change)="filterChanged()"
+      >
+        <option value="">Select</option>
+        <option *ngFor="let salesOwner of salesOwnerArray" [value]="salesOwner.id">
+          {{ salesOwner.username }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group mb-0 d-flex align-items-center" *ngIf="stageStatus != null">
+      <label class="col-md-5 m-0 text-right" for="stageStatus">Stage</label>
+      <select
+        formControlName="stageStatus"
+        id="stageStatus"
+        name="stageStatus"
+        class="form-control"
+        (change)="filterChanged()"
+      >
+        <option value="">Select</option>
+        <option *ngFor="let s of stageStatus" [value]="s.id">{{ s.stage }}</option>
+      </select>
+    </div>
+
+    <!-- <div class="col-md-3 col-lg-2 ml-auto">
+      <a [routerLink]="['/sales/create-new-lead']" class="btn btn-primary btn-block">
+        Create New Lead
+      </a>
+    </div> -->
+  </div>
+</form>

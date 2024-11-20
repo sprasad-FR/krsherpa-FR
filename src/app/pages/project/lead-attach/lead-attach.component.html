@@ -1,0 +1,335 @@
+<div class="container-fluid">
+  <app-loader></app-loader>
+  <!-- Search -->
+
+
+  <div class="row mt-3"  style="display:none;">
+    <div class="col-3">
+      <div class="col-md "  style=" font-weight: bold;">
+       Total : {{ripcount+reccount+concount+3}} 
+      </div>
+    </div>
+      <div class="col-3">
+        <div class="col-md " style=" font-weight: bold;">
+          Recruited :{{reccount}} 
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="col-md "  style=" font-weight: bold;">
+          Contacted :{{concount}} 
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="col-md "  style=" font-weight: bold;">
+          Recruiting In Progress : {{ripcount}} 
+        </div>
+      </div>
+     
+  </div>
+<br>
+
+  <form [formGroup]="leadFormGrp" id="ngForm">
+    <div class="row mt-2">
+      <div class="col-md form-group">
+        <label for="sector">Keywords <i class='bx bx-info-circle' title="Give multiple words separated by comma"></i></label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder="Keyword"
+          name="searchKeyword"
+          id="searchTerm"
+          formControlName="searchKeyword"
+        />
+        <input style="display:none;"  type="checkbox" [(ngModel)]="isAnd" [ngModelOptions]="{standalone: true}" /> 
+ 
+      </div>
+      <div class="col-md form-group">
+        <label for="industryGroup">First Name</label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder="First Name "
+          name="fname"
+          formControlName="fname"
+        />
+      </div>
+      <div class="col-md form-group">
+        <label for="industryGroup">Last Name</label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder=" Last Name"
+          name="lname"
+          formControlName="lname"
+        />
+        <input type="checkbox" [(ngModel)]="isExact" [ngModelOptions]="{standalone: true}" /> Exact
+      </div>
+      <div class="col-md form-group">
+        <label for="designation">Employer</label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder="Company"
+          name="Company"
+          [(ngModel)]="Company" 
+          [ngModelOptions]="{standalone: true}"
+        />
+      </div>
+      <div class="col-md form-group">
+        <label for="designation">Designation</label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder="Designation"
+          name="designation"
+          formControlName="designation"
+        />
+      </div>
+      <!-- <div class="col-md form-group">
+        <label for="subindustry">Company Name</label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder="Company Name"
+          name="companyName"
+          formControlName="companyName"
+        />
+      </div> -->
+      <div class="col-md form-group">
+        <label for="country">Country</label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder="Country"
+          name="country"
+          formControlName="country"
+        />
+      </div>
+      <div class="col-md form-group">
+        <label for="industry">Industry </label>
+        <input
+          class="form-control form-control-sm p-3"
+          placeholder="Industry"
+          name="industry"
+          formControlName="industry"
+        />
+      </div>
+      <div class="col-md form-group">
+        <label for="industry">Status </label>
+        <ng-select
+          [items]="status"
+          bindLabel="status"
+          bindValue="status"
+          placeholder="Status"
+          name="status"
+          formControlName="status"
+        >
+        </ng-select>
+      </div>
+      <div class="col-md form-group">
+        <label for="industry">Source Type </label>
+        <ng-select
+          [items]="sourceType"
+          bindLabel="lead"
+          bindValue="lead"
+          placeholder="sourceType"
+          name="sourceType"
+          formControlName="sourceType"
+        >
+        </ng-select>
+      </div>
+
+      <div class="col-md form-group mt-4 d-flex align-items-center justify-content-start">
+        <button class="btn btn-success" (click)="search()">Search</button>
+        <button class="btn btn-secondary ml-4" (click)="clear()">Clear</button>
+      </div>
+    </div>
+    <!-- End search -->
+  </form>
+
+  <div class="row mt-2" *ngIf="roles != 'compliance'">
+    <div class="col-6"  >
+      <div  style="display:none;" class="dataTables_length" id="tickets-table_length">
+        <label class="d-inline-flex align-items-center"
+          >Show
+          <select
+            name="tickets-table_length"
+            aria-controls="tickets-table"
+            name="pageSize"
+            [(ngModel)]="service.pageSize"
+            class="form-control form-control-sm mx-2"
+          >
+            <option [ngValue]="10">10</option>
+            <option [ngValue]="25">25</option>
+            <option [ngValue]="50">50</option>
+            <option [ngValue]="100">100</option>
+          </select>
+          entries</label
+        >
+      </div>
+    </div>
+    <div class="col-6 text-right">
+      <button class="btn btn-primary" (click)="openNewTab('/expert/create-expert')">New Lead</button>
+      <button class="btn btn-primary" *ngIf="showBtn" (click)="attachExpert()">Profile Attach</button>
+    </div>
+  </div>
+
+  <div class="row justify-content-md-between align-items-md-center ">
+    <!-- Pagination -->
+  
+    <div class="col-sm-12 col-md-4"   >  </div>
+
+    <!-- End Pagination -->
+    <div class="col-sm-12 col-md-4"   >
+     
+      <div class="dataTables_info mb-2 float-md" id="tickets-table_info" role="status" aria-live="polite">
+      <!--  Showing {{ service.startIndex+skipcnt }} to {{ service.endIndex +skipcnt}} of {{ service.totalRecords +skipcnt}}
+        entries --> 
+        <div class="text-md-right pagination-rounded">
+        <ngb-pagination [collectionSize]="total$ | async" [(page)]="service.page" [pageSize]="service.pageSize">
+        </ngb-pagination> </div>
+        <div  style="text-align: center;vertical-align: middle;padding-left: 25px;"> 
+        <a>  <i  *ngIf="skipcnt>0 "  (click)="getNextSet(true)"  _ngcontent-vpe-c148="" class="bx bx-caret-left  bx-md"></i></a>
+
+        <span  style="text-align: center;vertical-align: middle;padding-bottom: 35px; " *ngIf="krExpertsList?.length>0"  >   Showing {{ service.startIndex+skipcnt }} to {{ service.endIndex +skipcnt}} of {{ qrycount}} Results </span> <span *ngIf="krExpertsList?.length<1"  > No Data</span>  
+        <a> <i *ngIf=" totalcnt >240 " (click)="getNextSet(false)"  _ngcontent-vpe-c148="" class="bx bx-caret-right bx-md"></i>  </a>
+  
+</div>
+      </div>
+ 
+    </div>
+
+    <div class="col-sm-12 col-md-4"   >  </div>
+  
+
+
+  </div>
+  
+
+  <div class="row mt-3">
+    <div class="col-12">
+      <app-loader [isLoading]="isLoading"></app-loader>
+      <!-- Table -->
+      <div class="table-responsive">
+        <table id="" class="table table-bordered cards-table dt-responsive nowrap no-footer dtr-inline">
+          <thead>
+            <tr>
+              <th><input type="checkbox" (change)="checkAllCheckBox($event)" /></th>
+              <th scope="col">Name</th>
+              <th scope="col" *ngIf="isWebSign==true"  >Date </th>
+              <th scope="col">Status</th>
+              <th scope="col">Country</th>
+              <th scope="col">Industry</th>
+              <th scope="col">Current Designation</th>
+              <th scope="col">Current Employer</th>
+              <th scope="col">KR RS Manager</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody ngClass="expertListBody">
+            <tr
+              *ngFor="let kr of tables$ | async; let i = index; trackBy: trackById"
+              class="m-2 row-card align-items-center"
+              [ngClass]="kr.alreadyAttached ? 'already-attched' : ''"
+            >
+              <td>
+                <fieldset [disabled]="kr.alreadyAttached">
+                  <input *ngIf="krExpertsList && krExpertsList?.length>0"
+                    type="checkbox"                   
+                   
+                    value="{{ kr.userId }}"
+                    [(ngModel)]="krExpertsList[i].checked"
+                    (change)="attachLead(krExpertsList[i].checked,kr.userId)"
+                  />
+
+                  <!-----
+                        [(ngModel)]="krExpertsList[(service.page*service.pageSize) +i].checked"
+                    (change)="attachLead(krExpertsList[(service.page*service.pageSize) +i].checked,kr.userId)"
+           
+                  -->
+                </fieldset>
+              </td>
+              <td title={{kr.status}} [ngClass]="{'conname':kr.status=='Contacted', 'ripname':kr.status=='Recruiting In Progress', 'recname':kr.status=='Recruited'}"  >{{ kr?.firstName }} {{ kr?.lastName }}</td>
+              <!--      [(ngModel)]="krExpertsList[(service.page*service.pageSize) +i].checked"
+             <td>{{ kr?.status }}</td>  <td>{{ kr.terms == true ? 'Signed Up' : kr.status }}</td>
+             -->
+             <td *ngIf="isWebSign==true"  > {{ kr.updatedAt| localDateTime: 'DD MMM YYYY' }}</td>
+             <td>{{ kr.terms == true ? 'Signed Up' : kr.status }}</td>
+              <td>{{ kr?.country }}</td>
+              <td>{{ TrimProjectName(kr.industry) }}</td>
+                <td  title={{kr?.designation}}  >{{ TrimProjectName(kr.designation) }}</td>
+                <td  title={{getCurrentEmployer(kr?.workingDetails)}}  > {{ TrimProjectName(getCurrentEmployer(kr?.workingDetails)) }}</td>
+                <td>{{ kr?.krRelationshipMgr }}</td>
+              <td>
+                <div class="d-flex justify-content-between align-items-center">
+                  <i class="bx bx-message-alt-add font-size-15" (click)="openDetails(kr.id)"></i>
+                  <i
+                    *ngIf="
+                      roles == 'admin' ||
+                      whoiam.id == kr.krRelationshipMgrId ||
+                      ['Contacted', 'Recruiting In Progress'].indexOf(kr.status) != -1 ||
+                      !kr.krRelationshipMgrId
+                    "
+                    class="bx bx-pencil mr-2 font-size-15"
+                    (click)="openEdit(kr.id)"
+                  ></i>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="krExpertsList?.length<0">
+        <p class="center">
+          Please use the filter to find the profile or
+          <b class="blue" (click)="openNewTab('/expert/create-expert')">Create New</b>
+        </p>
+      </div>
+      <!-- End table -->
+    
+
+
+    </div>
+  </div>
+
+  <div class="row justify-content-md-between align-items-md-center ">
+    <!-- Pagination -->
+  
+    <div class="col-sm-12 col-md-4"   >  </div>
+
+    <!-- End Pagination -->
+    <div class="col-sm-12 col-md-4"   >
+     
+      <div class="dataTables_info mb-2 float-md" id="tickets-table_info" role="status" aria-live="polite">
+      <!--  Showing {{ service.startIndex+skipcnt }} to {{ service.endIndex +skipcnt}} of {{ service.totalRecords +skipcnt}}
+        entries --> 
+        <div  style="text-align: center; padding-left: 35px;"> 
+          <a>  <i  *ngIf="skipcnt>0 "  (click)="getNextSet(true)"  _ngcontent-vpe-c148="" class="bx bx-caret-left  bx-md"></i></a>
+  
+          <span  style="text-align: center;vertical-align: middle;padding-bottom: 25px; "> Showing {{ service.startIndex+skipcnt }} to {{ service.endIndex +skipcnt}} of {{ qrycount}} Results </span>
+     <a> <i *ngIf=" totalcnt >240 " (click)="getNextSet(false)"  _ngcontent-vpe-c148="" class="bx bx-caret-right bx-md"></i>  </a>
+    
+    </div>
+
+        <div class="text-md-right pagination-rounded">
+        <ngb-pagination [collectionSize]="total$ | async" [(page)]="service.page" [pageSize]="service.pageSize">
+        </ngb-pagination> </div>
+        
+      </div>
+ 
+    </div>
+
+    <div class="col-sm-12 col-md-4"   >  </div>
+  
+
+
+  </div>
+
+
+
+
+</div>
+
+<!-- New Lead Form Modal -->
+<ng-template #newLeadFormModal role="document" let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Create Fresh Lead</h5>
+  </div>
+  <div class="modal-body">
+    <app-create-expert></app-create-expert>
+  </div>
+</ng-template>

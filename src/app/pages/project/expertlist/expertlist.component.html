@@ -1,0 +1,333 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Experts" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs  expert/create-expert  
+<app-loader [isLoading]="isLoading"></app-loader>
+
+-->
+<app-loader [isLoading]="isLoading"></app-loader>
+<div class="row"> 
+  <div class="col-md-12">
+<div class="float-end">
+
+  <a  target="_blank"  class="btn btn-primary"  style="float: right; margin-right: 50px;" [routerLink]="['/expert/create-expert']" [queryParams]="{lst: 'ex'}" routerLinkActive="active">
+    Add
+   </a>
+  </div>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+      
+        <div class="card">
+        
+        <!-- Collapse with Icon -->
+<div class="hstack gap-3 mb-3">
+ 
+  
+  </div>
+  <div class="card">
+    <div class="card-header res">
+      <div class="search-box d-inline-block mb-2" style="width: 80%;">
+        <input type="text" class="form-control search" (keyup.enter)="search()"    placeholder="type keywords and press entery key to search..." [(ngModel)]="dbsearch">
+        <i class="ri-search-line search-icon"></i>
+    </div>
+    <span   class="float-end fs-18 p-1"  (click)="toggleAS()" >
+      <i class=" ri-arrow-down-s-line"></i>
+    </span>
+        
+    </div>
+    <div class="card-body p-4 text-center"  *ngIf="showAS" >
+      <button  type="button" class="btn-close float-end fs-11" aria-label="close" (click)="toggleAS()" >
+        
+      </button>
+      <div    >
+      <form [formGroup]="leadFormGrp" id="ngForm"  >
+        <div class="row mt-2">
+          <div class="col-md form-group">
+            <label for="sector">Keywords <i class='bx bx-info-circle' title="Give multiple words separated by comma"></i></label>
+            <input
+              class="form-control form-control-sm p-3"
+              placeholder="Keyword"
+              name="searchKeyword"
+              id="searchTerm"
+              formControlName="searchKeyword"
+            />
+            <input style="display:none;"  type="checkbox" [(ngModel)]="isAnd" [ngModelOptions]="{standalone: true}" /> 
+      
+          </div>
+          <div class="col-md form-group">
+            <label for="industryGroup">First Name</label>
+            <input
+              class="form-control form-control-sm p-3"
+              placeholder="First Name "
+              name="fname"
+              formControlName="fname"
+            />
+          </div>
+          <div class="col-md form-group">
+            <label for="industryGroup">Last Name</label>
+            <input
+              class="form-control form-control-sm p-3"
+              placeholder=" Last Name"
+              name="lname"
+              formControlName="lname"
+            />
+            <input type="checkbox" [(ngModel)]="isExact" [ngModelOptions]="{standalone: true}" /> Exact
+          </div>
+          <div class="col-md form-group">
+            <label for="designation">Employer</label>
+            <input
+              class="form-control form-control-sm p-3"
+              placeholder="Company"
+              name="Company"
+              [(ngModel)]="Company" 
+              [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+          <div class="col-md form-group">
+            <label for="designation">Designation</label>
+            <input
+              class="form-control form-control-sm p-3"
+              placeholder="Designation"
+              name="designation"
+              formControlName="designation"
+            />
+          </div>
+          <!-- <div class="col-md form-group">
+            <label for="subindustry">Company Name</label>
+            <input
+              class="form-control form-control-sm p-3"
+              placeholder="Company Name"
+              name="companyName"
+              formControlName="companyName"
+            />
+          </div> -->
+          <div class="col-md form-group">
+            <label for="country">Country</label>
+            <input
+              class="form-control form-control-sm p-3"
+              placeholder="Country"
+              name="country"
+              formControlName="country"
+            />
+          </div>
+          <div class="col-md form-group">
+            <label for="industry">Industry </label>
+            <input
+              class="form-control form-control-sm p-3"
+              placeholder="Industry"
+              name="industry"
+              formControlName="industry"
+            />
+          </div>
+          <div class="col-md form-group">
+            <label for="industry">Status </label>
+            <ng-select
+              [items]="status"
+              bindLabel="status"
+              bindValue="status"
+              placeholder="Status"
+              name="status"
+              formControlName="status"
+            >
+            </ng-select>
+          </div>
+          <div class="col-md form-group">
+            <label for="industry">Source Type </label>
+            <ng-select
+              [items]="sourceType"
+              bindLabel="lead"
+              bindValue="lead"
+              placeholder="sourceType"
+              name="sourceType"
+              formControlName="sourceType"
+            >
+            </ng-select>
+          </div>
+      
+          <div class="col-md form-group mt-0 d-flex align-items-center justify-content-start">
+            <button class="btn btn-success" (click)="search()">Search</button>
+            <button class="btn btn-secondary ml-4" (click)="clear()">Clear</button>
+          </div>
+        </div>
+        <!-- End search -->
+      </form>
+     </div>
+    </div>
+
+  <hr> 
+  <div class="row res p-2" *ngIf="resindustry?.length>1 || resnames?.length >1 || rescompanies?.length>1 || rescountry?.length>1"  >
+    <div class="col-md-2 ">  
+       
+</div>
+<div class="col-md-2">         
+  <div  *ngIf=" resnames?.length>1  "   >   
+    <label >Name</label>     
+    <ng-select
+    style="background-color: rgb(24, 78, 42);"
+    [items]="resnames"
+    placeholder="Select Name"
+    name="Snames" 
+    [(ngModel)]="resnames1"
+  >
+  </ng-select>
+  </div>
+</div>
+<div class="col-md-2">         
+  <div res  *ngIf="rescompanies?.length>1  "  > 
+    <label >Company</label>   
+    <ng-select
+    style="background-color: rgb(14, 39, 122);"
+    [items]="rescompanies"
+    placeholder="Select Company"
+    name="Scompanies" 
+    [(ngModel)]="rescompanies1"
+  >
+  </ng-select>
+  </div>
+</div>
+<div class="col-md-2">         
+  <div res  *ngIf="resindustry?.length>1"  >  
+    <label >Industry</label>         
+    <ng-select
+    style="background-color: rgb(105, 16, 105);"
+    [items]="resindustry"
+    placeholder="Select Industry"
+    name="Sindustry" 
+    [(ngModel)]="resindustry1"
+  >
+  </ng-select>
+  </div>
+</div>
+<div class="col-md-2">         
+  <div res *ngIf=" rescountry?.length>1 "    >  
+    <label >Country</label>         
+    <ng-select
+    style="background-color: rgb(105, 16, 105);"
+    [items]="rescountry"
+    placeholder="Select country"
+    name="Scountry" 
+    [(ngModel)]="rescountry1"
+  >
+  </ng-select>
+  </div>
+</div>
+<div class="col-md-2 "> 
+  <label >&nbsp; </label>    <br>
+  <button class="btn btn-success" (click)="fnlsearch()">Apply</button>
+  
+</div>
+</div>
+
+  </div>
+
+<!---->
+
+
+            
+            <div class="card-body">
+              <div class="search-box d-inline-block mb-2">
+                  <input type="text" class="form-control search" placeholder="Filter..." [(ngModel)]="service.searchTerm">
+                  <i class="ri-filter-line search-icon"></i>
+              </div>
+              <div class="row justify-content-md-between align-items-md-center border-light">
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                        Showing
+                        {{service.startIndex}} to
+                        {{service.endIndex}} of {{service.totalRecords}}
+                        entries from {{qrycount}} Results
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-5">
+                    <div class="text-md-right float-md-end gridjs-pagination">
+                      <ngb-pagination
+                      [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                    </ngb-pagination>
+                    </div>
+                </div>
+                <!-- End Pagination -->
+              </div>
+              <div class="table-responsive table-dark table-striped table-nowrap">
+                <table class="table table-gridjs">
+                  <thead>
+                  <tr>
+                  <th class="sort" exsortable="id" (sort)="onSort($event)">No</th>
+                  
+                  <th class="sort" exsortable="firstName" (sort)="onSort($event)">Name</th>
+                  <th ></th>
+                  <th class="sort" exsortable="updatedAt" (sort)="onSort($event)">Date</th>
+                  <th class="sort" exsortable="status" (sort)="onSort($event)">Status</th>
+                  <th class="sort" exsortable="country" (sort)="onSort($event)">Country</th>
+                  <th class="sort" exsortable="industry" (sort)="onSort($event)">Industry</th>
+                  <th class="sort" exsortable="designation" (sort)="onSort($event)">Designation</th>
+                  <th class="sort" exsortable="currentEmployer" (sort)="onSort($event)">Employer</th>
+                  <th class="sort" exsortable="krRelationshipMgr" (sort)="onSort($event)">KR RS Manager</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let data of gridjsList$ | async ; let i = index " style="cursor: pointer;" >
+                    <td ><ngb-highlight [result]="data.id" [term]="service.searchTerm">{{i+1}}</ngb-highlight></td>
+                    <td (click)="editemp(data.id,empmodel)"  >
+                     
+                      <ngb-highlight >{{data.firstName}},{{data.lastName}}</ngb-highlight></td>
+                      <td><i class="btn btn-primary" (click)="attachExpert(data.id)"> Add</i></td>
+          
+                      <td><ngb-highlight >{{data.updatedAt |localDateTime}}</ngb-highlight></td>
+                    <td><ngb-highlight >{{( data['terms']!=null  && data['terms'] == true )? 'Signed Up' : data.status }}</ngb-highlight></td>
+                    <td><ngb-highlight >{{data.country}}</ngb-highlight></td>
+                    <td title="{{data.industry}}"><ngb-highlight >{{data.industry|getShort}}</ngb-highlight></td>
+                    <td title="{{data.designation}}" ><ngb-highlight *ngIf="data['workingDetails'] !=null && data['workingDetails'][0]?.['jobTitle']  !=null " >{{data["workingDetails"][0].jobTitle|getShort}}</ngb-highlight></td>
+                   
+                    <td  title="{{data.currentEmployer}}"><ngb-highlight *ngIf="data['workingDetails'] !=null  && data['workingDetails'][0]?.['companyName'] !=null "  >{{data["workingDetails"][0].companyName|getShort}}</ngb-highlight></td>
+                   
+                    <td><ngb-highlight >{{data.krRelationshipMgr}}</ngb-highlight></td>
+                   
+                 </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row justify-content-md-between align-items-md-center">
+                
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                        Showing
+                        {{service.startIndex}} to
+                        {{service.endIndex}} of {{service.totalRecords}}
+                        entries from {{qrycount}} Results
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-5">
+                    <div class="text-md-right float-md-end gridjs-pagination">
+                      <ngb-pagination
+                      [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                    </ngb-pagination>
+                    </div>
+                </div>
+                <!-- End Pagination -->
+              </div>
+              <div  class=" container fixed-bottom" style="background-color:white;"> 
+             
+               </div>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+  
+  <ng-template #empmodel let-modal>
+    <div class="modal-content" width="98%">
+      <div class="modal-header">
+          <button type="button" class="btn-close"   style=" z-index:500;" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        
+   
+        <app-expert [empid]="selectedid" ></app-expert>
+  
+  </div>
+</div>
+  </ng-template>

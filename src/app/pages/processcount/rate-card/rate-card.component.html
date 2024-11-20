@@ -1,0 +1,369 @@
+<div id="moduleList">
+   
+
+    <div class="row"> 
+      <div class="col-md-6 page-title-box" style="padding-left: 5px !important">
+        <h4>Rate Card List</h4>
+        </div>
+      <div class="col-md-6">
+    <div class="float-end">
+      <button class="btn btn-primary m-1 mt-3" data-bs-toggle="modal" data-bs-target="#showModal" (click)="popupopen(content,'data','add')"><i class="ri-add-line align-bottom me-1"></i>Add card</button>
+    </div>
+    </div>
+    </div>
+
+    <div class="box box--stacked p-3">
+        <div class="table-responsive">
+            <table class="table" style="text-align: center;">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Geography Name</th>
+                        <th>Expert Type</th>
+                        <th>Multiplier</th>
+                        <th>60 Minutes Rate</th>
+                        <th>45 Minutes Rate</th>
+                        <th>30 Minutes Rate</th>
+                        <th>15 Minutes Rate</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of cardlist;let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data?.geography}}</td>
+                        <td>{{data?.expertType}} Experts</td>
+                        <td>{{data?.multiplierValue}}</td>
+                        <td>$ {{ data['60minutesrate'] }}</td>
+                        <td>$ {{ data['45minutesrate'] }}</td>
+                        <td>$ {{ data['30minutesrate'] }}</td>
+                        <td>$ {{ data['15minutesrate'] }}</td>
+                        <td>
+                            <button class="btn btn-soft-info" title="Edit Item" (click)="popupopen(content,data,'edit')" ><i class="ri-pencil-fill"></i></button>
+                        </td>
+                      </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header p-3 bg-soft-info">
+        <h5 class="modal-title">Create Card</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 mb-2">
+                <label for="Geography">Geography</label>
+                <input type="text" id="Geography" [ngModelOptions]="{ standalone: true }" [(ngModel)]="geography">
+            </div>
+            <div class="col-md-6 mb-2">
+                <label for="">Expert Type</label>
+                <ng-select [ngModelOptions]="{ standalone: true }" [(ngModel)]="expertType">
+                    <ng-option value="standard">Standard</ng-option>
+                    <ng-option value="premium">Premium</ng-option>
+                </ng-select>
+            </div>
+            <div class="col-md-6 mb-2">
+                <label for="Multiplier">Multiplier</label>
+                <input type="number" id="Multiplier" [ngModelOptions]="{ standalone: true }" [(ngModel)]="Multiplier">
+            </div>
+            <div class="col-md-6 mb-2">
+                <label for="60minutesrate">60 Minutes Rate</label>
+                <input type="number" id="60minutesrate" [ngModelOptions]="{ standalone: true }" [(ngModel)]="MinutesRate['60']">
+            </div>
+            <div class="col-md-6 mb-2">
+                <label for="45minutesrate">45 Minutes Rate</label>
+                <input type="number" id="45minutesrate" [ngModelOptions]="{ standalone: true }" [(ngModel)]="MinutesRate['45']">
+            </div>
+            <div class="col-md-6 mb-2">
+                <label for="30minutesrate">30 Minutes Rate</label>
+                <input type="number" id="30minutesrate" [ngModelOptions]="{ standalone: true }" [(ngModel)]="MinutesRate['30']">
+            </div>
+            <div class="col-md-6 mb-2">
+                <label for="15minutesrate">15 Minutes Rate</label>
+                <input type="number" id="15minutesrate" [ngModelOptions]="{ standalone: true }" [(ngModel)]="MinutesRate['15']">
+            </div>
+        </div>
+        <div class="btngroup">
+            <button class="btn btn-success" id="clickBtn" >Add</button>
+            <button class="btn btn-danger"(click)="modal.dismiss('Cross click')">Cancel</button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #popup let-modal>
+  <div class="modal-holder">
+    <div class="popuphead">
+      <h4>Expert Details</h4>
+      <button _ngcontent-vkd-c403="" type="button" aria-hidden="true" class="close" (click)="modal.dismiss('Cross click')">×</button>
+    </div>
+    <form *ngIf="!isLoading">
+      <div class="row">
+        <div class="col-12">
+          <div class="card bg-color">
+            <div class="card-body">
+              <div class="row margin">
+                <div class="col-6">
+                  <div class="form-group" style="display:none;">
+                    <label for="action">Network Expert Id</label>
+                    <input type="text" class="form-control" value="{{selectedgtam?.id}}"
+                      />
+                  </div>
+                </div>
+                <div class="col-6" style="display:none;">
+                  <div class="form-group">
+                    <label for="action">Network Project Id</label>
+                    <input type="text" class="form-control" value="{{selectedgtam?.userId}}"
+                     />
+                  </div>
+                </div>
+              </div>
+              <div class="row margin">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="action">First Name</label>
+                    <input type="text" class="form-control"
+                      placeholder="First Name"  value="{{selectedgtam?.firstName}}"/>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="action">Last Name</label>
+                    <input type="text" class="form-control" value="{{selectedgtam?.lastName}}" />
+                  </div>
+                </div>
+              </div>
+              <div class="row margin">
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="action">phone</label>
+                    <input type="number" class="form-control" value="{{selectedgtam?.contactNo}}"/>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="action">Email</label>
+                    <input type="email" class="form-control"value="{{selectedgtam?.primaryEmail}}"/>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="action">Network Workstream Id</label>
+                    <input type="text" class="form-control"
+                    value="{{selectedgtam?.userId}}"/>
+                  </div>
+                </div>
+              </div>
+              <div class="row margin">                
+                <div class="col-3">
+                  <div class="form-group">
+                    <label for="action">Currency</label>
+                    <input type="text" class="form-control"  value="{{selectedgtam?.CPcurrency}}"/>
+                  </div>
+                </div> 
+                <div class="col-3">
+                  <div class="form-group">
+                    <label for="action">Rate Card</label>
+                    <ng-select [items]="uniqueGeographies" bindLabel="geography" (change)="SelectCard($event,'card')"></ng-select>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label for="action">Rate Multiplier</label>
+                    <ng-select [items]="MultipliervalueArray" bindLabel="multiplierValue" (change)="SelectCard($event,'multiplier')"></ng-select>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label for="action">Hourly Rate</label>
+                    <input type="text" class="form-control" value="{{rate}}"/>
+                  </div>
+                </div> 
+                <div class="col-md-12" style="border: 1px solid #007eff;padding: 8px;border-radius: 6px;margin-top: 8px;">
+                  <div class="row">                           
+                    <div class="col-2 d-flex">
+                      <div class="form-group" style="display: flex;gap: 10px;">
+                        <input type="checkbox"  style="width:15px;" id="custom_recruit" value="{{selectedgtam?.custom_recruit}}"/>
+                        <label for="custom_recruit" style="margin: 0;display: flex; align-items: center;">Custom Recruit</label>
+                      </div>
+                    </div>
+                    <div class="col-2 d-flex">
+                      <div class="form-group" style="display: flex;gap: 10px;">
+                        <input type="checkbox"  style="width: 18px;" id="current_us_government_employee" value="{{selectedgtam?.current_us_government_employee}}"/>
+                        <label for="current_us_government_employee" style="margin: 0;display: flex; align-items: center;">Current US Government Employee</label>
+                      </div>
+                    </div>
+                    <div class="col-2 d-flex">
+                      <div class="form-group" style="display: flex;gap: 10px;">
+                        <input type="checkbox"  style="width: 18px;" id="frontline_us_government_employee" value="{{selectedgtam?.frontline_us_government_employee}}"/>
+                        <label for="frontline_us_government_employee" style="margin: 0;display: flex; align-items: center;">Frontline US Government Employee</label>
+                      </div>
+                    </div>
+                    <div class="col-2 d-flex">
+                      <div class="form-group" style="display: flex;gap: 10px;">
+                        <input type="checkbox"  style="width:15px;" id="nonus_government_employee" value="{{selectedgtam?.nonus_government_employee}}" [ngModelOptions]="{ standalone: true }" [(ngModel)]="nonus_government_employee" />
+                        <label for="nonus_government_employee" style="margin: 0;display: flex; align-items: center;">Nonus Government Employee</label>
+                      </div>
+                    </div> 
+                    <div class="col-4" *ngIf="nonus_government_employee">
+                      <div class="form-group">
+                        <label for="action">Nonus Government Employee Geography</label>
+                        <ng-select [items]="country" bindLabel="data" value="{{selectedgtam?.nonus_government_employee}}"></ng-select>
+                      </div>
+                    </div> 
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row ">
+                <div class="col-12 margin">
+                  <div class="live-preview flush_accordion">
+                    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                      <ngb-panel id="static-1">
+                        <ng-template ngbPanelTitle class="accordion-header">
+                          <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#gen-ques-collapseOne" aria-expanded="false"
+                            aria-controls="gen-ques-collapseOne">Biography
+                          </button>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                         
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row ">
+                <div class="col-12 margin">
+                  <div class="live-preview flush_accordion">
+                    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                      <ngb-panel id="static-1">
+                        <ng-template ngbPanelTitle class="accordion-header">
+                          <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#gen-ques-collapseOne" aria-expanded="false"
+                            aria-controls="gen-ques-collapseOne">Employments
+                          </button>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <div class="row Employment-table ">
+                            <div class="col-12">
+                              <table class="table">
+                                <tr class="table-head">
+                                  <td>company</td>
+                                  <td>position</td>
+                                  <td>responsibilities</td>
+                                  <td>start month</td>
+                                  <td>start year</td>
+                                  <td>end month</td>
+                                  <td>end year</td>
+                                </tr>
+                                <tr >
+                                  <td>
+                                    <input type="text" class="form-control" name="companyName1"
+                                              placeholder="companyName"  value="{{workingDetails1?.companyName}}"/>
+                                  </td>
+                                  <td>
+                                    <input type="text" class="form-control" name="companyType1"
+                                              placeholder="companyType"  value="{{workingDetails1?.companyType}}"/>
+                                  </td>
+                                  <td>
+                                    <input type="text" class="form-control" name="jobTitle1"
+                                              placeholder="jobTitle"  value="{{workingDetails1?.jobTitle}}"/>
+                                  </td>
+                                  <td>
+                                    <input type="text" class="form-control" name="startMonth1"
+                                              placeholder="startMonth"  value="{{workingDetails1?.startMonth}}"/>
+                                  </td>
+                                  <td>
+                                    <input type="text" class="form-control" name="startYear1"
+                                              placeholder="startYear"  value="{{workingDetails1?.startYear}}"/>
+                                  </td>
+                                  <td>
+                                    <input type="text" class="form-control" name="endMonth1"
+                                              placeholder="endMonth"  value="{{workingDetails1?.endMonth}}"/>
+                                  </td>
+                                  <td>
+                                    <input type="text" class="form-control" name="endYear1"
+                                              placeholder="endYear"  value="{{workingDetails1?.endYear}}"/>
+                                  </td>
+                                </tr>
+                                <tr >
+                                  <td>
+                                    <input type="text" class="form-control" name="companyName2"
+                                              placeholder="companyName"  value="{{workingDetails2?.companyName}}"/>
+                                  </td>
+                                  <td>
+                                    <input type="text" class="form-control" name="companyType2"
+                                              placeholder="companyType"  value="{{workingDetails2?.companyType}}"/>
+                                  </td>
+                                  <td>
+                                    <input type="text" class="form-control" name="jobTitle2"
+                                              placeholder="jobTitle"  value="{{workingDetails2?.jobTitle}}"/>
+                                  </td>
+                                  <td>
+                                    <input type="text" class="form-control" name="startMonth2"
+                                              placeholder="startMonth"  value="{{workingDetails2?.startMonth}}"/>
+                                  </td>
+                                  <td>
+                                    <input type="text" class="form-control" name="startYear2"
+                                              placeholder="startYear"  value="{{workingDetails2?.startYear}}"/>
+                                  </td>
+                                  <td>
+                                    <input type="text" class="form-control" name="endMonth2"
+                                              placeholder="endMonth"  value="{{workingDetails2?.endMonth}}"/>
+                                  </td>
+                                  <td>
+                                    <input type="text" class="form-control" name="endYear2"
+                                              placeholder="endYear"  value="{{workingDetails2?.endYear}}"/>
+                                  </td>
+                                </tr>
+
+                              </table>
+                            </div>
+                          </div>
+                        
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="live-preview flush_accordion">
+                    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                      <ngb-panel id="static-2">
+                        <ng-template ngbPanelTitle class="accordion-header">
+                          <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#gen-ques-collapseOne" aria-expanded="false"
+                            aria-controls="gen-ques-collapseOne">Screening Responses
+                          </button>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <div *ngFor="let data of screenquestions">
+                            <p>{{data?.question}}</p>
+                            <p>{{data?.answer}}</p>
+                          </div>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+             
+             
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <button (click)="sendExtoClient()">Submit</button>
+  </div>
+</ng-template>
+

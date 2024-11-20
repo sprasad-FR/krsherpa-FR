@@ -1,0 +1,79 @@
+<div    >  
+<full-calendar  style="height:250px;"     #calendar></full-calendar>
+</div>
+<!-- Bootstrap modal -->
+<div id="eventModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="eventModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+              
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap modal -->
+<ng-template #myTemplatexx>
+    <div class="modal-body" id="calendernew">
+        <h5>{{variableevent}}</h5>
+        <h5>{{eventdate}}</h5>
+        <h5>{{eventtime}}</h5>
+        <h5>{{eventclosingtime}}</h5>
+    </div>
+</ng-template>
+
+
+<ng-template #myTemplate let-modal>
+    <div class="modal-holder">
+        <div class="card bg-primary">
+            <div class="card-body p-0">
+                <div class="alert alert-danger rounded-top alert-solid alert-label-icon border-0 rounded-0 m-0 d-flex align-items-center" role="alert">
+                    <i class="ri-error-warning-line label-icon"></i>
+                    <div class="flex-grow-1 text-truncate">
+                        Event Details
+                    </div>
+                </div>
+  
+                <div class="row align-items-end">
+                    <div class="col-sm-12">
+                        <div class="p-1">
+                            <div class="row margin" style="color:white;">
+                                <div class="col-4">
+                                    <label for=""  style="color:white;">Project Name</label>
+                                </div>
+                                <div class="col-8"  style="color:white;font-size: larger;">
+                                   {{eventTitle}}
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row margin">
+                                <div class="col-4">
+                                    <label  style="color:white;" for="">Event Time</label>
+                                </div>
+                                <div class="col-8"  style="color:white;">
+                                    {{eventTime}}  
+                                </div>
+                            </div>
+                            <div class="vstack gap-2 m-4">
+                                <a   target="_blank" [routerLink]="['events/view', eventId]" routerLinkActive="router-link-active" class="btn btn-success "
+                                >View Details </a>
+                              
+                            </div> 
+                         </div>
+                    </div>  
+                   
+                </div>
+            </div> <!-- end card-body-->
+        </div>
+    </div>
+  </ng-template>

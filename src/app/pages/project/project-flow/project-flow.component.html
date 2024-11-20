@@ -1,0 +1,3242 @@
+<app-loader [isLoading]="isLoading"></app-loader>
+
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-md-9">
+      <h5 class="card-title">Project Flow</h5>
+    </div>
+  </div>
+
+  <div class="d-flex flex-wrap justify-content-between mb-4 leads-button-container">
+    <div class="col">
+      <a class="btn btn-light btn-block" [ngClass]="{ active: leadAttachedTable == true }" (click)="viewLeadsAttached()"
+        href="javascript:void(0)">Profiles Attached</a>
+    </div>
+    <div class="col">
+      <a class="btn btn-light btn-block" [ngClass]="{ active: gtamTable }" (click)="viewGtam()"
+        href="javascript:void(0)">Given to Account Manager</a>
+    </div>
+    <div class="col">
+      <a class="btn btn-light btn-block" [ngClass]="{ active: gtcTable }" (click)="viewGtc()"
+        href="javascript:void(0)">Given to Client</a>
+    </div>
+    <div class="col">
+      <a class="btn btn-light btn-block" [ngClass]="{ active: eventTable }" (click)="viewEvent()"
+        href="javascript:void(0)">Workstream-Calls</a>
+    </div>
+  </div>
+  <hr>
+  <!-- Leads Attached  -->
+  <div class="card" *ngIf="leadAttachedTable">
+    <div class="card-body">
+      <span style="padding-left: 20px"></span>
+      <div class="table-responsive" *ngIf="projectDetails?.leadAttached">
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Status</th>
+              <th scope="col">Current Employer</th>
+              <th scope="col">Designation</th>
+              <th scope="col">Attached By</th>
+              <th scope="col">Attached Date</th>
+              <th scope="col">Rel Mgr</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let la of getleadAttachedList()">
+
+              <td>
+                <a class="mx-2 text-dark" target="_blank" [routerLink]="['/expert/expert-view', la?.id]"
+                  routerLinkActive="active">{{ la.firstName }} {{ la.lastName }}
+                </a>
+              </td>
+
+              <td>{{ la.terms == true ? 'Signed Up' : la.status }}</td>
+
+              <td>{{la.currentEmployer}}</td>
+              <td>{{la.designation }}</td>
+
+              <td>{{ getEmployeeName(la.attachedBy) }}</td>
+              <td>{{ la.attachedDate }}</td>
+              <td>{{ getEmployeeName(la.krRelationshipMgrId) }}</td>
+              <td>
+                <div class=" justify-content-between">
+                  <a *ngIf="projectDetails['screening_questions']?.length>0" class="badge text-bg-primary m-1"
+                    (click)="openqa(QA,la.id)" routerLinkActive="active">
+                    Update Q&A
+                  </a>
+                  <a *ngIf="!roles.includes('compliance')" class="badge text-bg-danger m-1"
+                    (click)="transferLeadForm(transferLevelModal, la, 1)" href="javascript:void(0)"
+                    data-toggle="tooltip" title="Transfer to AM"
+                    [ngClass]="(roles.includes('researchAnalyst') && (!la.attachedBy==whoaim?.id ))|| la.status != 'Recruited' ? 'disabled' : ''">
+                    <!-- this.attachedReportingMgr != whoaim?.id  || -->
+                    GTAM <i class="fas fa-long-arrow-alt-right"></i>
+                  </a>
+                  <a class="badge text-bg-success m-1" (click)="openViewGTAMModal(viewGTAMModal, la)"
+                    routerLinkActive="active">
+                    View GTAM
+                  </a>
+                  <a class="badge text-bg-primary m-1" (click)="openNewTab('/expert/expert-edit/' + la?.id)"
+                    routerLinkActive="active" *ngIf="la.status != 'Recruited'">
+                    Edit <i class="bx bx-pencil mr-2"></i>
+                  </a>
+                </div>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="!projectDetails?.leadAttached">
+        <div class="border border-white p-5 text-center">
+          <h4>No lead or expert attached yet!</h4>
+          <p>Please attach one using "New Lead" option.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Given to Account Manager  -->
+  <div class="card" *ngIf="gtamTable">
+    <div class="card-body">
+      <div class="table-responsive" *ngIf="projectDetails?.givenToAccMgr">
+        <span style="padding-left: 20px"></span>
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Status</th>
+              <th scope="col">Current Employer</th>
+              <th scope="col">Designation</th>
+              <!--   <th scope="col">Contact No.</th>       -->
+              <th scope="col">Attached By</th>
+              <th scope="col">GTAM Date</th>
+              <!-- <th scope="col">KR Research Mgr</th> -->
+              <th scope="col" *ngIf="!roles.includes('compliance')">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let la of projectDetails?.givenToAccMgr">
+              <td>
+                <a class="mx-2 text-dark" target="_blank" [routerLink]="['/expert/expert-view', la?.id]"
+                  routerLinkActive="active">{{ la.firstName }} {{ la.lastName }}
+                </a>
+              </td>
+              <td>{{ la.terms == true ? 'Signed Up' : la.status }}</td>
+              <td>{{ la.currentEmployer }}</td>
+              <td>{{ la.designation }}</td>
+              <!--  <td>{{ la.contactNo }}</td> -->
+              <td>{{ (la.attachedBy!=undefined)? getEmployeeName(la.attachedBy) : (isOld==true)?'Shilpa Rajashekar':''
+                }}</td>
+              <!-- <td>{{ la.krRelationshipMgr }}</td> -->
+              <td>{{ la.gtamDate }}</td>
+              <td *ngIf="!roles.includes('compliance')">
+                <div class="">
+                  <a class="badge text-bg-danger m-1" (click)="openViewGTAMModal(viewGTAMModal, la)"
+                    routerLinkActive="active">
+                    View GTAM
+                  </a>
+                  <a *ngIf="!roles.includes('researchAnalyst')" class="badge text-bg-success m-1"
+                    (click)="deleteLeadConfirm(la.id, 'givenToAccMgr')" href="javascript:void(0)">
+                    Reject <i class="fas fa-times"></i>
+                  </a>
+
+                  <a *ngIf="!roles.includes( 'researchAnalyst') && !roles.includes('researchManager')"
+                    class="badge text-bg-primary m-1" (click)="transferLeadForm(transferLevelModal, la, 2)"
+                    href="javascript:void(0)" data-toggle="tooltip" title="Convert to GTC" [ngClass]="
+                      [this.projectDetails.keyAccMgrId, this.projectClient?.subPnlHeadId].indexOf(whoaim?.id) == -1
+                        ? 'disabled'
+                        : ''
+                    ">
+                    GTC <i class="fas fa-long-arrow-alt-right"></i>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="!projectDetails?.givenToAccMgr">
+        <div class="border border-white p-5 text-center">
+          <h4>No lead or expert attached yet!</h4>
+          <p>Please attach one using "New Lead" option.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Given to Client  -->
+
+  <div class="card" *ngIf="gtcTable">
+    <div class="card-body">
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col" class="control-width">Name</th>
+            <th scope="col">Status</th>
+            <th scope="col">Current Employer</th>
+            <th scope="col">Designation</th>
+            <!--  <th scope="col">Contact No.</th> -->
+            <th scope="col">Attached By</th>
+            <th scope="col">GTC Date</th>
+            <th class="text-center" scope="col"
+              *ngIf="!roles.includes('compliance') && !roles.includes( 'researchAnalyst')">
+              Actions
+            </th>
+            <th>Compliance</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let la of notsentlist; let i = index">
+          <tr style="background-color:{{ getcompliancestatusclr(la?.id, refreshed) }}">
+            <td>
+              <b>{{ 'SME-' + (la.sme!=undefined?la.sme:(i+1).toString()) }}</b>
+            </td>
+            <td>
+              <a class="mx-2 text-dark" target="_blank" [routerLink]="['/expert/expert-view', la?.id]"
+                routerLinkActive="active">{{ la.firstName }} {{ la.lastName }}
+              </a>
+            </td>
+
+            <td>{{ (isOld==true)?'Recruited':la.status }}</td>
+            <!--<td>{{ la.terms == true ? 'Signed Up' : la.status }}</td>-->
+            <td>{{ la.currentEmployer }}</td>
+            <td>{{ la.designation }}</td>
+            <!--   <td>{{ la.contactNo }}</td> -->
+            <td>{{ (la.attachedBy!=undefined)? getEmployeeName(la.attachedBy) : (isOld==true)?'Shilpa
+              Rajashekar':''
+              }}</td>
+            <td>{{ la.gtcDate }}</td>
+            <td *ngIf="!roles.includes('compliance') && !roles.includes( 'researchAnalyst')">
+              <div class="justify-content-center">
+                <a class="badge text-bg-primary m-1" (click)="clientexpert(popup,la.id)">Send Expert to client</a>
+
+
+                <a  style="display:none;" class="badge text-bg-primary m-1" (click)="readonlyexpert(expertread,la.id)">expert ROD</a>
+               
+
+                <a style="margin-right:3px;" class="badge text-bg-success m-1"
+                  (click)="openViewGTAMModal(viewGTAMModal, la)" routerLinkActive="active">
+                  View GTAM
+                </a>
+                <a class="badge text-bg-secondary m-1" (click)="openViewGTCModal(viewGTCMModal, la)"
+                  routerLinkActive="active">
+                  View GTC
+                </a>
+                <a *ngIf="!roles.includes( 'researchAnalyst') && !roles.includes('researchManager')"
+                class="badge text-bg-primary m-1" (click)="openEditGTC(transferLevelModal, la, 5)"
+                href="javascript:void(0)" data-toggle="tooltip" title="Convert to GTC" [ngClass]="
+                  [this.projectDetails.keyAccMgrId, this.projectClient?.subPnlHeadId].indexOf(whoaim?.id) == -1
+                    ? 'disabled'
+                    : ''
+                ">
+                Edit GTC <i class="fas fa-long-arrow-alt-right"></i>
+              </a>
+                <a title="Create Event" href="javascript:void(0)" 
+                  (click)="createNewEventForm(newEventFormModal, la)" class="badge text-bg-danger m-1"
+                  data-toggle="tooltip" title="Create Event">
+                  Schedule An Event
+                </a>
+               
+              </div>
+
+            </td>
+
+            <td>
+              <span style="padding-left: 20px"> </span><a href="javascript:void(0)"
+                style="{{ getcompliancestatus(la.id) }}" (click)="createClientUser(clientUserFormModal, la.id)">
+                <i _ngcontent-nsd-c171="" type="solid" class="bx bxs-flag"> </i>
+              </a>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+
+
+      <!---->
+      <ul   style="display:none;"  ngbNav #customNav="ngbNav" [activeId]="1" class="nav nav-tabs-custom nav-danger mb-1" role="tablist">
+
+        <li [ngbNavItem]="1" class="nav-item">
+          <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+            GTC ({{notsentlist?.length}})
+          </a>
+          <ng-template ngbNavContent>
+           
+          </ng-template>
+        </li>
+
+        <li [ngbNavItem]="2" class="nav-item">
+          <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+            Submitted ({{pendinglist?.length}})
+          </a>
+          <ng-template ngbNavContent>
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col" class="control-width">Name</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Current Employer</th>
+                  <th scope="col">Designation</th>
+                  <!--  <th scope="col">Contact No.</th> -->
+                  <th scope="col">Attached By</th>
+                  <th scope="col">GTC Date</th>
+                  <th class="text-center" scope="col"
+                    *ngIf="!roles.includes('compliance') && !roles.includes( 'researchAnalyst')">
+                    Actions
+                  </th>
+                  <th>Compliance</th>
+
+                </tr>
+              </thead>
+              <tbody *ngFor="let la of pendinglist; let i = index">
+                <tr style="background-color:{{ getcompliancestatusclr(la?.id, refreshed) }}">
+                  <td>
+                    <b>{{ 'SME-' + (la.sme!=undefined?la.sme:(i+1).toString()) }}</b>
+                  </td>
+                  <td>
+                    <a class="mx-2 text-dark" target="_blank" [routerLink]="['/expert/expert-view', la?.id]"
+                      routerLinkActive="active">{{ la.firstName }} {{ la.lastName }}
+                    </a>
+                  </td>
+
+                  <td>{{ (isOld==true)?'Recruited':la.status }}</td>
+                  <!--<td>{{ la.terms == true ? 'Signed Up' : la.status }}</td>-->
+                  <td>{{ la.currentEmployer }}</td>
+                  <td>{{ la.designation }}</td>
+                  <!--   <td>{{ la.contactNo }}</td> -->
+                  <td>{{ (la.attachedBy!=undefined)? getEmployeeName(la.attachedBy) : (isOld==true)?'Shilpa
+                    Rajashekar':''
+                    }}</td>
+                  <td>{{ la.gtcDate }}</td>
+                  <td *ngIf="!roles.includes('compliance') && !roles.includes( 'researchAnalyst')">
+                    <div class=" justify-content-center">
+                      <a *ngIf="la?.calls==null" class="badge text-bg-warning m-1" (click)="  clientdatetime
+                      (mckinsey4,la.id,false,0)">Send Time Slot to client </a>
+                      <a  class="badge text-bg-primary m-1" (click)="  clientdatetime
+                      (mckinsey4,la.id,true,0)">schedule Call</a>
+                      <a   (click)="cancelpop(cancelwin,la.id)" class="badge text-bg-primary m-1" >Cancel Call</a>
+                      <a  class="badge text-bg-secondary m-1" (click)="  sendcallid(la.id)">Send CallId </a>
+
+                      <a style="margin-right:3px;" class="badge text-bg-success m-1"
+                        (click)="openViewGTAMModal(viewGTAMModal, la)" routerLinkActive="active">
+                        View GTAM
+                      </a>
+                      <a class="badge text-bg-secondary m-1" (click)="openViewGTCModal(viewGTCMModal, la)"
+                        routerLinkActive="active">
+                        View GTC
+                      </a>
+
+                    </div>
+                  </td>
+
+                  <td>
+                    <span style="padding-left: 20px"> </span><a href="javascript:void(0)"
+                      style="{{ getcompliancestatus(la.id) }}" (click)="createClientUser(clientUserFormModal, la.id)">
+                      <i _ngcontent-nsd-c171="" type="solid" class="bx bxs-flag"> </i>
+                    </a>
+                  </td>
+
+                </tr>
+              </tbody>
+            </table>
+          </ng-template>
+        </li>
+
+        <li [ngbNavItem]="3" class="nav-item">
+          <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+            Approved ({{approvedlist?.length}})
+          </a>
+          <ng-template ngbNavContent>
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col" class="control-width">Name</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Current Employer</th>
+                  <th scope="col">Designation</th>
+                  <!--  <th scope="col">Contact No.</th> -->
+                  <th scope="col">Attached By</th>
+                  <th scope="col">GTC Date</th>
+                  <th class="text-center" scope="col"
+                    *ngIf="!roles.includes('compliance') && !roles.includes( 'researchAnalyst')">
+                    Actions
+                  </th>
+                  <th>Compliance</th>
+
+                </tr>
+              </thead>
+              <tbody *ngFor="let la of approvedlist; let i = index">
+                <tr style="background-color:{{ getcompliancestatusclr(la?.id, refreshed) }}">
+                  <td>
+                    <b>{{ 'SME-' + (la.sme!=undefined?la.sme:(i+1).toString()) }}</b>
+                  </td>
+                  <td>
+                    <a class="mx-2 text-dark" target="_blank" [routerLink]="['/expert/expert-view', la?.id]"
+                      routerLinkActive="active">{{ la.firstName }} {{ la.lastName }}
+                    </a>
+                  </td>
+
+                  <td>{{ (isOld==true)?'Recruited':la.status }}</td>
+                  <!--<td>{{ la.terms == true ? 'Signed Up' : la.status }}</td>-->
+                  <td>{{ la.currentEmployer }}</td>
+                  <td>{{ la.designation }}</td>
+                  <!--   <td>{{ la.contactNo }}</td> -->
+                  <td>{{ (la.attachedBy!=undefined)? getEmployeeName(la.attachedBy) : (isOld==true)?'Shilpa
+                    Rajashekar':''
+                    }}</td>
+                  <td>{{ la.gtcDate }}</td>
+                  <td *ngIf="!roles.includes('compliance') && !roles.includes( 'researchAnalyst')">
+                    <div class=" justify-content-center">
+
+                      <a  class="badge text-bg-warning m-1" (click)="  clientdatetime
+                        (mckinsey4,la.id,false,0)">Send Time Slot to client </a>
+                        <a  class="badge text-bg-primary m-1" (click)="  clientdatetime
+                        (mckinsey4,la.id,true,0)">Schedule Call</a>
+                        <a   (click)="cancelpop(cancelwin,la.id)" class="badge text-bg-primary m-1" >Cancel Call</a>
+                        <a  class="badge text-bg-secondary m-1" (click)="  sendcallid(la.id)">Send CallId </a>
+
+
+                        <!--   <a  class="badge text-bg-secondary m-1" (click)="  clientdatetime(mckinsey4,la.id,false)">Send Time Slot to client </a>
+                        <a   (click)="clientdatetime(mckinsey4,la.id,true)"class="badge text-bg-success m-1" >Rechedule Call</a>
+                             <a  (click)="clientdatetime(mckinsey4,la.id)" class="badge text-bg-warning m-1" >Get Call Info</a>
+                        <a  (click)="clientdatetime(mckinsey4,la.id)" class="badge text-bg-danger m-1" >Get Client Updates</a>
+                   -->
+<!--  <app-events   (sendslot)="sendslot(mckinsey4,$event,false)" 
+  (esendrch)="sendslot(mckinsey4,$event,true)"  
+  (ecancellcall)="cancelpop(cancelwin,$event)" 
+  (egetcallinfo)="getcallinfo(mckinsey4,$event)" 
+   (egetupdates)="getupdates(mckinsey4,$event)"    
+        [itemid]="itemid" ></app-events>  
+-->
+
+                      <a style="margin-right:3px;" class="badge text-bg-success m-1"
+                        (click)="openViewGTAMModal(viewGTAMModal, la)" routerLinkActive="active">
+                        View GTAM
+                      </a>
+                      <a class="badge text-bg-secondary m-1" (click)="openViewGTCModal(viewGTCMModal, la)"
+                        routerLinkActive="active">
+                        View GTC
+                      </a>
+                      <a  style="margin-right:3px;" class="badge text-bg-success m-1"
+                        (click)="opencollectionMCK(collectionMCKpopup,la.id)">
+                        View McKinsey Updates
+                      </a>
+                      <!--   <a title="Create Event" href="javascript:void(0)"
+                      (click)="sentclient4(mckinsey4)" class="badge text-bg-danger m-1"
+                      data-toggle="tooltip" title="Create Event">
+                      Send Time slot
+                    </a> -->
+                      <a title="Create Event" href="javascript:void(0)"
+                        (click)="createNewEventForm(newEventFormModal, la)" class="badge text-bg-danger m-1"
+                        data-toggle="tooltip" title="Create Event">
+                        Schedule An Event
+                      </a>
+                    </div>
+                  </td>
+
+                  <td>
+                    <span style="padding-left: 20px"> </span><a href="javascript:void(0)"
+                      style="{{ getcompliancestatus(la.id) }}" (click)="createClientUser(clientUserFormModal, la.id)">
+                      <i _ngcontent-nsd-c171="" type="solid" class="bx bxs-flag"> </i>
+                    </a>
+                  </td>
+
+                </tr>
+              </tbody>
+            </table>
+          </ng-template>
+        </li>
+
+      
+
+      </ul>
+
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="tab-content text-dark">
+            <div class="bg-soft-project-view" style="min-height:40vh" [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+        <!-- end col -->
+      </div>
+
+
+      <div *ngIf="!projectDetails?.givenToClient">
+        <div class="border border-white p-5 text-center">
+          <h4>No lead or expert attached yet!</h4>
+          <p>Please attach one using "New Lead" option.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card" *ngIf="eventTable">   <!--  sendrch,cancellcall,getcallinfo,egetupdates-->
+  <div class="card-body">
+    <div   *ngFor="let ws of projectDetails?.workstreamcalls; let wsi = index " class="box">
+      <label class="badge text-bg-danger p-1">{{wsi+1}}. Workstream Name : {{ws["title"]}} - Status:{{iswsActive(ws["id"])?"Active":"Paused"}} </label>
+      <table class="table "  *ngIf="ws['experts'] && ws['experts'].length>0" >
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col" class="control-width">Name</th>
+            <th scope="col">Status</th>
+            <th scope="col">Current Employer</th>
+            <th scope="col">Designation</th>
+            <!--  <th scope="col">Contact No.</th> -->
+            <th scope="col">Attached By</th>
+            <th scope="col">GTC Date</th>
+            <th class="text-center" scope="col"
+              *ngIf="!roles.includes('compliance') && !roles.includes( 'researchAnalyst')">
+              Actions
+            </th>
+            <th>Compliance</th>
+
+          </tr>
+        </thead>
+        <tbody *ngFor="let la of ws['experts']; let i = index">
+          <tr style="background-color:{{ getcompliancestatusclr(la?.id, refreshed) }}">
+            <td>
+              <b>{{ 'SME-' + (la.sme!=undefined?la.sme:(i+1).toString()) }}</b><br>
+              <label class="badge text-bg-primary p-1"> {{la.clientstatus?la.clientstatus:"Pending"}} </label>
+            </td>
+            <td>
+              <a class="mx-2 text-dark" target="_blank" [routerLink]="['/expert/expert-view', la?.id]"
+                routerLinkActive="active">{{ la.firstName }} {{ la.lastName }}
+              </a>
+            </td>
+
+            <td>{{ (isOld==true)?'Recruited':la.status }}</td>
+            <!--<td>{{ la.terms == true ? 'Signed Up' : la.status }}</td>-->
+            <td>{{ la.currentEmployer }}</td>
+            <td>{{ la.designation }}</td>
+            <!--   <td>{{ la.contactNo }}</td> -->
+            <td>{{ (la.attachedBy!=undefined)? getEmployeeName(la.attachedBy) : (isOld==true)?'Shilpa
+              Rajashekar':''
+              }}</td>
+            <td>{{ la.gtcDate }}</td>
+            <td *ngIf="!roles.includes('compliance') && !roles.includes( 'researchAnalyst')">
+              <div class=" justify-content-center">
+               <div *ngIf="iswsActive(ws['id'])">
+                <a  class="badge text-bg-info m-1" (click)="  clientdatetime
+                        (mckinsey4,la,false,ws['id'])">Send Time Slot to client </a>
+                        <a  class="badge text-bg-primary m-1" (click)="  clientdatetime
+                        (mckinsey4,la,true,ws['id'])">Schedule Call</a>
+                        <a title="Create Event" href="javascript:void(0)" 
+                        (click)=" reshedule
+                        (mckinsey4,la,true,ws['id'])" class="badge text-bg-success m-1"
+                        data-toggle="tooltip" title="Create Event">
+                        Reschedule call
+                      </a>
+                        <a   (click)="cancelpop(cancelwin,la)" class="badge text-bg-secondary m-1" >Cancel Call</a>
+                        <a  class="badge text-bg-primary m-1" (click)="  sendcallid(la)">Send CallId </a>
+
+                        <a  class="badge text-bg-secondary m-1 " (click)="InitiateNewcall(la,ws['id'])">Initiate New Call</a>
+
+                      </div>
+
+                <a   class="badge text-bg-primary m-1" (click)="readonlyexpert(expertread,la.id)">View Data Sent To Client</a>
+               
+                        <a  style="margin-right:3px;" class="badge text-bg-success p-2"
+                        (click)="sentat(clientmsgs,la)"   >
+                        View McKinsey Updates
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-primary fs-6">{{la?.calls?.length}} <span class="visually-hidden">messages</span></span>
+                      </a>
+               
+
+               
+                <a style="margin-right:3px;" class="badge text-bg-success m-1"
+                  (click)="openViewGTAMModal(viewGTAMModal, la)" routerLinkActive="active">
+                  View GTAM
+                </a>
+                <a class="badge text-bg-secondary m-1" (click)="openViewGTCModal(viewGTCMModal, la)"
+                  routerLinkActive="active">
+                  View GTC
+                </a>
+
+              </div>
+            </td>
+
+            <td>
+              <span style="padding-left: 20px"> </span><a href="javascript:void(0)"
+                style="{{ getcompliancestatus(la.id) }}" (click)="createClientUser(clientUserFormModal, la.id)">
+                <i _ngcontent-nsd-c171="" type="solid" class="bx bxs-flag"> </i>
+              </a>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+
+
+    </div>
+ 
+ 
+  </div>
+</div>
+
+<!-- <app-events   (sendslot)="sendslot(mckinsey4,$event,false)" (esendrch)="sendslot(mckinsey4,$event,true)"  (ecancellcall)="cancelpop(cancelwin,$event)" (egetcallinfo)="getcallinfo(mckinsey4,$event)"  (egetupdates)="getupdates(mckinsey4,$event)"         [itemid]="itemid" ></app-events>  
+   -->
+
+
+<!-- Assign/Show KR Expert Modal     -->
+<ng-template #krExpertFormModal let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">{{ KrExpertModalTitle }}</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="assignExpertForm" (ngSubmit)="submitData()" *ngIf="!isLoading">
+      <div class="row p-4">
+        <div class="col-md-12 mb-4">
+          <div class="team">
+            <a href="javascript:void(0);" class="team-member d-flex align-items-center">
+              <img src=" " class="rounded-circle avatar-sm m-1" alt />
+              <div class="ml-2">
+                <div class="text-muted">{{ selectedExpert?.firstName }} {{ selectedExpert?.lastName }}</div>
+                <div class="text-muted">{{ selectedExpert?.isLead ? 'KR Lead' : 'KR Expert' }}</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <div class="text-muted">Email id</div>
+            <h6>{{ selectedExpert?.primaryEmail }}</h6>
+          </div>
+
+          <div class="mb-3">
+            <div class="text-muted">Contact No.</div>
+            <h6>{{ selectedExpert?.contactNo }}</h6>
+          </div>
+
+          <div class="mb-3">
+            <div class="text-muted">State</div>
+            <h6>{{ selectedExpert?.state }}</h6>
+          </div>
+
+          <div class="mb-3">
+            <div class="text-muted">Industry</div>
+            <h6>{{ selectedExpert?.industry }}</h6>
+          </div>
+
+          <div class="mb-3">
+            <div class="text-muted">KR Repationship Mgr</div>
+            <h6>{{ selectedExpert?.krRelationshipMgr ? selectedExpert?.krRelationshipMgr?.name : '--' }}</h6>
+          </div>
+
+          <div class="mb-3">
+            <div class="text-muted">Status</div>
+            <h6>{{ selectedExpert?.status }}</h6>
+          </div>
+        </div>
+
+        <!-- Expert Profile Only -->
+        <div class="col-md-6" *ngIf="showOnlyProfile">
+          <div class="mb-3">
+            <div class="text-muted">Rate</div>
+            <h6>{{ selectedExpert?.rate }}</h6>
+          </div>
+
+          <div class="mb-3">
+            <div class="text-muted">Rate For Client</div>
+            <h6>{{ selectedExpert?.rateForClient }}</h6>
+          </div>
+
+          <div class="mb-3">
+            <div class="text-muted">Currency</div>
+            <h6>{{ selectedExpert?.currency }}</h6>
+          </div>
+
+          <div class="mb-3">
+            <div class="text-muted">Rate Type</div>
+            <h6>{{ selectedExpert?.rateType }}</h6>
+          </div>
+        </div>
+
+        <!-- Expert Profile Form -->
+        <div class="col-md-6" *ngIf="!showOnlyProfile">
+          <div class="mb-3">
+            <div class="text-muted">Rate</div>
+            <input type="text" name="rate" id="rate" formControlName="rate" class="form-control" />
+            <span class="text-info" *ngIf="selectedExpert?.rateForClient">Rate for client: {{
+              selectedExpert?.rateForClient }}</span>
+          </div>
+
+          <div class="mb-3">
+            <div class="text-muted">Currency</div>
+            <ng-select formControlName="currency" [items]="currenciesList" bindLabel="name" bindValue="code"
+              [multiple]="false" [closeOnSelect]="true" [selectableGroup]="false" placeholder="Select">
+              <ng-template ng-option-tmp let-item="item" let-search="name">
+                {{ item?.name }} ({{ item?.code }})
+              </ng-template>
+            </ng-select>
+          </div>
+
+          <div class="mb-3">
+            <div class="text-muted">Rate Type</div>
+            <select id="rateType" formControlName="rateType" class="form-control">
+              <option selected value="">Select</option>
+              <option *ngFor="let rt of rateTypes" [value]="rt">{{ rt }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-12 d-flex mt-4 justify-content-end">
+          <button type="button" class="btn btn-secondary mr-4" *ngIf="showOnlyProfile"
+            (click)="modal.close('Close click')">
+            Close
+          </button>
+          <button type="button" class="btn btn-secondary mr-4" *ngIf="!showOnlyProfile"
+            (click)="modal.close('Close click')">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-success px-4" *ngIf="!showOnlyProfile" (click)="submitData()">
+            Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #newEventFormModal let-modal>
+  <form [formGroup]="eventFormGrp" (ngSubmit)="submitEvent()">
+    <div class="modal-header p-2 bg-dark">
+      <h5 class="modal-title mt-0">{{ eventModalTitle }}</h5>
+      <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="expertId">Expert Name (SME-{{ currentSME }})</label>
+            <ng-select [items]="krExpertsList" bindLabel="firstName" bindValue="userId" placeholder="Select Expert"
+              name="expertId" formControlName="expertId">
+              <!-- <ng-template ng-label-tmp let-item="item">
+                <span>{{ item.firstName + ' ' + item.lastName }}</span>
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                <span>{{ item.firstName + ' ' + item.lastName }}</span>
+              </ng-template> -->
+            </ng-select>
+          </div>
+          <div class="form-group">
+            <label for="subPnL">Sub PnL</label>
+            <ng-select [items]="empList" bindLabel="name" bindValue="userId" placeholder="Select KR Research Manager"
+              name="subPnL" formControlName="subPnL">
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="researchAnalystId">Research Analyst</label>
+            <ng-select [items]="empList" bindLabel="name" bindValue="userId" placeholder="Select KR Research Manager"
+              name="researchAnalystId" formControlName="researchAnalystId">
+            </ng-select>
+          </div>
+          <div class="form-group">
+            <label for="clientManagerId">Project Manager (Client)</label>
+            <ng-select [items]="projectUsers" bindLabel="name" bindValue="userId"
+              placeholder="Select KR Research Manager" name="clientManagerId" formControlName="clientManagerId">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="researchMgrId">Research Manager</label>
+            <ng-select [items]="empList" bindLabel="name" bindValue="userId" placeholder="Select KR Research Manager"
+              name="researchMgrId" formControlName="researchMgrId">
+            </ng-select>
+          </div>
+          <div class="form-group">
+            <label for="eventType">Event Type</label>
+            <ng-select [items]="eventTypes" bindLabel="text" bindValue="text" placeholder="Select Event Type"
+              name="type" formControlName="type">
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="keyAccountManager">Key Account Manager</label>
+            <ng-select [items]="empList" bindLabel="name" bindValue="userId" placeholder="Select Expert"
+              name="keyAccountManager" formControlName="keyAccountManager">
+              <!-- <ng-template ng-label-tmp let-item="item">
+                <span>{{ item.firstName + ' ' + item.lastName }}</span>
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                <span>{{ item.firstName + ' ' + item.lastName }}</span>
+              </ng-template> -->
+            </ng-select>
+          </div>
+
+          <div class="form-group">
+            <label for="eventAt">Event Date & Time</label>
+            <input class="form-control" type="datetime-local" formControlName="eventAt" name="eventAt" id="eventAt"
+              required />
+            <!--  min="{{ today }}" -->
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="row mt-3">
+            <h6 class="border-bottom mb-2 pb-2 col-12">Expert Details</h6>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="expertRate">Rate</label>
+                <input type="number" min="1" id="expertRate" class="form-control" formControlName="expertRate"
+                  placeholder="Eg. USD 20000" />
+              </div>
+
+              <div class="form-group">
+                <label for="minDurationType">Min Duration Type</label>
+                <ng-select [items]="minDurationType" bindLabel="minDurationType" bindValue="minDurationType"
+                  placeholder="Select Duration Type" name="minDurationType" formControlName="minDurationType">
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="expertRateType">Rate Type</label>
+                <ng-select [items]="rateTypes" bindLabel="rateTypes" bindValue="rateTypes"
+                  placeholder="Select Rate Type" name="expertRateType" formControlName="expertRateType">
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="expertCurrency">Currency</label>
+                <ng-select formControlName="expertCurrency" [items]="currenciesList" bindLabel="name" bindValue="code"
+                  [multiple]="false" [closeOnSelect]="true" [selectableGroup]="false" placeholder="Select Currency">
+                  <ng-template ng-option-tmp let-item="item" let-search="name">
+                    {{ item?.name }} ({{ item?.code }})
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="expertMinDuration">Minimum Duration</label>
+                <input type="number" min="1" id="expertMinDuration" class="form-control"
+                  formControlName="expertMinDuration" placeholder="Eg. 45" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="row mt-3">
+            <h6 class="border-bottom mb-2 pb-2 col-12">Client Details</h6>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="rateForClient">Cost to Client</label>
+                <input type="number" min="1" id="rateForClient" class="form-control" formControlName="rateForClient"
+                  placeholder="Eg. USD 20000" />
+              </div>
+              <div class="form-group">
+                <label for="minDurationType">Min Duration Type</label>
+                <ng-select [items]="minDurationType" bindLabel="minDurationType" bindValue="minDurationType"
+                  placeholder="Select Duration Type" name="CPminDurationType" formControlName="minDurationType">
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="expertRateType">Rate Type</label>
+                <ng-select [items]="rateTypes" bindLabel="rateTypes" bindValue="rateTypes"
+                  placeholder="Select Rate Type" name="CPRateType" formControlName="CPRateType">
+                </ng-select>
+              </div>
+              <div class="form-group">
+                <label for="clientMinDuration">Minimum Duration</label>
+                <input type="number" min="1" id="clientMinDuration" class="form-control"
+                  formControlName="clientMinDuration" placeholder="Eg. 45" />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="multiplicationFactor">Multiplicaion Factor</label>
+                <input type="number" min="1" id="multiplicationFactor" class="form-control"
+                  formControlName="multiplicationFactor" placeholder="Eg. 2" />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="clientCurrency">Currency</label>
+                <ng-select formControlName="clientCurrency" [items]="currenciesList" bindLabel="name" bindValue="code"
+                  [multiple]="false" [closeOnSelect]="true" [selectableGroup]="false" placeholder="Select Currency">
+                  <ng-template ng-option-tmp let-item="item" let-search="name">
+                    {{ item?.name }} ({{ item?.code }})
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+      <button type="submit" class="btn btn-success">{{ btnName }}</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #transferLevelModal let-modal>
+  <div class="modal-header bg-dark text-white">
+    <h5 class="modal-title mt-0">Attach Leads</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="team">
+      <div class="row">
+        <div class="col-md-6">
+          <a href="javascript:void(0);" class="team-member d-flex align-items-center">
+            <div class="avatar-md-1">
+              <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
+                {{ transferLead?.firstName | uppercase | slice: 0:2 }}
+              </span>
+            </div>
+            <div class="ml-2">
+              <div class="text-muted">{{ transferLead?.firstName }} {{ transferLead?.lastName }}</div>
+              <div class="text-muted">{{ transferLead?.designation }}</div>
+              <!-- <div if class="text-muted">{{ transferLead?.firstName }} {{ transferLead?.lastName }}</div> -->
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 pull-right">
+          <div class="form-group">
+
+
+          </div>
+          <a href="javascript:void(0);">
+            <i class="bx text-dark font-size-15" (click)="openDetails(transferLead?.id)">View Profile </i>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="mb-3"></div>
+
+    <form [formGroup]="transferExpertForm" >     <!-- (ngSubmit)="transferSubmit()" -->
+      <div class="">
+        <div class="col-md-2  pull-right"> </div>
+        <div class="col-md-8 pull-right">
+          <div class="form-group">
+
+
+
+            <div> Expert Attachment Type : &nbsp;
+              <input (change)="changenew($event)" type="radio" id="stRdoNo" name="stRdo" text="Unallocated" value="SR">
+              <label for="stRdoNo" class="d-inline-flex align-items-center"> SR &nbsp;&nbsp; </label>
+              <input checked (change)="changenew($event)" type="radio" id="stRdoyes" name="stRdo" text="Allocated"
+                value="CRM">
+              <label for="stRdoyes" class="d-inline-flex align-items-center"> CRM &nbsp;&nbsp; </label>
+
+              <input (change)="changenew($event)" type="radio" id="stRdoAll" name="stRdo" text="All" value="FTRR">
+              <label for="stRdoAll" class="d-inline-flex align-items-center"> FTRM &nbsp;&nbsp; </label>
+            </div>
+
+          </div>
+        </div>
+        <div class="col-md-2"> </div>
+        <div class="form-group">
+          <label for="relevance">Welcome Lines</label>
+          <textarea name="welcomeLines" id="welcomeLines" formControlName="welcomeLines" class="form-control"
+            rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="relevance">Relevance</label>
+          <!-- <textarea name="relevance" id="relevance" formControlName="relevance" class="form-control" rows="2"></textarea>
+   -->
+          <ckeditor [editor]="Editor" name="notes" id="relevance" formControlName="relevance" data="<p></p>"></ckeditor>
+        </div>
+
+        <div class="form-group">
+          <label for="directInvolvement">Direct Involvement</label>
+          <ckeditor [editor]="Editor" name="directInvolvement" id="directInvolvement"
+            formControlName="directInvolvement" data="<p></p>"></ckeditor>
+        </div>
+        <div class="form-group">
+          <label for="canDiscuss">Can Dissuss</label>
+          <textarea name="canDiscuss" id="canDiscuss" formControlName="canDiscuss" class="form-control"
+            rows="2"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="conversationStyle">Conversation Style</label>
+          <textarea name="conversationStyle" id="conversationStyle" formControlName="conversationStyle"
+            class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="availability">Availability</label>
+          <textarea name="availability" id="availability" formControlName="availability" class="form-control"
+            rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <hr />
+        <div>
+          <label for="pricing"> Expert Pricing </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="radio" formControlName="prorated" name="prorated" value="Prorated" checked />Prorated
+        <input type="radio" formControlName="prorated" name="prorated" value="Non-prorated" />Non-prorated
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="rate">Rate</label>
+            <input name="rate" id="rate" formControlName="rate" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="minDuration">Min Duration</label>
+            <input name="minDuration" id="" formControlName="minDuration" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="currency">Currency</label>
+            <ng-select [items]="currenciesList" bindLabel="code" bindValue="code" placeholder="Select Currency"
+              name="rateType" formControlName="currency">
+            </ng-select>
+          </div>
+          <div class="form-group">
+            <label for="minDurationType">Min Duration Type</label>
+            <ng-select [items]="minDurationType" bindLabel="minDurationType" bindValue="minDurationType"
+              placeholder="Select Duration Type" name="minDurationType" formControlName="minDurationType">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="rateType">Rate Type</label>
+            <ng-select [items]="rateTypes" bindLabel="rateTypes" bindValue="rateTypes" placeholder="Select Rate Type"
+              name="rateType" formControlName="rateType">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="transferLevel > 1">
+        <div>
+          <hr />
+          <label for="pricing">Client Pricing - Type: {{ projectClient?.agreementType }} | MSA value: {{
+            projectClient?.msaValue }}
+          </label>
+        </div>
+      </div>
+      <div class="row" *ngIf="transferLevel > 1">
+        <div class="col-12">
+          <div class="card">
+              <div class="card-body">
+                  <form (ngSubmit)="onSubmit()" #rateForm="ngForm">
+                      <div class="row">
+                        <div class="col-md-4"> 
+                        <div class="form-group">
+                          <label for="30min">30min : </label>
+                          <input type="text" name="min30" id="30min" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="rateFormValues.min30" (input)="GetRate($event, '30')">
+                        </div>
+                      </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="45min">45min : </label>
+                          <input type="text" name="min45" id="45min" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="rateFormValues.min45" (input)="GetRate($event, '45')">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="60min">60min : </label>
+                          <input type="text" name="min60" id="60min" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="rateFormValues.min60" (input)="GetRate($event, '60')">
+                        </div>
+                      </div>
+                      <br><br>
+                      <div class="col-md-8">
+                        <div class="form-group">
+                          <label for="min">minutes :  </label>
+                          <input type="text" name="min" id="min" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="rateFormValues.min">
+                          <label for="rate"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;    rate : </label>
+                          <input type="number" name="rate" id="rate" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="rateFormValues.rate">
+                          <button class="btn  btn-soft-success" style="padding: 0px 10px; margin-top: 20px;">Add</button>
+                 
+                        
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                                </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group" style="display: flex; align-items: center;">
+                         
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <ng-container  *ngIf="RateArray?.length > 0">
+                      <table class="table">
+                          <thead>
+                              <tr>
+                                  <th>#</th>
+                                  <th>Min</th>
+                                  <th>Rate</th>
+                                  <th style="width: 100px;"></th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let data of RateArray; let i=index">
+                                  <td>{{i+1}}</td>
+                                  <td>{{data?.min}}</td>
+                                  <td>{{data?.rate}}</td>
+                                  <th style="padding: 8px 0px;">
+                                      <div class="options">
+                                               </div>
+                                  </th>
+                              </tr>
+                          </tbody>
+                      </table>
+      
+                      <div style="display: none;gap: 6px;align-items: center;">
+                          <ng-select style="flex: 1 1 50%;" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="select_minutes"><!--[items]="RateArray" bindLabel="min"-->
+                              <ng-option *ngFor="let data of RateArray">{{ data.min }} : {{ data.rate }}</ng-option>
+                          </ng-select>
+                          
+                          <button class="btn btn-border btn-soft-info" style="flex: 1 1 0%;padding: 6px 0px;" (click)="SelectMinute()">Select</button>
+                      </div>
+                  </ng-container> 
+              </div>
+          </div>
+      </div>
+
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="CPrate">Rate</label>
+            <input name="CPrate" id="CPrate" formControlName="CPrate" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="CPminDuration">Min Duration</label>
+            <input name="CPminDuration" id="" formControlName="CPminDuration" class="form-control" />
+          </div>
+          <div class="form-group">
+            <input type="radio" id="prorated" formControlName="CPprorated" name="CPprorated" value="Prorated"
+              checked="true" />Prorated
+            <input type="radio" id="nonprorated" formControlName="CPprorated" name="CPprorated"
+              value="Non-prorated" />Non-prorated
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="CPcurrency">Currency</label>
+            <ng-select [items]="currenciesList" bindLabel="code" bindValue="code" placeholder="Select Currency"
+              name="rateType" formControlName="CPcurrency">
+            </ng-select>
+          </div>
+          <div class="form-group">
+            <label for="CPminDurationType">Min Duration Type</label>
+            <ng-select [items]="minDurationType" bindLabel="minDurationType" bindValue="minDurationType"
+              placeholder="Select Duration Type" name="CPminDurationType" formControlName="CPminDurationType">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="CPrateType">Rate Type</label>
+            <ng-select [items]="rateTypes" bindLabel="rateTypes" bindValue="rateTypes" placeholder="Select Rate Type"
+              name="CPrateType" formControlName="CPrateType">
+            </ng-select>
+          </div>
+          <div class="form-group">
+            <label for="rateType">Multilpication Factor</label>
+            <input type="number" min="0" name="CPmulFactor" formControlName="CPmulFactor" class="form-control" />
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="canDiscuss">Additional Comments</label>
+        <textarea name="additionalComments" id="additionalComments" formControlName="additionalComments"
+          class="form-control" rows="2"></textarea>
+      </div>
+      <a class="btn btn-secondary mr-4" (click)="modal.close('Close click')"> Cancel </a>
+      <button type="button" (click)="transferSubmit()" class="btn btn-success px-4">Proceed</button>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #viewGTAMModal let-modal>
+  <div class="modal-header bg-dark text-white">
+    <h5 class="modal-title mt-0">View GTAM Details</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="team">
+      <div class="row">
+        <div class="col-md-6">
+          <a href="javascript:void(0);" class="team-member d-flex align-items-center">
+            <div class="avatar-md-1">
+              <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
+                {{ transferLead?.firstName | uppercase | slice: 0:2 }}
+              </span>
+            </div>
+            <div class="ml-2">
+              <div class="text-muted">{{ transferLead?.firstName }} {{ transferLead?.lastName }}</div>
+              <div class="text-muted">{{ transferLead?.designation }}</div>
+              <!-- <div if class="text-muted">{{ transferLead?.firstName }} {{ transferLead?.lastName }}</div> -->
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6 pull-right">
+          <a href="javascript:void(0);">
+            <i class="bx text-dark font-size-15" (click)="openDetails(transferLead?.id)">View Profile </i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="relevance">Welcome Lines</label>
+      <p [innerHTML]="this.GTAMdata?.welcomeLines">/p>
+    </div>
+    <div class="mb-3">
+      <label for="relevance">Biography</label>
+      <p [innerHTML]="this.GTAMdata?.biography"></p>
+    </div>
+    <div class="mb-3">
+      <label for="relevance">Relevance</label>
+      <p [innerHTML]="this.GTAMdata?.welcomeLines"></p>
+    </div>
+
+    <div class="mb-3">
+      <label for="directInvolvement">Direct Involvement</label>
+      <p [innerText]="this.GTAMdata?.directInvolvement"></p>
+    </div>
+    <div class="mb-3">
+      <label for="canDiscuss">Can Dissuss</label>
+      <p>{{ this.GTAMdata?.canDiscuss }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="conversationStyle">Conversation Style</label>
+      <p>{{ this.GTAMdata?.conversationStyle }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="availability">Availability</label>
+      <p>{{ this.GTAMdata?.availability }}</p>
+    </div>
+
+
+    <div class="mb-3">
+      <hr />
+      <div>
+        <label for="pricing"> Expert Pricing </label>
+        <p>{{ this.GTAMdata?.prorated }}</p>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="rate">Rate</label>
+      <p>{{ this.GTAMdata?.rate }}</p>
+    </div>
+    <div class="mb-3">
+      <label for="minDuration">Min Duration</label>
+      <p>{{ this.GTAMdata?.minDuration }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="currency">Currency</label>
+      <p>{{ this.GTAMdata?.currency }}</p>
+    </div>
+    <div class="mb-3">
+      <label for="minDurationType">Min Duration Type</label>
+      <p>{{ this.GTAMdata?.minDurationType }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="rateType">Rate Type</label>
+      <p>{{ this.GTAMdata?.rateType }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="canDiscuss">Additional Comments</label>
+      <p>{{ this.GTAMdata?.additionalComments }}</p>
+    </div>
+  </div>
+</ng-template>
+
+
+
+<ng-template #editratepopup let-modal>
+  <div class="modal-header p-3 bg-soft-info" style="text-align: center;">
+      <h5 class="modal-title" id="exampleModalLabel">Select Fields</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"  (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+     
+          <div class="row">
+            <div class="col-6 col-mb">
+              <label for="Min">Min</label>
+              <input type="text" name="Min" id="Min" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="EditRateValues.edit_min">
+            </div>
+            <div class="col-6 col-mb">
+              <label for="rate">rate</label>
+              <input type="rate" name="rate" id="rate" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="EditRateValues.edit_rate">
+            </div>
+            <div class="col-12" style="display: flex;justify-content: center;">
+              <button  class="btn btn-soft-success" style="padding: 0px 10px; margin-top:10px;"  (click)="modal.dismiss()">Update</button>
+            </div>
+          </div>
+      
+  </div>
+</ng-template>
+
+<ng-template #viewGTCMModal let-modal>
+  <div class="modal-header bg-dark text-white">
+    <h5 class="modal-title mt-0">View GTC Details</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="team">
+      <div class="row">
+        <div class="col-md-6">
+          <a href="javascript:void(0);" class="team-member d-flex align-items-center">
+            <div class="avatar-md-1">
+              <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
+                {{ GTCViewdata?.firstName | uppercase | slice: 0:2 }}
+              </span>
+            </div>
+            <div class="ml-2">
+              <div class="text-muted">{{ GTCViewdata?.firstName }} {{ GTCViewdata?.lastName }}</div>
+              <div class="text-muted">{{ GTCViewdata?.designation }}</div>
+              <!-- <div if class="text-muted">{{ transferLead?.firstName }} {{ transferLead?.lastName }}</div> -->
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6 pull-right">
+          <a href="javascript:void(0);">
+            <i class="bx text-dark font-size-15" (click)="openDetails(GTCViewdata?.id)">View Profile </i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="relevance">Welcome Lines</label>
+      <p [innerHTML]="this.GTCViewdata?.welcomeLines">/p>
+    </div>
+    <div class="mb-3">
+      <label for="relevance">Biography</label>
+      <p [innerHTML]="this.GTCViewdata?.biography "></p>
+    </div>
+    <div class="mb-3">
+      <label for="relevance">Relevance</label>
+      <p [innerHTML]="this.GTCViewdata?.welcomeLines "></p>
+    </div>
+    <div class="mb-3">
+      <label for="directInvolvement">Direct Involvement</label>
+      <p [innerText]="this.GTCViewdata?.directInvolvement"></p>
+    </div>
+    <div class="mb-3">
+      <label for="canDiscuss">Can Dissuss</label>
+      <p>{{ this.GTCViewdata?.canDiscuss }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="conversationStyle">Conversation Style</label>
+      <p>{{ this.GTCViewdata?.conversationStyle }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="availability">Availability</label>
+      <p>{{ this.GTCViewdata?.availability }}</p>
+    </div>
+
+
+    <ng-container  *ngIf="this.GTCViewdata?.clientrates.length > 0">
+      <label >Client Rates</label>
+      <table class="table">
+          <thead>
+              <tr>
+                  <th>#</th>
+                  <th>Min</th>
+                  <th>Rate</th>
+                  <th style="width: 100px;"></th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let data of this.GTCViewdata?.clientrates; let i=index">
+                  <td>{{i+1}}</td>
+                  <td>{{data?.min}}</td>
+                  <td>{{data?.rate}}</td>
+                  
+              </tr>
+          </tbody>
+      </table>
+    </ng-container> 
+    <hr />
+    <div class="mb-3">
+
+      <div>
+        <label for="pricing"> Client Pricing </label>
+        <p>{{ this.GTCViewdata?.prorated }}</p>
+      </div>
+    </div>
+    <hr>
+    Client Data
+    <div class="mb-3">
+      <label for="rate">Rate</label>
+      <p>{{ this.GTCViewdata?.CPrate }}</p>
+    </div>
+    <div class="mb-3">
+      <label for="minDuration">Min Duration</label>
+      <p>{{ this.GTCViewdata?.CPminDuration }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="currency">Currency</label>
+      <p>{{ this.GTCViewdata?.CPcurrency }}</p>
+    </div>
+    <div class="mb-3">
+      <label for="minDurationType">Min Duration Type</label>
+      <p>{{ this.GTCViewdata?.minDurationType }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="rateType">Rate Type</label>
+      <p>{{ this.GTCViewdata?.CPrateType }}</p>
+    </div>
+
+
+
+
+    <hr />
+    Expert Data
+    <div class="mb-3">
+
+      <div>
+        <label for="pricing"> Client Pricing </label>
+        <p>{{ this.GTCViewdata?.prorated }}</p>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="rate">Rate</label>
+      <p>{{ this.GTCViewdata?.rate }}</p>
+    </div>
+    <div class="mb-3">
+      <label for="minDuration">Min Duration</label>
+      <p>{{ this.GTCViewdata?.minDuration }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="currency">Currency</label>
+      <p>{{ this.GTCViewdata?.currency }}</p>
+    </div>
+    <div class="mb-3">
+      <label for="minDurationType">Min Duration Type</label>
+      <p>{{ this.GTCViewdata?.minDurationType }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="rateType">Rate Type</label>
+      <p>{{ this.GTCViewdata?.rateType }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="canDiscuss">Additional Comments</label>
+      <p>{{ this.GTCViewdata?.additionalComments }}</p>
+    </div>
+
+  </div>
+</ng-template>
+
+
+<ng-template #clientUserFormModal let-modal>
+  <app-complianceActions (Refreshlist)="RefreshList()" compliancetype="profile"
+    saleid="{{ idforCompliance }}"></app-complianceActions>
+</ng-template>
+
+
+<ng-template #popup let-modal>
+  <div class="modal-holder">
+    <div class="popuphead">
+      <h4>Expert Details</h4>
+      <button _ngcontent-vkd-c403="" type="button" aria-hidden="true" class="close"
+        (click)="modal.dismiss('Cross click')">×</button>
+    </div>
+    <form *ngIf="!isLoading">
+      <div class="row">
+        <div class="col-12">
+          <div class="card bg-color">
+            <div class="card-body">
+              <div class="row margin" style="display:none;">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="action">Network Expert Id</label>
+                    <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="id" />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="action">Network Project Id</label>
+                    <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="userId" />
+                  </div>
+                </div>
+              </div>
+              <div class="row margin">
+                <div class="col-2">
+                  <div class="form-group">
+                  </div>
+                </div>
+                <div class="col-8">
+
+                  <div class="form-group">
+                    <label for="action">Network Workstream<span class="required-asterisk">*</span></label>
+                    <ng-select [items]="workstreams" bindLabel="name" bindValue="id" placeholder="Select a workstream"
+                      id="clientId"  aria-disabled="true" name="clientId" [(ngModel)]="selectedws">
+                    </ng-select>
+                  </div>
+
+                </div>
+                <div class="col-2">
+                  <div class="form-group">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row margin">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="action">First Name<span class="required-asterisk">*</span></label>
+                    <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="firstName" />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="action">Last Name<span class="required-asterisk">*</span></label>
+                    <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="lastName" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row margin">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="action">phone</label>
+                    <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="contactNo" />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="action">Email</label>
+                    <input type="email" class="form-control" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="primaryEmail" />
+                  </div>
+                </div>
+
+              </div>
+
+
+             
+
+   <div class="row margin">                
+    <div class="col-3">
+      <div class="form-group">
+        <label for="action">Currency</label>
+        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+          [(ngModel)]="currency" />
+      </div>
+    </div> 
+    <div class="col-3">
+      <div class="form-group">
+        <label for="action">Rate Card</label>
+       <ng-select [items]="uniqueGeographies" bindLabel="geography"   [ngModelOptions]="{standalone: true}" [(ngModel)]="geography"   (change)="SelectCard($event,'card')"></ng-select> 
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="form-group">
+        <label for="action">Rate Multiplier</label>
+          <ng-select [items]="MultipliervalueArray" bindLabel="multiplierValue"  [ngModelOptions]="{standalone: true}" [(ngModel)]="multipliertext"     (change)="SelectCard($event,'multiplier')"></ng-select> 
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="form-group">
+        <label for="action">Hourly Rate</label>
+        <input type="text" class="form-control"    [ngModelOptions]="{standalone: true}" [(ngModel)]="rate" />
+      </div>
+    </div> 
+
+     <div class="row">
+<br >
+     <div *ngIf="expprojectcount>1" style="cursor:pointer;"  (click)="openprjlist(Genericpopup);">  Already Worked in MNS Projects: Yes-{{expprojectcount-1}} Project(s)</div>    <div *ngIf="expprojectcount<2">  <br >Already Worked in MNS Projects: No </div>
+     </div>
+    <div class="col-md-12" style="border: 1px solid #007eff;padding: 8px;border-radius: 6px;margin-top: 8px;">
+      <div class="row">                           
+        <div class="col-2 d-flex">
+          <div class="form-group" style="display: flex;gap: 10px;">
+            <input type="checkbox"  style="width:15px;" id="custom_recruit"   [ngModelOptions]="{standalone: true}" [(ngModel)]="custom_recruit"       />
+            <label for="custom_recruit" style="margin: 0;display: flex; align-items: center;">Custom Recruit</label>
+          
+          </div>
+          
+         
+        </div>
+       
+        <div class="col-2 d-flex">
+          <div class="form-group" style="display: flex;gap: 10px;">
+            <input type="checkbox"  style="width: 18px;" id="current_us_government_employee"     [ngModelOptions]="{standalone: true}"  [(ngModel)]="usemp"    />
+            <label for="current_us_government_employee" style="margin: 0;display: flex; align-items: center;">Current US Government Employee</label>
+          </div>
+        </div>
+        <div class="col-2 d-flex">
+          <div class="form-group" style="display: flex;gap: 10px;">
+            <input type="checkbox"  style="width: 18px;" id="frontline_us_government_employee"   [ngModelOptions]="{standalone: true}" [(ngModel)]="frontline_us_government_employee"    />
+            <label for="frontline_us_government_employee" style="margin: 0;display: flex; align-items: center;">Frontline US Government Employee</label>
+          </div>
+        </div>
+        <div class="col-2 d-flex">
+          <div class="form-group" style="display: flex;gap: 10px;">
+            <input type="checkbox"  style="width:15px;" id="nonus_government_employee"     [ngModelOptions]="{ standalone: true }" [(ngModel)]="nonus_government_employee" />
+            <label for="nonus_government_employee" style="margin: 0;display: flex; align-items: center;">Non US Government Employee</label>
+          </div>
+        </div> 
+        <div class="col-4" *ngIf="nonus_government_employee">
+          <div class="form-group">
+            <label for="action">Non US Government Employee Geography</label>
+                <ng-select [items]="country" bindLabel="data"     [ngModelOptions]="{standalone: true}"  [(ngModel)]="nonus_government_employee_geo"        ></ng-select> 
+          </div>
+        </div> 
+      </div>
+    </div>
+  </div>
+
+
+
+
+             
+
+
+              <div class="row ">
+                <div class="col-12 margin">
+                  <div class="live-preview flush_accordion">
+                    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                      <ngb-panel id="static-1">
+                        <ng-template ngbPanelTitle class="accordion-header">
+                          <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                              data-bs-target="#gen-ques-collapseOne" aria-expanded="false"
+                            aria-controls="gen-ques-collapseOne">Biography
+                          </button>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <ckeditor [editor]="Editor" [ngModelOptions]="{standalone: true}" [(ngModel)]="biography">
+                          </ckeditor>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row ">
+                <div class="col-12 margin">
+                  <div class="live-preview flush_accordion">
+                    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                      <ngb-panel id="static-1">
+                        <ng-template ngbPanelTitle class="accordion-header">
+                          <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#gen-ques-collapseOne" aria-expanded="false"
+                            aria-controls="gen-ques-collapseOne">Employments
+                          </button>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <div class="row Employment-table ">
+                            <div class="col-12">
+                              <table class="table">
+                                <tr class="table-head">
+                                  <td>network employment id</td>
+                                  <td>company</td>
+                                  <td>position</td>
+                                  <td>responsibilities</td>
+                                  <td>geography</td>
+                                  <td>start month</td>
+                                  <td>start year</td>
+                                  <td>end month</td>
+                                  <td>end year</td>
+                                  <td>Actions</td>
+                                  <td>Isprimary</td>
+                                </tr>
+                                <tr *ngFor="let workdata of workingDetails; let i = index"  >
+                                  <td>{{workdata.network_employment_id}}</td>
+                                  <td>{{workdata.company}}</td>
+                                  <td>{{workdata.position}}</td>
+                                  <td>{{workdata.responsibilities}}</td>
+                                  <td>{{workdata.geography}}</td>
+                                  <td>{{workdata.start_month}}</td>
+                                  <td>{{workdata.start_year}}</td>
+                                  <td>{{workdata.end_month}}</td>
+                                  <td>{{workdata.end_year}}</td>
+                                  <td class="d-flex " style="height: 100%;">
+                                    <i class="bx bx-pencil" (click)="openEditWorkingDetails(workingdetail)"></i>
+                                    <i class="bx bx-trash" (click)="delete(i)"> </i>
+                                    <ng-template #workingdetail let-modal>
+                                      <div class="modal-holder">
+                                        <div class="model-head">
+                                          <label for="">edit details</label>
+                                        </div>
+                                        <div class="model-body">
+                                          <div class="row">
+                                            <div class="col-6 margin-bottom">
+                                              <div class="form-group">
+                                                <label for="">company</label> <br>
+                                                <input type="text" style="width: 100%; height: 38px;"
+                                                  [ngModelOptions]="{standalone: true}" [(ngModel)]="workdata.company">
+                                              </div>
+                                            </div>
+                                            <div class="col-6 margin-bottom">
+                                              <label for="company">position</label> <br>
+                                              <input type="text" style="width: 100%; height: 38px;"
+                                                [ngModelOptions]="{standalone: true}" [(ngModel)]="workdata.position">
+                                            </div>
+                                            <div class="col-6 margin-bottom">
+                                              <label for="company">responsibilities</label> <br>
+                                              <input type="text" style="width: 100%; height: 38px;"
+                                                [ngModelOptions]="{standalone: true}"
+                                                [(ngModel)]="workdata.responsibilities">
+                                            </div>
+                                            <div class="col-6 margin-bottom">
+                                              <label for="company">geography</label> <br>
+                                              <select style="width: 100%; height: 38px;" [ngModelOptions]="{standalone: true}" [(ngModel)]="workdata.geography"   >
+                                                <option *ngFor="let country of countries"   [value]="country">{{ country }}</option>
+                                              </select>
+                                              
+                                            </div>
+                                            <div class="col-6 margin-bottom">
+                                              <label for="company">start month</label> <br>
+                                              <input type="number" style="width: 100%; height: 38px;"
+                                                [ngModelOptions]="{standalone: true}"
+                                                [(ngModel)]="workdata.start_month">
+                                            </div>
+                                            <div class="col-6 margin-bottom">
+                                              <label for="company">start year</label> <br>
+                                              <input type="number" style="width: 100%; height: 38px;"
+                                                [ngModelOptions]="{standalone: true}" [(ngModel)]="workdata.start_year">
+                                            </div>
+                                            <div class="col-6 margin-bottom">
+                                              <label for="company">end month</label> <br>
+                                              <input type="number" style="width: 100%; height: 38px;"
+                                                [ngModelOptions]="{standalone: true}" [(ngModel)]="workdata.end_month">
+                                            </div>
+                                            <div class="col-6 margin-bottom">
+                                              <label for="company">end year</label> <br>
+                                              <input type="number" style="width: 100%; height: 38px;"
+                                                [ngModelOptions]="{standalone: true}" [(ngModel)]="workdata.end_year">
+                                            </div>
+                                          </div>
+                                          <div style="text-align: center;">
+                                            <button class="btn btn-success" (click)="modal.close()">update and close</button>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                    </ng-template>
+                                  </td>
+                                  <td>
+                                    <input type="radio" name="primary" (click)="getprimary(workdata.network_employment_id)" />
+                                  </td>
+                                </tr>
+
+                              </table>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="live-preview flush_accordion">
+                    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                      <ngb-panel id="static-2">
+                        <ng-template ngbPanelTitle class="accordion-header">
+                          <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#gen-ques-collapseOne" aria-expanded="false"
+                            aria-controls="gen-ques-collapseOne">Screening Responses
+                          </button>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <div *ngFor="let data of screenquestions; let i = index">
+                            <div class="row">
+                              <div class="col-12">{{data.question}}</div>
+                            </div>
+                            <div class="row">
+                              <div class="col-11" style="padding: 10px ;">
+                                <p style="margin: 0px;">{{data.answer}}</p>
+                              </div>
+                              <div class="col-1 " style="padding: 10px ;">
+                                <i class="bx bx-pencil" style="margin-right: 15px;"
+                                  (click)="Editanswer(answerpopup)"></i>
+                                <ng-template #answerpopup>
+                                  <div class="modal-holder">
+                                    <div class="model-body">
+                                      <label for="answer">answer</label>
+                                      <input type="text" id="answer" style="width: 100%; height: 38px; border:0px;"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="data.answer">
+                                      <div style="display:flex; justify-content: space-evenly; margin-top: 15px;">
+                                        <button class="btn btn-success" (click)="modal.close()">update and close</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </ng-template>
+
+                                <i class="bx bx-trash" (click)="screenquestiondelete(i)"> </i>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="update" style="display:flex; justify-content: space-evenly; margin-top: 15px;">
+                    <button class="btn btn-success" (click)="sendgtcEXdata();">send</button>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+
+
+
+
+<ng-template #QA let-modal>
+
+  <div class="row" style="padding:10px; background-color: rgb(204, 236, 226); border-radius: 4px;">
+    <!--main row start-->
+    <div class="col-sm-12" style="margin:10px 0px;">
+      <div class="form-group">
+        <div *ngFor="let data of questions">
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for=""><b>{{ data.question }}?</b></label> <br>
+              <label for=""><b>{{ data.answer }}</b></label> <br>
+              <input type="text" [(ngModel)]="data.answer" style="width:100%; height: 38px;">
+            </div>
+          </div>
+
+
+        </div>
+        <button (click)="submitResponses()">Submit</button>
+
+      </div>
+    </div>
+
+  </div>
+</ng-template>
+
+
+<!-- popup added -->
+<hr>
+<div class="col" style="display:none;">
+  <button class="btn btn-primary" (click)="sentclient2(mckinsey2)"> Change Expert Slot</button>
+  <ng-template #mckinsey2 let-modal>
+
+    <div class="row" style="padding:10px; background-color: rgb(204, 236, 226); border-radius: 4px;">
+      <!--main row start-->
+      <div class="col-sm-12" style="margin:10px 0px;">
+        <div class="form-group">
+          <label for="">status</label> <br>
+          <input type="text" placeholder="status" style="width: 100%;  height: 38px;">
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label for="">Proposed Duration</label> <br>
+          <input type="number" placeholder="proposed_duration" style="width: 100%;  height: 38px;">
+        </div>
+      </div>
+      <div class="col-sm-12" style="margin:10px 0px;">
+        <div class="form-group">
+          <label for="">Actual Duration</label> <br>
+          <input type="number" placeholder="actual_duration" style="width: 100%;  height: 38px;">
+        </div>
+      </div>
+      <div class="col-sm-12" style="text-align: center;">
+        <button class="btn btn-primary">Send</button>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<!--popup end-->
+<!-- poopup added -->
+<div class="col" style="display:none;">
+  <button class="btn btn-primary" (click)="sentclient3(mckinsey3)"> Send Invoice</button>
+  <ng-template #mckinsey3 let-modal>
+
+    <div class="row" style="padding:10px; background-color: rgb(204, 236, 226); border-radius: 4px;">
+      <!--main row start-->
+      <div class="col-sm-12" style="margin:10px 0px;">
+        <div class="form-group">
+          <label for="">invoice_number</label> <br>
+          <input type="text" placeholder="invoice_number" style="width: 100%;  height: 38px;">
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label for="">supplier_name</label> <br>
+          <input type="text" placeholder="supplier_name" style="width: 100%;  height: 38px;">
+        </div>
+      </div>
+      <div class="col-sm-12" style="margin:10px 0px;">
+        <div class="form-group">
+          <label for="">invoice_amount</label> <br>
+          <input type="number" placeholder="invoice_amount" style="width: 100%; height: 38px;">
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label for="">pdf_link</label> <br>
+          <input type="text" placeholder="pdf_link" style="width: 100%; height: 38px;">
+        </div>
+      </div>
+      <div class="col-sm-12" style="margin:10px 0px;">
+        <div class="form-group">
+          <label for="">currency</label> <br>
+          <input type="text" placeholder="currency" style="width: 100%; height: 38px;">
+        </div>
+      </div>
+      <div class="col-sm-12" style="text-align: center;">
+        <button class="btn btn-primary">ADD</button>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<!--popup end-->
+<!-- poopup added -->
+<div class="col" style="display:none;">
+  <button class="btn btn-primary" (click)="sentclient4(mckinsey4)"> Send Time Slot</button>
+  <ng-template #mckinsey4x let-modal>
+    <div class="row main_row">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="">Network_call_id</label>
+              <input type="text" class="form-control" placeholder="yaO9GdDUJq" formControlName=" ">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="">Network_expert_id</label>
+              <input type="text" class="form-control" placeholder="YPmfpNXWlN " formControlName=" ">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="">Network_workstream_id</label>
+              <input type="text" class="form-control" placeholder="6l8CLPxuRU " formControlName=" ">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="">Status</label>
+              <input type="text" class="form-control" placeholder="propose_availability " formControlName=" ">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="">Duration </label>
+              <input type="number" class="form-control" placeholder="Duration " formControlName=" ">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="">Scheduled_at </label>
+              <input type="number" class="form-control" placeholder="Scheduled_at " formControlName=" ">
+            </div>
+          </div>
+        </div>
+        <div class="row" style="margin: 6px 0px; font-size: 15px;"><!--date and time row start-->
+          <div class="col-sm-12">
+            <strong> Availability</strong> <br>
+            <div *ngFor="let message of selectedslots">
+              <div class="alert alert-primary alert-border-left alert-dismissible fade show" role="alert">
+                <i class="ri-user-smile-line me-3 align-middle"></i> <strong>{{ message.message}}</strong>
+                <button type="button" class="btn-close" ></button>
+              </div>
+
+
+              <!-- <span></span> -->
+            </div>
+            <!--edit start-->
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-5">
+
+            <label for="">Date </label> <br>
+            <input type="date" [(ngModel)]="value" class="form-control" (keyup.enter)="sendval()"
+              style="width:100%; height: 38px;">
+
+          </div>
+          <div class="col-sm-5">
+
+            <label for="">Time</label>
+            <input [(ngModel)]="value2" type="time" class="form-control" (keyup.enter)="sendval()">
+
+          </div>
+          <div class="col-sm-2">
+            <br>
+            <button type="submit" style="margin-top: 7px;" class="btn btn-primary" (click)="sendval()">ADD</button>
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <button type="submit" style="margin-top: 7px;" class="btn btn-primary">Send</button>
+
+    </div>
+
+  </ng-template>
+</div>
+<!--popup end   style="display:none;"-->
+<!--popup start-->
+<div class="col" style="margin-bottom: 10px;display:none;">
+
+  <button class="btn btn-primary" (click)="sentclient5(mckinsey5)">Send Call Details</button>
+  <ng-template #mckinsey5 let-modal>
+    <div class="row" style=" background-color:  rgb(204, 236, 226); border-radius:4px; padding:10px 0px;">
+      <div class="col-sm-12">
+        <div class="row"><!--div start-->
+          <div class="col-sm-12" style="margin-bottom: 10PX;">
+            <div class="form-group">
+              <label for=""><b>Call ID</b></label>
+              <input type="number" placeholder="ID" style="width:100%; height: 38px;">
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="live-preview">
+              <ngb-accordion #acc="ngbAccordion" activeIds="static-1" [closeOthers]="true">
+                <ngb-panel id="static-1">
+                  <ng-template ngbPanelTitle class="accordion-header">
+                    <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#gen-ques-collapseOne" aria-expanded="false" aria-controls="gen-ques-collapseOne">
+                      Tracks
+                    </button>
+                  </ng-template>
+
+                  <ng-template ngbPanelContent>
+                    <div class="card" style="background-color: rgb(204, 236, 226); padding: 10px;">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for=""><b>ID</b></label> <br>
+                            <input type="number" placeholder="id" style="width:100%; height: 38px;">
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for=""><b>File</b></label>
+                            <input type="file" style="width:100%; height: 38px;">
+                          </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label for=""><b>Role</b></label> <br>
+                            <input type="text" placeholder="name of the client user" style="width:100%; height: 38px;">
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for=""><b>start</b></label> <br>
+                            <input type="number" placeholder="start" style="width:100%; height: 38px;">
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for=""><b>End</b></label> <br>
+                            <input type="number" placeholder="End" style="width:100%; height: 38px;">
+                          </div>
+                        </div>
+
+
+                      </div> <!--row end-->
+                    </div> <!--card end-->
+                    <div class="card" style="background-color: rgb(204, 236, 226); padding: 10px;">
+
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for=""><b>ID</b></label> <br>
+                            <input type="number" placeholder="id" style="width:100%; height: 38px;">
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for=""><b>File</b></label>
+                            <input type="file" style="width:100%; height: 38px;">
+                          </div>
+                        </div>
+
+                        <div class="col-12">
+                          <div class="form-group">
+                            <label for=""><b>Role</b></label> <br>
+                            <input type="text" placeholder="expert" style="width:100%; height: 38px;">
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for=""><b>start</b></label> <br>
+                            <input type="number" placeholder="start" style="width:100%; height: 38px;">
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for=""><b>End</b></label> <br>
+                            <input type="number" placeholder="End" style="width:100%; height: 38px;">
+                          </div>
+                        </div>
+
+
+                      </div>
+                      <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-12" style="text-align: center;">
+                          <button class="btn btn-primary">Send</button>
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </ng-template>
+                </ngb-panel>
+              </ngb-accordion>
+            </div>
+          </div>
+        </div><!--div End-->
+      </div>
+    </div>
+  </ng-template>
+
+</div>
+<!--popup end-->
+
+
+<hr>
+
+
+<ng-template #mckinsey1 let-modal>
+
+  <div class="row" style="padding:10px; background-color: rgb(204, 236, 226); border-radius: 4px;">
+    <!--main row start-->
+    <div class="col-sm-12" style="margin:10px 0px;" >
+      <div class="form-group"  >
+        <label for="">meeting_url</label> <br>
+        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="meeting_url"
+          style="width: 100%; height: 38px;">
+      </div>
+    </div>
+    <div class="col-sm-12" >
+      <div class="form-group"  >
+        <label for="">phone_numbers</label> <br>
+        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="phone_numbers"
+          style="width: 100%;  height: 38px;">
+      </div>
+    </div>
+    <div class="col-sm-12" style="margin:10px 0px;" >
+      <div class="form-group"  >
+        <label for="">instructions</label> <br>
+        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="instructions"
+          style="width: 100%;  height: 38px;">
+      </div>
+    </div>
+    <div class="col-sm-12" style="text-align: center;">
+      <button class="btn btn-primary">ADD</button>
+    </div>
+    <div class="update">
+      <button class="btn btn-success" (click)="mckinsey1sendbtn()">send</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #mckinsey2 let-modal>
+
+  <div class="row" style="padding:10px; background-color: rgb(204, 236, 226); border-radius: 4px;">
+    <!--main row start-->
+    <div class="col-sm-12" style="margin:10px 0px;">
+      <div class="form-group">
+        <label for="">status</label> <br>
+        <input type="text" placeholder="status" [ngModelOptions]="{standalone: true}" [(ngModel)]="status"
+          style="width: 100%;  height: 38px;">
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="">proposed_duration</label> <br>
+        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="proposed_duration"
+          style="width: 100%;  height: 38px;">
+      </div>
+    </div>
+    <div class="col-sm-12" style="margin:10px 0px;">
+      <div class="form-group">
+        <label for="">actual_duration</label> <br>
+        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="actual_duration"
+          style="width: 100%;  height: 38px;">
+      </div>
+    </div>
+    <div class="col-sm-12" style="text-align: center;">
+      <button class="btn btn-primary">ADD</button>
+    </div>
+    <div class="update">
+      <button class="btn btn-success" (click)="mckinsey2sendbtn()">send</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #mckinsey3 let-modal>
+
+  <div class="row" style="padding:10px; background-color: rgb(204, 236, 226); border-radius: 4px;">
+    <!--main row start-->
+    <div class="col-sm-12" style="margin:10px 0px;">
+      <div class="form-group">
+        <label for="">invoice_number</label> <br>
+        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="invoice_number"
+          style="width: 100%;  height: 38px;">
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="">supplier_name</label> <br>
+        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="supplier_name"
+          style="width: 100%;  height: 38px;">
+      </div>
+    </div>
+    <div class="col-sm-12" style="margin:10px 0px;">
+      <div class="form-group">
+        <label for="">invoice_amount</label> <br>
+        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="invoice_amount"
+          style="width: 100%; height: 38px;">
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="">pdf_link</label> <br>
+        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="pdf_link"
+          style="width: 100%; height: 38px;">
+      </div>
+    </div>
+    <div class="col-sm-12" style="margin:10px 0px;">
+      <div class="form-group">
+        <label for="">currency</label> <br>
+        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="currency"
+          style="width: 100%; height: 38px;">
+      </div>
+    </div>
+    <div class="col-sm-12" style="text-align: center;">
+      <button class="btn btn-primary">ADD</button>
+    </div>
+    <div class="update">
+      <button class="btn btn-success" (click)="mckinsey3sendbtn()">send</button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #cancelwin let-modal>
+
+  <div class="row" style="padding:10px; background-color: rgb(204, 236, 226); border-radius: 4px;">
+    <!--main row start-->
+    <div class="col-sm-12" style="margin:10px 0px;">
+      <div class="form-group">
+        <label for="">Cancel Event</label> <br>
+        
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="">Are you sure you want to cancel this event?</label> <br>
+      </div>
+    </div>
+    <div class="col-sm-12" style="margin:10px 0px;">
+      <div class="form-group">
+        <label for="">Reason</label> <br>
+        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="reason"
+          style="width: 100%;  height: 38px;">
+      </div>
+    </div>
+  
+    <div class="update">
+      <button class="btn btn-success" (click)="modal.close()">close without cancelling</button><button class="btn btn-success" (click)="cancellcall()">cancel and close</button>
+    </div>
+  </div>
+</ng-template>
+
+
+
+<ng-template #mckinsey4 let-modal>
+  
+  <div class="row main_row">
+    <div class="col-12"  >
+      <div class="row" style="display:none;">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="">Network_call_id</label>
+            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="Network_call_id">
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="">Network_expert_id</label>
+            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="Network_expert_id">
+          </div>
+        </div>
+      </div>
+
+      <div class="row margin">
+        <div class="col-2">
+          <div class="form-group">
+          </div>
+        </div>
+        <div class="col-8">
+
+          <div class="form-group">
+            <label for="action">Network Workstream<span class="required-asterisk">*</span></label>
+            <ng-select [items]="workstreams" bindLabel="name" bindValue="id" placeholder="Select a workstream"
+              id="clientId" [disabled]="true" aria-disabled="true"   name="clientId" [(ngModel)]="selectedws">
+            </ng-select>
+          </div>
+
+        </div>
+        <div class="col-2">
+          <div class="form-group">
+          </div>
+        </div>
+      </div>
+
+      <div class="row"  style="display:none;">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="">Network_workstream_id</label>
+            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="Network_workstream_id">
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="">Status</label>
+            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="status">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label for="">Duration </label>
+            <input type="number" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="Duration">
+          </div>
+        </div>
+        <div class="col-sm-12"  *ngIf="isSchedule==true || isreshedule==true" >
+          <div class="form-group">
+            <label for=""  *ngIf="isSchedule==true"   >Scheduled At </label>
+            <label for=""  *ngIf="isreshedule==true"   >Re Scheduled at </label>
+            <input type="datetime-local" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="Scheduled_at">
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isSchedule==false && isreshedule==false" class="row" style="margin: 6px 0px; font-size: 15px;"><!--date and time row start-->
+        <div class="col-sm-12">
+          <strong> Availability</strong> <br>
+          <div *ngFor="let message of selectedslots">
+            <div class="alert alert-primary alert-border-left alert-dismissible fade show" role="alert">
+              <i class="ri-user-smile-line me-3 align-middle"></i> <strong>{{ message.date}}</strong>
+              <button type="button" class="btn-close"(click)="delslot(message.timestamp)"></button>
+            </div>
+
+
+            <!-- <span></span> -->
+          </div>
+          <!--edit start-->
+
+        </div>
+      </div>
+     
+      
+      <div class="row" *ngIf="isSchedule==false && isreshedule==false"  >
+        <div class="col-sm-5">
+
+          <label for="">Date </label> <br>
+          <input type="date" [(ngModel)]="value" class="form-control" 
+            style="width:100%; height: 38px;">
+
+        </div>
+        <div class="col-sm-5">
+
+          <label for="">Time</label>
+          <input [(ngModel)]="value2" type="time" class="form-control" >
+
+        </div>
+        <div class="col-sm-2">
+          <br>
+          <button type="submit" style="margin-top: 7px;" class="btn btn-primary" (click)="sendval()">ADD</button>
+        </div>
+       
+      </div>
+      <br>
+      <div class="row" style="display:none;">  
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label for="">Meeting URL </label>
+            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="meetingurl">
+          </div>
+        </div>
+      </div>
+      <div class="row" style="display:none;">  
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label for="">Phone Numbers - ex.-4569871236,458792565</label>
+            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="meetingph">
+          </div>
+        </div>
+      </div>
+      <div class="row" style="display:none;">  
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label for="">Instructions</label>
+            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="meetinginstructions">
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <div class="update">
+        <button class="btn btn-success" (click)="mckinseytimeslotsend()">send</button>
+      </div>
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #mckinsey5 let-modal>
+  <div class="row" style=" background-color:  rgb(204, 236, 226); border-radius:4px; padding:10px 0px;">
+    <div class="col-sm-12">
+      <div class="row"><!--div start-->
+        <div class="col-sm-12" style="margin-bottom: 10PX;">
+          <div class="form-group">
+            <label for=""><b>Call ID</b></label>
+            <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="Call_id"
+              style="width:100%; height: 38px;">
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="live-preview">
+            <ngb-accordion #acc="ngbAccordion" activeIds="static-1" [closeOthers]="true">
+              <ngb-panel id="static-1">
+                <ng-template ngbPanelTitle class="accordion-header">
+                  <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#gen-ques-collapseOne" aria-expanded="false" aria-controls="gen-ques-collapseOne">
+                    Tracks
+                  </button>
+                </ng-template>
+
+                <ng-template ngbPanelContent>
+                  <div class="card" style="background-color: rgb(204, 236, 226); padding: 10px;">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for=""><b>ID</b></label> <br>
+                          <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="id"
+                            style="width:100%; height: 38px;">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for=""><b>File</b></label>
+                          <input type="file" [ngModelOptions]="{standalone: true}" [(ngModel)]="File"
+                            style="width:100%; height: 38px;">
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label for=""><b>Role</b></label> <br>
+                          <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="Role"
+                            style="width:100%; height: 38px;">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for=""><b>start</b></label> <br>
+                          <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="start"
+                            style="width:100%; height: 38px;">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for=""><b>End</b></label> <br>
+                          <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="End"
+                            style="width:100%; height: 38px;">
+                        </div>
+                      </div>
+
+
+                    </div> <!--row end-->
+                  </div> <!--card end-->
+                  <div class="card" style="background-color: rgb(204, 236, 226); padding: 10px;">
+
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for=""><b>ID</b></label> <br>
+                          <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="id"
+                            style="width:100%; height: 38px;">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for=""><b>File</b></label>
+                          <input type="file" [ngModelOptions]="{standalone: true}" [(ngModel)]="File"
+                            style="width:100%; height: 38px;">
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label for=""><b>Role</b></label> <br>
+                          <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="Role"
+                            style="width:100%; height: 38px;">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for=""><b>start</b></label> <br>
+                          <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="start"
+                            style="width:100%; height: 38px;">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for=""><b>End</b></label> <br>
+                          <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="End"
+                            style="width:100%; height: 38px;">
+                        </div>
+                      </div>
+
+
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                      <div class="col-sm-12" style="text-align: center;">
+                        <button class="btn btn-primary">ADD</button>
+                      </div>
+                      <div class="update">
+                        <button class="btn btn-success" (click)="mckinsey5sendbtn()">send</button>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </ng-template>
+              </ngb-panel>
+            </ngb-accordion>
+          </div>
+        </div>
+      </div><!--div End-->
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #collectionMCKpopup let-model>
+  <div class="modal-holder">
+    <div class="model-head">
+      <label>status: {{collectionMCK["status"]}}</label>
+    </div>
+    <div class="model-body">
+      <div class="row">
+        <div class="col-6">
+          <label for="status">compliance</label>
+        </div>
+        <div class="col-6">
+          <label>{{collectionMCK.compliance}}</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <label for="status">scheduled at</label>
+        </div>
+        <div class="col-6">
+          <label>{{changedate(collectionMCK['scheduled_at'])}}</label>
+        </div>
+      </div>
+      <div class="row" *ngIf="collectionMCK['meeting_url']!=null">
+        <div class="col-6">
+          <label for="status">meeting url</label>
+        </div>
+        <div class="col-6">
+          <label>
+            <a href="{{collectionMCK['meeting_url']}}" target="_blank" rel="noopener noreferrer">click meeting url</a>
+          </label>
+        </div>
+      </div>
+      <div class="row" *ngIf="collectionMCK['booking_url']!=null">
+        <div class="col-6">
+          <label for="status">booking_url</label>
+        </div>
+        <div class="col-6">
+          <label>
+            <a href="{{collectionMCK['booking_url']}}" target="_blank" rel="noopener noreferrer">click booking_url</a>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <label for="status">passcode</label>
+        </div>
+        <div class="col-6">
+          <label>{{collectionMCK["passcode"]}}</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <label for="status">phone numbers</label>
+        </div>
+        <div class="col-6">
+          <label>{{collectionMCK["phone_numbers"]}}</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <label for="status">instructions</label>
+        </div>
+        <div class="col-6">
+          <label>{{collectionMCK["instructions"]}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #expertreadxx  let-modal id="close">
+  <div class="modal-holder">
+    <div class="popuphead">
+      <h4>Expert Details</h4>
+      <button  type="button" aria-hidden="true" class="close"
+        (click)="modal.dismiss('Cross click')">×</button>
+    </div>
+    <form *ngIf="!isLoading">
+      <div class="row">
+        <div class="col-12">
+          <div class="card bg-color">
+            <div class="card-body">
+
+
+              <div class="margin" style="border-radius: 4px; background: #fff; padding: 21px 25px;">
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Network Workstream</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{selectedgtam.selectedws}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">First Name</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{selectedgtam.firstName}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Last Name</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{selectedgtam.lastName}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">phone</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{selectedgtam.contactNo}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Email</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{selectedgtam.primaryEmail}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Current Us Government Employee</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{selectedgtam.phoneCode}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Currency</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{selectedgtam.currency}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Hourly Rate</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{selectedgtam.rate}}</label>
+                  </div>
+                </div>
+              </div>
+              
+              
+              
+
+
+              <div class="row ">
+                <div class="col-12 margin">
+                  <div class="live-preview flush_accordion">
+                    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                      <ngb-panel id="static-1">
+                        <ng-template ngbPanelTitle class="accordion-header">
+                          <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#gen-ques-collapseOne" aria-expanded="false"
+                            aria-controls="gen-ques-collapseOne">Biography
+                          </button>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <textarea style="width: 100%; height:200px;" readonly>{{selectedgtam.biography}}</textarea>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row ">
+                <div class="col-12 margin">
+                  <div class="live-preview flush_accordion">
+                    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                      <ngb-panel id="static-1">
+                        <ng-template ngbPanelTitle class="accordion-header">
+                          <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#gen-ques-collapseOne" aria-expanded="false"
+                            aria-controls="gen-ques-collapseOne">Employments
+                          </button>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <div class="row Employment-table ">
+                            <div class="col-12">
+                              <table class="table">
+                                <tr class="table-head">
+                                  <td>network employment id</td>
+                                  <td>company</td>
+                                  <td>position</td>
+                                  <td>responsibilities</td>
+                                  <td>geography</td>
+                                  <td>start month</td>
+                                  <td>start year</td>
+                                  <td>end month</td>
+                                  <td>end year</td>
+                                </tr>
+                                <tr *ngFor="let workdata of workingDetails; let i = index">
+                                  <td>{{workdata.network_employment_id}}</td>
+                                  <td>{{workdata.company}}</td>
+                                  <td>{{workdata.position}}</td>
+                                  <td>{{workdata.responsibilities}}</td>
+                                  <td>{{workdata.geography}}</td>
+                                  <td>{{workdata.start_month}}</td>
+                                  <td>{{workdata.start_year}}</td>
+                                  <td>{{workdata.end_month}}</td>
+                                  <td>{{workdata.end_year}}</td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="live-preview flush_accordion">
+                    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                      <ngb-panel id="static-2">
+                        <ng-template ngbPanelTitle class="accordion-header">
+                          <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#gen-ques-collapseOne" aria-expanded="false"
+                            aria-controls="gen-ques-collapseOne">Screening Responses
+                          </button>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <div *ngFor="let data of screenquestions; let i = index">
+                            <div class="row">
+                              <div class="col-12">{{data.question}}</div>
+                            </div>
+                            <div class="row">
+                              <div class="col-12" style="padding: 10px ;">
+                                <p style="margin: 0px;">{{data.answer}}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="update" style="display:flex; justify-content: space-evenly; margin-top: 15px;">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #clientmsgs let-modal>
+  <div class="modal-holder">
+    <div class="modal-header p-2" style=" background: #3577f1;">
+      <h5 class="modal-title mt-0" style="color: #fff; text-transform: capitalize;"> Client Communications</h5>
+      <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')" style="font-size: 15px;"></button>
+    </div>
+    <div style="height: 450px; overflow-y: auto; overflow-x: hidden;padding: 15px 0px; 
+    background: linear-gradient(300deg, #004cff40, white);">
+      <div class="bodycontain">
+        <div *ngFor="let data Of sentAt">
+          <label class="head-label badge text-bg-danger m-1">{{changedate1(data.sentAt)}}</label>
+          <div class="row" *ngIf="data.status!=null && data.status!='' && data.status!=undefined">
+            <div class="col-4">
+              <label>status </label>
+            </div>
+            <div class="col-8">{{data.status}}</div>
+          </div>
+          <div class="row" *ngIf="data.compliance!=null && data.compliance!='' && data.compliance!=undefined">
+            <div class="col-4">
+              <label>compliance </label>
+            </div>
+            <div class="col-8">{{data.compliance}}</div>
+          </div>
+          <div class="row" *ngIf="data.meeting_url!=null && data.meeting_url!='' && data.meeting_url!=undefined">
+            <div class="col-4">
+              <label>meeting url</label>
+            </div>
+            <div class="col-8"><a href="{{data.meeting_url}}" style="color: #003bff;" target="_blank"> click meeting</a></div>
+          </div>
+          <div class="row" *ngIf="data.booking_url!=null && data.booking_url!='' && data.booking_url!=undefined">
+            <div class="col-4">
+              <label>booking url</label>
+            </div>
+            <div class="col-8"><a href="{{data.booking_url}}" style="color: #003bff;" target="_blank"> click booking</a></div>
+          </div>
+          <div class="row" *ngIf="data.phone_numbers!=null && data.phone_numbers!='' && data.phone_numbers!=undefined">
+            <div class="col-4">
+              <label>phone number</label>
+            </div>
+            <div class="col-8">{{data.phone_numbers}}</div>
+          </div>
+          <div class="row" *ngIf="data.passcode!=null && data.passcode!='' && data.passcode!=undefined">
+            <div class="col-4">
+              <label>passcode</label>
+            </div>
+            <div class="col-8">{{data.passcode}}</div>
+          </div>
+          <div class="row" *ngIf="data.instructions!=null && data.instructions!='' && data.instructions!=undefined">
+            <div class="col-4">
+              <label>instructions</label>
+            </div>
+            <div class="col-8">{{data.instructions}}</div>
+          </div>
+          <div class="row" *ngIf="data.canceled_at!=null && data.canceled_at!='' && data.canceled_at!=undefined">
+            <div class="col-4">
+              <label>canceled at</label>
+            </div>
+            <div class="col-8">{{data.canceled_at}}</div>
+          </div>
+          <div class="row" *ngIf="data.cancel_reason!=null && data.cancel_reason!='' && data.cancel_reason!=undefined">
+            <div class="col-4">
+              <label>cancel reason</label>
+            </div>
+            <div class="col-8">{{data.cancel_reason}}</div>
+          </div>
+          <div class="row" *ngIf="data.scheduled_at!=null && data.scheduled_at!='' && data.scheduled_at!=undefined">
+            <div class="col-4">
+              <label>scheduled at</label>
+            </div>
+            <div class="col-8">{{scheduleddate(data.scheduled_at)}}</div>
+          </div>
+          <div class="row"> <!--*ngIf="data.start!=null && data.start!='' && data.start!=undefined"-->
+            <div class="col-4">
+              <label>availability</label>
+            </div>
+            <div class="col-8">
+              <div *ngFor="let datas of data.availability" style="margin-bottom: 10px;">
+                <label style="margin: 0px;">{{availabilitydate(datas.start)}}</label>
+                <div class="row">
+                  <div class="col-3">window</div>
+                  <div class="col-9">{{datas.window}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #expertread  let-modal>
+  <div class="modal-header p-3 bg-soft-info">
+    <h5 class="modal-title">Expert Details</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form *ngIf="!isLoading">
+      <div class="row">
+        <div class="col-12">
+          <div class="card bg-color">
+            <div class="card-body">
+
+
+              <div class="margin" style="border-radius: 4px; background: #fff; padding: 21px 25px;">
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Network Workstream</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{sentExpertData.selectedws}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">First Name</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{sentExpertData.firstName}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Last Name</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{sentExpertData.lastName}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">phone</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{sentExpertData.contactNo}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Email</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{sentExpertData.primaryEmail}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Currency</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{sentExpertData.currency}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Current Us Government Employee</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{sentExpertData.current_us_government_employee}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Rate Card</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{sentExpertData.geographical_rate_card}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Rate Multiplier</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{sentExpertData.rate_multiplier}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Hourly Rate</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{sentExpertData.hourly_rate}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Custom Recruit</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{sentExpertData.custom_recruit}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Frontline Us Government Employee</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{sentExpertData.frontline_us_government_employee}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Nonus Government Employee</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{sentExpertData.nonus_government_employee}}</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="col-6">
+                    <label for="action">Nonus Government Employee Geography</label>
+                  </div>
+                  <div class="col-6">
+                    <label for="">{{sentExpertData.nonus_government_employee_geography}}</label>
+                  </div>
+                </div>
+              </div>
+              
+              
+              
+
+
+              <div class="row ">
+                <div class="col-12 margin">
+                  <div class="live-preview flush_accordion">
+                    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                      <ngb-panel id="static-1">
+                        <ng-template ngbPanelTitle class="accordion-header">
+                          <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#gen-ques-collapseOne" aria-expanded="false"
+                            aria-controls="gen-ques-collapseOne">Biography</button>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <div [innerHTML]="sentExpertData.biography"></div>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row ">
+                <div class="col-12 margin">
+                  <div class="live-preview flush_accordion">
+                    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                      <ngb-panel id="static-1">
+                        <ng-template ngbPanelTitle class="accordion-header">
+                          <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#gen-ques-collapseOne" aria-expanded="false"
+                            aria-controls="gen-ques-collapseOne">Employments
+                          </button>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <div class="row Employment-table">
+                            <div class="col-12">
+                              <table class="table table-striped table-hover">
+                                <tr class="table-head">
+                                  <td>network employment id</td>
+                                  <td>company</td>
+                                  <td>position</td>
+                                  <td>responsibilities</td>
+                                  <td>geography</td>
+                                  <td>start month</td>
+                                  <td>start year</td>
+                                  <td>end month</td>
+                                  <td>end year</td>
+                                </tr>
+                                <tr *ngFor="let workdata of sentExpertData.employments; let i = index">
+                                  <td>{{workdata.network_employment_id}}</td>
+                                  <td>{{workdata.company}}</td>
+                                  <td>{{workdata.position}}</td>
+                                  <td>{{workdata.responsibilities}}</td>
+                                  <td>{{workdata.geography}}</td>
+                                  <td>{{workdata.start_month}}</td>
+                                  <td>{{workdata.start_year}}</td>
+                                  <td>{{workdata.end_month}}</td>
+                                  <td>{{workdata.end_year}}</td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="live-preview flush_accordion">
+                    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                      <ngb-panel id="static-2">
+                        <ng-template ngbPanelTitle class="accordion-header">
+                          <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#gen-ques-collapseOne" aria-expanded="false"
+                            aria-controls="gen-ques-collapseOne">Screening Responses
+                          </button>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <div *ngFor="let data of sentExpertData.screenquestions; let i = index">
+                            <div class="row">
+                              <div class="col-12">{{i+1}}. {{data.question}}</div>
+                            </div>
+                            <div class="row">
+                              <div class="col-12" style="padding: 10px ;">
+                                <p style="margin: 0px;">{{data.answer}}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="update" style="display:flex; justify-content: space-evenly; margin-top: 15px;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+
+<ng-template #Genericpopup let-modal>
+  <div class="modal-header p-3 bg-soft-info">
+      <h5 class="modal-title">Generic List</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+          <table class="table table-bordered table-striped table-hover">
+              <thead>
+                <tr>
+                  <th style="width: 1%;">s.no</th>
+                  <ng-container *ngFor="let field of columns">
+                      <th>{{field}}</th>
+                  </ng-container>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let item of KeyWordsListArray; let i=index" style="cursor: pointer;" (click)="ClientListClick(item._id)">
+                      <td>{{i+1}}</td>
+                      <ng-container *ngFor="let field of columns">
+                          <td > {{item[field]}} </td>                          
+                      </ng-container>
+                      <td > <a  target="_blank"  type="button" [routerLink]="['/projectsall/project/', item._id]" class="btn btn-outline-link bg-white px-3">Open Project</a></td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+    </div>
+    <style>
+      h4{
+        margin: 0px -16px 15px;
+        border-bottom: 1px solid #958f8f;
+        padding: 0px 16px 6px;
+        text-transform: capitalize;
+        display: flex;
+        align-items: center;
+      }
+      .btngroup
+      {
+          display: flex;
+          justify-content: center;
+          gap: 11px;
+      }
+      .table{
+          text-align: center;
+          thead{
+              background: #b1d6ed;
+              font-weight: 600;
+              text-transform: capitalize;
+              td{
+                  padding: 10px;
+              }
+          }
+      }
+    </style>
+    <!-- <app-generic-list [data]="genericdata" [api]="'https://middle.krsherpa.com/projects/projects/search'" [columns]="['name','created_at']" [popupapi]="'/projectsall/project'"></app-generic-list> -->
+  </div>
+</ng-template>

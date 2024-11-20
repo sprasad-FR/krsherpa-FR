@@ -1,0 +1,406 @@
+<div style="margin-top:-25px;" >
+  <div class="d-flex justify-content-center flex-nowrap">
+   <div  >
+                
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref active" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/client-invoice" href="/accounting/client-invoice">Client Billing</a>
+     
+   </div>
+   <div  >
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/expert-invoice" href="/accounting/expert-invoice">Expert Payments</a>
+   
+   </div>
+   <div  >
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/incentives" href="/accounting/incentives"> Incentives</a>
+   
+   </div>
+   <div  >
+    
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/Taxes" href="/accounting/Taxes"> Client Taxes</a>
+  
+   </div>
+   <div  >
+    
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/Miscellaneous" href="/accounting/Miscellaneous"> Miscellaneous Entries</a>
+  
+   </div>
+   <div  >
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/msaClients" href="/accounting/msaClients"> MSA Clients</a>
+  
+   </div>
+ 
+ 
+ </div>
+ </div>
+
+
+<div class="container-fluid">
+  <!-- <app-page-title title="MSA Clients"></app-page-title> -->
+
+  <!-- <app-loader></app-loader> -->
+
+  <div *ngIf="roles != 'client'" class="row mb-md-2">
+    <div class="col-sm-12 col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="form-group mb-4">
+            <label>Select Client <span class="required-asterisk">*</span> </label>
+            <ng-select
+              name="clientName"
+              id="clientName"
+              [items]="clientList"
+              bindLabel="companyName"
+              bindValue="id"
+              [multiple]="false"
+              [closeOnSelect]="true"
+              [selectableGroup]="false"
+              placeholder="Select Client"
+              (change)="selectedClient(ClientName)"
+              [(ngModel)]="ClientName"
+            >
+            </ng-select>
+          </div>
+
+          <div class="row">
+                      
+                      <div class="col-6">
+                        <div class="form-group">
+                          <label>Year </label>
+
+ <ng-select
+              name="fyear"
+              id="fyear"
+              [items]="years"
+             
+              [multiple]="false"
+              [closeOnSelect]="true"
+              [selectableGroup]="false"
+              placeholder="Select From Year"
+              
+              [(ngModel)]="fyear"
+            >
+            </ng-select>
+                         
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        
+                      </div>
+  
+                    
+    </div>
+    <div class="row">
+         <div class="col-6">
+</div><div class="col-2">
+              
+              </div>
+             <div class="col-4">
+               <button type="button" class="btn btn-success" (click)="resetform()">Reset</button>
+               <button type="submit" class="btn btn-success" (click)="getInv()">Get Invoices</button>
+              </div>
+       </div>
+          <div class="row mt-3" >
+            <div class="col-lg-12">
+              <ul ngbNav #customNav="ngbNav" [activeId]="route.fragment | async" class="nav-tabs nav-tabs-custom">
+                <li [ngbNavItem]="'unpaid'">
+                  <a ngbNavLink routerLink="." [fragment]="'unpaid'">
+                    <span class="d-none d-sm-block">MSA Transactions</span>
+                  </a>
+                  <ng-template ngbNavContent>
+                    <ng-template [ngTemplateOutlet]="TabContent"></ng-template>
+                  </ng-template>
+                </li>
+
+                <li [ngbNavItem]="'paid'">
+                  <a ngbNavLink routerLink="." [fragment]="'paid'">
+                    <span class="d-none d-sm-block"></span>
+                  </a>
+                  <ng-template ngbNavContent>
+                    <ng-template [ngTemplateOutlet]="TabContent1"></ng-template>
+                  </ng-template>
+                </li>
+              </ul>
+            </div>
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="roles == 'client'" class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+         
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Unpaid Invoice List -->
+  <ng-template #TabContent>
+    <div class="row mb-md-2">
+      <div class="table-responsive">
+        <ng-container >
+        
+  <!------ new table -->
+  <div class=""   *ngIf="clientList?.length > 0" >
+  
+    <div class="col-xl-12">
+<div class="divTable blueTable">
+
+
+
+
+<div class="divTableHeading">
+<div class="divTableRow">
+
+  <div class="divTableHead">#</div>
+  <div class="divTableHead">Client Name</div>
+  <div class="divTableHead">Client Type</div>
+  <!-- <div class="divTableHead">Contact Person</div> -->
+  <div class="divTableHead">MSA Value</div>
+  <div class="divTableHead">Service Start</div>
+  <!-- <div class="divTableHead">Sales Owner</div> -->
+  <div class="divTableHead">MSA Value Used</div>
+  <div class="divTableHead">Balance</div>
+ 
+
+</div>
+</div>
+
+
+
+
+<div class="divTableBody">
+
+<div class="divTableRow"  *ngFor="let client of clientList; let i = index" >
+
+  
+  
+  <div class="divTableCell">
+    {{ i + 1 }}
+  </div>
+  <div class="divTableCell">
+    <div
+      class="d-flex align-items-center pointer"
+      data-toggle="tooltip"
+      title="Client Details"
+      [routerLink]="['/clients/show', client.id]"
+      routerLinkActive="active"
+    >
+      <div class="avatar-xs mr-2">
+        <span class="avatar-title rounded-circle">
+          {{ client?.companyName | getInitials: 2 }}
+        </span>
+      </div>
+
+      <div class="text-wrap">
+        {{ client?.companyName ? client?.companyName : '--' }}
+      </div>
+    </div>
+  </div>
+  <!-- <div class="divTableCell">
+    {{
+      getContactPerson(client.leadContactId)
+        ? getContactPerson(client.leadContactId)
+        : getClientContactPerson(client?.clientUser)
+    }}
+  </div> -->
+  <div class="divTableCell">
+    {{ client?.companyType ? client?.companyType : '--' }}
+  </div>
+  <div class="divTableCell">
+    {{ client?.msaValue ? client?.msaValue : '--' }}
+  </div>
+  <div class="divTableCell">
+    {{ client?.serviceStartDate | localDateTime }}
+  </div>
+  <div class="divTableCell">
+    --
+  </div>
+  <div class="divTableCell">
+    --
+  </div>
+  <div class="divTableCell">
+    <div class="table-actions d-flex justify-content-start">
+     <a >View</a>
+      <!---- <a *ngIf="client.subPnlHeadId" data-toggle="tooltip" class="text-blue ml-3">
+        <i class="bx bx-flag" type="solid"></i>
+      </a> -->
+    </div>
+  </div>
+ 
+
+
+</div>
+
+
+</div>
+</div>
+
+
+
+</div>
+
+</div>
+
+<!------ new table -->
+
+
+
+
+        </ng-container>
+        <ng-container *ngIf="clientList?.length == 0">
+          <p class="text-center mt-5 mb-0">No data available.</p>
+        </ng-container>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Paid Invoice List -->
+  <ng-template #TabContent1>
+    <div class="row mb-md-2">
+      <div class="table-responsive">
+        <ng-container *ngIf="paidInvoiceList?.length > 0">
+          
+        </ng-container>
+        <ng-container *ngIf="paidInvoiceList?.length == 0">
+          <p class="text-center mt-2 mb-0">No data available.</p>
+        </ng-container>
+      </div>
+    </div>
+  </ng-template>
+  <!-- View Invoice Modal -->
+  <ng-template #invoiceDetails let-modal>
+    <div class="modal-header p-2 bg-dark">
+      <h5 class="modal-title mt-0 text-white">Invoice</h5>
+      <button type="button" class="close text-white" aria-hidden="true" (click)="modal.dismiss('Cross click')">
+        ×
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h6 class="text-muted">Invoice No.</h6>
+          <h6>
+            <a href="javascript: void(0);">{{ InvoiceDetails?.invoiceNo }}</a>
+          </h6>
+        </div>
+        <div class="col-md-6 d-flex justify-content-end">
+          <h6 class="text-muted">Date :</h6>
+          <h6 class="ml-2">{{ InvoiceDetails?.invoiceDate | localDateTime: 'DD MMM YYYY' }}</h6>
+        </div>
+      </div>
+      <h6 class="text-muted mt-4">Entity Details</h6>
+      <div class="row mt-2">
+        <div class="col-md-12">
+          <h6 class="text-muted">Name</h6>
+          <h6>{{ entityDetails.name }}</h6>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-12">
+          <h6 class="text-muted">Address</h6>
+          <h6>{{ entityDetails.address }}</h6>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-6">
+          <h6 class="text-muted">Bank Name</h6>
+          <h6>{{ entityDetails.bankName }}</h6>
+        </div>
+        <div class="col-md-6">
+          <h6 class="text-muted">Branch</h6>
+          <h6>{{ entityDetails.branch }}</h6>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-6">
+          <h6 class="text-muted">Account No</h6>
+          <h6>{{ entityDetails.accountNo }}</h6>
+        </div>
+        <div class="col-md-6">
+          <h6 class="text-muted">IFSC Code</h6>
+          <h6>{{ entityDetails.ifscCode }}</h6>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-xl-12 text-right">
+          <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Edit Invoice Modal -->
+  <ng-template #editInvoice let-modal>
+    <div class="modal-header p-2 bg-dark">
+      <h5 class="modal-title mt-0">{{ leadModalTitle }}</h5>
+      <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="text-center row py-5">
+        <div class="col-12 mb-4">Add new events or Remove events from invoice</div>
+        <div class="col-md-8 d-flex mt-4 justify-content-around m-auto">
+          <button type="button" class="btn btn-success" (click)="modal.close(); addNewEvent(newEventModal)">ADD</button>
+          <button type="button" class="btn btn-info px-4" (click)="removeFromInvoice(removeEventModal)">REMOVE</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Add new events Model-->
+  <ng-template #newEventModal role="document" let modal>
+    <div class="modal-header p-2 bg-dark">
+      <h5 class="modal-title mt-0">{{ leadModalTitle }}</h5>
+    </div>
+    <div class="modal-body">
+      <!-- <app-edit-client-invoice [childProp]="clientNinvoiceId"></app-edit-client-invoice> -->
+      <app-edit-client-invoice [dataToEdit]="clienNinvoiceId"></app-edit-client-invoice>
+    </div>
+  </ng-template>
+
+  <!--Remove Events from invoice-->
+  <ng-template #removeEventModal role="document" let modal>
+    <div class="modal-header p-2 bg-dark">
+      <h5 class="modal-title mt-0">{{ leadModalTitle }}</h5>
+    </div>
+    <div class="modal-body">
+      <div class="table-responsive">
+        <table id="basic-datatable" class="table table-bordered cards-table dt-responsive nowrap no-footer dtr-inline">
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" (change)="checkAllRemoveCheckBox($event)" *ngIf="delEventDetails?.length > 1" />
+              </th>
+              <th>#</th>
+              <th>Event Date</th>
+              <th>Client Billable Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="m-2 row-card" *ngFor="let event of delEventDetails; let i = index">
+              <td>
+                <input
+                  type="checkbox"
+                  value="{{ event.id }}"
+                  [(ngModel)]="delEventDetails[i].checked"
+                  *ngIf="delEventDetails?.length > 1"
+                />
+              </td>
+              <td>{{ event.eventId }}</td>
+              <td>{{ event.eventAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}</td>
+              <td>{{ event.clientPayableAmount }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row mb-md-2" *ngIf="delEventDetails?.length > 1">
+        <div class="col-xl-12 mb-1 mt-3 text-right">
+          <button type="submit" class="btn btn-success" (click)="remove()">Remove</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

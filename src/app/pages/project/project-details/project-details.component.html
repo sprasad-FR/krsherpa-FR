@@ -1,0 +1,364 @@
+
+<!-- <div class="container-fluid mt-4">
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="row">
+    <div *ngFor="let stat of statData" class="col-md-2">
+      <app-stat [title]="stat.title" [value]="stat.value" [icon]="stat.icon"></app-stat>
+    </div>
+  </div>
+</div> -->
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-body">
+        <div class="media">
+          <img src="assets/images/companies/img-1.png" alt="" class="avatar-sm mr-4" />
+
+          <div class="media-body overflow-hidden">
+            <h5 class="text-truncate font-size-15">{{ projectDetails?.name }}</h5>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="roles == 'expert' || roles == 'client'">
+          <div class="col-md-3">
+            <p class="text-muted mb-1">Key Account Manager</p>
+            <div class="team">
+              <a href="javascript:void(0);" class="team-member d-flex align-items-center">
+                <img
+                  *ngIf="keyAccMgrList?.image"
+                  src=" "
+                  class="rounded-circle avatar-xs m-1"
+                  alt
+                />
+                <span *ngIf="!keyAccMgrList?.image" class="rounded-circle avatar-xs m-1">{{
+                  keyAccMgrList?.name | getInitials: 2
+                }}</span>
+                <div class="text-muted">{{ keyAccMgrList?.name }}</div>
+              </a>
+            </div>
+          </div>
+
+          <!-- <div class="col-md-3">
+            <p class="text-muted mb-1">Research Manager</p>
+            <div class="team">
+              <a
+                href="javascript:void(0);"
+                *ngFor="let ral of researchManagers"
+                class="team-member d-flex align-items-center"
+              >
+                <img
+                  *ngIf="ral?.image"
+                  src="assets/images/users/avatar-3.jpg"
+                  class="rounded-circle avatar-xs m-1"
+                  alt
+                />
+                <span *ngIf="!ral?.image" class="rounded-circle avatar-xs m-1">{{ ral?.name | getInitials: 2 }}</span>
+                <div class="text-muted">{{ ral?.name }}</div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <p class="text-muted mb-1">Research Analyst</p>
+            <div class="team">
+              <a
+                href="javascript:void(0);"
+                *ngFor="let ral of researchAnalysts"
+                class="team-member d-flex align-items-center"
+              >
+                <img
+                  *ngIf="ral?.image"
+                  src="assets/images/users/avatar-3.jpg"
+                  class="rounded-circle avatar-xs m-1"
+                  alt
+                />
+                <span *ngIf="!ral?.image" class="rounded-circle avatar-xs m-1">{{
+                  this.ral?.name | getInitials: 2
+                }}</span>
+                <div class="text-muted">{{ this.ral?.name }}</div>
+              </a>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <p class="text-muted mb-1">Client Users</p>
+            <div class="team">
+              <a
+                href="javascript:void(0);"
+                *ngFor="let ral of projectClient?.clientUser"
+                class="team-member d-flex align-items-center"
+              >
+                <img
+                  *ngIf="ral?.image"
+                  src="assets/images/users/avatar-3.jpg"
+                  class="rounded-circle avatar-xs m-1"
+                  alt
+                />
+                <span *ngIf="!ral?.image" class="rounded-circle avatar-xs m-1">{{
+                  this.ral?.name | getInitials: 2
+                }}</span>
+                <div class="text-muted">{{ this.ral?.name }}</div>
+              </a>
+            </div>
+          </div> -->
+        </div>
+
+        <div class="row my-3 align-items-center">
+          <div class="col-md-7">
+            <h5 class="font-size-15 mb-0">Description:</h5>
+          </div>
+          <!-- <div class="col-md-5 text-center text-md-right" *ngIf="roles != 'compliance'">
+            <a href="javascript:void(0)" (click)="newAngleModal(newAngleFormDataModal)">
+              <i class="fas fa-code-branch"></i>
+              Add New Angle
+            </a>
+          </div> -->
+        </div>
+        <div class="row" *ngFor="let note of notes">
+          <div class="col-12 mb-3 pt-1">
+            <div class="bg-light p-2 text-muted">
+              <p class="mt-4 bg-light p-2 text-muted" [innerHTML]="note?.content"></p>
+            </div>
+
+            <div *ngIf="note?.createdAt" class="pt-2">
+              {{ note?.createdAt | localDateTime: 'DD MMM YYYY | hh:mm A' }}
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="col-md-12">
+          <h5 class="font-size-15 mb-0">Description:</h5>
+          <p class="mt-4 bg-light p-2 text-muted" [innerHTML]="projectDetails?.projectDescription"></p>
+        </div> -->
+      </div>
+    </div>
+    <!-- <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body pb-2">
+            <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav-tabs nav-tabs-custom">
+              <li [ngbNavItem]="1">
+                <a ngbNavLink class="no-bgc">
+                  <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+                  <span class="d-none d-sm-block">Comments</span>
+                </a>
+                <ng-template ngbNavContent>
+                  <ng-template [ngTemplateOutlet]="Comments"></ng-template>
+                </ng-template>
+              </li>
+            </ul>
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <!-- end col -->
+
+  <div class="col-lg-4">
+    <!-- <div class="card">
+      <div class="card-body">
+        <h4 class="card-title mb-4">Lead to GTC Conversion</h4>
+        <div class="row">
+          <div class="col-sm-6">
+            <p class="text-muted">Conversion Rate</p>
+            <h4>{{ rateOfLeadToGTCConv }}%</h4>
+          </div>
+          <div class="col-sm-6"></div>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Key Details</h6>
+        <div class="mb-3">
+          <div class="text-muted">Project Type</div>
+          <h6>{{ projectDetails?.projectType?.text }}</h6>
+        </div>
+
+        <div class="mb-3">
+          <div class="text-muted">Project Status</div>
+          <h6 class="badge" [class]="projectDetails?.status?.colorClass">{{ projectDetails?.status?.text }}</h6>
+        </div>
+<!---  
+        <div style="display:none;"  class="mb-3">
+          <app-complianceFlag
+            compliancetype="project"
+            saleid="{{ projectDetails?.id }}"
+            (click)="createClientUser(clientUserFormModal, projectDetails?.id)"
+          ></app-complianceFlag>    
+        </div> -->
+
+        <div class="mb-3" *ngIf="projectDetails?.complianceComment"></div>
+
+        <div class="mb-3">
+          <div class="text-muted">Engagement Type</div>
+          <h6>{{ projectDetails?.engagementType?.text }}</h6>
+        </div>
+
+        <div class="mb-3" *ngIf="projectDetails?.startDate">
+          <div class="text-muted">Start Date</div>
+          <h6>{{ projectDetails?.startDate | localDateTime }}</h6>
+        </div>
+
+        <div class="mb-3" *ngIf="projectDetails?.endDate">
+          <div class="text-muted">End Date</div>
+          <h6>{{ projectDetails?.endDate | localDateTime }}</h6>
+        </div>
+
+        <div class="mb-3" *ngIf="projectDetails?.dueDate">
+          <div class="text-muted">Due Date</div>
+          <h6>{{ projectDetails?.dueDate | localDateTime }}</h6>
+        </div>
+
+        <div class="mb-3" *ngIf="roles != 'expert' && roles != 'client'">
+          <div class="text-muted">Expected Number of Events</div>
+          <h6>{{ projectDetails?.expectedNumEvent }}</h6>
+        </div>
+
+        <div class="mb-3" *ngIf="roles != 'expert' && roles != 'client'">
+          <div class="text-muted">Number of Events Completed</div>
+          <!-- <h6 style="color: red;">0</h6> -->
+          <h6>{{ eventList?.length ? eventList?.length : 0 }}</h6>
+        </div>
+
+        <div class="mb-3">
+          <div class="text-muted">Sector</div>
+          <h6>{{ projectDetails?.sector }}</h6>
+        </div>
+
+        <div class="mb-3">
+          <div class="text-muted">Industry Group</div>
+          <h6>{{ projectDetails?.industryGroup }}</h6>
+        </div>
+
+        <div class="mb-3">
+          <div class="text-muted">industry</div>
+          <h6>{{ projectDetails?.industry }}</h6>
+        </div>
+        <div class="mb-3">
+          <div class="text-muted">Sub industry</div>
+          <h6>{{ projectDetails?.subIndustry }}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row -->
+
+<!-- New Angle Form Modal -->
+<!-- <ng-template #newAngleFormDataModal let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Add New Angle</h5>
+    <button type="button" class="close" (click)="modal.dismiss()" aria-hidden="true">×</button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <ckeditor
+        [editor]="Editor"
+        name="descriptionField"
+        [(ngModel)]="descriptionField"
+        id="descriptionField"
+        data="<p></p>"
+      ></ckeditor>
+    </div>
+    <div class="text-danger" *ngIf="error == true">Please enter description or note.</div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+    <button type="button" class="btn btn-success" (click)="storeDescrition()">Save</button>
+  </div>
+</ng-template> -->
+
+<!--Compliance Modal-->
+<!-- <ng-template #complianceModal let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">{{ complianceModalTitle }}</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <textarea
+      name="complianceComment"
+      id="complianceComment"
+      [(ngModel)]="complianceComment"
+      class="form-control"
+      rows="5"
+    >
+    </textarea>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="markCompliance('grievance')">Add Grievance</button>
+      <button type="button" class="btn btn-success" (click)="markCompliance('verify')">Verify</button>
+    </div>
+  </div>
+</ng-template> -->
+<!-- <ng-template #Comments>
+  <div class="mt-4 mb-4">
+    <div *ngFor="let comment of projectDetails?.comments">
+      <div class="media mb-2">
+        <div class="mr-3">
+          <img class="media-object rounded-circle avatar-xs" alt="" src="assets/images/users/avatar-2.jpg" />
+        </div>
+        <div class="media-body">
+          <h5 class="font-size-13 mb-1">{{ getUserName(comment.userId) }}</h5>
+          <p class="text-muted mb-1">
+            {{ comment.description }}
+          </p>
+          <p>
+            {{ comment.createdAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3" *ngIf="roles != 'compliance'">
+    <div class="form-group mb-4">
+      <label>Add a Comment</label>
+      <textarea class="form-control" rows="3" placeholder="Type here" #commentDescription></textarea>
+
+      <span class="text-danger" *ngIf="!commentDescription.value">Please enter comment.</span>
+    </div>
+    <button type="submit" class="btn btn-primary pl-5 pr-5" (click)="createComment(commentDescription)">Comment</button>
+  </div>
+</ng-template> -->
+
+<!-- <ng-template #Comments>
+  <div class="mt-4 mb-4">
+    <div *ngFor="let comment of comments">
+      <div class="media mb-2">
+        <div class="mr-3">
+          <img class="media-object rounded-circle avatar-xs" alt="" src="assets/images/users/avatar-2.jpg" />
+        </div>
+        <div class="media-body">
+          <h5 class="font-size-13 mb-1">{{ getUserName(comment.userId) }}</h5>
+          <p class="text-muted mb-1">
+            {{ comment.description }}
+          </p>
+          <p>
+            {{ comment.createdAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}
+          </p>
+        </div>
+        <div class="">
+          <a href="javascript: void(0);" (click)="deleteComment(comment.id)" class="text-dark">
+            <i class="bx bx-trash"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3">
+    <div class="form-group mb-4">
+      <label>Add a Comment</label>
+      <textarea class="form-control" rows="3" placeholder="Type here" #commentDescription></textarea>
+
+      <span class="text-danger" *ngIf="!commentDescription.value">Please enter comment.</span>
+    </div>
+    <button type="submit" class="btn btn-primary pl-5 pr-5" (click)="createComment(commentDescription)">Comment</button>
+  </div>
+</ng-template> -->
+<!--- 
+<ng-template #clientUserFormModal let-modal>
+  <app-complianceActions compliancetype="project" saleid="{{ idforCompliance }}"></app-complianceActions>
+</ng-template>
+-->

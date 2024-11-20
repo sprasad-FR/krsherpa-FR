@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col-md-12">
+      <div class="card mt-n4" style="background-color: #f7f5f5ee;display:none; ">
+          <div class="bg-soft-project"  style="background-color: rgb(60, 71, 105);">
+              <div class="card-body pb-0 px-4">
+                <div class="row ">
+                  <div class="col-md-6">
+                      <div class="row align-items-center g-3">
+                          <div class="col-md-auto">
+                              <div class="avatar-sm">
+                                  <div class="avatar-title bg-white rounded-circle ">
+
+                                    <h4 class="" style="color:blue;" >  Event name}</h4>
+                                                                       </div>
+                              </div>
+                          </div>
+                          <div class="col-md">
+                              <div>
+                                  <h4 class="fw-bold">Name <span class="badge rounded-pill bg-primary fs-12"></span> </h4>    
+                                  <div class="hstack gap-3 flex-wrap">
+                                      <div><i class="ri-building-line align-bottom me-1"></i>  status </div>
+                                      <div class="vr"></div>
+                                     
+                                      
+                                  </div>
+                              </div>
+
+                             
+
+
+
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6">  
+                    <div class="row">  
+                    <div *ngFor="let stat of statData" class="col-md-2 text-center">
+                        <div class="clrsml">
+                        <div class="p-1 ">
+                            <h5 class="mb-0 text-white "><span> {{stat.value}}</span></h5>
+                            <p class="text-white mb-0 font-size-8">{{stat.title }}</p>
+                        </div>
+                    </div><!--end col-->
+                           </div> </div>
+                  </div>
+
+                  
+
+              </div>
+              <hr>
+                 
+
+
+
+                  <ul ngbNav #customNav="ngbNav" [activeId]="1"  class="nav nav-pills nav-customs nav-danger mb-1" role="tablist">
+                   
+                   
+                    <li [ngbNavItem]="1" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                          Overview
+                        </a>
+                        <ng-template ngbNavContent>
+                          <div class="row">
+                           
+                          <app-event-details  [itemid]="itemid"     ></app-event-details>
+                              <!-- end col -->
+                          </div>
+                          <!-- end row -->
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2" class="nav-item" style="display:none;">
+                      <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                        Details
+                      </a>
+                      <ng-template ngbNavContent>
+                        <div class="row">
+                         
+                           
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                      </ng-template>
+                  </li>
+               
+            
+                  </ul>
+              </div>
+              <!-- end card body -->
+          </div>
+      </div>
+      <!-- end card -->
+  </div>
+  <!-- end col -->
+</div>
+<div class="row">
+  <div class="col-lg-12">
+      <div class="tab-content text-dark">
+        <div  class="bg-soft-project-view"  style="min-height:40vh" [ngbNavOutlet]="customNav"></div>
+      </div>
+  </div>
+  <!-- end col -->
+</div>

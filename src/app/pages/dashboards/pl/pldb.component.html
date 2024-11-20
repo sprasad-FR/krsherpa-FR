@@ -1,0 +1,272 @@
+<div class="row">
+    
+            <div class="" style="margin-bottom: 5px;">
+                <div class="card-header border-0 align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1 card-title-top">Organization Wide Stats</h4>
+
+                </div><!-- end card header -->
+    <div class="card-body">
+         
+        <div class="row project-wrapper">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class=""  style="display:none;">
+                                <h4 class="card-title mb-0 flex-grow-1"></h4>
+                                <div class="d-flex gap-1"  >      
+                                    <button type="button" (click)="changesr()"
+                                        class="btn btn-soft-primary btn-sm">
+                                        1Y
+                                    </button>
+                                    <button type="button" class="btn btn-soft-secondary btn-sm">
+                                        1M
+                                    </button>
+                                </div>
+                            </div><!-- end card header  app-bar -->
+                            <div class="row col-md-12">
+                                <div class="col-md-4 p-3" > 
+
+                                <div class="box box--stacked p-2">
+                                    <label class="align-items-center"> Event-This month </label>
+                                    <apx-chart [series]="OverviewChart11?.series"
+                                    [chart]="OverviewChart11?.chart" [stroke]="OverviewChart11?.stroke"
+                                    [fill]="OverviewChart11?.fill" [markers]="OverviewChart11?.markers"
+                                    [colors]="OverviewChart11?.colors"
+                                    [xaxis]="OverviewChart11?.xaxis" [grid]="OverviewChart11?.grid"
+                                    [legend]="OverviewChart11?.legend"
+                                    [plotOptions]="OverviewChart11?.plotOptions"
+                                    [yaxis]="OverviewChart11?.yaxis" 
+                                    dir="ltr" >
+
+                                </apx-chart>        
+                                 </div>
+
+
+
+                             </div>
+                             <div class="col-md-4 p-3"> 
+
+                                <div class="box box--stacked p-2" style="min-height:100%">
+                                    <label>Live Projects (New-This Month)</label>
+                                    <apx-chart [series]="OverviewChartprj?.series"
+                                    [chart]="OverviewChartprj?.chart" [stroke]="OverviewChartprj?.stroke"
+                                    [fill]="OverviewChartprj?.fill" [markers]="OverviewChartprj?.markers"
+                                    [colors]="OverviewChartprj?.colors"
+                                    [xaxis]="OverviewChartprj?.xaxis" [grid]="OverviewChartprj?.grid"
+                                    [legend]="OverviewChartprj?.legend"
+                                    [plotOptions]="OverviewChartprj?.plotOptions"                                  
+                                    dir="ltr" >
+
+                                </apx-chart>   
+                                </div>
+                             </div>
+                             <div class="col-md-4 p-3" > 
+
+                                <div class="box box--stacked p-2" style="min-height:100%">
+                                    <label>Expert Demand (From New Projects This Month)</label>
+
+                                    <apx-chart [series]="OverviewChartevnt?.series"
+                                    [chart]="OverviewChartevnt?.chart" [stroke]="OverviewChartevnt?.stroke"
+                                    [fill]="OverviewChartevnt?.fill" [markers]="OverviewChartevnt?.markers"
+                                    [colors]="OverviewChartevnt?.colors"
+                                    [xaxis]="OverviewChartevnt?.xaxis" [grid]="OverviewChartevnt?.grid"
+                                    [legend]="OverviewChartevnt?.legend"
+                                    [plotOptions]="OverviewChartevnt?.plotOptions"                                  
+                                    dir="ltr" >
+
+                                </apx-chart>   
+
+
+                                   </div>
+                             </div>
+                        </div>
+                    
+                        
+                            <div class="card-body p-0 pb-2">
+                               
+                            </div><!-- end card body -->
+                        </div><!-- end card -->
+                    </div><!-- end col -->
+
+                </div><!-- end row -->
+            </div><!-- end col -->
+        </div>   
+
+ <div class="row"> 
+
+    <div class="col-md-4 p-3"> 
+
+        <div class="box box--stacked p-2" style="min-height:100%">
+            
+            <label>Client Types</label>
+    
+    <apx-chart [series]="clientsforall?.series" [labels]="clientsforall?.labels"
+    [chart]="clientsforall?.chart" [plotOptions]="clientsforall?.plotOptions"
+    [dataLabels]="clientsforall?.dataLabels" [legend]="clientsforall?.legend"
+    [stroke]="clientsforall?.stroke" [yaxis]="clientsforall?.yaxis"
+    [colors]="clientsforall?.colors" dir="ltr"></apx-chart>
+
+</div>
+</div>
+<div class="col-md-4 p-3"> 
+
+    <div class="box box--stacked p-2" style="min-height:100%">
+        
+        <label>Leads with stages</label>
+    
+    <apx-chart [series]="salesleadsforall?.series" [labels]="salesleadsforall?.labels"
+    [chart]="salesleadsforall?.chart" [plotOptions]="salesleadsforall?.plotOptions"
+    [dataLabels]="salesleadsforall?.dataLabels" [legend]="salesleadsforall?.legend"
+    [stroke]="salesleadsforall?.stroke" [yaxis]="salesleadsforall?.yaxis"
+    [colors]="salesleadsforall?.colors" dir="ltr"></apx-chart>
+
+</div>
+
+
+</div>
+
+<div class="col-md-4 p-3"> 
+
+    <div class="box box--stacked p-2" style="min-height:100%">
+        
+        <label>Expert Count</label>
+    
+        
+        <apx-chart [series]="expertstatus?.series" [labels]="expertstatus?.labels"
+        [chart]="expertstatus?.chart" [plotOptions]="expertstatus?.plotOptions"
+        [dataLabels]="expertstatus?.dataLabels" [legend]="expertstatus?.legend"
+        [stroke]="expertstatus?.stroke" [yaxis]="expertstatus?.yaxis"
+        [colors]="expertstatus?.colors" dir="ltr"></apx-chart>
+    </div>
+    
+    </div>
+ </div>
+ 
+ <div class="row mt-3">
+            <div style="margin-bottom: 5px;">
+                <div class="card-header border-0 align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1 card-title-top">Client and project counts( Minimum 10 only)</h4>
+
+                </div><!-- end card header -->
+           
+
+            <div class="col-sm-12">   
+
+
+                <div class="box box--stacked p-3" style="min-height:100%">
+                    <div class="card-body">
+                     <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav nav-pills arrow-navtabs nav-primary mb-3">
+                    <li [ngbNavItem]="1">
+                      <a ngbNavLink  style="cursor:pointer" >Chart View</a>
+                       <ng-template ngbNavContent>
+                        <div style="width: 100%;">
+                        <div class="align-items-center chart-container thinScroll">
+                            <label class="align-items-center"> Client and project counts </label>
+                            <apx-chart  id="prjcolChart"  [series]="clientcount?.series" [chart]="clientcount?.chart"
+                                [stroke]="clientcount?.stroke" [fill]="clientcount?.fill"
+                                [markers]="clientcount?.markers" [xaxis]="clientcount?.xaxis"
+                                [grid]="clientcount?.grid" [legend]="clientcount?.legend"
+                                [plotOptions]="clientcount?.plotOptions"
+                                [colors]="clientcount?.colors" [tooltip]="clientcount?.tooltip"
+                                dir="ltr"></apx-chart>
+                        </div>   </div>
+                
+                </ng-template>
+                </li>
+                <li [ngbNavItem]="2">
+                    <a ngbNavLink style="cursor:pointer" >List View</a>
+                     <ng-template ngbNavContent>
+                     
+                        <div>
+    
+                            <div class="col-sm-12">
+                              <div class="form-group Profit-table">
+                                <table class="table">
+                                    <thead>
+                                    <tr class="table-head ">
+                                      <th>Client</th>
+                                      <th style="text-align:center !important">No Of Projects</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="table-head"  *ngFor="let data of projectcounts">
+                                        <td>{{ getclientname(data._id )}}</td>
+                                        <td style="text-align:center !important">{{ data.count }}</td>
+                                      </tr>
+                                    </tbody>
+                                </table>
+    
+                                </div>
+                            </div>
+                  
+                  
+                          </div>
+                   
+                    </ng-template>
+                </li>
+                </ul>
+                <div [ngbNavOutlet]="nav" class="mt-1"></div>
+                </div>
+                </div>
+    
+    
+    
+    
+    
+               
+    
+    
+            </div>
+
+        </div>
+ </div>
+
+        
+        <div class="row"  style="display:none;">
+            <div class="card" style="margin-bottom: 5px;">
+            <div class="card-header border-0 align-items-center d-flex" style="background-color:#6495ED">
+                <i class=" ri-user-star-fill text-white" style="line-height: 16px; font-size: 16px; margin-right: 5px;"></i>
+                <h4 class="card-title mb-0 flex-grow-1 text-white">Organization wide stats 1111</h4>
+
+            </div><!-- end card header -->
+        </div>
+
+
+            <div class="col-4" style="display: grid; align-content: center;">
+
+                <apx-chart [series]="Expertcount4POClisteach?.series" [labels]="Expertcount4POClisteach?.labels"
+            [chart]="Expertcount4POClisteach?.chart" [plotOptions]="Expertcount4POClisteach?.plotOptions"
+            [dataLabels]="Expertcount4POClisteach?.dataLabels" [legend]="Expertcount4POClisteach?.legend"
+            [stroke]="Expertcount4POClisteach?.stroke" [yaxis]="Expertcount4POClisteach?.yaxis"
+            [colors]="Expertcount4POClisteach?.colors" dir="ltr"></apx-chart>
+           
+        
+        </div>
+
+            <div class="col-4" style="display: grid; align-content: center;">
+                <apx-chart [series]="Expertcount4POClisteachAPAC?.series" [labels]="Expertcount4POClisteachAPAC?.labels"
+            [chart]="Expertcount4POClisteachAPAC?.chart" [plotOptions]="Expertcount4POClisteachAPAC?.plotOptions"
+            [dataLabels]="Expertcount4POClisteachAPAC?.dataLabels" [legend]="Expertcount4POClisteachAPAC?.legend"
+            [stroke]="Expertcount4POClisteachAPAC?.stroke" [yaxis]="Expertcount4POClisteachAPAC?.yaxis"
+            [colors]="Expertcount4POClisteachAPAC?.colors" dir="ltr"></apx-chart>
+            </div>
+            <div class="col-4" style="display: grid; align-content: center;">
+                <apx-chart [series]="Expertcount4POClisteachUS?.series" [labels]="Expertcount4POClisteachUS?.labels"
+            [chart]="Expertcount4POClisteachUS?.chart" [plotOptions]="Expertcount4POClisteachUS?.plotOptions"
+            [dataLabels]="Expertcount4POClisteachUS?.dataLabels" [legend]="Expertcount4POClisteachUS?.legend"
+            [stroke]="Expertcount4POClisteachUS?.stroke" [yaxis]="Expertcount4POClisteachUS?.yaxis"
+            [colors]="Expertcount4POClisteachUS?.colors" dir="ltr"></apx-chart>
+            </div>
+        </div>
+
+     
+ 
+</div>
+
+
+
+
+
+
+

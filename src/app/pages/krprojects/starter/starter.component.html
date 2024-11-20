@@ -1,0 +1,183 @@
+
+<div>
+                          
+    <div class="col-lg-12">
+        <div class="card"  id="orderList" > 
+            <div class="card-header  border-1"  style="background-color:rgb(189, 224, 238);color:rgb(39, 47, 83);" >
+               
+                    <button style="float:right;" type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#inviteMembersModal" (click)="openModal(content)"><i class="ri-share-line me-1 align-bottom"></i> Create Compliance</button>
+                    
+              
+            </div>
+            <div class="card-body border border-dashed border-end-0 border-start-0">
+           
+                    <div class="row g-3">
+                       
+                        <!--end col-->
+                       
+                        <!--end col-->
+                       
+                        <!--end col-->
+                       
+                        <!--end col-->
+                       
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+            
+            </div>
+            <div class="card-body pt-0">
+           
+                    <!-- Nav tabs -->
+                    <ul ngbNav #nav="ngbNav" [activeId]="10" class="nav nav-tabs nav-tabs-custom nav-success mb-3">
+                      <li [ngbNavItem]="10">
+                          <a ngbNavLink>
+                            <i class="ri-store-2-fill me-1 align-bottom"></i> Compliance Requests
+                          </a>
+                          <ng-template ngbNavContent>
+                               <div class="row">
+                                       <div class="team-list list-view-filter">
+                                  <div class="card team-box" *ngFor="let data of teamOverviewList$  ; let i = index ">
+                                      <div class="card-body px-3">
+                                          <div class="row align-items-center team-row">
+                                              
+                                              <div class="col-lg-3 col">
+                                                  <div class="team-profile-img">
+                                                     
+                                                      <div class="avatar-md img-thumbnail rounded-circle" >
+                                                        <div class="avatar-title bg-primary text-white rounded-circle">
+                                                         FMGC Project
+                                                        </div>
+                                                    </div>
+                                                      <div class="team-content">
+                                                              <p class="text-muted mb-0">Sent on <br> 10-Dec-2022 10:00 AM</p>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-lg-2 col">
+                                                  <div class="row text-muted text-center">
+                                                      <div class="col-6 border-end border-end-dashed">
+                                                          <h6 class="mb-1">Type</h6>
+                                                          <p class="text-muted mb-0">Event</p>
+                                                      </div>
+                                                    
+                                                  </div>
+                                              </div>
+                                              <div class="col-lg-4 col">
+                                                  <div class="row text-muted text-center">
+                                                     
+                                                      <div class="col-6">
+                                                          <h6 class="mb-1">Details</h6>
+                                                          <p class="text-muted mb-0">xxxxxxxxxxxxx, </p>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-lg-2 col">
+                                                  <div class="text-end">
+                                                  
+                                                     <a routerLink="/pages/profile" class="btn btn-primary  btn-sm view-btn">View Details</a>  
+                                                  <a *ngIf="i==3" routerLink="/pages/profile" class="btn btn-danger  btn-sm view-btn">Mark Resolved</a>  
+                                                 
+                                              <a *ngIf="i==1" routerLink="/pages/profile" class="btn btn-success  btn-sm view-btn">Send Remider</a>  
+                                             
+                                                  </div>
+                                              </div>
+                                            
+                                          </div>
+                                      </div>
+                                  </div><!--end card-->
+                              </div>
+                                      
+                                     
+                                    </div>   
+                        
+                          </ng-template>
+                      </li>
+                      <li [ngbNavItem]="11">				
+                      
+                          <a ngbNavLink >
+                            <i class="ri-checkbox-circle-line me-1 align-bottom"></i> Compliances Resolved
+                          </a>
+                          <ng-template ngbNavContent>
+                             <div class="row">
+                                       <div class="team-list list-view-filter">
+                                  <div class="card team-box" *ngFor="let data of teamOverviewList$ ; let i = index ">
+                                      <div class="card-body px-3">
+                                          <div class="row align-items-center team-row">
+                                              
+                                              <div class="col-lg-3 col">
+                                                  <div class="team-profile-img">
+                                                     
+                                                      <div class="avatar-md img-thumbnail rounded-circle" >
+                                                        <div class="avatar-title bg-primary text-white rounded-circle">
+                                                         FMGC Project
+                                                        </div>
+                                                    </div>
+                                                      <div class="team-content">
+                                                              <p class="text-muted mb-0">Sent on <br> 10-Dec-2022 10:00 AM</p>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-lg-2 col">
+                                                  <div class="row text-muted text-center">
+                                                      <div class="col-6 border-end border-end-dashed">
+                                                          <h6 class="mb-1">Type</h6>
+                                                          <p class="text-muted mb-0">Event</p>
+                                                      </div>
+                                                    
+                                                  </div>
+                                              </div>
+                                              <div class="col-lg-4 col">
+                                                  <div class="row text-muted text-center">
+                                                     
+                                                      <div class="col-6">
+                                                          <h6 class="mb-1">Details</h6>
+                                                          <p class="text-muted mb-0">xxxxxxxxxxxxx, </p>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-lg-2 col">
+                                                  <div class="text-end">
+                                                  
+                                                     <a routerLink="/pages/profile" class="btn btn-primary  btn-sm view-btn">View Details</a>  
+                                                
+                                             
+                                                  </div>
+                                              </div>
+                                            
+                                          </div>
+                                      </div>
+                                  </div><!--end card-->
+                              </div>
+                                      
+                                     
+                                    </div>   
+    
+                        </ng-template>
+                      </li>
+                      
+                  
+                   
+                
+    
+                </ul>
+    
+                 </div>
+              
+    
+                    <!-- Tab panes -->
+                    <div class="tab-content text-muted">
+                      <div [ngbNavOutlet]="nav"></div>
+                    </div>
+    
+           
+                <!--End Modal -->
+          </div>
+        </div>
+    
+
+
+
+</div>
+
+<ng-template #content role="document" let-modal></ng-template>

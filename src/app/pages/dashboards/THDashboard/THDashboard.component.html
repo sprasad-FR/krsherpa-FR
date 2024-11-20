@@ -1,0 +1,138 @@
+
+
+<div class="col-md-12 p-2" id="rowh" style="display:none; background-image:   linear-gradient(171deg, rgb(4, 61, 102) 0%, rgba(201,227,249,1) 100%)!important;"  >
+       
+    <div>
+      <div class="row" style="color:lightyellow;"    >
+
+      <div class="col-sm-5">
+        <div class="p-2" >
+          <h4 class="text-light" >KRSHERPA Dashboard</h4>
+          <h5 class="text-light"></h5>
+        </div>
+        <div class="p-2">
+         <div class="row">
+          <div class="col-sm-12">
+         <div>
+          <div>
+            <div class="row"> 
+                <div class="col-sm-2">
+                <div class="avatar-md-1">
+                    <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
+                      {{ firstName | uppercase | slice: 0:2 }}  
+                    </span>
+                  </div>
+                </div>
+                <div class="col-sm-8"> 
+                  <div>
+                    <h5 style="color: rgb(244, 245, 247);" >{{ firstName ? firstName :''| uppercase }} </h5>  <h6 class="badge rounded-pill bg-success fs-12 align-right"  >{{ userType }}</h6>
+         
+                    <p style="color: rgb(244, 245, 247);" class="text-white mb-1">{{ username }} </p>
+                    <!-- <p class="text-muted mb-0">Id no: #SK0234</p> -->
+                  </div>
+                </div>
+    
+               
+             </div>
+     </div>
+        </div>
+      </div>
+      
+     
+     </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="p-1" >
+           
+           
+          </div>
+    
+      </div>
+      <div class="col-md-4 align-right">
+        <div class="row"> 
+            <p></p>
+        <div class="col-sm-12">
+            <div class=""  *ngIf="getrole()!='Admin'" >
+                
+                <div   *ngIf="roles != 'admin' &&  roles != 'compliance' && roles != 'mainPLHead'     "   >
+                   
+                  <apx-chart [series]="semiCircleChart?.series" [chart]="semiCircleChart?.chart"
+                  [plotOptions]="semiCircleChart?.plotOptions" [labels]="semiCircleChart?.labels"
+                  [fill]="semiCircleChart?.fill" [colors]="semiCircleChart?.colors" dir="ltr"></apx-chart>
+                  <div class="row p-2"> 
+                    <div class="col-sm-3">
+                  <h6 class="badge rounded-pill bg-success fs-12 "  > FTRR - {{ ftrrcnt }}</h6>
+                </div>
+                <div class="col-sm-3">
+                    <h6 class="badge rounded-pill bg-primary fs-12 "  > CRM - {{ crmcnt }}</h6>
+                  </div>
+                  <div class="col-sm-3">
+                    <h6 class="badge rounded-pill bg-info fs-12 "  > SR - {{ srcnt }}</h6>
+                  </div>
+                  <div class="col-sm-3">
+                    <h6 class="badge rounded-pill bg-danger fs-12 "  > Total - {{ trrcnt }}</h6>
+                  </div>
+            </div>
+                </div><!-- end card-body -->
+               
+            </div><!-- end card -->
+          
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+     
+</div>
+</div>
+<br>
+
+
+
+
+<app-regular  *ngIf="getrole()=='researchAnalyst'"    ></app-regular>
+
+<app-plDashboard   *ngIf="getrole()=='Admin'"></app-plDashboard> 
+
+
+<!--<app-regular></app-regular> 'researchAnalyst' && roles != 'researchManager'   -->
+
+
+
+<div class=""   *ngIf="getrole()!='researchAnalyst' && getrole()!='Admin'"  >
+    <div class="card-body">
+<ul ngbNav #nav="ngbNav" [activeId]="1" class="nav nav-pills arrow-navtabs nav-success bg-light mb-3">
+    <li [ngbNavItem]="1">
+      <a ngbNavLink  >My Dashboard</a>
+       <ng-template ngbNavContent>
+
+<app-regular></app-regular>
+
+</ng-template>
+</li>
+<li [ngbNavItem]="2">
+    <a ngbNavLink  >My Team Dashboard</a>
+     <ng-template ngbNavContent>
+        <hr>
+
+
+     
+
+   <app-splDashboard   *ngIf="getrole()=='subPLHead'"></app-splDashboard> 
+
+   <app-KAMDashboard   *ngIf="getrole()=='keyAccountManager'"></app-KAMDashboard> 
+
+   <app-RMDashboard  *ngIf="getrole()=='researchManager'" ></app-RMDashboard> 
+
+   
+    </ng-template>
+</li>
+</ul>
+<div [ngbNavOutlet]="nav" class="mt-1"></div>
+</div>
+</div>
+
+<!-- -->

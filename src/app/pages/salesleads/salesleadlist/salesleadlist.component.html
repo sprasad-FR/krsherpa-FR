@@ -1,0 +1,137 @@
+<!-- Start Breadcrumbs -->
+
+<!-- End Breadcrumbs -->
+<app-loader [isLoading]="isLoading"></app-loader>
+<div class="row">
+  <div class="col-md-6">
+    <app-breadcrumbs title="Sales Leads" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+  </div> 
+  <div class="col-md-6">
+<div class="float-end">
+  <button type="button" (click)="editemp('0',empmodel)"class="btn btn-primary m-1 mt-3">Add</button>
+</div>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-12 mt-2">
+        <div class="box p-3">
+           
+           
+            <div class="card-body">
+              <div class="search-box d-inline-block mb-2">
+                  <input type="text" class="form-control search" placeholder="Search..." [(ngModel)]="service.searchTerm">
+                  <i class="ri-search-line search-icon"></i>
+              </div>
+              <div class="row justify-content-md-between align-items-md-center border-light">
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                        Showing
+                        {{service.startIndex}} to
+                        {{service.endIndex}} of {{service.totalRecords}}
+                        entries
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-5">
+                    <div class="text-md-right float-md-end gridjs-pagination">
+                      <ngb-pagination
+                      [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                    </ngb-pagination>
+                    </div>
+                </div>
+                <!-- End Pagination -->
+              </div>
+              <div class="table-responsive table-dark table-striped table-nowrap">
+                <table class="table table-gridjs">
+                  <thead>
+                  <tr>
+                  <th class="" >#</th>
+               
+                 <!--   <th class="sort" sortable="companyName" (sort)="onSort($event)">Contact Name</th> --> 
+                <th class="sort" sortable="companyName" (sort)="onSort($event)">Company Name</th>
+                <th class="sort" sortable="leadstatus" (sort)="onSort($event)">Stage</th>
+                <th >Sales Owner</th>
+                <th class="sort" sortable="updatedAt" (sort)="onSort($event)">Last Updated Date</th>
+                <th >Last Update</th>
+                 <th >Source</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr style="cursor: pointer;"  *ngFor="let data of gridjsList$ | async; let i = index" (click)="editemp(data.id,empmodel)">
+                    <td  ><ngb-highlight [result]="data.id" >{{i+1}}</ngb-highlight></td>
+   
+                 <!--  <td><ngb-highlight [result]="data.companyType" [term]="service.searchTerm"> {{getUserName( data.salesLeadContactid )}}</ngb-highlight></td>
+                   -->  <td><ngb-highlight [result]="data.companyName" [term]="service.searchTerm">
+                      <p class="text-muted">    {{ data.companyName }}
+                        <p class="text-muted">{{ data.companyType }}</p>
+                      </ngb-highlight></td>
+                    <td><ngb-highlight >  <span
+                      class="badge"
+                      [ngClass]="{
+                        'badge-connected': data.leadstatus.toString() === 'Contacted',
+                        'badge-interested': data.leadstatus.toString() === 'Interested',
+                        'badge-in-progress': data.leadstatus.toString() === 'In Progress',
+                        'badge-client': data.leadstatus.toString() === 'Client',
+                        'badge-not-interested': data.leadstatus.toString() === 'Not Interested',
+                        'badge-do-not-call': data.leadstatus.toString() === 'Do Not Call'
+                      }"
+                    >
+                      {{data.leadstatus}}
+                    </span></ngb-highlight></td>
+
+                    <td><ngb-highlight >{{ getUserName(data.assigneeId) }}</ngb-highlight></td>
+                    <td>
+                      {{ data.updatedAt | localDateTime }}
+                    </td>
+                    <td>{{ getDaysCounter(data.updatedAt) }} days ago</td>
+                    <td>
+                      {{ getLeadById(data.leadSource)}}
+                    </td>
+                  
+                  
+                  
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row justify-content-md-between align-items-md-center">
+                
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                        Showing
+                        {{service.startIndex}} to
+                        {{service.endIndex}} of {{service.totalRecords}}
+                        entries
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-5">
+                    <div class="text-md-right float-md-end gridjs-pagination">
+                      <ngb-pagination
+                      [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                    </ngb-pagination>
+                    </div>
+                </div>
+                <!-- End Pagination -->
+              </div>
+              <div  class=" container fixed-bottom" style="background-color:white;"> 
+             
+               </div>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+  
+  <ng-template #empmodel let-modal>
+    <div class="modal-content" width="98%">
+      <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+      
+        <app-saleslead [itemid]="selectedid" ></app-saleslead>
+  </div>
+</div>
+  </ng-template>

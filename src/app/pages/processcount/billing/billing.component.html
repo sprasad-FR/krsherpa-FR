@@ -1,0 +1,152 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body"   style="display:none;">
+                <form (ngSubmit)="onSubmit()" #rateForm="ngForm">
+                    <div class="row">
+                      <div class="col-4 col-mb">
+                        <label for="30min">30min</label>
+                        <input type="text" name="min30" id="30min" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="rateFormValues.min30" (input)="GetRate($event, '30min')">
+                      </div>
+                      <div class="col-4 col-mb">
+                        <label for="45min">45min</label>
+                        <input type="text" name="min45" id="45min" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="rateFormValues.min45" (input)="GetRate($event, '45min')">
+                      </div>
+                      <div class="col-4 col-mb">
+                        <label for="60min">60min</label>
+                        <input type="text" name="min60" id="60min" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="rateFormValues.min60" (input)="GetRate($event, '60min')">
+                      </div>
+                      <div class="col-4 col-mb">
+                        <label for="min">min</label>
+                        <input type="text" name="min" id="min" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="rateFormValues.min">
+                      </div>
+                      <div class="col-4 col-mb">
+                        <label for="rate">rate</label>
+                        <input type="number" name="rate" id="rate" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="rateFormValues.rate">
+                      </div>
+                      <div class="col-4 col-mb" style="display: flex; align-items: center;">
+                        <button class="btn btn-border btn-soft-success" style="padding: 0px 10px; margin-top: 20px;">Add</button>
+                      </div>
+                    </div>
+                </form>
+                <ng-container  *ngIf="RateArray?.length > 0">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Min</th>
+                                <th>Rate</th>
+                                <th style="width: 100px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of RateArray; let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{data?.min}}</td>
+                                <td>{{data?.rate}}</td>
+                                <th style="padding: 8px 0px;">
+                                    <div class="options">
+                                        <button class="btn btn-soft-info" (click)="EditRate(editratepopup,data)"><i class="ri-edit-line"></i></button>
+                                        <button class="btn btn-soft-danger" (click)="DeleteRate(data)"><i class=" ri-delete-bin-2-line"></i></button>
+                                    </div>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+    
+                    <div style="display: flex;gap: 6px;align-items: center;">
+                        <ng-select style="flex: 1 1 50%;" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="select_minutes"><!--[items]="RateArray" bindLabel="min"-->
+                            <ng-option *ngFor="let data of RateArray">{{ data.min }} : {{ data.rate }}</ng-option>
+                        </ng-select>
+                        
+                        <button class="btn btn-border btn-soft-info" style="flex: 1 1 0%;padding: 6px 0px;" (click)="SelectMinute()">Select</button>
+                    </div>
+                </ng-container> 
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 >Total : ({{ModuleData?.length}}) 
+                    <div style="margin-left: auto;display: flex; gap: 10px;align-items: center;">
+                       
+                        <div>
+                            <label for="fromDate">From Date:</label>
+                            <input class="form-control" type="date" id="fromDate" [(ngModel)]="fromDate">
+                          </div>
+                          <div>
+                            <label for="toDate">To Date:</label>
+                            <input class="form-control" type="date" id="toDate" [(ngModel)]="toDate">
+                          </div>
+                          <button class="btn btn-success" (click)="fetchData()">Fetch Data</button>
+                       
+                        <button class="btn btn-success" style="display: flex;align-items: center;gap: 8px;padding: 2px 10px;" (click)="download()"><i class=" ri-add-line" style="font-weight: 700;"></i> Download</button> 
+                        <button class="btn btn-info" style="display: flex;align-items: center;gap: 8px;padding: 2px 10px;" (click)="SelectFields(Selectfieldpopup,'edit')"><i class=" ri-menu-fill" style="font-weight: 700;"></i></button>
+                    </div>
+                </h4>
+                <div>
+                      <!-- Tables Border Colors -->
+                      <div class="scrollable" >
+                        <!-- Tables Border Colors -->
+                      <table  class="table table-responsive">
+                          <tr class="thead">
+                            <th style="width: 1%;">s.no</th>
+                            <th *ngFor="let field of selectedFields">{{field}}</th>
+                          </tr>
+                          <ng-container *ngIf="selectedFields?.length > 0">
+                              <tr class="tbody" *ngFor="let item of ModuleData; let i=index">
+                                <td scope="row"><span class="index">{{i+1}}</span></td>
+                                <ng-container *ngFor="let field of selectedFields; let tdindex = index">
+                                    <td class="" style="text-align: left;cursor: pointer;" [title]="item[field]"><span [class]="tdindex === 0?'First-Index':''">{{getInitials(field,item[field],'single')}}</span></td>
+                                </ng-container>
+                              </tr>
+                          </ng-container>
+                      </table>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #editratepopup let-modal>
+    <div class="modal-header p-3 bg-soft-info" style="text-align: center;">
+        <h5 class="modal-title" id="exampleModalLabel">Select Fields</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"  (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <form >
+            <div class="row">
+              <div class="col-6 col-mb">
+                <label for="Min">Min</label>
+                <input type="text" name="Min" id="Min" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="EditRateValues.edit_min">
+              </div>
+              <div class="col-6 col-mb">
+                <label for="rate">rate</label>
+                <input type="rate" name="rate" id="rate" [ngModelOptions]="{ standalone: true }"  [(ngModel)]="EditRateValues.edit_rate">
+              </div>
+              <div class="col-12" style="display: flex;justify-content: center;">
+                <button id="update-btn" class="btn btn-border btn-soft-success" style="padding: 0px 10px; margin-top:10px;">Update</button>
+              </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #Selectfieldpopup let-modal>
+    <div class="modal-header p-3 bg-soft-info" style="text-align: center;">
+        <h5 class="modal-title" id="exampleModalLabel">Select Fields</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"  (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <ng-select [multiple]="true" [items]="availableFieldsArray" [ngModelOptions]="{ standalone: true }" [(ngModel)]="FieldArray" > <!--bindValue="fieldid" labelFor="label"-->
+            </ng-select>            
+        </div>
+        <div class="btngroup">
+            <button class="btn btn-success" id="MultipleArrayAdd">Add</button> 
+            <button class="btn btn-danger border-0" (click)="modal.dismiss()">Cancel</button> 
+        </div>
+    </div>
+</ng-template>

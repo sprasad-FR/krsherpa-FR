@@ -1,0 +1,97 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+    background-color: #f1f3f8 !important;
+}
+
+.page-title-right{
+    display: none;
+}
+
+.page-content {
+    margin-top: 40px !important;
+}
+
+
+.modal-content{
+    background-color: #f1f3f8 !important;
+}
+
+.btn{
+    border-radius: 30px !important;
+    padding:5px 15px !important;
+}
+
+.page-title-box{margin:0px !important}
+.card{
+    box-shadow: 0 3px 5px #0000000b !important;
+    background-color: #fff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: .6rem !important;
+    position: relative !important;
+}
+
+.ng-select .ng-select-container, .form-control {
+    border-radius: 30px !important;
+}
+
+textarea.form-control{
+    border-radius: 5px !important;
+}
+.box {
+    box-shadow: 0 3px 5px #0000000b;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: .6rem;
+    position: relative;
+}
+
+.page-title-box h4{
+    font-weight: 500 !important;
+    color: #475569 !important;
+    text-transform: capitalize !important;
+}
+
+.table-gridjs{
+    border:1px solid #e9ebec !important;
+    margin-top:10px;
+}
+
+.table-gridjs th, .table-gridjs td{
+    border:0px !important;
+    border-bottom:1px solid #e9ebec !important;
+}
+
+.table-gridjs th{
+    color:#526484 !important;
+    font-weight:550 !important;
+}
+
+
+.table-gridjs tr:nth-child(even) td{
+    background-color: rgb(243 246 249 / 75%);
+}
+
+
+.table-gridjs th p, .table-gridjs td p{
+    margin:0px;
+}
+
+
+
+.badge{
+    padding: 7px 10px !important;
+    text-align: center !important;
+    border-radius: 25px !important;
+    color: #fff !important;
+    min-width: 5rem !important;
+    font-weight: 500 !important;
+}
+
+.btn-primary{
+    background:linear-gradient(to right, #03045e, #0c4a6e) !important;
+}
+
+.page-link.active, .active > .page-link{
+    background: #03045e !important;
+}

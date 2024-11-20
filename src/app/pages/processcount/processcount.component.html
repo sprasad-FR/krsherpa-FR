@@ -1,0 +1,27 @@
+<div class="container-fluid">
+  <!-- <app-page-title title="{{ pageTitle }}"></app-page-title>
+ <app-loader [isLoading]="isLoading"></app-loader> -->
+
+  <!-- <div class="container-fluid mt-4"> -->
+  <app-loader [isLoading]="isLoading"></app-loader>
+  <div class="count">
+    <div class="row">
+      <div class="col-12">
+        <table>
+          <tr>
+            <td class="bold">Status</td>
+            <td class="bold">Count</td>
+          </tr>
+          <tr>
+            <td>processed </td>
+            <td>{{approvedcount}}</td>
+          </tr>
+          <tr>
+            <td>To be processed</td>
+            <td>{{totalcount}}</td>
+          </tr>
+        </table>
+      </div>
+    </div> 
+  </div> 
+</div>

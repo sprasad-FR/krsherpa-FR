@@ -1,0 +1,24 @@
+<table class="table table-nowrap table-centered align-middle">
+    <thead class="bg-light text-muted">
+        <tr>
+            <th scope="col">Project Name</th>
+            <th scope="col">Project Lead</th>
+                    
+            <th scope="col">Status</th>
+            <th scope="col" style="width: 10%;">Due Date</th>
+        </tr><!-- end tr -->
+    </thead><!-- thead -->
+
+    <tbody>
+        <tr *ngFor="let data of ActiveProjects">
+            <td class="fw-medium">{{data.Pname}}</td>
+            <td>
+                
+                <a href="javascript: void(0);" class="text-reset">{{data.Uname}}</a>
+            </td>
+           
+            <td><span class="badge" [ngClass]=" {'badge-soft-warning': data.status === 'Progress', 'badge-soft-danger': data.status === 'Pending', 'badge-soft-success': data.status === 'Completed'}">{{data.status}}</span></td>
+            <td class="text-muted">{{data.date}}</td>
+        </tr><!-- end tr -->
+    </tbody><!-- end tbody -->
+</table><!-- end table -->

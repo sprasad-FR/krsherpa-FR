@@ -1,0 +1,152 @@
+<div style="margin-top:-25px;" >
+  <div class="d-flex justify-content-center flex-nowrap">
+   <div  >
+                
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref active" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/client-invoice" href="/accounting/client-invoice">Client Billing</a>
+     
+   </div>
+   <div  >
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/expert-invoice" href="/accounting/expert-invoice">Expert Payments</a>
+   
+   </div>
+   <div  >
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/incentives" href="/accounting/incentives"> Incentives</a>
+   
+   </div>
+   <div  >
+    
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/Taxes" href="/accounting/Taxes"> Client Taxes</a>
+  
+   </div>
+   <div  >
+    
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/Miscellaneous" href="/accounting/Miscellaneous"> Miscellaneous Entries</a>
+  
+   </div>
+   <div  >
+    
+   </div>
+ 
+ 
+ </div>
+ </div>
+ 
+
+<div class="container-fluid">
+  <!-- <app-page-title title="{{ pageTitle }}" [breadcrumbItems]="breadCrumbItems"></app-page-title> -->
+
+  <!-- <app-loader [isLoading]="isLoading"></app-loader> -->
+
+  <form [formGroup]="leadForm" *ngIf="!isLoading">
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="form-group mb-4">
+                      <label>Employee <span class="required-asterisk">*</span></label>
+                      <ng-select
+                        formControlName="employeeId"
+                        [items]="allEmployee"
+                        bindLabel="name"
+                        bindValue="userId"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select Employee"
+                        (click)="getUserrol()"
+                      >
+                      </ng-select>
+                    </div>
+                    <div class="row">
+                      <div class="col-4">
+                        <div class="form-group">
+                          <label>Month </label>
+                          <select class="form-control" formControlName="month">
+                            <option *ngFor="let item of months; let i = index" value="{{ item }}">
+                              {{ item }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="form-group">
+                          <label>Year </label>
+                          <select class="form-control" formControlName="year">
+                            <option *ngFor="let item of years" value="{{ item }}">
+                              {{ item }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-4 btn-getinc">
+                        <button (click)="getIncentiv()" class="btn btn-primary">Get Incentives</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="row">
+                      <div class="col-6">
+                        <div class="">
+                          <div class="mb-3 form-group">
+                            <div class="text-muted">Incentives Applicable</div>
+
+                <div  *ngFor="let item of this.selectedroles"  >  <h6> <label >{{item.rulename}} </label></h6> <br>
+              </div>
+                         
+                          </div>
+                        </div>
+                        <div class="mb-3 form-group">
+                          <div class="text-muted">TRR</div>
+                          <h6>{{ this.incentiveAmtTRR }}</h6>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="mb-2 form-group">
+                          <div class="text-muted"></div>
+                          <h6></h6>
+                        </div>
+                        <div class="mb-2 form-group">
+                          <div class="text-muted">Hon.</div>
+                          <h6>{{ this.incentiveAmtHon }}</h6>
+                        </div>
+
+                         <div class="mb-2 form-group">
+                          <div class="text-muted">Total Incentive</div>
+                          <h6>{{ this.incentivetotal }}</h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+
+                <div class="row">
+                  <label>Transactions</label>
+                  <table class="table table-hovered">
+                    <tr>
+                      <th>Date</th>
+                      <th>Hon.</th>
+                    </tr>
+                    <tr *ngFor="let item of incentives">
+                      <td>
+                        {{ item['date'] }}
+                      </td>
+                      <td>
+                        {{ item['honorarium'] }}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row"></div>
+      </div>
+    </div>
+  </form>
+</div>

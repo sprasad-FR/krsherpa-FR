@@ -1,0 +1,310 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Projects" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+<!--preloader-->
+<app-loader [isLoading]="isLoading"></app-loader>
+
+
+<div class="row"> 
+  
+  <div class="col-md-12">
+<div class="float-end">
+  <button type="button" (click)="newprj('0',newprjc)"class="btn btn-primary m-1">Add</button>
+</div>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+      
+        <div class="card">
+          <div class="search-box d-inline-block mb-2">
+            <input type="text" class="form-control search" (keyup.enter)="search()"  placeholder="type keywords and press entery key to search..." [(ngModel)]="dbsearch">
+            <i class="ri-search-line search-icon"></i>
+        </div>
+        <div    > Filter :  &nbsp; 
+          <input checked (change)="setfilterstatus($event)"  type ="radio" id="stRdoNo"  name="stRdo" text="Unallocated" value="0"    > 
+          <label    for ="stRdoNo"  class="d-inline-flex align-items-center"
+          > In Progress &nbsp;&nbsp;  </label> 
+          <input (change)="setfilterstatus($event)" type ="radio" id="stRdoyes" name="stRdo" text="Allocated" value="1"   > 
+          <label for ="stRdoyes"  class="d-inline-flex align-items-center"
+          > All &nbsp;&nbsp; </label>      
+         </div>
+         <label style="text-align: end; color:red;font-size: large;" >{{sreserr}}</label>
+          
+       <hr>
+
+            
+            <div class="card-body">
+              <div class="row"> 
+              <div class=" col-sm-4  search-box d-inline-block mb-2">
+                Filter
+                  <input type="text" class="form-control search" placeholder="Filter..." [(ngModel)]="service.searchTerm">
+                  <i class="ri-filter-line search-icon"></i>
+                 
+              </div>
+              <div class="col-sm-3">
+Expert
+                <ng-select *ngIf="expnames?.length>1" 
+                                 [items]="expnames"                 
+                                 placeholder="Select Expert"                 
+                                 [(ngModel)]="service.searchTerm"
+                                 name="Sexlst" 
+                                 
+                               >
+                               </ng-select>
+                               
+                             </div>
+
+              <div class="col-sm-2 form-group">
+                Industry
+                 <ng-select *ngIf=" indus?.length>1 " 
+                  [items]="indus"                 
+                  placeholder="Select industry"                 
+               
+                  [(ngModel)]="service.searchTerm"
+                  name="Sindus" 
+                >
+                </ng-select>
+
+              </div>
+              <div class="col-sm-3">
+                Projects
+ <ng-select *ngIf=" prjnames?.length>1 " 
+                  [items]="prjnames"                 
+                  placeholder="Select Project"                 
+                
+                  name="Sprjlst" 
+                  [(ngModel)]="service.searchTerm"
+                >
+                </ng-select>
+                
+              </div>
+            </div>
+              <div class="row justify-content-md-between align-items-md-center border-light">
+                <div class="col-sm-12 col-md-3">
+                    <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                        Showing
+                        {{service.startIndex}} to
+                        {{service.endIndex}} of {{service.totalRecords}}
+                        entries from {{qrycount}} Results
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-3">
+                  <div class="form-check form-switch form-switch-custom form-switch-warning">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="isnewTab" role="switch" id="SwitchCheck1" checked>
+                    <label class="form-check-label" for="SwitchCheck1">Open in new Tab</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="text-md-right float-md-end gridjs-pagination">
+                      <ngb-pagination
+                      [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                    </ngb-pagination>
+                    </div>
+                   
+                  
+                </div>
+                <!-- End Pagination -->
+              </div>
+
+              <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav nav-tabs-custom nav-danger mb-1" role="tablist">
+          
+                <li [ngbNavItem]="1" class="nav-item">
+                  <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                    All
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div class="table-responsive table-dark table-striped table-nowrap">
+                      <table class="table table-gridjs">
+                        <thead>
+                        <tr>
+                        <th class="sort" sortable="id" (sort)="onSort($event)">No</th>
+                        <th class="sort" sortable="name" (sort)="onSort($event)">Name</th>
+                        <th  *ngIf="
+                        roles != 'researchAnalyst' && roles != 'researchManager' && roles != 'expert' && roles != 'client'
+                      "
+                        class="sort" sortable="Client" (sort)="onSort($event)">Client</th>
+                   <th class="sort" sortable="status" (sort)="onSort($event)">Status</th>
+                   <th class="sort"  sortable="expectedNumEvent" (sort)="onSort($event)">Exp. Events</th>
+                   
+                   <th class="sort" sortable="leadAttachedcount" (sort)="onSort($event)">Profiles Atch</th>
+                   <th class="sort" sortable="givenToAccMgrcount" (sort)="onSort($event)">GTAM</th>
+                   <th class="sort" sortable="givenToClientcount" (sort)="onSort($event)">GTC</th>
+                   
+                   
+                   <!--   <th class="sort" sortable="completedEventcount" (sort)="onSort($event)">Status</th>
+                 <th class="sort" sortable="country" (sort)="onSort($event)">Country</th>
+                        <th class="sort" sortable="industry" (sort)="onSort($event)">Industry</th> 
+                          
+                        <th class="sort" sortable="updatedAt" (sort)="onSort($event)">Date</th>
+                       -->
+                      </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let data of gridjsList$ | async ; let i = index " (click)="editemp(data.id,data._id,empmodel)" style="cursor: pointer !IMPORTANT;" >
+                          <td   (click)="editemp(data.id,data._id,empmodel)"><ngb-highlight [result]="data.id" [term]="service.searchTerm">{{i+1}}</ngb-highlight></td>
+                          <td title="{{data.name}}"  ><ngb-highlight >  {{data.name | getShort}}</ngb-highlight></td>
+                          <td  *ngIf="
+                          roles != 'researchAnalyst' && roles != 'researchManager' && roles != 'expert' && roles != 'client'
+                        "
+                          title="{{data.Client}}"   ><ngb-highlight >{{data.Client}}</ngb-highlight></td>
+                            <td> <span class="{{data.statuscls}}">
+                              {{ data.status}}
+                            </span> </td>
+                            <td><ngb-highlight >  <span *ngIf="data.expectedNumEvent && data.expectedNumEvent!='0'  " class="badge rounded-pill text-bg-danger"> {{data.expectedNumEvent }}  </span>   </ngb-highlight></td> 
+                          
+                            <td><ngb-highlight >  <span  *ngIf="data.leadAttachedcount && data.leadAttachedcount!='0'"  class="badge rounded-pill text-bg-primary">{{data.leadAttachedcount }} </span>  </ngb-highlight></td> 
+                            <td><ngb-highlight >  <span   *ngIf="data.givenToAccMgrcount && data.givenToAccMgrcount!='0'"  class="badge rounded-pill text-bg-secondary"> {{data.givenToAccMgrcount }}  </span> </ngb-highlight></td> 
+                            <td><ngb-highlight >  <span  *ngIf="data.givenToClientcount && data.givenToClientcount!='0'"  class="badge rounded-pill text-bg-success">{{data.givenToClientcount }}  </span>  </ngb-highlight></td> 
+                       
+      
+                         <!-- 
+                            <td><ngb-highlight >{{data.completedEventcount }}</ngb-highlight></td> 
+                       
+                          <td><ngb-highlight >{{data.country}}</ngb-highlight></td>
+                          <td><ngb-highlight >{{data.industry}}</ngb-highlight></td>                 
+                          <td><ngb-highlight >{{data.updatedAt }}</ngb-highlight></td> -->
+                         
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                   </ng-template>
+                </li>
+                
+                <li [ngbNavItem]="2" class="nav-item" *ngIf="isMcKinsey==true">
+                  <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                             McKinsey
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div class="table-responsive table-dark table-striped table-nowrap">
+                      <table class="table table-gridjs">
+                        <thead>
+                        <tr>
+                        <th class="sort" sortable="id" (sort)="onSort($event)">No</th>
+                        <th class="sort" sortable="name" (sort)="onSort($event)">Name</th>
+                        <th  *ngIf="
+                        roles != 'researchAnalyst' && roles != 'researchManager' && roles != 'expert' && roles != 'client'
+                      "
+                        class="sort" sortable="Client" (sort)="onSort($event)">Client</th>
+                   <th class="sort" sortable="status" (sort)="onSort($event)">Status</th>
+                   <th class="sort"  sortable="expectedNumEvent" (sort)="onSort($event)">Exp. Events</th>
+                   
+                   <th class="sort" sortable="leadAttachedcount" (sort)="onSort($event)">Profiles Atch</th>
+                   <th class="sort" sortable="givenToAccMgrcount" (sort)="onSort($event)">GTAM</th>
+                   <th class="sort" sortable="givenToClientcount" (sort)="onSort($event)">GTC</th>
+                   <th class="sort" >workstreams</th>
+                   <th class="sort" >Location</th>
+                   <!--   <th class="sort" sortable="completedEventcount" (sort)="onSort($event)">Status</th>
+                 <th class="sort" sortable="country" (sort)="onSort($event)">Country</th>
+                        <th class="sort" sortable="industry" (sort)="onSort($event)">Industry</th> 
+                          
+                        <th class="sort" sortable="updatedAt" (sort)="onSort($event)">Date</th>
+                       -->
+                      </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let data of clientprjlst  ; let i = index " (click)="editemp(data.id,data._id,empmodel)" style="cursor: pointer !IMPORTANT;" >
+                          <td   (click)="editemp(data.id,data._id,empmodel)"><ngb-highlight [result]="data.id" [term]="service.searchTerm">{{i+1}}</ngb-highlight></td>
+                          <td title="{{data.name}}"  ><ngb-highlight >{{data.name | getShort}}</ngb-highlight></td>
+                          <td  *ngIf="
+                          roles != 'researchAnalyst' && roles != 'researchManager' && roles != 'expert' && roles != 'client'
+                        "
+                          title="{{data.Client}}"   ><ngb-highlight >{{data.Client}}</ngb-highlight></td>
+                            <td> <span class="{{data.statuscls}}">
+                              {{ data.status}}
+                            </span> </td>
+                            <td><ngb-highlight >  <span *ngIf="data.expectedNumEvent && data.expectedNumEvent!='0'  " class="badge rounded-pill text-bg-danger"> {{data.expectedNumEvent }}  </span>   </ngb-highlight></td> 
+                          
+                            <td><ngb-highlight >  <span  *ngIf="data.leadAttachedcount && data.leadAttachedcount!='0'"  class="badge rounded-pill text-bg-primary">{{data.leadAttachedcount }} </span>  </ngb-highlight></td> 
+                            <td><ngb-highlight >  <span   *ngIf="data.givenToAccMgrcount && data.givenToAccMgrcount!='0'"  class="badge rounded-pill text-bg-secondary"> {{data.givenToAccMgrcount }}  </span> </ngb-highlight></td> 
+                            <td><ngb-highlight >  <span  *ngIf="data.givenToClientcount && data.givenToClientcount!='0'"  class="badge rounded-pill text-bg-success">{{data.givenToClientcount }}  </span>  </ngb-highlight></td> 
+                            <td><ngb-highlight >  <span  *ngIf="data.workstreams && data.workstreams!='0'"  class="badge rounded-pill text-bg-success">{{data.workstreams?.length }}  </span>  </ngb-highlight></td> 
+                            <td><ngb-highlight >  <span  *ngIf="data.team_location && data.team_location!='0'"  class="badge rounded-pill text-bg-success">{{data.team_location }}  </span>  </ngb-highlight></td> 
+                       
+      
+                         <!-- 
+                            <td><ngb-highlight >{{data.completedEventcount }}</ngb-highlight></td> 
+                       
+                          <td><ngb-highlight >{{data.country}}</ngb-highlight></td>
+                          <td><ngb-highlight >{{data.industry}}</ngb-highlight></td>                 
+                          <td><ngb-highlight >{{data.updatedAt }}</ngb-highlight></td> -->
+                         
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                   </ng-template>
+                </li>
+
+
+
+               </ul> 
+               <div class="row">
+                <div class="col-lg-12">
+                  <div class="tab-content text-dark">
+                    <div class="bg-soft-project-view" style="min-height:40vh" [ngbNavOutlet]="customNav"></div>
+                  </div>
+                </div>
+                <!-- end col -->
+              </div>
+
+
+              <div class="row justify-content-md-between align-items-md-center">
+                
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                        Showing
+                        {{service.startIndex}} to
+                        {{service.endIndex}} of {{service.totalRecords}}
+                        entries from {{qrycount}} Results
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-5">
+                    <div class="text-md-right float-md-end gridjs-pagination">
+                      <ngb-pagination
+                      [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                    </ngb-pagination>
+                    </div>
+                </div>
+                <!-- End Pagination -->
+              </div>
+              <div  class=" container fixed-bottom" style="background-color:white;"> 
+             
+               </div>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row  app-project-flow-->
+  
+  <ng-template #empmodel let-modal>
+    <div class="modal-content" width="98%">
+      <div class="modal-header">
+          <button type="button" class="btn-close"   style=" z-index:500;" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        
+   <app-projecttab [itemid]="selectedid" ></app-projecttab>
+  
+  </div>
+</div>
+  </ng-template>
+
+
+  <ng-template #newprjc let-modal>
+    <div class="modal-content" width="98%">
+      <div class="modal-header">
+          <button type="button" class="btn-close"   style=" z-index:500;" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        
+        <app-project-form [itemid]="selectedid" ></app-project-form>
+  
+  </div>
+</div>
+  </ng-template>

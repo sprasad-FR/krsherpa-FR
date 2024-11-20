@@ -1,0 +1,1124 @@
+<div class="row">
+                           
+  <form [formGroup]="leadForm" (ngSubmit)="submitData()" >
+    <fieldset [disabled]="readonly">  
+    <div class="row">
+      <div class="col-xl-7">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title mb-4">Company Details</h4>
+
+                <ngb-alert type="danger" *ngIf="error?.details" [dismissible]="false">
+                  {{ error.message }}
+                </ngb-alert>
+
+                <div class="alert alert-danger errors-list" *ngIf="error?.details > 0">
+                  <strong>Errors!</strong>
+                  <ul class="list-group list-group-flush">
+                    <li *ngFor="let err of error.details" class="list-group-item">
+                      {{ err.path.substring(1) }} {{ err.message }}
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="form-group mb-4">
+                  <label>Company Name <span class="required-asterisk">*</span></label>
+                  <input
+                    name="companyName"
+                    formControlName="companyName"
+                    type="text"
+                    class="form-control"
+                    autocomplete="off"
+                    placeholder="Eg. Razorback India Pvt Ltd"
+                    list="companyName"
+                    (keyup)="onKeypressEvent($event)"
+                  />
+                  <span *ngIf="companyExist != ''" class="alert text-danger">
+                    {{ companyExist }}
+                  </span>
+                  <datalist id="companyName">
+                    <option *ngFor="let company of companies">{{ company.companyName }}</option>
+                  </datalist>
+                </div>
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group mb-4">
+                      <label>Company Type <span class="required-asterisk">*</span> </label>
+                      <ng-select
+                        formControlName="companyType"
+                        name="companyType"
+                        [items]="companyType"
+                        bindLabel="type"
+                        bindValue="id"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select Company Type"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group mb-4">
+                      <label>Country Code<span class="required-asterisk">*</span></label>
+                      <ng-select
+                        formControlName="phonecode"
+                        [items]="countryArray"
+                        bindLabel="label"
+                        bindValue="phonecode"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select"
+                        [searchFn]="aphSearchFn"
+                        [(ngModel)]="secphcode1"    
+               
+                      >
+                        <ng-template ng-option-tmp let-item="item" let-search="isoCode">
+                          <div title="{{ item?.name }}({{item?.isoCode}}-{{item?.phonecode }})"> {{ item?.name }}({{item?.isoCode}}-{{item?.phonecode }})</div>
+      
+                        </ng-template>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group mb-4">
+                      <label>Mobile Number <span class="required-asterisk">*</span></label>
+                      <input
+                        formControlName="contactNo"
+                        name="contactNo"
+                        type="text"
+                        class="form-control"
+                        placeholder="Eg. 9098769977"
+                        (keyup)="checkMobileNumber($event, 'leadForm_mob');checkPhone(secphcode1,$event,'leadForm_mob');"
+                      />
+                      <span id="leadForm_mob" class="alert text-danger p-0"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    
+                    <div class="form-group mb-4">
+                      <label>Email Id <span class="required-asterisk">*</span></label>
+                      <input
+                        formControlName="email"
+                        name="email"
+                        type="email"
+                        class="form-control"
+                        placeholder="Eg. johndoe@gmail.com"
+                        (keyup)="checkEmail($event, 'leadForm_email')"
+                      />
+                      <span id="leadForm_email" class="alert text-danger p-0"></span>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4" style="display:none;">
+                      <label>Fax</label>
+                      <input
+                       
+                        name="fax"
+                        type="text"
+                        class="form-control"
+                        placeholder="Eg. #123 456 789"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group mb-4">
+                  <label>Address <span class="required-asterisk">*</span></label>
+                  <input
+                    formControlName="address"
+                    name="address"
+                    type="text"
+                    class="form-control"
+                    placeholder="Eg. Plot no. 2, Whitefield Society, Manish Nagar"
+                  />
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Country <span class="required-asterisk">*</span></label>
+                      <ng-select
+                        formControlName="country"
+                        [items]="countryArray"
+                        bindLabel="name"
+                        bindValue="name"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select Country"
+                        (change)="CountryId($event)"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>State <span class="required-asterisk"></span></label>
+                      <ng-select
+                        formControlName="state"
+                        [items]="stateArray"
+                        bindLabel="name"
+                        bindValue="name"
+                        [multiple]="false"
+                        [addTag]="true"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select State"
+                        (change)="StateId($event)"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>City <span class="required-asterisk"></span></label>
+                      <ng-select
+                        formControlName="city"
+                        [items]="cityList"
+                        bindLabel="name"
+                        bindValue="name"
+                        [multiple]="false"
+                        [addTag]="true"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select City"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Pin code <span class="required-asterisk"></span></label>
+                      <input
+                        formControlName="zipCode"
+                        name="zipCode"
+                        type="text"
+                        class="form-control"
+                        placeholder="Eg. 440013"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-4">
+                      <label>Website URL<span class="required-asterisk"></span></label>
+                      <input
+                        formControlName="url"
+                        name="url"
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter website url"
+                      />
+                    </div>
+                  </div>
+                </div>
+                 <!--[editor]="Editor"-->
+                <div class="row">
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label for="notes">Description</label>
+                      <input
+                     
+                        name="description"
+                        formControlName="description"
+                        id="description"
+                        class="form-control"
+                        type="textarea"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          
+      <div class="col-12" >
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title mb-4">Incentives & Accounting</h4>
+                <div class="form-group mb-4">
+                  <label>Lead Source<span class="required-asterisk">*</span></label>
+                  <ng-select
+                    (change)="showLeadReference($event?.id)"
+                    formControlName="leadSource"
+                    [items]="leadSourceArray"
+                    bindLabel="lead"
+                    bindValue="id"
+                    [multiple]="false"
+                    [closeOnSelect]="true"
+                    [selectableGroup]="false"
+                    placeholder="Select Lead Source"
+                  >
+                  </ng-select>
+                </div>
+
+                <div class="row" *ngIf="this.leadForm.value['leadSource'] > 2">
+                  <div class="col-12">
+                    <div class="form-group mb-4">
+                      <label>Lead Reference</label>
+                      <ng-select
+                        [items]="LeadReference"
+                        bindLabel="name"
+                        bindValue="userId"
+                        id="leadReference"
+                        formControlName="leadReference"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select"
+                        (change)="getReferenceName($event)"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+
+
+
+      <div class="col-xl-5">
+        <div class="row">
+          <div class="col-xl-12 mb-4 text-right">
+            <button type="button" style="display: none;" (click)="cancelForm()" class="btn btn-outline-link bg-white pl-5 pr-5">Cancel</button>
+            <button type="submit" [disabled]="submitBtn" (click)="submitData()" class="btn btn-primary pl-5 pr-5 ml-3">
+              {{ btnName }}
+            </button>
+            <div *ngIf="validationMsgDiv" class="validationMsg-div" >Mandatory Field has not been updated. Please update before saving.</div>
+            <button
+            *ngIf="id!=null" 
+            type="button"
+            class="btn btn-success m-4 pl-5 pr-5"
+            (click)="openCTC(ctc)"
+            [disabled]="convertBtn"
+          >
+            Convert
+          </button>
+          </div>
+
+<div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title mb-4">Lead Details</h4>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Status</label>
+                      <ng-select
+                        formControlName="leadStatus"
+                        [items]="stageStatus"
+                        bindLabel="stage"
+                        bindValue="id"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select Status"
+                      >
+                      </ng-select>
+                    </div>
+                    <div class="form-group mb-4">
+                      <label> Sales Associates <span class="required-asterisk">*</span></label>
+                <ng-select
+                    class="disable-remove-items disable-arrow disable-dropdown disable-clear-all"
+                     [items]="empActiveList"
+                        bindLabel="name"
+                        bindValue="userId"
+                    placeholder="Select KR Sales Associates"
+                    formControlName="salesassociates"
+                    [multiple]="true"
+                    [clearable]="false"
+                   
+                  >
+                  </ng-select>
+
+                      <ng-select style="display:none;"
+                        formControlName="secondary_assigneeId1"
+                        [items]="empList"
+                        bindLabel="name"
+                        bindValue="userId"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select Sales Owner"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label>Sales Owner <span class="required-asterisk">*</span></label>
+                      <ng-select
+                        formControlName="assigneeId"
+                        [items]="empList"
+                        bindLabel="name"
+                        bindValue="userId"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select Sales Owner"
+                      >
+                      </ng-select>
+                    </div>
+
+                    <div class="form-group mb-4" >
+                      <label style="display:none;">Secondary Sales Owner 2 <span class="required-asterisk">*</span></label>
+                      <ng-select style="display:none;"
+                        formControlName="secondary_assigneeId2"
+                        [items]="empList"
+                        bindLabel="name"
+                        bindValue="userId"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select Sales Owner"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-12" formGroupName="leadContactGroup">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title mb-4">Primary Contact Person </h4>
+
+                <div class="form-group mb-4">
+                  <label>Full Name <span class="required-asterisk">*</span></label>
+                  <div class="row">
+                    <div class="col-12">
+                      <input
+                        formControlName="name"
+                        name="name"
+                        type="text"
+                        class="form-control"
+                        placeholder="Eg. John Doe"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>Designation <span class="required-asterisk">*</span></label>
+                      <input
+                        formControlName="designation"
+                        name="designation"
+                        type="text"
+                        class="form-control"
+                        placeholder="Eg. Senior Manager"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    
+                    <div class="form-group">
+                      <label>Email Id <span class="required-asterisk">*</span></label>
+                      <input
+                        formControlName="email"
+                        type="email"
+                        type="text"
+                        class="form-control"
+                        placeholder="Eg. johndoe@gmail.com"
+                        (keyup)="checkEmail($event, 'leadContactGroup_email')"
+                      />
+                      <span id="leadContactGroup_email" class="alert text-danger p-0"></span>
+                    </div>
+                   
+                  </div>
+                  <div class="col-12">
+                    <div class="alert alert-danger text-center">
+                      Email ID already exists.<br/>  Would you like to assign the existing Email ID to this Client?<br/>
+                      <button _ngcontent-ale-c407="" type="button" class="btn btn-outline-success m-1"> Yes </button>
+                      <button _ngcontent-ale-c407="" type="button" class="btn btn-outline-danger m-1"> No </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group mb-4">
+                      <label>Country Code<span class="required-asterisk">*</span></label>
+                      <ng-select
+                        formControlName="primary_phonecode"
+                        [items]="countryArray"
+                        bindLabel="label"
+                        bindValue="phonecode"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [selectableGroup]="false"
+                        placeholder="Select"
+                        [searchFn]="aphSearchFn"
+                       
+              [(ngModel)]="secphcode"                      >
+                        <ng-template ng-option-tmp let-item="item" let-search="isoCode">
+                          {{ item?.isoCode }} ({{ item?.phonecode }})
+                        </ng-template>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group mb-4">
+                      <label>Mobile Number <span class="required-asterisk">*</span></label>
+                      <input
+                        formControlName="contactNo"
+                        name="contactNo"
+                        type="text"
+                        class="form-control"
+                        placeholder="Eg. +91 9098769977"
+                      
+                        (keyup)="checkNumber($event); checkMobileNumber($event, 'leadContactGroup_mob');checkPhone(secphcode,$event,'leadContactGroup_mob');"
+                      />
+                      <div *ngIf="numberExist != ''" class="alert alert-danger">
+                        {{ numberExist }}
+                      </div>
+                      <span id="leadContactGroup_mob" class="alert text-danger p-0"></span>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group mb-4">
+                      <label>Alternate Number</label>
+                      <input
+                        formControlName="alternateMobile"
+                        name="alternateMobile"
+                        type="text"
+                        class="form-control"
+                        placeholder="Eg. +91 9098769977"
+                        (keyup)="checkMobileNumber($event, 'leadContactGroup_alt')"
+                      />
+                      <span id="leadContactGroup_alt" class="alert text-danger p-0"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group mb-4">
+                  <label>LinkedIn <span class="required-asterisk"></span></label>
+                  <input
+                    class="form-control"
+                    formControlName="linkedinurl"
+                    name="linkedinurl"
+                    rows="3"
+                    placeholder=" . ..."
+                  />
+                </div>
+                <div class="form-group mb-4">
+                  <label>Notes <span class="required-asterisk">*</span></label>
+                  <textarea
+                    class="form-control"
+                    formControlName="notes"
+                    name="notes"
+                    rows="3"
+                   
+                    placeholder="Please add relevant Tag’s related to this Client User"
+                  > </textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+<div class="col-12"   >
+ 
+  <h4  *ngIf="id!=null"   class="card-title mb-6">Additional POC Details</h4>
+  <button *ngIf="id!=null"    type="button" class="btn btn-primary pl-5 pr-5 ml-3" (click)="createClientPOC(secondaryLeadContacts)">Add POC</button>
+          
+
+<div *ngIf="allContactPersons?.length">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title mb-4">Contact Person List</h4>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email Id</th>
+                  <th>Contact No.</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of allContactPersons">
+                  <td>{{ item?.name }}</td>
+                  <td>{{ item?.email }}</td>
+                  <td>{{ item?.contactNo }}</td>
+                  <td>
+                    <i class="bx bx-pencil" (click)="edit(item?.id,secondaryLeadContacts)"></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+        </div>
+      </div>
+
+
+            
+          </div>
+
+          
+
+          
+        </div>
+      </div>
+    </div>
+    </fieldset>
+  </form>
+
+
+  <ng-template #secondaryLeadContacts>
+    <div class="modal-header">
+   
+  </div>
+  <form [formGroup]="secondaryLeadContact" (ngSubmit)="saveSecondaryData()">
+    <div class="row" >
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4>Additional Contact Person</h4>
+            <div class="form-group mb-4">
+              <label>Full Name <span class="required-asterisk">*</span></label>
+              <div class="row">
+                <div class="col-12">
+                  <input
+                    formControlName="name"
+                    name="name"
+                    type="text"
+                    class="form-control"
+                    placeholder="Eg. John Doe"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group mb-4">
+                  <label>Designation <span class="required-asterisk">*</span></label>
+                  <input
+                    formControlName="designation"
+                    name="designation"
+                    type="text"
+                    class="form-control"
+                    placeholder="Eg. Senior Manager"
+                  />
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group mb-4">
+                  <label>Email Id <span class="required-asterisk">*</span></label>
+                  <input
+                    formControlName="email"
+                    type="email"
+                    type="text"
+                    class="form-control"
+                    placeholder="Eg. johndoe@gmail.com"
+                    (keyup)="checkEmail($event, 'secondaryLeadContact_email')"
+                  />
+                  <span id="secondaryLeadContact_email" class="alert text-danger p-0"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-4">
+                <div class="form-group mb-4">
+                  <label>Country Code<span class="required-asterisk">*</span></label>
+                  <ng-select
+                    formControlName="primary_phonecode"
+                    [items]="countryArray"
+                    bindLabel="label"
+                    bindValue="phonecode"
+                    [multiple]="false"
+                    [closeOnSelect]="true"
+                    [selectableGroup]="false"
+                    placeholder="Select"
+                    [(ngModel)]="secphcode2"  
+                  >
+                    <ng-template ng-option-tmp let-item="item" let-search="isoCode">
+                      {{ item?.isoCode }} ({{ item?.phonecode }})
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group mb-4">
+                  <label>Mobile Number <span class="required-asterisk">*</span></label>
+                  <input
+                    formControlName="contactNo"
+                    name="contactNo"
+                    type="text"
+                    class="form-control"
+                    placeholder="Eg. +91 9098769977"
+                    (keyup)="checkNumber($event); checkMobileNumber($event, 'secondaryLeadContact_mob'); checkPhone(secphcode2,$event,'secondaryLeadContact_mob');"
+                  />
+                  <div *ngIf="numberExist != ''" class="alert alert-danger">
+                    {{ numberExist }}
+                  </div>
+                  <span id="secondaryLeadContact_mob" class="alert text-danger p-0"></span>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group mb-4">
+                  <label>Alternate Number</label>
+                  <input
+                    formControlName="alternateMobile"
+                    name="alternateMobile"
+                    type="text"
+                    class="form-control"
+                    placeholder="Eg. +91 9098769977"
+                    (keyup)="checkMobileNumber($event, 'secondaryLeadContact_alt')"
+                  />
+                  <span id="secondaryLeadContact_alt" class="alert text-danger p-0"></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb-4">
+              <label>LinkedIn <span class="required-asterisk"></span></label>
+              <input
+                class="form-control"
+                formControlName="linkedinurl"
+                name="linkedinurl"
+                rows="3"
+                placeholder=" . ..."
+              />
+            </div>
+            <div class="form-group mb-4">
+              <label>Notes <span class="required-asterisk">*</span></label>
+              <textarea
+                class="form-control"
+                formControlName="notes"
+                name="notes"
+                rows="3"
+                placeholder=" . ..."
+              ></textarea>
+            </div>
+            
+            <button class="btn btn-primary" type="submit">save</button>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </form>
+</ng-template>
+
+ <!-- Convert client NON-MSA Modal -->
+ <ng-template #CTCNONMSA let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title mt-0">Convert to Client</h5>
+    <button type="button" class="close" (click)="modal.dismiss()" aria-hidden="true">×</button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="CTCForm" (ngSubmit)="convertToClient()" novalidate>
+
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Profit and Loss Head <span class="required-asterisk">*</span></label>
+
+            <ng-select
+              formControlName="plheadId"
+              name="plheadId"
+              [items]="pnlHeadList"
+              bindLabel="name"
+              bindValue="userId"
+              placeholder="Select PnlHead"
+              [multiple]="false"
+              [closeOnSelect]="true"
+              [selectableGroup]="false"
+              Required
+            >
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label> Sub Profit and Loss Head <span class="required-asterisk">*</span></label>
+
+                <ng-select
+                  formControlName="subPnlHeadId"
+                  name="subPnlHeadId"
+                  [items]="subPnlHeadList"
+                  bindLabel="name"
+                  bindValue="userId"
+                  placeholder="Select Sub PnlHead"
+                  [multiple]="false"
+                  [closeOnSelect]="true"
+                  [selectableGroup]="false"
+                  Required
+                >
+                </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Key Account Manager <span class="required-asterisk">*</span></label>
+
+                <ng-select
+                  formControlName="accountManagerId"
+                  name="accountManagerId"
+                  [items]="keyAccountMgrList"
+                  bindLabel="name"
+                  bindValue="userId"
+                  [multiple]="false"
+                  [closeOnSelect]="true"
+                  [selectableGroup]="false"
+                  placeholder="Select Key Account Manager"
+                Required
+                >
+                </ng-select>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Currency</label>
+            <ng-select
+              formControlName="currency"
+              [items]="currenciesList"
+              bindLabel="name"
+              bindValue="code"
+              [multiple]="false"
+              [closeOnSelect]="true"
+              [selectableGroup]="false"
+              placeholder="Select Currency"
+            >
+              <ng-template ng-option-tmp let-item="item" let-search="name">
+                {{ item?.name }} ({{ item?.code }})
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Base Rate</label>
+
+            <input
+              class="form-control"
+              type="number"
+              placeholder="Eg. USD 20000"
+              formControlName="baseRate"
+              name="baseRate"
+              (change)="applybaserate()"
+            />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Base Rate Type</label>
+            <ng-select
+              [items]="rateTypes"
+              bindLabel="rateTypes"
+              bindValue="rateTypes"
+              placeholder="Select Rate Type"
+              name="baseRateType"
+              formControlName="baseRateType"
+            >
+            </ng-select>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-group mb-4">
+        <label>Is agreement signed</label>
+        <div class="custom-control custom-switch mb-2" dir="ltr">
+          <input
+            type="radio"
+            class="custom-control-input"
+            id="isYes"
+            formControlName="isYes"
+          />&nbsp;
+          <label class="custom-control-label mr-5" for="isYes">Yes</label>
+          &nbsp;&nbsp;&nbsp;
+          <input
+            type="radio"
+            class="custom-control-input"
+            id="isNo"
+            formControlName="isNo"
+            checked
+          />&nbsp;
+          <label class="custom-control-label" for="isNo">No</label>
+        </div>
+      </div>
+      <div class="form-group mb-4">
+        <label>Agreement Type</label>
+        <div class="custom-control custom-switch mb-2" dir="ltr">
+          <input
+            type="checkbox"
+            class="custom-control-input"
+            id="agreementType"
+            formControlName="agreementType"
+            checked
+            #agreementTypecheck
+            (change)="toggleVisibility($event)"
+          />
+          <label class="custom-control-label" for="agreementType">{{
+            agreementTypecheck.checked ? 'MSA' : 'Non MSA'
+          }}</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Service Start Date</label>
+            <input
+              class="form-control"
+              type="date"
+              formControlName="serviceStartDate"
+              name="serviceStartDate"
+              placeholder="mm-dd-yyyy"
+              min="{{ today }}"
+              (change)="setEndDate($event)"
+            />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Service End Date</label>
+            <input
+              class="form-control"
+              type="date"
+              formControlName="serviceEndDate"
+              name="serviceEndDate"
+              placeholder="mm-dd-yyyy"
+              min="{{ startDate }}"
+              (change)="setInvoiceDate($event)"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Billing Cycle</label>
+            <ng-select
+              [items]="billingCycleArray"
+              bindLabel="billingCycleArray"
+              bindValue="billingCycleArray"
+              placeholder="Select Billing Cycle"
+              name="billingCycle"
+              formControlName="billingCycle"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Initial Invoice Date</label>
+            <input
+              class="form-control"
+              type="date"
+              formControlName="initialInvoiceDate"
+              name="initialInvoiceDate"
+              placeholder="mm-dd-yyyy"
+              min="{{ startDate }}"
+              max="{{ endDate }}"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="agreementTypecheck.checked">
+        <div class="form-group mb-4">
+          <label>Package Type</label>
+          <div class="custom-control custom-switch mb-2" dir="ltr">
+            <input
+              type="checkbox"
+              class="custom-control-input"
+              id="packageType"
+              formControlName="packageType"
+              checked
+              #packageTypecheck
+            />
+            <label class="custom-control-label" for="packageType">{{
+              packageTypecheck.checked ? 'Credit' : 'Wallet'
+            }}</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div *ngIf="packageTypecheck.checked" class="form-group mb-4">
+              <label>No Of Credits</label>
+              <input
+                formControlName="availableCredits"
+                name="availableCredits"
+                type="number"
+                class="form-control"
+                placeholder="No Of Credits"
+              />
+            </div>
+            <div *ngIf="!packageTypecheck.checked" class="form-group mb-4">
+              <label>Amount</label>
+              <input formControlName="amount" name="amount" type="number" class="form-control" placeholder="Amount" />
+            </div>
+          </div>
+        </div>
+        <div *ngIf="packageTypecheck.checked" class="row">
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>Cost Per Credit</label>
+              <input
+                formControlName="costPerCredit"
+                name="costPerCredit"
+                type="number"
+                class="form-control"
+                placeholder="Cost Per Credit"
+                #costPerCredit
+              />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>MSA Value</label>
+              <input
+                formControlName="msaValue"
+                name="msaValue"
+                type="number"
+                class="form-control"
+                placeholder="MSA Value"
+                [(ngModel)]="this.CTCForm.value.availableCredits * this.CTCForm.value.costPerCredit"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mb-4">
+        <label>KRPI Access</label>
+        <div class="custom-control custom-switch mb-2" dir="ltr">
+          <input
+            type="checkbox"
+            class="custom-control-input"
+            id="krpiAccess"
+            formControlName="krpiAccess"
+            checked
+            #krpiAccesscheck
+          />
+          <label class="custom-control-label" for="krpiAccess">{{ krpiAccesscheck.checked ? 'Yes' : 'No' }}</label>
+        </div>
+      </div>
+      <div class="row" *ngIf="krpiAccesscheck.checked">
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>KRPI Event Access Number</label>
+            <input
+              formControlName="krpiEventAccessNumber"
+              name="krpiEventAccessNumber"
+              type="text"
+              class="form-control"
+              placeholder="Eg. 78199651831"
+              (keyup)="onKeypressEvent($event); checkNumber($event)"
+            />
+            <span *ngIf="alreadyExist != ''" class="alert text-danger">
+              {{ alreadyExist }}
+            </span>
+            <span *ngIf="validNumberString != ''" class="alert text-danger">
+              {{ validNumberString }}
+            </span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Users Per Event</label>
+            <input
+              formControlName="usersPerEvent"
+              name="usersPerEvent"
+              type="number"
+              class="form-control"
+              placeholder="Eg. 10"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="krpiAccesscheck.checked">
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>On Demand Topics</label>
+            <select class="form-control" name="onDemandTopics" formControlName="onDemandTopics">
+              <option value="" selected disabled>Select</option>
+              <option value="1">Yes</option>
+              <option value="0">No</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Pre Event Counsultation</label>
+            <select class="form-control" name="preEventCounsultation" formControlName="preEventCounsultation">
+              <option value="" selected disabled>Select</option>
+              <option value="1">Yes</option>
+              <option value="0">No</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      
+
+      <ngb-alert type="danger" *ngIf="error?.details.length == 0" [dismissible]="false">
+        {{ error.message }}
+      </ngb-alert>
+
+      <div class="alert alert-danger errors-list" *ngIf="error?.details.length > 0">
+        <strong>Errors!</strong>
+        <ul class="list-group list-group-flush">
+          <li *ngFor="let err of error.details" class="list-group-item">
+            {{ err.path.substring(1) }} {{ err.message }}
+          </li>
+        </ul>
+      </div>
+
+      <button type="button" class="btn btn-secondary pl-5 pr-5" (click)="modal.dismiss('Closed')">Previous</button>
+      <button
+        type="button"
+        class="btn btn-success ml-4 pl-5 pr-5"
+        (click)="convertToClient()"
+        [disabled]="!convertBtn"
+      >
+        Convert
+      </button>
+    </form>
+  </div>
+</ng-template>
+   
+
+
+<ng-template #ctc let-modal>
+  <div class="modal-content" width="98%">
+    <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+    
+      <app-lead-details [itemid]="itemid" ></app-lead-details>
+</div>
+</div>
+</ng-template>
+                              <!-- end col -->
+                          </div>
+<app-toasts aria-live="polite" aria-atomic="true"> </app-toasts>

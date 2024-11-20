@@ -1,0 +1,63 @@
+#page-topbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1002;   
+    background-color: #001233!important;
+
+}
+
+.navbar-menu {
+    border-right-color: transparent;
+    padding: 0 calc(0.7rem / 2);
+    box-shadow: 0 2px 4px rgba(15, 34, 58, 0.12);
+    margin-top: 50px !important;
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    width: 100%;
+    bottom: auto;
+}
+
+
+
+.navbar-nav .nav-item{
+    padding: 0px 5px;
+    cursor: pointer;
+}
+
+.navbar-brand-box .head-gs {  
+    background-color: #55b5ec!important;
+}
+
+.navbar-menu .navbar-nav .nav-link {
+    color: #475569;
+    font-size: 14px;
+    padding: 0.75rem;
+}
+
+.navbar-menu .navbar-nav .nav-link.active  {
+    color: #03045e;
+    font-size: 14px;
+    padding: 0.75rem;
+    font-weight: 550;
+}
+
+.navbar-menu .navbar-nav .nav-link i {
+    color: #475569;
+}
+
+.navbar-menu .navbar-nav .nav-link.active i {
+    color: #03045e;
+}
+
+#scrollbar
+{
+    margin-left:-30px;
+    width: 110%;
+    background-image: linear-gradient(45deg, #ffffff, #ffffff);
+  //  background-image: linear-gradient(to bottom, #DECBA4, #3E5151);
+}
+//

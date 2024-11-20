@@ -1,0 +1,794 @@
+<div class="container-fluid lead-details">
+  <!-- start page title -->
+  <app-page-title title="LEAD DETAILS" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <!-- end page title -->
+
+  <app-loader [isLoading]="isLoading"></app-loader>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="media">
+                <div *ngIf="salesLeadContact?.name !== undefined" class="rounded-circle avatar-sm initial-img">
+                  {{ salesLeadContact?.name | getInitials: 2 }}
+                </div>
+
+                <div class="media-body overflow-hidden ml-3">
+                  <h5 class="text-truncate font-size-15">{{ salesLeadContact?.name }}</h5>
+                  <p class="text-muted">{{ salesLeadContact?.designation }}, {{ salesLeadData?.companyName }}</p>
+                </div>
+                <div class="overflow-hidden ml-auto">
+                  <div class="text-muted text-right">Sales Owner</div>
+                  <div class="d-flex align-items-center">
+                    <div class="rounded-circle avatar-sm initial-img initial">
+                      {{ getUserName(salesLeadData?.assigneeId) | getInitials: 2 }}
+                    </div>
+                    <!-- <img alt="" class="rounded-circle avatar-xs" src="//dummyimage.com/50x50/e8e8e8/5a5a63" /> -->
+                    <div *ngIf="salesLeadData?.assigneeId !== undefined" class="ml-2 font-weight-bold">
+                      {{ getUserName(salesLeadData?.assigneeId) }}
+                    </div>
+                  </div>
+                  <div *ngIf="salesLeadData?.salesassociates?.length>0" class="align-items-center">
+                      <span><b>Sales Associates</b></span>
+                      <br/>
+                    <div  *ngFor="let item of salesLeadData?.salesassociates"   class="align-items-center">
+                        {{ getUserName(item) }} <br/>
+                   
+                    </div>
+                   
+                  </div>
+                  
+                </div>
+              </div>
+
+              <h5 class="font-size-15 mt-4">Description</h5>
+
+              <p *ngIf="salesLeadData?.description" [innerHTML]="salesLeadData?.description" class="text-muted"></p>
+              <p *ngIf="!salesLeadData?.description" class="text-muted">No description added</p>
+
+              <div class="row mt-4">
+                <div class="col-md-6">
+                  <h6 class="text-muted">Designation</h6>
+                  <h6>{{ salesLeadContact?.designation }}</h6>
+                </div>
+                <div class="col-md-6">
+                  <h6 class="text-muted">Email Id</h6>
+                  <h6>
+                    <a href="javascript: void(0);">{{ salesLeadContact?.email }}</a>
+                  </h6>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <h6 class="text-muted">Contact Number</h6>
+                  <h6>
+                    <a href="javascript: void(0);">{{ salesLeadContact?.contactNo }}</a>
+                  </h6>
+                </div>
+                <div class="col-md-6">
+                  <h6 class="text-muted">Alternate Number</h6>
+                  <h6>
+                    <a href="javascript: void(0);">{{ salesLeadContact?.alternateMobile }}</a>
+                  </h6>
+                </div>
+              </div>
+
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <h6 class="text-muted">Company</h6>
+                  <h6>{{ salesLeadData?.companyName }}</h6>
+                </div>
+                <div class="col-md-6">
+                  <h6 class="text-muted">Company Type</h6>
+                  <h6>
+                    {{ getCompanyType(salesLeadData?.companyType) }}
+                  </h6>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <h6 class="text-muted">Address</h6>
+                  <h6>{{ salesLeadData?.address }}</h6>
+                </div>
+              </div>
+              <div *ngIf="allContactPersons?.length > 0" class="row mt-3">
+                <div class="col-md-6">
+                  <h6 class="text-muted">Additional Sales Lead Contacts</h6>
+                  <div *ngFor="let item of allContactPersons" class="row">
+                    <div class="col-md-4">
+                      <h6 class="text-muted">Name</h6>
+                      <h6>{{ item?.name }}</h6>
+                    </div>
+                    <div class="col-md-4">
+                      <h6 class="text-muted">Email</h6>
+                      <h6>{{ item?.email }}</h6>
+                    </div>
+                    <div class="col-md-4">
+                      <h6 class="text-muted">Contact Number</h6>
+                      <h6>{{ item?.contactNo }}</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body pb-2">
+              <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav-tabs nav-tabs-custom">
+                <li [ngbNavItem]="1">
+                  <a ngbNavLink class="no-bgc">
+                    <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+                    <span class="d-none d-sm-block">Comments</span>
+                  </a>
+                  <ng-template ngbNavContent>
+                    <ng-template [ngTemplateOutlet]="Comments"></ng-template>
+                  </ng-template>
+                </li>
+                <li [ngbNavItem]="3">
+                  <a ngbNavLink class="no-bgc">
+                    <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                    <span class="d-none d-sm-block">Attachments</span>
+                  </a>
+                  <ng-template ngbNavContent>
+                    <ng-template [ngTemplateOutlet]="Attachments"></ng-template>
+                  </ng-template>
+                </li>
+              </ul>
+              <div [ngbNavOutlet]="customNav"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end col -->
+
+    <div class="col-lg-4">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="mb-2 d-flex justify-content-end">
+            <a style="display:none;"
+              type="button"
+              class="btn btn-outline-link bg-white mr-3 px-3"
+              href="https://outlook.office.com "
+              title="Currently unavailable"
+              disabled
+            >
+              <i class="mdi mdi-email-outline font-size-16 align-middle"></i> Send Email
+            </a>
+            <button
+              type="button"
+              [routerLink]="['/sales/edit-lead/', id]"
+              class="btn btn-outline-link bg-white px-3"
+              *ngIf="roles != 'researchAnalyst' && roles != 'researchManager' && whoami.id == salesLeadData.assigneeId"
+            >
+              </button>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title mb-4">Lead Details</h4>
+
+              <div class="mt-3">
+                <div class="text-muted mb-2">Convert</div>
+                <div class="d-flex flex-row mt-1">
+                  <div style="flex: 1; display: none;" (click)="changeLeadStatus(1)">
+                    <ngb-progressbar
+                      [value]="100"
+                      [type]="salesLeadData?.leadStatus >= 1 ? 'dark' : 'light'"
+                      height="0.5rem"
+                    ></ngb-progressbar>
+                    <div class="mt-2">Contacted</div>
+                  </div>
+                  <div class="ml-3" style="flex: 1; display: none;" (click)="changeLeadStatus(2)">
+                    <ngb-progressbar
+                      [value]="100"
+                      [type]="salesLeadData?.leadStatus >= 2 ? 'yellow' : 'light'"
+                      height="0.5rem"
+                    ></ngb-progressbar>
+                    <div class="mt-2">Interested</div>
+                  </div>
+                  <div class="ml-3" style="flex: 1; display: none;" (click)="changeLeadStatus(3)">
+                    <ngb-progressbar
+                      [value]="100"
+                      [type]="salesLeadData?.leadStatus >= 3 ? 'warning' : 'light'"
+                      height="0.5rem"
+                    ></ngb-progressbar>
+                    <div class="mt-2">In Progress</div>
+                  </div>
+                  <div class=" btn btn-primary  ml-3" style="flex: 1" (click)="openModal(CTCNONMSA)">
+                    <ngb-progressbar
+                      [value]="100"
+                      [type]="salesLeadData?.leadStatus >= 4 ? 'primary' : 'light'"
+                      height="0.5rem"
+                    ></ngb-progressbar>
+                    <div class="mt-2" >Convert to Client</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <div class="text-muted">Last Updated</div>
+                <h6 *ngIf="salesLeadData?.updatedAt">
+                  {{ salesLeadData?.updatedAt | localDateTime: 'DD MMM yyy' }}, {{ daysDiff }} days ago
+                </h6>
+                <h6 *ngIf="daysDiff > 45">No action performed in last 45 days</h6>
+
+                <h6 *ngIf="!salesLeadData?.updatedAt">--</h6>
+              </div>
+              <div class="mt-3">
+                <div class="text-muted">Created Date</div>
+                <h6 *ngIf="salesLeadData?.createdAt">{{ salesLeadData?.createdAt | localDateTime: 'DD MMM yyy' }}</h6>
+                <h6 *ngIf="!salesLeadData?.createdAt">--</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="row my-3 align-items-center">
+                <div class="col-md-7">
+                  <h5 class="font-size-15 mb-0">My Notes</h5>
+                </div>
+                <div class="col-md-5 text-center text-md-right" style="display:none;">
+                  <a href="javascript:void(0)" (click)="addNotes(addNotesModal)"> Add New Note </a>
+                </div>
+              </div>
+              <div class="mb-3 pt-1" *ngFor="let notes of salesLeadContact?.notes">
+                <div class="bg-light p-2 text-muted">
+                  {{ notes['note'] }}   {{ (notes['date'])?' -- at  ':'' }}  {{ notes['date'] }}
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end col -->
+      </div>
+      <!-- end row -->
+      <ng-template #addNotesModal let-modal>
+        <div class="modal-header p-2 bg-dark">
+          <h5 class="modal-title mt-0 text-white">Add Notes</h5>
+        </div>
+        <div class="modal-body">
+          <textarea
+            name="description"
+            id="description"
+            [(ngModel)]="descriptionField"
+            class="form-control"
+            rows="10"
+          ></textarea>
+          <div class="text-danger" *ngIf="error">Please enter description or note.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+          <button type="button" class="btn btn-success" (click)="storeDescrition()">Save</button>
+        </div>
+      </ng-template>
+      <ng-template #Comments>
+        <div class="mt-4 mb-4">
+          <div *ngFor="let comment of salesLeadComments">
+            <div class="media mb-2">
+              <div class="mr-3">
+                <img class="media-object rounded-circle avatar-xs" alt="" src="assets/images/users/avatar-2.jpg" />
+              </div>
+              <div class="media-body">
+                <h5 class="font-size-13 mb-1">{{ getUserName(comment.userId) }}</h5>
+                <p class="text-muted mb-1">
+                  {{ comment.description }}
+                </p>
+                <p>
+                  {{ comment.createdAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}
+                </p>
+              </div>
+              <div class="">
+                <a href="javascript: void(0);" (click)="deleteComment(comment.id)" class="text-dark">
+                  <i class="bx bx-trash"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="form-group mb-4">
+            <label>Add a Comment</label>
+            <textarea class="form-control" rows="3" placeholder="Type here" #commentDescription></textarea>
+
+            <span class="text-danger" *ngIf="!commentDescription.value">Please enter comment.</span>
+          </div>
+          <button type="submit" class="btn btn-primary pl-5 pr-5" (click)="createComment(commentDescription)">
+            Comment
+          </button>
+        </div>
+      </ng-template>
+      <ng-template #Attachments>
+        <div class="mb-3">
+          <div class="form-group mb-4">
+          </div>
+        <!--- <form  enctype="multipart/form-data" method="post"> ---> 
+           
+
+             Document Type: <input
+                    name="filetype"
+                    value="{{filetype}}"
+                    type="text"
+                    class="form-control"
+                    autocomplete="off"
+                    placeholder="Doc Type (ex. MSA)"                   
+                  />
+          
+          <div class="text-left">
+             Select File : <input #fileUploadInput class="form-control" type="file" 
+                      (change)="onChange($event)">
+            
+              <button (click)="onUpload()" 
+                  class="btn btn-success">
+                  Upload
+              </button>
+          </div>
+        <!--</form>-->  
+            
+          
+        </div>
+
+
+        <div class="mt-4 mb-4">
+          <div class="hori-timeline">
+
+
+
+
+            <div class="row" *ngIf="salesLeadData?.attachments?.length > 0">
+              <div class="col-12 mt-4">
+                <h5>Uploaded files</h5>
+              </div>
+              <div class="col-sm-6" *ngFor="let media of salesLeadData?.attachments; let i = index">
+                               
+                    <div class="media align-items-center">
+                      
+                      <div class="media-body file-name w-75">
+                        <h6 class="text-muted font-size-12 text-break">{{i+1}} . {{media['filename']}} </h6>
+                        <!-- <p class="mb-0 font-size-12">Size: --</p> -->
+                      </div>
+                      <div class="media-body file-name w-75">
+                        <h6 class="text-muted font-size-12 text-break"> {{media['filetype']}} </h6>
+                        <!-- <p class="mb-0 font-size-12">Size: --</p> -->
+                      </div>
+                      <div style="margin-right:15px;" >
+                       
+                          <i (click)="removeattachment(media['filename'])" class="bx bx-bin font-size-10 ">X  </i> 
+                      
+                      </div>
+                      <div class="download-icon">
+                        <a href={{url+ media.filename }} download>
+                          <i class="bx bx-download font-size-16"></i> 
+                        </a>
+                      </div>
+                    </div>
+                  
+                  <!-- end card-body -->
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Confirm Convert client Modal -->
+  <!-- <ng-template #CTCConfirmModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">Convert to Client</h5>
+      <button type="button" class="close" (click)="modal.dismiss('Closed')" aria-hidden="true">×</button>
+    </div>
+    <div class="modal-body text-center">
+      <h6>You are converting the lead to Client</h6>
+      <p>Is Agreement signed</p>
+      <button type="button" class="btn btn-secondary pl-5 pr-5" (click)="modal.dismiss('No')">No</button>
+      <button type="button" class="btn btn-primary ml-4 pl-5 pr-5" (click)="openModal(CTCNONMSA)">Yes</button>
+    </div>
+  </ng-template> -->
+
+  <!-- Convert client NON-MSA Modal -->
+  <ng-template #CTCNONMSA let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">Convert to Client</h5>
+      <button type="button" class="close" (click)="modal.dismiss()" aria-hidden="true">×</button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="CTCForm" (ngSubmit)="convertToClient()" novalidate>
+
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>Profit and Loss Head <span class="required-asterisk">*</span></label>
+
+              <ng-select
+                formControlName="plheadId"
+                name="plheadId"
+                [items]="pnlHeadList"
+                bindLabel="name"
+                bindValue="userId"
+                placeholder="Select PnlHead"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                [selectableGroup]="false"
+                Required
+              >
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label> Sub Profit and Loss Head <span class="required-asterisk">*</span></label>
+
+                  <ng-select
+                    formControlName="subPnlHeadId"
+                    name="subPnlHeadId"
+                    [items]="subPnlHeadList"
+                    bindLabel="name"
+                    bindValue="userId"
+                    placeholder="Select Sub PnlHead"
+                    [multiple]="false"
+                    [closeOnSelect]="true"
+                    [selectableGroup]="false"
+                    Required
+                  >
+                  </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>Key Account Manager <span class="required-asterisk">*</span></label>
+
+                  <ng-select
+                    formControlName="accountManagerId"
+                    name="accountManagerId"
+                    [items]="keyAccountMgrList"
+                    bindLabel="name"
+                    bindValue="userId"
+                    [multiple]="false"
+                    [closeOnSelect]="true"
+                    [selectableGroup]="false"
+                    placeholder="Select Key Account Manager"
+                  Required
+                  >
+                  </ng-select>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group mb-4">
+              
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>Currency</label>
+              <ng-select
+                formControlName="currency"
+                [items]="currenciesList"
+                bindLabel="name"
+                bindValue="code"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                [selectableGroup]="false"
+                placeholder="Select Currency"
+              >
+                <ng-template ng-option-tmp let-item="item" let-search="name">
+                  {{ item?.name }} ({{ item?.code }})
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>Base Rate</label>
+
+              <input
+                class="form-control"
+                type="number"
+                placeholder="Eg. USD 20000"
+                formControlName="baseRate"
+                name="baseRate"
+                (change)="applybaserate()"
+              />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>Base Rate Type</label>
+              <ng-select
+                [items]="rateTypes"
+                bindLabel="rateTypes"
+                bindValue="rateTypes"
+                placeholder="Select Rate Type"
+                name="baseRateType"
+                formControlName="baseRateType"
+              >
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group mb-4">
+          <label>Is agreement signed</label>
+          <div class="custom-control custom-switch mb-2" dir="ltr">
+            <input
+              type="radio"
+              class="custom-control-input"
+              id="isYes"
+              formControlName="isYes"
+            />&nbsp;
+            <label class="custom-control-label mr-3" for="isYes">Yes</label>
+            &nbsp;&nbsp;&nbsp;
+            <input
+              type="radio"
+              class="custom-control-input"
+              id="isNo"
+              formControlName="isNo"
+              checked
+            />&nbsp;
+            <label class="custom-control-label" for="isNo">No</label>
+          </div>
+        </div>
+        <div class="form-group mb-4">
+          <label>Agreement Type</label>
+          <div class="custom-control custom-switch mb-2" dir="ltr">
+            <input
+              type="checkbox"
+              class="custom-control-input"
+              id="agreementType"
+              formControlName="agreementType"
+              checked
+              #agreementTypecheck
+              (change)="toggleVisibility($event)"
+            />
+            <label class="custom-control-label" for="agreementType">{{
+              agreementTypecheck.checked ? 'MSA' : 'Non MSA'
+            }}</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>Service Start Date</label>
+              <input
+                class="form-control"
+                type="date"
+                formControlName="serviceStartDate"
+                name="serviceStartDate"
+                placeholder="mm-dd-yyyy"
+                min="{{ today }}"
+                (change)="setEndDate($event)"
+              />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>Service End Date</label>
+              <input
+                class="form-control"
+                type="date"
+                formControlName="serviceEndDate"
+                name="serviceEndDate"
+                placeholder="mm-dd-yyyy"
+                min="{{ startDate }}"
+                (change)="setInvoiceDate($event)"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>Billing Cycle</label>
+              <ng-select
+                [items]="billingCycleArray"
+                bindLabel="billingCycleArray"
+                bindValue="billingCycleArray"
+                placeholder="Select Billing Cycle"
+                name="billingCycle"
+                formControlName="billingCycle"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>Initial Invoice Date</label>
+              <input
+                class="form-control"
+                type="date"
+                formControlName="initialInvoiceDate"
+                name="initialInvoiceDate"
+                placeholder="mm-dd-yyyy"
+                min="{{ startDate }}"
+                max="{{ endDate }}"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="agreementTypecheck.checked">
+          <div class="form-group mb-4">
+            <label>Package Type</label>
+            <div class="custom-control custom-switch mb-2" dir="ltr">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                id="packageType"
+                formControlName="packageType"
+                checked
+                #packageTypecheck
+              />
+              <label class="custom-control-label" for="packageType">{{
+                packageTypecheck.checked ? 'Credit' : 'Wallet'
+              }}</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div *ngIf="packageTypecheck.checked" class="form-group mb-4">
+                <label>No Of Credits</label>
+                <input
+                  formControlName="availableCredits"
+                  name="availableCredits"
+                  type="number"
+                  class="form-control"
+                  placeholder="No Of Credits"
+                />
+              </div>
+              <div *ngIf="!packageTypecheck.checked" class="form-group mb-4">
+                <label>Amount</label>
+                <input formControlName="amount" name="amount" type="number" class="form-control" placeholder="Amount" />
+              </div>
+            </div>
+          </div>
+          <div *ngIf="packageTypecheck.checked" class="row">
+            <div class="col-6">
+              <div class="form-group mb-4">
+                <label>Cost Per Credit</label>
+                <input
+                  formControlName="costPerCredit"
+                  name="costPerCredit"
+                  type="number"
+                  class="form-control"
+                  placeholder="Cost Per Credit"
+                  #costPerCredit
+                />
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group mb-4">
+                <label>MSA Value</label>
+                <input
+                  formControlName="msaValue"
+                  name="msaValue"
+                  type="number"
+                  class="form-control"
+                  placeholder="MSA Value"
+                  [(ngModel)]="this.CTCForm.value.availableCredits * this.CTCForm.value.costPerCredit"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group mb-4">
+          <label>KRPI Access</label>
+          <div class="custom-control custom-switch mb-2" dir="ltr">
+            <input
+              type="checkbox"
+              class="custom-control-input"
+              id="krpiAccess"
+              formControlName="krpiAccess"
+              checked
+              #krpiAccesscheck
+            />
+            <label class="custom-control-label" for="krpiAccess">{{ krpiAccesscheck.checked ? 'Yes' : 'No' }}</label>
+          </div>
+        </div>
+        <div class="row" *ngIf="krpiAccesscheck.checked">
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>KRPI Event Access Number</label>
+              <input
+                formControlName="krpiEventAccessNumber"
+                name="krpiEventAccessNumber"
+                type="text"
+                class="form-control"
+                placeholder="Eg. 78199651831"
+                (keyup)="onKeypressEvent($event); checkNumber($event)"
+              />
+              <span *ngIf="alreadyExist != ''" class="alert text-danger">
+                {{ alreadyExist }}
+              </span>
+              <span *ngIf="validNumberString != ''" class="alert text-danger">
+                {{ validNumberString }}
+              </span>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>Users Per Event</label>
+              <input
+                formControlName="usersPerEvent"
+                name="usersPerEvent"
+                type="number"
+                class="form-control"
+                placeholder="Eg. 10"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="krpiAccesscheck.checked">
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>On Demand Topics</label>
+              <select class="form-control" name="onDemandTopics" formControlName="onDemandTopics">
+                <option value="" selected disabled>Select</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group mb-4">
+              <label>Pre Event Counsultation</label>
+              <select class="form-control" name="preEventCounsultation" formControlName="preEventCounsultation">
+                <option value="" selected disabled>Select</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        
+
+        <ngb-alert type="danger" *ngIf="error?.details.length == 0" [dismissible]="false">
+          {{ error.message }}
+        </ngb-alert>
+
+        <div class="alert alert-danger errors-list" *ngIf="error?.details.length > 0">
+          <strong>Errors!</strong>
+          <ul class="list-group list-group-flush">
+            <li *ngFor="let err of error.details" class="list-group-item">
+              {{ err.path.substring(1) }} {{ err.message }}
+            </li>
+          </ul>
+        </div>
+
+        <button type="button" class="btn btn-secondary pl-5 pr-5" (click)="modal.dismiss('Closed')">Previous</button>
+        <button
+          type="button"
+          class="btn btn-success ml-4 pl-5 pr-5"
+          (click)="convertToClient()"
+          [disabled]="convertBtn"
+        >
+          Convert
+        </button>
+      </form>
+    </div>
+  </ng-template>
+</div>

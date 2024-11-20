@@ -1,0 +1,173 @@
+<div>
+  <span style="padding-left: 20px"> </span>
+  <h4 style="padding: 20px">Is compliance Verified : {{ GetComVerified() }}</h4>
+</div>
+
+<div width="100%">
+  <div class="d-flex flex-wrap justify-content-between mb-4 leads-button-container">
+    <div class="col">
+      <a
+        class="btn btn-light btn-block"
+        [ngClass]="{ active: Raised }"
+        (click)="viewRaised()"
+        href="javascript:void(0)"
+        style="background-color: lightsalmon"
+        >Remarks Raised</a
+      >
+    </div>
+    <div class="col">
+      <a
+        class="btn btn-light btn-block"
+        [ngClass]="{ active: Resolved }"
+        (click)="viewResolved()"
+        style="background-color: lightgreen"
+        href="javascript:void(0)"
+      >
+        Resolved</a
+      >
+    </div>
+  </div>
+
+  <div class="card" *ngIf="Raised">
+    <div class="card-body">
+      <div   class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="clientUserName">New compliance comment</label>
+              <input
+                name="clientUserName"
+                [(ngModel)]="comment"
+                type="text"
+                class="form-control"
+                width="90%"
+                placeholder="comment"
+              />
+              <input name="cid" [(ngModel)]="cid" type="hidden" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="allroles?.includes('compliance')" class="modal-footer">
+        <button type="submit" (click)="submitClientUser()" class="btn btn-success">
+          Raise remarks
+          {{ modalBtn }}
+        </button>
+      </div>
+      <br />
+      <br />
+
+      <div>
+        <span style="padding-left: 20px"></span>
+        <ul class="tree" *ngFor="let item of getcomplianceDetailsfiltered(1); let ino = index">
+          <li class="section">
+            <div class="{{ getbg(item.statuscode) }}">
+              <div class="col-md-11">
+                <a
+                  ><label for="groupA">
+                    {{ item['comment'] }} - {{ item.status }}-
+                    {{ item.updatedAt }}</label 
+                  >  <!--gs  | localDateTime: 'DD MMM yyy HH:mm'--->
+                </a>
+                <div class="col-md-3" *ngIf="allroles?.includes('compliance')" style="padding-left: 20px; float: right">
+                  <span style="padding-left: 20px"></span>
+                  <a (click)="openModalforupdate(StatusupdateFormModal, item.id, 0)">
+                    <i _ngcontent-nsd-c171="" title="Mark as resolved" type="solid" class="bx bx-check-square"> </i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" *ngIf="Resolved">
+    <div class="card-body">
+      <div>
+        <span style="padding-left: 20px"></span>
+        <ul class="tree" *ngFor="let item of getcomplianceDetailsfiltered(0); let ino = index">
+          <li class="section">
+            <div class="{{ getbg(item.statuscode) }}">
+              <div class="col-md-11">
+                <a
+                  ><label for="groupA">
+                    {{ item['comment'] }} - {{ item.status }}-
+                    {{ item.updatedAt }}</label
+                  >
+                </a> <!--gs  | localDateTime: 'DD MMM yyy HH:mm'--->
+                <div class="col-md-3" *ngIf="currole == 'compliance'" style="padding-left: 20px; float: right">
+                  <a (click)="openModalforupdate(StatusupdateFormModal, item.id, 0)">
+                    <i _ngcontent-nsd-c171="dd" title="Approve" type="solid" class="bx bx-check-square"> </i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <ul *ngFor="let item1 of item.actions">
+                <li>
+                  {{ item1['comment'] }}- {{ item1['status'] }}- By {{ getUserName(item1['userId']) }} At
+                  {{ item1['date']}}   
+                </li>  <!--gs  | localDateTime: 'DD MMM yyy HH:mm'--->
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- </form> -->
+<!-----Object { id: "625beb4b7b3b9540a4a58fd0", userId: "anuj@knowledgeridge.com", salesLeadId: "555", … }
+​​
+actions: Array [ {…} ]
+​​
+createdAt: "2022-04-17T10:26:19.000Z"
+​​
+id: "625beb4b7b3b9540a4a58fd0"
+​​
+projectId: "77"
+​​
+salesLeadId: "555"
+​​
+status: "created"
+​​
+updatedAt: "2022-04-17T10:26:19.000Z"
+​​
+userId: "anuj@knowledgeridge.com"
+​​
+<prototype>: Object { … }
+
+   <span style="padding-left:20px;"></span> <a (click) ="openModalforupdate(StatusupdateFormModal, item.id,10)"    >   <i _ngcontent-nsd-c171="" title="Reject" type="solid" class="bx bx-dislike"> </i> </a>
+ -->
+
+<ng-template #StatusupdateFormModal let-modal>
+  <div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="statuscom">comment</label>
+            <input
+              name="statuscom"
+              [(ngModel)]="statuscomment"
+              type="textarea"
+              width="90%"
+              class="form-control"
+              placeholder="comments"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" (click)="submitstatus()" data-dismiss="StatusupdateFormModal" class="btn btn-success">
+        Submit
+        {{ modalBtn }}
+      </button>
+    </div>
+  </div>
+</ng-template>

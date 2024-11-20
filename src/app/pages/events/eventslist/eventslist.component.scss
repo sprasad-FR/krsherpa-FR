@@ -1,0 +1,53 @@
+::ng-deep .my-class .modal-dialog { 
+    padding:5px;
+    max-width: 100%;
+    width: 100%;
+}
+
+@media (min-width: 792px){
+
+.modal-lg, .modal-xl {
+   
+    --vz-modal-width: 98% !important;
+    min-width: 98% !important;
+}
+.modal-dialog .modal-dialog-centered .modal-lg //.modal-xl .modal-content
+{
+padding-top: 0;
+}
+
+}
+
+.modal-dialog .modal-dialog-centered .modal-lg
+{
+    --vz-modal-width: 98% !important;
+    min-width: 98% !important;
+}
+
+
+.table > thead {
+    border-color: #e9ebec;
+    border-color: #08577e;
+    background-color: #0d1f4e!important;
+    color: white!important;
+}
+
+ thead {
+    border-color: #e9ebec;
+    border-color: #08577e;
+    background-color: #0d1f4e;
+    color: white;
+}
+
+
+tbody td
+{
+    cursor: pointer !important;
+
+}
+
+ngb-highlight
+{
+    cursor: pointer !important;
+
+}

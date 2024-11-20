@@ -1,0 +1,261 @@
+.leads-button-container {
+  .btn-light {
+    background-color: #fff;
+  }
+
+  .btn.active {
+    background-color: #2d67c8;
+    color: #fff;
+    border-bottom: 2 springgreen ;
+  }
+}
+.modal-header {
+  .modal-title,
+  .close {
+    color: white;
+  }
+}
+.modal-body {
+  .right {
+    .btn-secondary {
+      background: #74788d59;
+      border: none !important;
+      color: black !important;
+      font-weight: 500;
+    }
+  }
+}
+
+.pull-right {
+  text-align: right;
+  padding-top: 22px;
+}
+
+.modal-content {
+  border: none !important;
+}
+.avatar-md-1 {
+  min-width: 34px;
+
+  .avatar-title {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (min-width: 1024.1px)
+{
+.container-fluid {
+     max-width: 98%; 
+    margin: 0 auto;
+}
+}
+.main_row{padding: 15px; background-color: rgb(204, 236, 226); border-radius:4px; }
+.col-sm-6{margin-bottom: 6px;}
+
+.leads-button-container {
+  .btn-light {
+    background-color: #fff;
+  }
+
+  .btn.active {
+    background-color: #2d67c8;
+    color: #fff;
+    border-bottom: 2 springgreen ;
+  }
+}
+.modal-header {
+  .modal-title,
+  .close {
+    color: white;
+  }
+}
+.modal-body {
+  .right {
+    .btn-secondary {
+      background: #74788d59;
+      border: none !important;
+      color: black !important;
+      font-weight: 500;
+    }
+  }
+}
+
+.pull-right {
+  text-align: right;
+  padding-top: 22px;
+}
+
+.modal-content {
+  border: none !important;
+}
+.avatar-md-1 {
+  min-width: 34px;
+
+  .avatar-title {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (min-width: 1024.1px)
+{
+.container-fluid {
+     max-width: 98%; 
+    margin: 0 auto;
+}
+}
+.main_row{padding: 15px; background-color: rgb(204, 236, 226); border-radius:4px; }
+.col-sm-6{margin-bottom: 6px;}
+label{text-transform: capitalize;}
+.margin{margin-bottom: 10px;}
+#accordion{border: 1px solid #00c4ff6b; margin-bottom: 20px; border-radius: 5px;}
+.modal-holder{padding: 15PX; 
+  input
+  {
+    width: 100%;
+  }
+}
+.bg-color{
+  background: #00d0ff38;
+  border: 1px solid #00b8ff;
+  margin: 0px;
+}
+  .popuphead{
+    
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    h4
+    {
+      margin: 0px;
+    }
+    button
+    {
+      position: absolute;
+      top: 10px;
+      right: 17px;
+    }
+  }
+  .Employment-table
+  {
+    .table
+    {
+      text-align: center;
+      .table-head
+      {
+        background: #00000047;
+        font-weight: 500;
+        text-transform: capitalize;
+      }
+      td
+      {
+        border: 1px solid #40353038;
+        padding: 5px
+      }
+    }
+  }
+  .required-asterisk {
+    color: red;
+    font-weight: bold;
+    margin-left: 3px;
+    font-size: 13px;
+  }
+  .badge
+  {
+    cursor:pointer;
+  }
+
+ .modal-holder{
+     padding: 0px;
+     border: 2px solid #86b1b300;
+   }
+   .model-head
+   {
+     padding: 10px 0px;
+     text-align: center;
+     background: #625c5c99;
+   }
+   .model-body
+   {
+     background: #00000030;
+     padding: 10px;
+   }
+   .model-body label a
+   {
+     color: #0029ff;
+     text-decoration: underline;
+   }
+   .model-body label
+   {
+     padding: 5px 0px;
+     margin: 0px;
+   }
+   .model-head label
+   {
+     margin: 0px;
+     font-size: 20px;
+     font-weight: 600;
+     text-transform: capitalize;
+     color: #fff;
+   }
+   .model-body input
+   {
+    width: 100%;
+   }
+   .margin-bottom
+   {
+    margin-bottom: 10px;
+   }
+   .modal-holder
+   {
+     .bodycontain
+     {
+       margin:0px 0px 10px 30px;
+       padding: 0px;
+       position: relative;
+       &::before,&::after
+       {
+         content: "";
+         position: absolute;
+       }
+       &::before
+       {
+         top: 13px;
+         bottom: 15px;
+         left: -12px;
+         border: 1px solid #002bff73;
+       }
+       &::after
+       {
+         width: 10px;
+         height: 10px;
+         bottom: 13px;
+         left: -16px;
+         border-radius: 100%;
+         background: #001fff;
+       }
+       .head-label
+       {
+         font-size: 16px;
+         font-weight: 600;
+         position: relative;
+         &::before
+         {
+           content: "";
+           position: absolute;
+           top: 8px;
+           left: -20px;
+           width: 10px;
+           min-height: 10px;
+           background: #001fff;
+           border-radius: 100%;
+         }
+       }
+     }
+   }
+
+   .box{
+   
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5); 
+  }

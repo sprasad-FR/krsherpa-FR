@@ -1,0 +1,33 @@
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+  background-color: transparent !important;
+}
+.initial-img {
+  background-color: #16aecf;
+  color: #fff;
+  line-height: 3rem;
+  text-align: center;
+  font-size: 1.25rem;
+}
+.avatar-xs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f6f6f6;
+}
+.modal-header {
+  .modal-title,
+  .close {
+    color: white;
+  }
+}
+.modal-body {
+  .right {
+    .btn-secondary {
+      background: #74788d59;
+      border: none !important;
+      color: black !important;
+      font-weight: 500;
+    }
+  }
+}

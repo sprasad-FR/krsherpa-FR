@@ -1,0 +1,301 @@
+<div class="container-fluid">
+  <!-- <app-page-title title="Expert Invoice"></app-page-title> -->
+
+  <!-- <app-loader></app-loader> -->
+
+  <div *ngIf="roles != 'expert'" class="row mb-md-2">
+    <div class="col-sm-12 col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="form-group mb-4">
+            <label>Select Expert <span class="required-asterisk">*</span> </label>
+            <ng-select
+              name="expertName"
+              id="expertName"
+              [items]="expertList"
+              bindLabel="fullName"
+              bindValue="userId"
+              [multiple]="false"
+              [closeOnSelect]="true"
+              [selectableGroup]="false"
+              placeholder="Select Expert"
+              (change)="selectedExpert(ExpertName)"
+              [(ngModel)]="ExpertName"
+            >
+            </ng-select>
+          </div>
+          <div class="row" *ngIf="expId">
+            <div class="col-sm-12">
+              <ul ngbNav #customNav="ngbNav" [activeId]="route.fragment | async" class="nav-tabs nav-tabs-custom">
+                <li [ngbNavItem]="'unpaid'">
+                  <a ngbNavLink routerLink="." [fragment]="'unpaid'">
+                    <span class="d-none d-sm-block">Unpaid Invoice</span>
+                  </a>
+                  <ng-template ngbNavContent>
+                    <ng-template [ngTemplateOutlet]="TabContent"></ng-template>
+                  </ng-template>
+                </li>
+
+                <li [ngbNavItem]="'paid'">
+                  <a ngbNavLink routerLink="." [fragment]="'paid'">
+                    <span class="d-none d-sm-block">Paid Invoice</span>
+                  </a>
+                  <ng-template ngbNavContent>
+                    <ng-template [ngTemplateOutlet]="TabContent1"></ng-template>
+                  </ng-template>
+                </li>
+              </ul>
+            </div>
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="dataTables_length" id="tickets-table_length">
+        <label class="d-inline-flex align-items-center">Select Expert Name </label>
+        <select
+          aria-controls="tickets-table"
+          id="expertName"
+          name="expertName"
+          class="form-control form-control-sm"
+          (change)="selectedExpert()"
+        >
+          <option value="">--Select--</option>
+          <option *ngFor="let expert of expertList" value="{{ expert.id }}">
+            {{ expert.firstName }} {{ expert.lastName }}
+          </option>
+        </select>
+      </div> -->
+    </div>
+  </div>
+  <div *ngIf="roles == 'expert'" class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h5>Total Events : 554</h5>
+          <h5>Total Hours Consultation : 690</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="p-2">
+    <!-- Tab Content -->
+    <ng-template #TabContent>
+      <div class="row mb-md-2">
+        <div class="table-responsive">
+          <ng-container *ngIf="unpaidInvoiceList?.length > 0">
+            <table
+              id="basic-datatable"
+              class="table table-bordered cards-table dt-responsive nowrap no-footer dtr-inline"
+            >
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Invoice No</th>
+                  <th>Invoice Date</th>
+                  <th>Expert Payable Amount</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="m-2 row-card" *ngFor="let invoice of unpaidInvoiceList; let i = index">
+                  <td class="d-table font-size-14 font-weight-bold">
+                    {{ i + 1 }}
+                  </td>
+                  <td>{{ invoice.invoiceNo }}</td>
+                  <td>{{ invoice.invoiceDate | localDateTime }}</td>
+                  <td>{{ invoice.total }}</td>
+                  <td class="d-flex status">
+                    <i class="bx bx-check font-size-20" (click)="markPaid(invoice.id)"></i>
+                    <i
+                      class="bx bx-pencil ml-1 font-size-20"
+                      (click)="Edit(editInvoice, invoice.id, invoice.expertId)"
+                    ></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-container>
+          <ng-container *ngIf="unpaidInvoiceList?.length == 0">
+            <p class="text-center mt-2 mb-0">No data available.</p>
+          </ng-container>
+        </div>
+      </div>
+    </ng-template>
+
+    <!-- Tab Content1 -->
+    <ng-template #TabContent1>
+      <div class="row mb-md-2">
+        <div class="table-responsive">
+          <ng-container *ngIf="paidInvoiceList.length > 0">
+            <table
+              id="basic-datatable"
+              class="table table-bordered cards-table dt-responsive nowrap no-footer dtr-inline pointer"
+            >
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Invoice No</th>
+                  <th>Invoice Date</th>
+                  <th>Expert Payable Amount</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="m-2 row-card" *ngFor="let invoice of paidInvoiceList; let i = index">
+                  <td class="d-table font-size-14 font-weight-bold">
+                    {{ i + 1 }}
+                  </td>
+                  <td>{{ invoice.invoiceNo }}</td>
+                  <td>{{ invoice.invoiceDate | localDateTime }}</td>
+                  <td>{{ invoice.total }}</td>
+                  <td>
+                    <i
+                      class="fa fa-info-circle font-size-18 status"
+                      (click)="viewInvoice(invoiceDetails, invoice.id)"
+                    ></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-container>
+          <ng-container *ngIf="paidInvoiceList.length == 0">
+            <p class="text-center mt-2 mb-0">No data available.</p>
+          </ng-container>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- View Invoice Modal -->
+  <ng-template #invoiceDetails let-modal>
+    <div class="modal-header p-2 bg-dark">
+      <h5 class="modal-title mt-0 text-white">Invoice</h5>
+      <button type="button" class="close text-white" aria-hidden="true" (click)="modal.dismiss('Cross click')">
+        ×
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6 d-flex">
+          <h6 class="text-muted">Invoice No. :</h6>
+          <h6 class="ml-2">{{ InvoiceDetails?.invoiceNo }}</h6>
+        </div>
+        <div class="col-md-6 d-flex justify-content-end">
+          <h6 class="text-muted">Date :</h6>
+          <h6 class="ml-2">{{ InvoiceDetails?.invoiceDate | localDateTime: 'DD MMM YYYY' }}</h6>
+        </div>
+      </div>
+      <h6 class="mt-1 font-size-15 mt-2">Entity Details</h6>
+      <div class="row mt-2">
+        <div class="col-md-6 d-flex">
+          <h6 class="text-muted">Name :</h6>
+          <h6 class="ml-2">{{ entityDetails.name }}</h6>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-6 d-flex">
+          <h6 class="text-muted">Address :</h6>
+          <h6 class="ml-2">{{ entityDetails.address }}</h6>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-6 d-flex">
+          <h6 class="text-muted">Bank Name :</h6>
+          <h6 class="ml-2">{{ entityDetails.bankName }}</h6>
+        </div>
+        <div class="col-md-6 d-flex">
+          <h6 class="text-muted">Branch :</h6>
+          <h6 class="ml-2">{{ entityDetails.branch }}</h6>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-6 d-flex">
+          <h6 class="text-muted">Account No :</h6>
+          <h6 class="ml-2">{{ entityDetails.accountNo }}</h6>
+        </div>
+        <div class="col-md-6 d-flex">
+          <h6 class="text-muted">IFSC Code :</h6>
+          <h6 class="ml-2">{{ entityDetails.ifscCode }}</h6>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-xl-12 text-right">
+          <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Edit Invoice Modal -->
+  <ng-template #editInvoice let-modal>
+    <div class="modal-header p-2 bg-dark">
+      <h5 class="modal-title mt-0 text-white">{{ leadModalTitle }}</h5>
+      <button type="button" class="close text-white" aria-hidden="true" (click)="modal.dismiss('Cross click')">
+        ×
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="text-center row py-5">
+        <div class="col-12 mb-4">Add new events or Remove events from invoice</div>
+        <div class="col-md-8 d-flex mt-4 justify-content-around m-auto">
+          <button type="button" class="btn btn-success" (click)="modal.close(); addNewEvent(newEventModal)">ADD</button>
+          <button type="button" class="btn btn-info px-4" (click)="removeFromInvoice(removeEventModal)">REMOVE</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Add new events Model-->
+  <ng-template #newEventModal role="document" let modal>
+    <div class="modal-header p-2 bg-dark">
+      <h5 class="modal-title mt-0 text-white">{{ leadModalTitle }}</h5>
+    </div>
+    <div class="modal-body">
+      <app-edit-expert-invoice [dataToEdit]="expertNinvoiceId"></app-edit-expert-invoice>
+    </div>
+  </ng-template>
+
+  <!--Remove Events from invoice-->
+  <ng-template #removeEventModal role="document" let modal>
+    <div class="modal-header p-2 bg-dark">
+      <h5 class="modal-title mt-0 text-white">{{ leadModalTitle }}</h5>
+    </div>
+    <div class="modal-body">
+      <div class="table-responsive">
+        <table id="basic-datatable" class="table table-bordered cards-table dt-responsive nowrap no-footer dtr-inline">
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" (change)="checkAllRemoveCheckBox($event)" *ngIf="delEventDetails?.length > 1" />
+              </th>
+              <th>#</th>
+              <th>Event Date</th>
+              <th>Expert Payable Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="m-2 row-card" *ngFor="let event of delEventDetails; let i = index">
+              <td>
+                <input
+                  type="checkbox"
+                  value="{{ event.id }}"
+                  [(ngModel)]="delEventDetails[i].checked"
+                  *ngIf="delEventDetails?.length > 1"
+                />
+              </td>
+              <td>{{ event.eventId }}</td>
+              <td>{{ event.eventAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}</td>
+              <td>{{ event.expertPayment }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row mb-md-2" *ngIf="delEventDetails?.length > 1">
+        <div class="col-xl-12 mb-1 mt-3 text-right">
+          <button type="submit" class="btn btn-success" (click)="remove()">Remove</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

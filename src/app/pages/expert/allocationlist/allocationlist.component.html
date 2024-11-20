@@ -1,0 +1,421 @@
+
+<app-loader [isLoading]="isLoading"></app-loader>
+<div class="container-fluid">
+  <app-page-title title="Web Signup List"></app-page-title>
+
+  <app-loader></app-loader>
+  <div class="row" style="display:none;">
+    <div class="col-12">
+      <div class="col-md-3 col-lg-2 ml-auto">
+        <a [routerLink]="['/expert/create-expert']" class="btn btn-primary btn-block"> Create Fresh Lead </a>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3" style="display:none;" >
+    <div class="col-3">
+      <div class="col-md "  style=" font-weight: bold;">
+       Total : {{ripcount+reccount+concount+3}} 
+      </div>
+    </div>
+      <div class="col-3">
+        <div class="col-md " style=" font-weight: bold;">
+          Recruited :{{reccount}} 
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="col-md "  style=" font-weight: bold;">
+          Contacted :{{concount}} 
+        </div>&nbsp;&nbsp; 
+      </div>
+      <div class="col-3">
+        <div class="col-md "  style=" font-weight: bold;">
+          Recruiting In Progress : {{ripcount}} 
+        </div>
+      </div>
+     
+  </div>
+
+
+
+  <div class="row mt-3">
+    <div class="col-12">
+  <!-- gs search -->
+ <!-- Search -->
+
+ <form [formGroup]="leadFormGrp" id="ngForm" style="display:none;">
+  <div class="row mt-2">
+    <div class="col-md form-group">
+      <label for="sector">Keywords <i class='bx bx-info-circle' title="Give multiple words separated by comma"></i></label>
+      <input
+        class="form-control form-control-sm p-3"
+        placeholder="Keyword"
+        name="searchKeyword"
+        id="searchTerm"
+        formControlName="searchKeyword"
+      />
+      <input style="display:none;"  type="checkbox" [(ngModel)]="isAnd" [ngModelOptions]="{standalone: true}" /> 
+
+    </div>
+    <div class="col-md form-group">
+      <label for="industryGroup">First Name</label>
+      <input
+        class="form-control form-control-sm p-3"
+        placeholder="First Name "
+        name="fname"
+        formControlName="fname"
+      />
+    </div>
+    <div class="col-md form-group">
+      <label for="industryGroup">Last Name</label>
+      <input
+        class="form-control form-control-sm p-3"
+        placeholder=" Last Name"
+        name="lname"
+        formControlName="lname"
+      />
+      <input type="checkbox" [(ngModel)]="isExact" [ngModelOptions]="{standalone: true}" /> Exact
+    </div>
+    <div class="col-md form-group">
+      <label for="designation">Employer</label>
+      <input
+        class="form-control form-control-sm p-3"
+        placeholder="Company"
+        name="Company"
+        [(ngModel)]="Company" 
+        [ngModelOptions]="{standalone: true}"
+      />
+    </div>
+    <div class="col-md form-group">
+      <label for="designation">Designation</label>
+      <input
+        class="form-control form-control-sm p-3"
+        placeholder="Designation"
+        name="designation"
+        formControlName="designation"
+      />
+    </div>
+    <!-- <div class="col-md form-group">
+      <label for="subindustry">Company Name</label>
+      <input
+        class="form-control form-control-sm p-3"
+        placeholder="Company Name"
+        name="companyName"
+        formControlName="companyName"
+      />
+    </div> -->
+    <div class="col-md form-group">
+      <label for="country">Country</label>
+      <input
+        class="form-control form-control-sm p-3"
+        placeholder="Country"
+        name="country"
+        formControlName="country"
+      />
+    </div>
+    <div class="col-md form-group">
+      <label for="industry">Industry </label>
+      <input
+        class="form-control form-control-sm p-3"
+        placeholder="Industry"
+        name="industry"
+        formControlName="industry"
+      />
+    </div>
+    <div class="col-md form-group">
+      <label for="industry">Status </label>
+      <ng-select
+        [items]="status"
+        bindLabel="status"
+        bindValue="status"
+        placeholder="Status"
+        name="status"
+        formControlName="status"
+      >
+      </ng-select>
+    </div>
+    <div class="col-md form-group">
+      <label for="industry">Source Type </label>
+      <ng-select
+        [items]="sourceType"
+        bindLabel="lead"
+        bindValue="lead"
+        placeholder="sourceType"
+        name="sourceType"
+        formControlName="sourceType"
+      >
+      </ng-select>
+    </div>
+
+    <div class="col-md form-group mt-4 d-flex align-items-center justify-content-start">
+      <button class="btn btn-success" (click)="search()">Search</button>
+      <button class="btn btn-secondary ml-4" (click)="clear()">Clear</button>
+    </div>
+  </div>
+  <!-- End search -->
+</form>
+    <!-- gs search-->  
+
+      <!-- <app-table-filters></app-table-filters> -->
+  
+      <!-- <div class="btn btn-secondary float-right" (click)="open(centerDataModal)">
+          Assign P&L
+        </div> -->
+
+      <div>
+        <div class="row mb-md-2">
+          <div class="col-sm-12 col-md-6" style="display:none;"  >
+            <div class="dataTables_length" id="tickets-table_length">
+              <label class="d-inline-flex align-items-center"
+                >Show
+                <select
+                  name="tickets-table_length"
+                  aria-controls="tickets-table"
+                  name="pageSize"
+                  [(ngModel)]="service.pageSize"
+                  class="form-control form-control-sm mx-2"
+                >
+                  <option [ngValue]="10">10</option>
+                  <option [ngValue]="25">25</option>
+                  <option [ngValue]="50">50</option>
+                  <option [ngValue]="100">100</option>
+                </select>
+                entries</label
+              >
+            </div>
+          </div>
+          <!-- Search -->
+          <div class="col-sm-12 col-md-6"  style="display:none;" >
+            <div id="tickets-table_filter" class="dataTables_filter text-md-right">
+              <label class="d-inline-flex align-items-center"
+                >Search:
+                <input
+                  type="text"
+                  name="searchTerm"
+                  class="form-control form-control-sm ml-2"
+                  aria-controls="tickets-table"
+                  [(ngModel)]="service.searchTerm"
+              /></label><button (click)="showExperts()"  class="btn btn-primary btn-sm " > Search</button>
+            </div>
+          </div>
+          <!-- End search -->
+        </div>
+</div>
+    
+
+
+<div class="row" *ngIf="roles != 'compliance'">
+  <div class="col-8"  >
+    <div  *ngIf="allroles.includes('StrategicTeamManager')"   > Filter :  &nbsp; 
+      <input checked (change)="setfilterstatus($event)"  type ="radio" id="stRdoNo"  name="stRdo" text="Unallocated" value="No"   > 
+      <label  *ngIf="allroles.includes('StrategicTeamManager')"  for ="stRdoNo"  class="d-inline-flex align-items-center"
+      > Unallocated &nbsp;&nbsp;  </label> 
+      <input (change)="setfilterstatus($event)" type ="radio" id="stRdoyes" name="stRdo" text="Allocated" value="Yes"   > 
+      <label for ="stRdoyes"  class="d-inline-flex align-items-center"
+      > Allocated &nbsp;&nbsp; </label> 
+      
+      <input   (change)="setfilterstatus($event)"  type ="radio" id="stRdoAll"  name="stRdo" text="All" value="All">  <label for ="stRdoAll"  class="d-inline-flex align-items-center"
+      > Completed &nbsp;&nbsp;  </label>  </div>
+
+      <div  *ngIf="allroles.includes('StrategicTeamMember')"   > Filter :  &nbsp; 
+     
+        <input checked (change)="setfilterstatus($event)" type ="radio" id="stRdoyes" name="stRdo" text="Allocated" value="Yes"   > 
+        <label for ="stRdoyes"  class="d-inline-flex align-items-center"
+        > Allocated &nbsp;&nbsp; </label> 
+        
+        <input   (change)="setfilterstatus($event)"  type ="radio" id="stRdoAll"  name="stRdo" text="All" value="All">  <label for ="stRdoAll"  class="d-inline-flex align-items-center"
+        > Completed &nbsp;&nbsp;  </label>  </div>
+
+
+  </div>
+  <div class="col-4"   *ngIf="allroles.includes('StrategicTeamManager')"     >
+    <ng-select *ngIf="filterstatus!='No'"
+    [items]="researcherList"
+    bindLabel="name"
+    bindValue="userId"
+    placeholder="Select Strategic Analyst "    
+    name="researcherId"
+    [(ngModel)]="srafltId"
+    (change)="filterbyEx()"
+    >
+  >
+  </ng-select> 
+  </div>
+
+</div>
+
+
+<div class="row justify-content-md-between align-items-md-center ">
+  <!-- Pagination -->
+<br>
+<hr> 
+</div>
+
+        <div class="row justify-content-md-between align-items-md-center ">
+          <!-- Pagination -->
+        
+          <div class="col-sm-12 col-md-4"   > </div>
+      
+          <!-- End Pagination -->
+          <div class="col-sm-12 col-md-4"   >
+           
+          
+          </div>
+
+          <div class="col-sm-12 col-md-4"   ></div>
+        
+      
+      
+        </div>
+
+        <div class="row"     >
+          <!-- Pagination -->
+        
+          
+          <div class="col-sm-4 col-md-3"   > 
+            <div class="search-box d-inline-block mb-2">
+              <input type="text" class="form-control search" placeholder="Search..." [(ngModel)]="service.searchTerm">
+              <i class="ri-search-line search-icon"></i>
+          </div>
+          
+          </div>
+          <div class="col-sm-4 col-md-3"  *ngIf="allroles.includes('StrategicTeamManager')"  >    <label  style="display:none;" for="researcherId">Strategic Analyst <span class="required-asterisk">*</span></label>
+            <ng-select *ngIf="showLst"
+              [items]="researcherList"
+              bindLabel="name"
+              bindValue="userId"
+              placeholder="Select Strategic Analyst "    
+              name="researcherId"
+              [(ngModel)]="sraId">
+            >
+            </ng-select> </div>
+
+          <div class="col-sm-4 col-md-3" *ngIf="allroles.includes('StrategicTeamManager')"  >    <button class="btn btn-primary" *ngIf="showBtn" (click)="allocate()"><span  *ngIf="filterstatus=='No'"> Update</span> <span  *ngIf="filterstatus=='Yes' "> Remove</span>   Allocation </button>
+          </div>
+
+        </div>
+
+        <!-- Table  style="Width:96%"   -->
+     
+        <!-- End table -->
+      
+      
+      </div>
+    </div>
+ 
+</div>
+
+<div class="card-body">
+ 
+  <div class="row justify-content-md-between align-items-md-center border-light">
+    <div class="col-sm-12 col-md-4">
+        <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+            Showing
+            {{service.startIndex}} to
+            {{service.endIndex}} of {{service.totalRecords}}
+            entries from {{qrycount}} Results
+        </div>
+    </div>
+<div class="col-sm-12 col-md-3">
+
+  <div class="col-sm-12 "  *ngIf ="filterstatus!='All' && krExpertsList?.length>10"    >  Select First &nbsp;<input  style="width: 35px;margin:auto;" type="text" (keyup)="markchecked($event,service.pageSize*(service.page-1))"/> &nbsp; Records </div>
+        
+
+</div>
+    
+    <!-- Pagination -->
+    <div class="col-sm-12 col-md-5">
+        <div class="text-md-right float-md-end gridjs-pagination">
+          <ngb-pagination
+          [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+        </ngb-pagination>
+        </div>
+    </div>
+    <!-- End Pagination -->
+  </div>
+  <div class="table-responsive table-dark table-striped table-nowrap">
+    <table class="table table-gridjs">
+      <thead>
+      <tr>
+        <th class="" ><input  type="checkbox" (change)="checkAllCheckBox($event)" /></th>
+      <th class="sort" sortable="id" (sort)="onSort($event)">No</th>
+
+      <th class="sort" sortable="firstName" (sort)="onSort($event)">Name</th>
+      <th class="sort" sortable="updatedAt" (sort)="onSort($event)">Date</th>
+        <th class="sort" *ngIf="allroles.includes('StrategicTeamManager')" >Del?</th>
+      <th class="sort" sortable="status" (sort)="onSort($event)">Status</th>
+      <th class="sort" sortable="country" (sort)="onSort($event)">Country</th>
+      <th class="sort" sortable="industry" (sort)="onSort($event)">Industry</th>
+      <th  *ngIf ="filterstatus=='Yes'"   class="sort" sortable="allocatedTo" (sort)="onSort($event)">Allocated To</th>
+      <th  *ngIf ="filterstatus!='All'  && filterstatus!='No'"  class="sort" sortable="allocatedDate" (sort)="onSort($event)">Allocated Date</th>
+      <th  *ngIf ="filterstatus!='All' && filterstatus!='No'"  class="sort" sortable="allocatedTill" (sort)="onSort($event)">Allocated Till</th>
+      <th  *ngIf ="filterstatus =='All'"  class="sort" sortable="designation" (sort)="onSort($event)">Designation</th>
+      <th  *ngIf ="filterstatus =='All'"  class="sort" sortable="currentEmployer" (sort)="onSort($event)">Employer</th>
+      <th  *ngIf ="filterstatus =='All'"  class="sort" sortable="krRelationshipMgr" (sort)="onSort($event)">KR RS Manager</th>
+               
+    
+    
+    </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of gridjsList$ | async ; let i = index " >
+       
+       <td>  <input *ngIf="gridjsList$!=null && i<totalcnt"
+        type="checkbox"                   
+       
+        value="{{ data.id }}"
+        [(ngModel)]="krExpertsList[i+((service.page-1)*service.pageSize)].checked"
+          (change)="showbtn()"
+         
+        /> </td>
+        <td  ><ngb-highlight [result]="data.id" [term]="service.searchTerm" >  {{i+(service.pageSize*(service.page-1))+1}}</ngb-highlight></td>
+        <td  style="cursor: grab;" >
+          <a class="mx-2 text-dark" target="_blank"  [routerLink]="['/expert/expert-view', data.id]" routerLinkActive="active"
+          >
+           <ngb-highlight >{{data?.firstName}},{{data.lastName}} </ngb-highlight></a></td>
+        <td><ngb-highlight >{{data?.updatedAt |localDateTime}}</ngb-highlight></td>
+       
+       <td *ngIf="allroles.includes('StrategicTeamManager')" > <i class="ri-delete-bin-2-line" (click)="DelEx(data.id)"  ></i></td>
+        <td><ngb-highlight >{{ data.terms == true ? 'Signed Up' : data.status }}</ngb-highlight></td>
+        <td><ngb-highlight >{{data?.country}}</ngb-highlight></td>
+        <td title="{{data?.industry}}"><ngb-highlight >{{data?.industry | getShort}}</ngb-highlight></td>
+        <td  *ngIf ="filterstatus=='Yes'"  title="{{getUserName(data?.allocatedTo)}}" ><ngb-highlight >{{getUserName(data?.allocatedTo) }}</ngb-highlight></td>
+       
+        <td  *ngIf ="filterstatus!='All'  && filterstatus!='No'"   title="{{data?.allocatedDate}}"><ngb-highlight>{{data?.allocatedDate |localDateTime}}</ngb-highlight></td>
+       
+        <td  *ngIf ="filterstatus!='All'  && filterstatus!='No'"   ><ngb-highlight >{{data.allocatedTill |localDateTime}}</ngb-highlight></td>
+        <td  *ngIf ="filterstatus=='All'"  title="{{data.designation}}" ><ngb-highlight >{{data.designation | getShort}}</ngb-highlight></td>
+                   
+        <td  *ngIf ="filterstatus=='All'"  title="{{data.currentEmployer}}"><ngb-highlight>{{data.currentEmployer}}</ngb-highlight></td>
+       
+        <td  *ngIf ="filterstatus=='All'"   ><ngb-highlight >{{data.krRelationshipMgr}}</ngb-highlight></td>
+       
+      
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row justify-content-md-between align-items-md-center">
+    
+    <div class="col-sm-12 col-md-5">
+        <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+            Showing
+            {{service.startIndex}} to
+            {{service.endIndex}} of {{service.totalRecords}}
+            entries from {{qrycount}} Results
+        </div>
+    </div>
+    <!-- Pagination -->
+    <div class="col-sm-12 col-md-5">
+        <div class="text-md-right float-md-end gridjs-pagination">
+          <ngb-pagination
+          [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+        </ngb-pagination>
+        </div>
+    </div>
+    <!-- End Pagination -->
+  </div>
+  <div  class=" container fixed-bottom" style="background-color:white;"> 
+ 
+   </div>
+</div><!-- end card-body -->
+

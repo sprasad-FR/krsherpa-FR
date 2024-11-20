@@ -1,0 +1,103 @@
+<div class="container-fluid">
+  <app-page-title title="Compliance"></app-page-title>
+  <div class="card">
+    <div class="card-body">
+      <div >
+        <div class="text-left">
+          <h5>Rules</h5>
+        </div>
+        <div class="text-right mb-3"  >
+          <button *ngIf="roles.includes('compliance')"   class="btn btn-primary" (click)="confirmModification()">Modify Rules</button>
+        </div>
+        <!-- <div *ngIf="role === 'admin-compliance'"> -->
+
+        <div class="row" *ngFor="let mod of clientDetails?.compliace?.modification; let i = index">
+          <div class="col-12 mb-2">
+            <ul class="mb-0">
+              <li *ngFor="let rules of mod.rules">{{ rules }}</li>
+            </ul>
+            <p class="ml-4 font-size-15 font-weight-bold mb-0">{{ mod.details }}</p>
+            <a (click)="resolve(i)" class="ml-4 font-size-15 text-primary text-right pointer mb-0">Resolved</a>
+          </div>
+        </div>
+
+        <div class="row" *ngFor="let item of clientDetails?.compliace?.rules; let i = index; trackBy: trackByIndex">
+          <div class="col-12">
+            <h6>Point {{ i + 1 }} <i *ngIf="roles.includes('compliance')" (click)="removeRule(i)" class="mdi mdi-close f-right">remove</i></h6>
+            <!-- <span class="cancel-icon"></span> -->
+            <div class="form-group">
+              <textarea name="rules" readonly="!roles.includes('compliance')" [(ngModel)]="(clientDetails?.compliace?.rules)[i]" class="form-control"></textarea>
+            </div>
+          </div>
+        </div>
+        <!-- <a (click)="addRule()"><i class="bx bx-plus-circle"></i></a> -->
+        <button *ngIf="roles.includes('compliance')" (click)="addRule()" class="btn btn-primary">Add Rules</button>
+      </div>
+      <div *ngIf="roles !== 'admin' && roles !== 'compliance' && roles !== 'client'">
+        <div class="text-left">
+          <h5>Rules</h5>
+        </div>
+        <!-- <div *ngIf="role === 'admin-compliance'"> -->
+
+        <div class="row" *ngFor="let item of clientDetails?.compliace?.rules; let i = index; trackBy: trackByIndex">
+          <div class="col-12">
+            <h6>Point {{ i + 1 }}</h6>
+            <div class="form-group">
+              <textarea
+                name="rules"
+                readonly
+                [(ngModel)]="(clientDetails?.compliace?.rules)[i]"
+                class="form-control"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="roles.includes('compliance')">
+        <!-- <div *ngIf="role === 'client-compliace'"> --> 
+        <div class="row" *ngFor="let item of this.clientDetails?.compliace?.rules; let i = index">
+          <div class="col-12 d-flex align-items-start">
+            <input
+              (change)="addRemoveRule($event, i)"
+              (click)="openModal(changeRequest)"
+              type="checkbox"
+              class="mt-1"
+            />
+            <p class="ml-2 font-size-15">{{ this.clientDetails.compliace.rules[i] }}</p>
+          </div>
+        </div>
+        <!-- <div class="row mt-3">
+          <div class="col-12">
+            <div class="form-group">
+              <span>please write us here to add or modify the terms.</span>
+              <textarea class="form-control" [(ngModel)]="modificationsDetails"></textarea>
+            </div>
+            <button class="btn btn-primary" (click)="requestModifications()">Request Modification</button>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <ng-template #changeRequest let-modal>
+    <div class="modal-header p-2 bg-dark">
+      <h5 class="modal-title mt-0">Request Modification</h5>
+      <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+    </div>
+    <div class="modal-body">
+      <textarea
+        name="modificationsDetails"
+        id="modificationsDetails"
+        [(ngModel)]="modificationsDetails"
+        class="form-control"
+        rows="5"
+      >
+      </textarea>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="requestModifications()">Request Modification</button>
+      </div>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,29 @@
+#page-topbar {  
+    background: linear-gradient(to right, #03045e, #0c4a6e) !important;
+
+}
+
+.navbar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    height: 50px;
+    padding: 0 0.7rem 0 calc(0.7rem / 2);
+}
+
+.avatar-title {
+    align-items: center;
+    background-color: rgb(232 233 236) !important;
+    color: #405189;
+    display: flex;
+    font-weight: 500;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+}
+
+.navbar-menu .navbar-nav .nav-link {
+    color: #f7f6f2;
+    padding: 0.75rem 1.5rem;
+  }

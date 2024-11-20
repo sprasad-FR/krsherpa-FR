@@ -1,0 +1,237 @@
+<form [formGroup]="leadFormGrp" (ngSubmit)="submitData()">
+  <ngb-alert type="danger" *ngIf="error?.details.length == 0" [dismissible]="false">
+    {{ error.message }}
+  </ngb-alert>
+  <div class="alert alert-danger errors-list" *ngIf="error?.details.length > 0">
+    <strong>Errors!</strong>
+    <ul class="list-group list-group-flush">
+      <li *ngFor="let err of error.details" class="list-group-item">{{ err.path.substring(1) }} {{ err.message }}</li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-2 form-group">
+              <label for="salutation">Salutation <span class="required-asterisk">*</span></label>
+              <input type="text" placeholder="Mr/Mrs/Miss" class="form-control" formControlName="salutation" />
+            </div>
+            <div class="col-md-5 form-group">
+              <label for="firstName">First Name <span class="required-asterisk">*</span></label>
+              <input type="text" placeholder="Eg. John" class="form-control" formControlName="firstName" />
+            </div>
+            <div class="col-md-5 form-group">
+              <label for="lastName">Last Name <span class="required-asterisk">*</span></label>
+              <input type="text" placeholder="Eg. Doe" class="form-control" formControlName="lastName" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label for="contactNo">Contact Number <span class="required-asterisk">*</span></label>
+              <input
+                type="text"
+                placeholder="Eg. +91 908789826"
+                class="form-control"
+                minlength="10"
+                maxlength="10"
+                formControlName="contactNo"
+              />
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="primaryEmail">Primary Email <span class="required-asterisk">*</span></label>
+              <input
+                type="email"
+                placeholder="Eg. johndoe@gmail.com"
+                class="form-control"
+                formControlName="primaryEmail"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label for="status">Status</label>
+              <ng-select
+                [items]="status"
+                bindLabel="status"
+                bindValue="status"
+                placeholder="Select Status"
+                name="status"
+                formControlName="status"
+              >
+              </ng-select>
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="currentEmployer">Current Employer</label>
+              <input
+                type="text"
+                placeholder="Eg. Razorback India Pvt Ltd"
+                class="form-control"
+                formControlName="currentEmployer"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label for="designation">Designation <span class="required-asterisk">*</span></label>
+              <input
+                type="text"
+                placeholder="Eg. Software Developer"
+                class="form-control"
+                formControlName="designation"
+              />
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="state">State <span class="required-asterisk">*</span></label>
+              <input type="text" placeholder="Eg. Maharashtra" class="form-control" formControlName="state" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label for="city">City <span class="required-asterisk">*</span></label>
+              <input type="text" placeholder="Eg. Mumbai" class="form-control" formControlName="city" />
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="industry">Industry <span class="required-asterisk">*</span></label>
+              <ng-select
+                [items]="industriesList"
+                bindLabel="text"
+                bindValue="id"
+                placeholder="Select Industry"
+                name="industry"
+                formControlName="industry"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label for="rate">Rate</label>
+              <input type="number" placeholder="Eg. USD 20000" min="1" class="form-control" formControlName="rate" />
+            </div>
+            <div class="col-md-6 form-group">
+              <label for="currency">Currency</label>
+              <ng-select
+                [items]="currenciesList"
+                bindLabel="name"
+                bindValue="code"
+                placeholder="Select Currency"
+                name="currency"
+                formControlName="currency"
+              >
+                <ng-template ng-option-tmp let-item="item" let-search="name">
+                  {{ item?.name }} ({{ item?.code }})
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label for="rateType">Rate Type</label>
+              <ng-select
+                [items]="rateTypes"
+                bindLabel="rateTypes"
+                bindValue="rateTypes"
+                placeholder="Select Rate Type"
+                name="rateType"
+                formControlName="rateType"
+              >
+              </ng-select>
+
+              <!-- <input type="text" placeholder="Eg. Hourly" class="form-control" formControlName="rateType" /> -->
+            </div>
+
+            <div class="col-md-2 form-group">
+              <label for="isLead">Is Lead?</label>
+              <input type="checkbox" class="form-control" formControlName="isLead" />
+            </div>
+            <div class="col-md-2 form-group">
+              <label for="term">Term</label>
+              <input type="checkbox" class="form-control" formControlName="term" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-xl-12 mb-4 text-right">
+          <button type="button" (click)="cancelForm()" class="btn btn-outline-link bg-white pl-5 pr-5">Cancel</button>
+          <button type="submit" class="btn btn-primary pl-5 pr-5 ml-3">{{ btnName }}</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 form-group">
+              <label for="workDetails">Work Details</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="workDetails"
+                name="workDetails"
+                placeholder="Work Details"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 form-group">
+              <label for="sourceType">Source Type</label>
+              <ng-select
+                [items]="leadSourceArray"
+                bindLabel="lead"
+                bindValue="lead"
+                placeholder="Select Source Type"
+                name="sourceType"
+                formControlName="sourceType"
+              >
+              </ng-select>
+              <!-- <select class="form-control" name="sourceType" formControlName="sourceType">
+                <option value="" selected>Select Source Type </option>
+                <option [selected]="expertData?.sourceType" *ngFor="let l of leadSourceArray" value="{{ l.lead }}">{{
+                  l.lead
+                }}</option>
+              </select> -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 form-group">
+              <label for="sourceUrl">Source Url</label>
+              <input
+                type="text"
+                placeholder="Eg. http://www.xyz.com"
+                class="form-control"
+                formControlName="sourceUrl"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 form-group">
+              <label for="krRelationshipMgr">KR Relationship Mgr</label>
+              <ng-select
+                [items]="researchMgrList"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Select Manager"
+                name="krRelationshipMgr"
+                formControlName="krRelationshipMgr"
+              >
+              </ng-select>
+              <!-- <select
+                name="krRelationshipMgr"
+                placeholder="Select Manager"
+                class="form-control"
+                formControlName="krRelationshipMgr"
+              >
+                <option value="" selected>Select Relationship Manager</option>
+                <option [value]="erm.id" *ngFor="let erm of researchMgrList">{{ erm.name }} </option>
+              </select> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

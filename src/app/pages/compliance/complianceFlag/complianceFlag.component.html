@@ -1,0 +1,11 @@
+<div *ngIf="roles != 'client' && roles != 'expert' ">
+  <a>
+    <h5 style="padding-left: 2px">Is compliance Verified : {{ GetComVerified() }}</h5>
+    <i _ngcontent-nsd-c171="" style="{{ getcompliancestatus() }}padding-left:2px;" type="solid" class="bx bxs-flag">
+    </i>
+    <button type="submit" class="btn btn-success" >
+     <span *ngIf="!allroles?.includes('compliance')"> View </span> <span *ngIf="allroles?.includes('compliance')" > Manage </span> Complaiance
+      {{ modalBtn }}
+    </button>
+  </a>
+ 

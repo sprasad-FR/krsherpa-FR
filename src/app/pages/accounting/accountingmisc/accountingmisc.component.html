@@ -1,0 +1,196 @@
+<div style="margin-top:-25px;" >
+  <div class="d-flex justify-content-center flex-nowrap">
+   <div  >
+                
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref active" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/client-invoice" href="/accounting/client-invoice">Client Billing</a>
+     
+   </div>
+   <div  >
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/expert-invoice" href="/accounting/expert-invoice">Expert Payments</a>
+   
+   </div>
+   <div style="display:none;" >
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/incentives" href="/accounting/incentives"> Incentives</a>
+   
+   </div>
+   <div  >
+    
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/Taxes" href="/accounting/Taxes"> Client Taxes</a>
+  
+   </div>
+   <div  >
+    
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/Miscellaneous" href="/accounting/Miscellaneous"> Miscellaneous Entries</a>
+  
+   </div>
+   <div  >
+    
+   </div>
+ 
+ 
+ </div>
+ </div>
+ 
+<div class="container-fluid">
+  <!-- <app-page-title title="Sub Pnl Expenses"></app-page-title> -->
+
+  <!-- <app-loader></app-loader> -->
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="row">
+            <div class="col-3">
+              <div class="form-group">
+                <label>Month </label>
+
+<ng-select
+    name="fmonth"
+    id="fmonth"
+    [items]="months"
+   
+    [multiple]="false"
+    [closeOnSelect]="true"
+    [selectableGroup]="false"
+    placeholder="Select From Month"
+ 
+    [(ngModel)]="fmonth"
+  >
+  </ng-select>
+
+               
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label>Year </label>
+
+<ng-select
+    name="fyear"
+    id="fyear"
+    [items]="years"
+   
+    [multiple]="false"
+    [closeOnSelect]="true"
+    [selectableGroup]="false"
+    placeholder="Select From Year"
+    
+    [(ngModel)]="fyear"
+  >
+  </ng-select>
+               
+              </div>
+            </div>
+            
+
+           
+
+            <div class="col-6">
+              <label> </label>
+              <div class="form-group">
+              <button type="button" class="btn btn-success" (click)="resetform()">Reset</button>
+              <button type="submit" class="btn btn-success" (click)="getEexpenses()">Get Eexpenses</button>
+             </div>    </div>          
+</div>
+
+        </div>
+        
+        
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-body">             
+
+         <button type="button"  (click)="addtax(taxes)"  class="btn btn-primary" >Add Expenses</button>
+       </div>
+
+       
+       <div class="row" *ngIf="accountingmiscdata?.subpnlexp?.length > 0">
+
+
+        <div class="col-12 mt-4">
+          <h5>Details</h5>
+        </div>
+        <div class="col-sm-8" *ngFor="let media of accountingmiscdata?.subpnlexp; let i = index">
+                         
+              <div class="media align-items-center">
+                
+                <div class="media-body file-name w-75">
+
+                  <h6 class="text-muted font-size-12 text-break">{{i+1}} . {{getUserName(media['pnlname'])}} </h6>
+                  <!-- <p class="mb-0 font-size-12">Size: --</p> -3--->
+                </div>
+                <div class="media-body file-name w-75">
+                  <h6 class="text-muted font-size-12 text-break"> {{media['expense']}} </h6>
+                  <!-- <p class="mb-0 font-size-12">Size: --</p> -->
+                </div>
+                <div class="download-icon">
+                  <a (click)="edittax(taxes,media['pnlname'],media['expense'])" Edit>
+                    <i class="bx bx-pencil"></i>
+                  </a>
+                </div>
+              </div>
+            
+            <!-- end card-body -->
+        
+        </div>
+        
+
+      </div>
+    </div>
+        
+  </div>
+</div>
+
+
+<ng-template #taxes let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Update Expenses</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+<br>
+<label  style="padding-left:25px;" > Period : {{fmonth+','+fyear}}</label>
+
+  <div class="modal-body">
+    <div class="row">
+   
+      <div class="col-md-6">
+        <div class="form-group">
+      
+            <label>Select Sub Pnl <span class="required-asterisk">*</span> </label>
+            <ng-select
+              name="pnlname"
+              id="pnlname"
+              [items]="pnlHeadList"
+              bindLabel="name"
+              bindValue="id"
+              [multiple]="false"
+              [closeOnSelect]="true"
+              [selectableGroup]="false" 
+              placeholder="Select Pnl"
+        
+              [(ngModel)]="pnlname"
+            >
+            </ng-select>
+       
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="Tax Percentage">Expense</label>
+          <input
+            name="taxpercent"
+            [(ngModel)]="expense"
+            type="text"
+            class="form-control"
+            placeholder="Tax Name"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+   <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+    <button type="submit" (click)="submitExpense()" class="btn btn-success">Submit</button>
+  </div>
+</ng-template>

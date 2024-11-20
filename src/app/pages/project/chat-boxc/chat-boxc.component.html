@@ -1,0 +1,16 @@
+
+  <div class="card chat-box" [ngClass]="{ 'close': showChatBox }"  style="padding:15px;"   >
+    <div style="text-align:end;" >
+  <span class="clo"  (click)="toggleChatBox()" style="text-align:end;font-size: 30px;"><i class='bx bx-x'></i></span>
+  </div>
+     
+        <div *ngFor="let data of questions; let i = index">
+          <p>{{ data.questions }}</p>
+          <div  class="input-area"   >
+          <input [(ngModel)]="questions[i].answers" type="text">
+          <button (click)="updateAnswer(i)">Update</button>
+        </div>
+      </div>
+      
+    </div>
+   

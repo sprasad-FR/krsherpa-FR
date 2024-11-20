@@ -1,0 +1,1725 @@
+<div class="row">
+  <div class="col-md-12">
+      <div class="card mt-n4" style="background-color: #f7f5f5ee; ">
+          <div class="bg-soft-project"  style="background-color: rgb(60, 71, 105);">
+              <div class="card-body pb-0 px-4">
+                <div class="row mb-3">
+                  <div class="col-md">
+                      <div class="row align-items-center g-3">
+                          <div class="col-md-auto">
+                              <div class="avatar-sm">
+                                  <div class="avatar-title bg-white rounded-circle ">
+
+                                    <h4 class="" style="color:blue;" >    {{ expertData?.firstName|getInitials:2 }}</h4>
+                                                                       </div>
+                              </div>
+                          </div>
+                
+
+                          <div class="col-md">
+                            <div>
+                              <h4 class="" style="color:blue;" >    {{ expertData?.firstName }}  {{ expertData?.lastName }}</h4>
+                                 <div class="hstack gap-3 flex-wrap">
+                                   
+                                    <div > <p class="badge rounded-pill bg-info fs-12">
+                                       {{ expertData?.terms == true ? 'Signed Up' : expertData.status }}
+                                    </p> </div>
+                                    <div > <p class="badge rounded-pill bg-success fs-12">
+                                      {{ expertData?.industryGroup }}
+                                     </p> </div>
+
+                                     <div > <p class="badge rounded-pill bg-info fs-12">
+                                       {{ expertData?.designation }}
+                                     </p> </div>
+   
+                                    
+                                </div>
+                            </div>                           
+
+
+
+                        </div>
+
+
+
+                      </div>
+                  </div>
+                 
+              </div>
+
+                  <ul ngbNav #customNav="ngbNav" [activeId]="1"  class="nav nav-pills nav-customs nav-danger mb-1" role="tablist">
+                    <li [ngbNavItem]="1" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                          Overview
+                        </a>
+                        <ng-template ngbNavContent>
+                          <div class="row">
+                           
+                             
+        <app-expert-details [itemid]="itemid" ></app-expert-details>
+                              <!-- end col {{ data.terms == true ? 'Signed Up' : data.status }}    -->
+                          </div>
+                          <!-- end row -->
+                        </ng-template>
+                    </li>
+                
+                    <li [ngbNavItem]="2" class="nav-item">
+                      <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                        Experience
+                      </a>
+                      <ng-template ngbNavContent>
+                        <div class="row">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h5>
+                                Work Details
+                                <i    class="bx bx-plus-circle" (click)="openEditWorkingDetails(workingDetails, 'addData')"></i>
+                              </h5>
+                              <table  style="width:90%" class="table-responsive table-borderless table-striped ">
+                                <thead class="thead-dark" style="Color:white;background-color: grey;" >
+                                  <tr>
+                                    <th>Company Name</th>
+                                    <th>Company Type</th>
+                                    <th>Job Title</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let item of expertData?.workingDetails">
+                                    <td>{{ item?.companyName }}</td>
+                                    <td>{{ item?.companyType }}</td>
+                                    <td>{{ item?.jobTitle }}</td>
+                                    <td>{{ item?.startMonth }} / {{ item?.startYear }}</td>
+                                    <td>{{ item?.endMonth }} / {{ item?.endYear }}</td>
+                                    <td class="d-flex align-center justify-content-center">
+                                      <i  class="bx bx-pencil" (click)="openEditWorkingDetails(workingDetails, item?.companyName)"></i>
+                                      <i class="bx bx-trash" (click)="delete(item?.companyName)"> </i>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                      </ng-template>
+                  </li>
+                  <li [ngbNavItem]="3" class="nav-item" style="display: none;">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                      Biography
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="row">
+                        Biography
+                        
+                          <!-- end col -->
+                      </div>
+                      <!-- end row -->
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="4" class="nav-item" >
+                  <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                    Bank Details
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div  class="text-right">
+                              <!-- <button
+                                 <button class="btn btn-border btn-soft-info" style="padding: 0px 10px;" (click)="Openpopup(editbankdetails)"><i class="ri-edit-line"></i>Edit Bank</button>
+                     
+                            type="button"
+                            class="btn btn-primary"
+                            (click)="openModal(bankDetails)"
+                            *ngIf="expertData?.paymentPreference == undefined || expertData?.paymentPreference == null"
+                          >
+                            Add Bank Details
+                          </button> -->
+                          <button type="button" class="btn btn-secondary" (click)="Openpopup(editbankdetails)">Edit Bank</button>
+                        </div>
+                        <div class="card mt-4">
+                          <div class="card-body">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div>
+                                  <h5 class="d-flex">
+                                    Bank Details
+                                    <p
+                                      *ngIf="roles == 'expert'"
+                                      class="pointer ml-2"
+                                      (click)="openEditBankModal(bankDetails, expertData?.id)"
+                                      data-toggle="tooltip"
+                                      title="Edit Bank Details"
+                                    >
+                                      <i class="bx bx-pencil"></i>
+                                    </p>
+                                  </h5>
+                                </div>
+                                <p *ngIf="!expertData?.paymentPreference">No Bank Details Available! Add bank details</p>
+                                <div *ngIf="expertData?.paymentPreference" class="row">
+                                
+                                  <div class="col-md-6">
+                  
+                                    <div class="mb-3">
+                                      <div class="text-muted"> Current Payement Preference</div>
+                                      <h6>{{ expertData?.paymentPreference }}</h6> 
+                                    </div>  <!-----*ngIf="roles == 'expert'" -->
+                                    <hr>
+                                    
+
+                                    <div *ngIf="expertData?.bankAccountNumber" class="mb-3">
+                                      <label> Bank Transfer - India</label>
+                                      <div class="text-muted">Account Number</div>
+                                      <h6   >{{ expertData?.bankAccountNumber }}</h6>
+                                      <h6 *ngIf="roles == 'xxxexpert'">***************</h6>
+                                    </div>
+                                    <div *ngIf="expertData?.bankAccountType" class="mb-3">
+                                      <div class="text-muted">Account Type</div>
+                                      <h6>{{ expertData?.bankAccountType }}</h6>
+                                    </div>
+                                    <div *ngIf="expertData?.bankName" class="mb-3">
+                                      <div class="text-muted">Bank Name</div>
+                                      <h6>{{ expertData?.bankName }}</h6>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6"> 
+                                    <hr>
+                                    <label> </label>
+                                    <div class="mb-3">
+                                    </div>
+                                      
+                                    <div *ngIf="expertData?.branchName" class="mb-3">
+                                      <div class="text-muted">Branch Name</div>
+                                      <h6>{{ expertData?.branchName }}</h6>
+                                    </div>
+                  
+                                    <div *ngIf="expertData?.ifscCode" class="mb-3">
+                                      <div class="text-muted">IFSC Code</div>
+                                      <h6>{{ expertData?.ifscCode }}</h6>
+                                    </div>
+                                    <div *ngIf="expertData?.beneficiaryname" class="mb-3">
+                                      <div class="text-muted">Beneficiary Name</div>
+                                      <h6>{{ expertData?.beneficiaryname }}</h6>
+                                    </div>
+                                    <div *ngIf="expertData?.panCard" class="mb-3">
+                                      <div class="text-muted">Pan Card No.</div>
+                                      <h6>{{ expertData?.panCard }}</h6>
+                                    </div>
+                                  </div>
+                                
+                                  <hr>
+                                  
+                  
+                                  <div  class="col-md-6" *ngIf="expertData?.amazonCode">
+                                  <label> Amazon</label>
+                                  <div class="mb-3" *ngIf="expertData?.amazonCode">
+                                    <div class="text-muted">Amazon Code</div>
+                                    <h6>{{ expertData?.amazonCode }}</h6>
+                                  </div>
+                                  <div class="mb-3" *ngIf="expertData?.PayCurrency">
+                                    <div class="text-muted">Currency</div>
+                                    <h6>{{ expertData?.PayCurrency }}</h6>
+                                  </div>
+                  
+                                  <div class="mb-3" *ngIf="expertData?.PayCountry">
+                                    <div class="text-muted">Country </div>
+                                    <h6>{{ expertData?.PayCountry }}</h6>
+                                  </div>
+                                 </div>
+                  
+                                  <hr>
+                                 <div  class="col-md-6" *ngIf="expertData?.paypalCode">
+                                  <label> Paypal</label>
+                                  <div class="mb-3" *ngIf="expertData?.paypalCode">
+                                    <div class="text-muted">Paypal Code</div>
+                                    <h6>{{ expertData?.paypalCode }}</h6>
+                                  </div>
+                                  <div class="mb-3" *ngIf="expertData?.PayCurrency">
+                                    <div class="text-muted">Currency</div>
+                                    <h6>{{ expertData?.PayCurrency }}</h6>
+                                  </div>
+                  
+                                  <div class="mb-3" *ngIf="expertData?.PayCountry">
+                                    <div class="text-muted">Country </div>
+                                    <h6>{{ expertData?.PayCountry }}</h6>
+                                  </div>
+                                 </div>
+                                 <hr>
+                                 <div  class="col-md-6" *ngIf="expertData?.achBeneficiaryName">
+                                  <label> ACH / Wire Transfer</label>
+                                  <div class="mb-3" *ngIf="expertData?.achBeneficiaryName">
+                                    <div class="text-muted">Beneficiary Name</div>
+                                    <h6>{{ expertData?.achBeneficiaryName }}</h6>
+                                  </div>
+                                  <div class="mb-3" *ngIf="expertData?.achAccountNo">
+                                    <div class="text-muted">Account No</div>
+                                    <h6>{{ expertData?.achAccountNo }}</h6>
+                                  </div>
+                  
+                                  <div class="mb-3" *ngIf="expertData?.achBankName">
+                                    <div class="text-muted">Bank Name </div>
+                                    <h6>{{ expertData?.achBankName }}</h6>
+                                  </div>
+                  
+                                  <div class="mb-3" *ngIf="expertData?.achBeneficiaryAddress">
+                                    <div class="text-muted">Beneficiary Address </div>
+                                    <h6>{{ expertData?.achBeneficiaryAddress }}</h6>
+                                  </div>
+                  
+                  
+                                 </div>
+                  
+                                 <div  class="col-md-6" *ngIf="expertData?.achBeneficiaryName">
+                                  <label> ACH / Wire Transfer</label>
+                                  <div class="mb-3" *ngIf="expertData?.achBankAddress">
+                                    <div class="text-muted">Bank Address</div>
+                                    <h6>{{ expertData?.achBankAddress }}</h6>
+                                  </div>
+                                  <div class="mb-3" *ngIf="expertData?.achSwiftCode">
+                                    <div class="text-muted">Swift Code</div>
+                                    <h6>{{ expertData?.achSwiftCode }}</h6>
+                                  </div>
+                  
+                                  <div class="mb-3" *ngIf="expertData?.achBeneficiaryCountry">
+                                    <div class="text-muted">Country </div>
+                                    <h6>{{ expertData?.achBeneficiaryCountry }}</h6>
+                                  </div>
+                  
+                  
+                                  <div class="mb-3" *ngIf="expertData?.achAccountType">
+                                    <div class="text-muted">Account Type </div>
+                                    <h6>{{ expertData?.achAccountType }}</h6>
+                                  </div>
+                                  
+                  
+                                  <div class="mb-3" *ngIf="expertData?.achAccountType">
+                                    <div class="text-muted" > </div>Routing No </div>
+                                    <h6>{{ expertData?.routingno }}</h6>
+                                  </div>
+                  
+                                  <div class="mb-3" *ngIf="expertData?.achAccountType">
+                                    <div class="text-muted">IBAN No </div>
+                                    <h6>{{ expertData?.ibanno }}</h6>
+                                  </div>
+                  
+                                </div>
+                              <!--  <p *ngIf="!expertData?.paymentPreference">No Bank Details Available! Add bank details</p>
+                               --> <div class="row" style="display:none;"  >
+                                  <div class="col-md-6">
+                                    <div class="mb-3">
+                                      <div class="text-muted">Payement Preference</div>
+                                      <h6>{{ expertData?.paymentPreference }}</h6>
+                                    </div>
+                                    <div *ngIf="expertData?.bankAccountNumber" class="mb-3">
+                                      <div class="text-muted">Account Number</div>
+                                      <h6 *ngIf="roles == 'expert'">{{ expertData?.bankAccountNumber }}</h6>
+                                      <h6 *ngIf="roles != 'expert'">***************</h6>
+                                    </div>
+                                    <div *ngIf="expertData?.bankAccountType" class="mb-3">
+                                      <div class="text-muted">Account Type</div>
+                                      <h6>{{ expertData?.bankAccountType }}</h6>
+                                    </div>
+                                    <div *ngIf="expertData?.bankName" class="mb-3">
+                                      <div class="text-muted">Bank Name</div>
+                                      <h6>{{ expertData?.bankName }}</h6>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="mb-3" *ngIf="expertData?.paypalCode">
+                                      <div class="text-muted">Paypal Code</div>
+                                      <h6>{{ expertData?.paypalCode }}</h6>
+                                    </div>
+                                    <div *ngIf="expertData?.branchName" class="mb-3">
+                                   <div class="text-muted">Branch Name</div>
+                                      <h6>{{ expertData?.branchName }}</h6>
+                                    </div>
+                  
+                                    <div *ngIf="expertData?.ifscCode" class="mb-3">
+                                      <div class="text-muted">IFSC Code</div>
+                                      <h6>{{ expertData?.ifscCode }}</h6>
+                                    </div>
+                                     <div *ngIf="expertData?.beneficiaryname" class="mb-3">
+                                      <div class="text-muted">Beneficiary Name</div>
+                                      <h6>{{ expertData?.beneficiaryname }}</h6>
+                                    </div>
+                                    <div *ngIf="expertData?.panCard" class="mb-3">
+                                      <div class="text-muted">Pan Card No.</div>
+                                      <h6>{{ expertData?.panCard }}</h6>
+                                    </div>
+                                  </div>
+                                </div>
+                  
+                  
+                                <div class="row" style="display:none;"> 
+                                  <div class="col-12">
+                                    <div class="mb-3" >
+                                      <div
+                                        class="text-muted"
+                                        *ngIf="expertData?.notes != null && expertData?.notes != undefined && expertData?.notes != ''"
+                                      >
+                                        Notes
+                                      </div>
+                                      <h6>{{ expertData?.notes }}</h6>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                       
+                        
+                     
+                        
+                  
+                  
+                      </div>
+                  
+                        <!-- end col -->
+                    </div>
+                    <!-- end row -->
+                  </ng-template>
+
+ <!-- bank edit-->
+ <ng-template #editbankdetails let-modal>
+  <div class="modal-header p-3 bg-soft-info" style="text-align: center;">
+      <h5 class="modal-title" id="exampleModalLabel">Edit Bank Details</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+      <div  class="card" >
+          <div  class="card-body">
+              <div class="head pt-0 pb-1">
+                  <h4>Bank Details</h4>
+              </div>
+          </div>
+          <div class="card-body pt-0 bank-details">
+              <div class="row">
+                  <div class="col-12 ">
+                      <div style="margin-bottom: 10px;">
+                          <label for="">payment Preference</label>
+                          <ng-select style="width: 55%;" [ngModelOptions]="{ standalone: true }" [(ngModel)]="FieldData['paymentPreference']">
+                              <ng-option value="Bank transfer-India">Bank Transfer-India</ng-option>
+                              <ng-option value="Bank transfer-International">Bank Transfer-International</ng-option>
+                              <ng-option value="Paypal">Paypal</ng-option>
+                              <ng-option value="Amazon">Amazon</ng-option>
+                              <ng-option value="Donation-India">Donation-India</ng-option>
+                              <ng-option value="Donation-International">Donation-International</ng-option>
+                          </ng-select>                            
+                      </div>
+                  </div>
+              </div>
+              <div class="form-group" *ngIf="FieldData['paymentPreference'] == 'Paypal'">
+                  <h5 style="color: #000000;font-weight: 600;">Paypal Payment</h5>
+                  <div class="row">
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">paypal Code</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="paypalCode" [(ngModel)]="FieldData['paypalCode']" [readOnly]="CheckFieldAccess['paypalCode'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Currency</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="PayCurrency" [(ngModel)]="FieldData['PayCurrency']" [readOnly]="CheckFieldAccess['PayCurrency'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Country</label>
+                              </div>
+                              <div class="col-7">
+                                  <ng-select class="form-control"  id="PayCountry" [items]="countryArray" placeholder="Select Country" (change)="CountryId($event)" bindLabel="name" [readOnly]="CheckFieldAccess['PayCountry'] ==='readonly'"
+                                          [ngModelOptions]="{ standalone: true }" [(ngModel)]="FieldData['PayCountry']" [readOnly]="CheckFieldAccess['PayCountry'] === 'readonly'"
+                                              bindValue="name" [multiple]="false" [closeOnSelect]="true" [selectableGroup]="false">
+                                  </ng-select>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="form-group" *ngIf="FieldData['paymentPreference']   == 'Amazon'">
+                  <h5 style="color: #000000;font-weight: 600;">Amazon Payment</h5>
+                  <div class="row">
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Amazon</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="amazonCode" [(ngModel)]="FieldData['amazonCode']" [readOnly]="CheckFieldAccess['amazonCode'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Currency</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="amazonCurrency" [(ngModel)]="FieldData['amazonCurrency']" [readOnly]="CheckFieldAccess['amazonCurrency'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Country</label>
+                              </div>
+                              <div class="col-7">
+                                  <ng-select class="form-control"  id="amazonCountry" [items]="countryArray" placeholder="Select Country" (change)="CountryId($event)" bindLabel="name" [readOnly]="CheckFieldAccess['amazonCountry'] ==='readonly'"
+                                          [ngModelOptions]="{ standalone: true }" [(ngModel)]="FieldData['amazonCountry']" [readOnly]="CheckFieldAccess['amazonCountry'] === 'readonly'"
+                                              bindValue="name" [multiple]="false" [closeOnSelect]="true" [selectableGroup]="false">
+                                  </ng-select>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="form-group" *ngIf="FieldData['paymentPreference'] == 'Bank transfer-International'||FieldData['paymentPreference'] == 'Donation-International'">
+                  <h5 style="color: #000000;font-weight: 600;">Bank Transfer-International</h5>
+                  <div class="row">
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary Account No</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achAccountNo" [(ngModel)]="FieldData['achAccountNo']" [readOnly]="CheckFieldAccess['achAccountNo'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary Account Type</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achAccountType" [(ngModel)]="FieldData['achAccountType']" [readOnly]="CheckFieldAccess['achAccountType'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary Name</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achBeneficiaryName" [(ngModel)]="FieldData['achBeneficiaryName']" [readOnly]="CheckFieldAccess['achBeneficiaryName'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary Address</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achBeneficiaryAddress" [(ngModel)]="FieldData['achBeneficiaryAddress']" [readOnly]="CheckFieldAccess['achBeneficiaryAddress'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary Country</label>
+                              </div>
+                              <div class="col-7">
+                                  <ng-select class="form-control"  id="achBeneficiaryCountry" [items]="countryArray" placeholder="Select Country" (change)="CountryId($event)" bindLabel="name" 
+                                          [ngModelOptions]="{ standalone: true }" [(ngModel)]="FieldData['achBeneficiaryCountry']" [readOnly]="CheckFieldAccess['achBeneficiaryCountry'] === 'readonly'"
+                                              bindValue="name" [multiple]="false" [closeOnSelect]="true" [selectableGroup]="false">
+                                  </ng-select>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary bank Name</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achBankName" [(ngModel)]="FieldData['achBankName']" [readOnly]="CheckFieldAccess['achBankName'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary bank Address</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achBankAddress" [(ngModel)]="FieldData['achBankAddress']" [readOnly]="CheckFieldAccess['achBankAddress'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Postal Code</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achPostalCode" [(ngModel)]="FieldData['achPostalCode']" [readOnly]="CheckFieldAccess['achPostalCode'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary Swift Code</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achSwiftCode" [(ngModel)]="FieldData['achSwiftCode']" [readOnly]="CheckFieldAccess['achSwiftCode'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary bank routing no</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="routingno" [(ngModel)]="FieldData['routingno']" [readOnly]="CheckFieldAccess['routingno'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary IBAN no</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="ibanno" [(ngModel)]="FieldData['ibanno']" [readOnly]="CheckFieldAccess['ibanno'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- <div class="form-group" *ngIf="">
+                  <h5 style="color: #000000;font-weight: 600;">Donation-International</h5>
+                  <div class="row">
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary Account No</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achAccountNo" [(ngModel)]="FieldData['achAccountNo']" [readOnly]="CheckFieldAccess['achAccountNo'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary Account Type</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achAccountType" [(ngModel)]="FieldData['achAccountType']" [readOnly]="CheckFieldAccess['achAccountType'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary Name</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achBeneficiaryName" [(ngModel)]="FieldData['achBeneficiaryName']" [readOnly]="CheckFieldAccess['achBeneficiaryName'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary Address</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achBeneficiaryAddress" [(ngModel)]="FieldData['achBeneficiaryAddress']" [readOnly]="CheckFieldAccess['achBeneficiaryAddress'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary Country</label>
+                              </div>
+                              <div class="col-7">
+                                  <ng-select class="form-control"  id="achBeneficiaryCountry" [items]="countryArray" placeholder="Select Country" (change)="CountryId($event)" bindLabel="name" 
+                                          [ngModelOptions]="{ standalone: true }" [(ngModel)]="FieldData['achBeneficiaryCountry']" [readOnly]="CheckFieldAccess['achBeneficiaryCountry'] === 'readonly'"
+                                              bindValue="name" [multiple]="false" [closeOnSelect]="true" [selectableGroup]="false">
+                                  </ng-select>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary bank Name</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achBankName" [(ngModel)]="FieldData['achBankName']" [readOnly]="CheckFieldAccess['achBankName'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary bank Address</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achBankAddress" [(ngModel)]="FieldData['achBankAddress']" [readOnly]="CheckFieldAccess['achBankAddress'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Postal Code</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achPostalCode" [(ngModel)]="FieldData['achPostalCode']" [readOnly]="CheckFieldAccess['achPostalCode'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary Swift Code</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="achSwiftCode" [(ngModel)]="FieldData['achSwiftCode']" [readOnly]="CheckFieldAccess['achSwiftCode'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary bank routing no</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="routingno" [(ngModel)]="FieldData['routingno']" [readOnly]="CheckFieldAccess['routingno'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary IBAN no</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="ibanno" [(ngModel)]="FieldData['ibanno']" [readOnly]="CheckFieldAccess['ibanno'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div> -->
+              <div class="form-group" *ngIf="FieldData['paymentPreference'] == 'Bank transfer-India'||FieldData['paymentPreference'] == 'Donation-India'">
+                  <h5 style="color: #000000;font-weight: 600;">Bank Transfer-India</h5>
+                  <div class="row">
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">bank Account Number</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="bankAccountNumber" [(ngModel)]="FieldData['bankAccountNumber']" [readOnly]="CheckFieldAccess['bankAccountNumber'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">bank Account Type</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="bankAccountType" [(ngModel)]="FieldData['bankAccountType']" [readOnly]="CheckFieldAccess['bankAccountType'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">bank Name</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="bankName" [(ngModel)]="FieldData['bankName']" [readOnly]="CheckFieldAccess['bankName'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">branch Name</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="branchName" [(ngModel)]="FieldData['branchName']" [readOnly]="CheckFieldAccess['branchName'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">IFSC Code</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="ifscCode" [(ngModel)]="FieldData['ifscCode']" [readOnly]="CheckFieldAccess['ifscCode'] === 'readonly'">
+                              </div>
+                          </div>   
+                        
+                      </div>
+                         <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">Beneficiary Name</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="beneficiaryname" [(ngModel)]="FieldData['beneficiaryname']" [readOnly]="CheckFieldAccess['beneficiaryname'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">pan Card</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="panCard" [(ngModel)]="FieldData['panCard']" [readOnly]="CheckFieldAccess['panCard'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- <div class="form-group" *ngIf="">
+                  <h5 style="color: #000000;font-weight: 600;">Donation-India</h5>
+                  <div class="row">
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">bank Account Number</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="bankAccountNumber" [(ngModel)]="FieldData['bankAccountNumber']" [readOnly]="CheckFieldAccess['bankAccountNumber'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">bank Account Type</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="bankAccountType" [(ngModel)]="FieldData['bankAccountType']" [readOnly]="CheckFieldAccess['bankAccountType'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">bank Name</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="bankName" [(ngModel)]="FieldData['bankName']" [readOnly]="CheckFieldAccess['bankName'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">branch Name</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="branchName" [(ngModel)]="FieldData['branchName']" [readOnly]="CheckFieldAccess['branchName'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">IFSC Code</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="ifscCode" [(ngModel)]="FieldData['ifscCode']" [readOnly]="CheckFieldAccess['ifscCode'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="row">
+                              <div class="col-5">
+                                  <label for="">pan Card</label>
+                              </div>
+                              <div class="col-7">
+                                  <input type="text" [ngModelOptions]="{ standalone: true }" id="panCard" [(ngModel)]="FieldData['panCard']" [readOnly]="CheckFieldAccess['panCard'] === 'readonly'">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div> -->
+              <div class="btngroup">
+                  <button class="btn btn-success border-0" id="add-btn" (click)="saveBankDetails()" >Save</button>
+                  <button class="btn btn-danger border-0" (click)="modal.dismiss()">Cancel</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</ng-template>
+
+
+  <!-- bank edit-->
+              </li>
+              <li [ngbNavItem]="5" class="nav-item" *ngIf="roles != 'expert'" >
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  Projects
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="row">
+                    <div class="card mt-4">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <h5>
+                              Project Details
+                              <i   style="display:none;" class="bx bx-plus-circle" (click)="openEditWorkingDetails(workingDetails, 'addData')"></i>
+                            </h5>
+                            <table  *ngIf="projectsData?.length>0"  class="table-responsive table-bordered">
+                              <thead>
+                                <tr>
+                                  <th>Project Name</th>
+                                  <th>Profile</th>
+                                  <th>GTAM</th>
+                                  <th>GTC</th>
+                                  <th></th>
+                                  <th   *ngIf="roles != 'expert'"></th>
+                                  
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let item of projectsData">
+                                  <td>  <a
+                                    class="btn btn-basic"
+                                    (click)="openNewTab('projectsall/project/' + item?.id)"
+                                    routerLinkActive="active"
+                                 
+                                  >   {{ item?.name }}   </a>  </td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td> <a  style="margin-right:3px;" class="btn btn-secondary btn-sm" (click)="openViewGTAMModal(viewGTAMModal, item)" routerLinkActive="active">
+                                    View GTAM
+                                  </a></td>
+                                  <td *ngIf="roles != 'expert'"><a class="btn btn-sm btn-secondary " (click)="openViewGTCModal(viewGTCMModal, item)" routerLinkActive="active">
+                                    View GTC
+                                  </a></td>
+                                 
+                                </tr>
+                              </tbody>
+                            </table>
+                            <span *ngIf="projectsData?.length<1" > No Project Details Available</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                      <!-- end col -->
+                  </div>
+                  <!-- end row -->
+                </ng-template>
+            </li>
+                <li [ngbNavItem]="6" class="nav-item">
+                  <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                    Attachments
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div class="row">
+                      <app-exattachments [itemid]="itemid" > </app-exattachments>  
+      
+                      
+                        <!-- end col -->
+                    </div>
+                    <!-- end row -->
+                  </ng-template>
+              </li>
+              <li [ngbNavItem]="7" class="nav-item"  style="display:none;" >
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  LinkedIn
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="row">
+                    <div class="row d-flex justify-content-between">  
+                      <div class="col-md-12"> 
+                        <div class="card">
+                          <div class="card-body">
+                            <h5>Education</h5>  <!---->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                    <br>
+                    <div class="row">
+                      <div class="row d-flex justify-content-between">  
+                        <div class="col-md-12"> 
+                          <div class="card">
+                            <div class="card-body">
+                              <h5>Licenses & certifications</h5>  <!---->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="row d-flex justify-content-between">  
+                        <div class="col-md-12"> 
+                          <div class="card">
+                            <div class="card-body">
+                              <h5>Skills</h5>  <!---->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                      <!-- end col -->
+                  
+                  <!-- end row -->
+                </ng-template>
+            </li>
+                  </ul>
+              </div>
+              <!-- end card body -->
+          </div>
+      </div>
+      <!-- end card -->
+  </div>
+  <!-- end col -->
+</div>
+<div class="row">
+  <div class="col-lg-12">
+      <div class="tab-content text-dark">
+        <div  class="bg-soft-project-view"  style="min-height:40vh" [ngbNavOutlet]="customNav"></div>
+      </div>
+  </div>
+  <!-- end col -->
+</div>
+
+
+<!--Compliance Modal-->
+<ng-template #complianceModal let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">{{ complianceModalTitle }}</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <textarea
+      name="complianceComment"
+      id="complianceComment"
+      [(ngModel)]="complianceComment"
+      class="form-control"
+      rows="5"
+    >
+    </textarea>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="markCompliance('grievance')">Add Grievance</button>
+      <button type="button" class="btn btn-success" (click)="markCompliance('verify')">Verify</button>
+    </div>
+  </div>
+</ng-template>
+
+<!--Bank Details Modal-->
+<ng-template #bankDetails let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Edit Bank Details</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="bankDetailsForm">
+      <!-- <div class="row">
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Payment Preference</label>
+            <ng-select
+              formControlName="paymentPreference"
+              name="paymentPreference"
+              [items]="paymentPreference"
+              bindValue="text"
+              bindLabel="text"
+              placeholder="Select Payment Preference"
+              (change)="paymentVia($event)"
+            >
+            </ng-select>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="row" *ngIf="expertData?.paymentPreference == 'Paypal'">
+
+        <div class="col-6">
+        <div class="form-group mb-4">
+          <label>Paypal</label>
+          <input
+            formControlName="paypalCode"
+            name="paypalCode"
+            type="text"
+            class="form-control"
+            placeholder="Paypal Id"
+          />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group mb-4">
+          <label> Currency</label>
+          <input
+            formControlName="PayCurrency"
+            name="PayCurrency"
+            type="text"
+            class="form-control"
+            placeholder="Enter Currency"
+          />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group mb-4">
+          <label> Country</label>         
+          <ng-select
+          formControlName="PayCountry"
+          [items]="countryArray"
+          bindLabel="name"
+          bindValue="name"
+          [multiple]="false"
+          [closeOnSelect]="true"
+          [selectableGroup]="false"
+          placeholder="Select Country"
+        
+        >
+        </ng-select>
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+    <div class="row" *ngIf="expertData?.paymentPreference == 'Amazon'">
+
+      <div class="col-6">
+      <div class="form-group mb-4">
+        <label>Amazon</label>
+        <input
+          formControlName="amazonCode"
+          name="amazonCode"
+          type="text"
+          class="form-control"
+          placeholder="Amazon Id"
+        />
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group mb-4">
+        <label> Currency</label>
+        <input
+          formControlName="PayCurrency"
+          name="PayCurrency"
+          type="text"
+          class="form-control"
+          placeholder="Enter Currency"
+        />
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group mb-4">
+        <label> Country</label>         
+        <ng-select
+        formControlName="PayCountry"
+        [items]="countryArray"
+        bindLabel="name"
+        bindValue="name"
+        [multiple]="false"
+        [closeOnSelect]="true"
+        [selectableGroup]="false"
+        placeholder="Select Country"
+      
+      >
+      </ng-select>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+      <div
+        class="row"
+        *ngIf="expertData?.paymentPreference == 'Bank transfer' || this.expertData?.paymentPreference == 'Donation'"
+      >
+        <div class="col-12">
+          <div class="form-group mb-4">
+            <label>Account Number</label>
+            <input
+              formControlName="bankAccountNumber"
+              name="bankAccountNumber"
+              type="text"
+              class="form-control"
+              placeholder="Account Number"
+            />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Bank Name</label>
+            <input
+              formControlName="bankName"
+              name="bankName"
+              type="text"
+              class="form-control"
+              placeholder="Bank Name"
+            />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Branch Name</label>
+            <input
+              formControlName="branchName"
+              name="branchName"
+              type="text"
+              class="form-control"
+              placeholder="Branch"
+            />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Account Type</label>
+            <input
+              formControlName="bankAccountType"
+              name="bankAccountType"
+              type="text"
+              class="form-control"
+              placeholder="Account Type"
+            />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>IFSC Code</label>
+            <input
+              formControlName="ifscCode"
+              name="ifscCode"
+              type="text"
+              class="form-control"
+              placeholder="IFSC Code"
+            />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>PAN card No</label>
+            <input formControlName="panCard" name="panCard" type="text" class="form-control" placeholder="PAN No" />
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Swift Code</label>
+            <input formControlName="shiftCode" name="shiftCode" type="text" class="form-control" placeholder="Branch" />
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-group mb-4">
+            <label>Note</label>
+            <textarea formControlName="notes" name="notes" type="text" class="form-control"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="submit()">Submit</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!--Expert Profile Modal-->
+<ng-template #editExpertDetails let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Edit Profile</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="expertDetailsForm" (ngSubmit)="editDetail()" id="ngForm">
+      <div class="row">
+        <div class="col-12">
+          <div class="form-group mb-4">
+            <label>Contact No</label>
+            <input
+              formControlName="contactNo"
+              name="contactNo"
+              type="text"
+              class="form-control"
+              placeholder="Enter mobile number"
+            />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Email Id</label>
+            <input
+              formControlName="primaryEmail"
+              name="primaryEmail"
+              type="text"
+              class="form-control"
+              placeholder="Enter email id"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Rate</label>
+            <input formControlName="rate" name="rate" type="number" class="form-control" placeholder="Eg. 20000" />
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group mb-4">
+            <label>Biography</label>
+            <ckeditor [editor]="Editor" formControlName="biography" id="short-content" data="<p></p>"></ckeditor>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-secondary" (click)="editDetail()">Edit</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!--Working Details Modal-->
+<ng-template #workingDetails let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Working Details</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="workForm" (ngSubmit)="workDetailsSubmit()">
+      <div class="row">
+        <div class="col-12">
+          <div class="form-group mb-4">
+            <label for="companyName">Company Name</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="companyName"
+              name="companyName"
+              placeholder="Company Name"
+            />
+            <span class="mt-2"
+              >Is current employer
+              <input
+                type="checkbox"
+                formControlName="isCurrentEmployeer"
+                class="mt-2"
+                (click)="checkEmployer($event)"
+              />
+            </span>
+          </div>
+        </div>
+        <div class="col-6">
+          <label for="companyType">Type</label>
+          <ng-select
+            [items]="expertCompanyType"
+            bindLabel="expertCompanyType"
+            bindValue="expertCompanyType"
+            placeholder="Select Company Type"
+            name="companyType"
+            formControlName="companyType"
+          >
+          </ng-select>
+        </div>
+        <div class="col-6">
+          <label for="jobTitle">Job Title</label>
+          <input type="text" class="form-control" formControlName="jobTitle" name="jobTitle" placeholder="Job Title" />
+        </div>
+        <div class="col-3 mt-3">
+          <div class="form-group mb-4">
+            <label for="startMonth">start Month</label>
+            <ng-select
+              [items]="months"
+              bindLabel="name"
+              bindValue="id"
+              placeholder="Start Month"
+              formControlName="startMonth"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-3 mt-3">
+          <div class="form-group mb-4">
+            <label for="startYear">start Year</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="startYear"
+              name="startYear"
+              placeholder="Start Year"
+            />
+          </div>
+        </div>
+        <div class="col-3 mt-3" *ngIf="showEnd == true">
+          <div class="form-group mb-4">
+            <label for="endMonth">End Month</label>
+            <ng-select
+              [items]="months"
+              bindLabel="name"
+              bindValue="id"
+              placeholder="End Month"
+              formControlName="endMonth"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-3 mt-3" *ngIf="showEnd == true">
+          <div class="form-group mb-4">
+            <label for="endYear">End Year</label>
+            <input type="text" class="form-control" formControlName="endYear" name="endYear" placeholder="End Year" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">{{ btnName }}</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+
+
+<ng-template #clientUserFormModal let-modal>
+  <app-complianceActions
+    (Refreshlist)="RefreshList()"
+    compliancetype="project"
+    saleid="{{ idforCompliance }}"
+  ></app-complianceActions>
+</ng-template>
+
+
+
+<ng-template #viewGTAMModal let-modal>
+  <div class="modal-header bg-dark text-white">
+    <h5 class="modal-title mt-0">View GTAM Details</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="team">
+      <div class="row">
+        <div class="col-md-6">
+    
+        </div>
+        <div class="col-md-6 pull-right">
+        
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="relevance">Welcome Lines</label>
+      <p  [innerHTML]="this.GTAMdata?.welcomeLines" >/p>
+    </div>
+    <div class="mb-3">
+      <label for="relevance">Biography</label>
+      <p [innerHTML]="this.GTAMdata?.biography" ></p>
+    </div>
+    <div class="mb-3">
+      <label for="relevance">Relevance</label>
+      <p [innerHTML]="this.GTAMdata?.welcomeLines"  ></p>
+    </div>
+    
+    <div class="mb-3">
+      <label for="directInvolvement">Direct Involvement</label>
+      <p [innerText]="this.GTAMdata?.directInvolvement"></p>
+    </div>
+    <div class="mb-3">
+      <label for="canDiscuss">Can Dissuss</label>
+      <p>{{ this.GTAMdata?.canDiscuss }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="conversationStyle">Conversation Style</label>
+      <p>{{ this.GTAMdata?.conversationStyle }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="availability">Availability</label>
+      <p>{{ this.GTAMdata?.availability }}</p>
+    </div>
+ 
+
+  <div class="mb-3">
+    <hr />
+    <div>
+      <label for="pricing"> Expert Pricing </label>
+      <p>{{ this.GTAMdata?.prorated }}</p>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="rate">Rate</label>
+    <p>{{ this.GTAMdata?.rate }}</p>
+  </div>
+  <div class="mb-3">
+    <label for="minDuration">Min Duration</label>
+    <p>{{ this.GTAMdata?.minDuration }}</p>
+  </div>
+
+  <div class="mb-3">
+    <label for="currency">Currency</label>
+    <p>{{ this.GTAMdata?.currency }}</p>
+  </div>
+  <div class="mb-3">
+    <label for="minDurationType">Min Duration Type</label>
+    <p>{{ this.GTAMdata?.minDurationType }}</p>
+  </div>
+
+  <div class="mb-3">
+    <label for="rateType">Rate Type</label>
+    <p>{{ this.GTAMdata?.rateType }}</p>
+  </div>
+
+  <div class="mb-3">
+    <label for="canDiscuss">Additional Comments</label>
+    <p>{{ this.GTAMdata?.additionalComments }}</p>
+  </div>
+</div>
+</ng-template>
+
+
+<ng-template #viewGTCMModal let-modal>
+  <div class="modal-header bg-dark text-white">
+    <h5 class="modal-title mt-0">View GTC Details</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="team">
+      <div class="row">
+        <div class="col-md-6">
+          <a href="javascript:void(0);" class="team-member d-flex align-items-center">
+            <div class="avatar-md-1">
+              <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
+                {{ GTCViewdata?.firstName | uppercase | slice: 0:2 }}
+              </span>
+            </div>
+            <div class="ml-2">
+              <div class="text-muted">{{ GTCViewdata?.firstName }} {{ GTCViewdata?.lastName }}</div>
+              <div class="text-muted">{{ GTCViewdata?.designation }}</div>
+              <!-- <div if class="text-muted">{{ transferLead?.firstName }} {{ transferLead?.lastName }}</div> -->
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6 pull-right">
+        
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="relevance">Welcome Lines</label>
+      <p  [innerHTML]="this.GTCViewdata?.welcomeLines" >/p>
+    </div>
+    <div class="mb-3">
+      <label for="relevance">Biography</label>
+      <p [innerHTML]="this.GTCViewdata?.biography " ></p>
+    </div>
+    <div class="mb-3">
+      <label for="relevance">Relevance</label>
+      <p [innerHTML]="this.GTCViewdata?.welcomeLines "  ></p>
+    </div>
+    <div class="mb-3">
+      <label for="directInvolvement">Direct Involvement</label>
+      <p [innerText]="this.GTCViewdata?.directInvolvement"></p>
+    </div>
+    <div class="mb-3">
+      <label for="canDiscuss">Can Dissuss</label>
+      <p>{{ this.GTCViewdata?.canDiscuss }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="conversationStyle">Conversation Style</label>
+      <p>{{ this.GTCViewdata?.conversationStyle }}</p>
+    </div>
+
+    <div class="mb-3">
+      <label for="availability">Availability</label>
+      <p>{{ this.GTCViewdata?.availability }}</p>
+    </div>
+ 
+  <hr />
+  
+<div  *ngIf="roles != 'researchAnalyst' && roles != 'researchManager' ">
+
+  <div class="mb-3">
+ 
+    <div>
+      <label for="pricing"> Client Pricing </label>
+      <p>{{ this.GTCViewdata?.prorated }}</p>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="rate">Rate</label>
+    <p>{{ this.GTCViewdata?.rate }}</p>
+  </div>
+  <div class="mb-3">
+    <label for="minDuration">Min Duration</label>
+    <p>{{ this.GTCViewdata?.minDuration }}</p>
+  </div>
+
+  <div class="mb-3">
+    <label for="currency">Currency</label>
+    <p>{{ this.GTCViewdata?.currency }}</p>
+  </div>
+  <div class="mb-3">
+    <label for="minDurationType">Min Duration Type</label>
+    <p>{{ this.GTCViewdata?.minDurationType }}</p>
+  </div>
+
+  <div class="mb-3">
+    <label for="rateType">Rate Type</label>
+    <p>{{ this.GTCViewdata?.rateType }}</p>
+  </div>
+
+  <div class="mb-3">
+    <label for="canDiscuss">Additional Comments</label>
+    <p>{{ this.GTCViewdata?.additionalComments }}</p>
+  </div>
+</div>
+</div>
+</ng-template>
+
+<ng-template #projectform let-modal>
+
+  <div class="modal-content" width="98%">
+ 
+    <div class="modal-header">
+      <button type="button" class="btn-close"   style=" z-index:500;" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+    <div class="modal-body">
+      
+      <app-create-expert [itemid]="itemid" ></app-create-expert>
+
+</div>
+</div>
+
+
+
+</ng-template>
+
+
+
+<!--Working Details Modal-->
+<ng-template #workingDetails1 let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Working Details</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="workForm" (ngSubmit)="workDetailsSubmit()">
+      <div class="row">
+        <div class="col-12">
+          <div class="form-group mb-4">
+            <label for="companyName">Company Name</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="companyName"
+              name="companyName"
+              placeholder="Company Name"
+            />
+            <span class="mt-2"
+              >Is current employer
+              <input
+                type="checkbox"
+                formControlName="isCurrentEmployeer"
+                class="mt-2"
+                (click)="checkEmployer($event)"
+              />
+            </span>
+          </div>
+        </div>
+        <div class="col-6">
+          <label for="companyType">Type</label>
+          <ng-select
+            [items]="expertCompanyType"
+            bindLabel="expertCompanyType"
+            bindValue="expertCompanyType"
+            placeholder="Select Company Type"
+            name="companyType"
+            formControlName="companyType"
+          >
+          </ng-select>
+        </div>
+        <div class="col-6">
+          <label for="jobTitle">Job Title</label>
+          <input type="text" class="form-control" formControlName="jobTitle" name="jobTitle" placeholder="Job Title" />
+        </div>
+        <div class="col-3 mt-3">
+          <div class="form-group mb-4">
+            <label for="startMonth">start Month</label>
+            <ng-select
+              [items]="months"
+              bindLabel="name"
+              bindValue="id"
+              placeholder="Start Month"
+              formControlName="startMonth"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-3 mt-3">
+          <div class="form-group mb-4">
+            <label for="startYear">start Year</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="startYear"
+              name="startYear"
+              placeholder="Start Year"
+            />
+          </div>
+        </div>
+        <div class="col-3 mt-3" *ngIf="showEnd == true">
+          <div class="form-group mb-4">
+            <label for="endMonth">End Month</label>
+            <ng-select
+              [items]="months"
+              bindLabel="name"
+              bindValue="id"
+              placeholder="End Month"
+              formControlName="endMonth"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-3 mt-3" *ngIf="showEnd == true">
+          <div class="form-group mb-4">
+            <label for="endYear">End Year</label>
+            <input type="text" class="form-control" formControlName="endYear" name="endYear" placeholder="End Year" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">{{ btnName }}</button>
+      </div>
+    </form>
+  </div>
+</ng-template>

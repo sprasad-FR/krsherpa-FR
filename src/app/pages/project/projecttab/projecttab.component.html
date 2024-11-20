@@ -1,0 +1,314 @@
+<div class="row">
+  <div class="col-md-12">
+      <div class="card mt-n4" style="background-color: #f7f5f5ee; ">
+          <div class="bg-soft-primary bg-soft-project"  style="background-color1: rgb(60, 71, 105);">
+              <div class="card-body pb-0 px-4">
+                <div class="row ">
+                  <div class="col-md-6">
+                      <div class="row align-items-center g-3">
+                          <div class="col-md-auto">
+                              <div class="avatar-sm">
+                                  <div class="avatar-title bg-success text-white rounded-circle ">
+
+                                    <h4  style="color:rgb(223, 223, 233);" >  {{  projectData?.name | getInitials }}</h4>
+                                                                       </div>
+                              </div>
+                          </div>
+                          <div class="col-md">
+                              <div>
+                                  <h4 class="fw-bold">{{projectData?.name}} <span class="badge rounded-pill bg-primary fs-12"></span> </h4>    
+                                  <div class="hstack gap-3 flex-wrap">
+                                      <div > <p *ngIf="roles != 'expert' && roles != 'researchAnalyst' && roles != 'researchManager'" class="badge rounded-pill bg-danger fs-12">
+                                        {{ projectClient?.companyName }}
+                                      </p> </div> 
+                                      <div > <p class="badge rounded-pill bg-info fs-12">
+                                       Start Date: {{ projectData?.startDate | localDateTime }} 
+                                      </p> </div>
+                                      <div > <p class="badge rounded-pill bg-warning fs-12">
+                                        End Date:  {{ projectData?.endDate | localDateTime }}
+                                       </p> </div>
+
+
+
+                                      <div class="vr">  {{projectData?.status}}  </div>
+                                     
+                                      
+                                  </div>
+                              </div>                           
+
+
+
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6">  
+                    <div class="row">  
+
+             
+                 
+                    <div *ngFor="let stat of statData" class="col-md-2 text-center">
+                     
+                      
+                      <div class=" badge  bg-info fs-12 clrsml">
+                        <div class="p-0 ">
+                            <h5 class="mb-0 text-white "><span> {{stat.value}}</span></h5>
+                            <p class="text-white mb-0 font-size-7 text-wrap">{{stat.title }}</p>
+                        </div>
+                    </div><!--end col-->
+                 
+                  <ng-template ngbNavContent>
+                    <div class="row">
+                      <app-project-flow  [itemid]="itemid" ></app-project-flow >
+                        
+                      
+                        <!-- end col -->
+                    </div>
+                    <!-- end row -->
+                  </ng-template>
+                      
+                      <app-stat [title]="stat.title" [value]="stat.value" [icon]="stat.icon"></app-stat>
+                    </div> 
+               
+                  </div>
+                  </div>
+
+                  
+
+              </div>
+              <hr>
+                  <div class="row ml-n3 text-dark">
+                    <div style="display:none;">  
+                    <div class="col-md-3">
+                      <p class="text-primary mb-1 text-decoration-underline">Key Account Manager</p>
+                      <div class="team">
+                        <a href="javascript:void(0);" class="team-member d-flex align-items-center">
+                          <span *ngIf="this.keyAccMgrList?.name" class="badge rounded-pill text-bg-secondary">{{
+                            this.keyAccMgrList?.name | getInitials: 2
+                          }}</span>
+                          <div class="text-dark">{{ this.keyAccMgrList?.name }}</div>
+                        </a>
+                      </div>
+                    </div>
+          
+                    <div class="col-md-3">
+                      <p class="text-primary mb-1 text-decoration-underline">Research Manager</p>
+                      <div class="team"  >
+                        <div class=" float-end"
+                         
+                          class="btn"
+                          [ngbPopover]="popTitle"
+                          triggers="mouseenter:mouseleave"
+                          popoverTitle="Research Managers"
+                        >
+                        <a
+                          href="javascript:void(0);"
+                          *ngFor="let ral of researchManagers ; let i = index;" 
+                          class="team-member d-flex align-items-center"
+                        >
+                        <ng-container *ngIf="i < 2">
+                          <span class="badge rounded-pill text-bg-secondary">{{ ral?.name | getInitials: 2 }}</span>
+                          <div class="text-dark">{{ ral?.name }}</div>
+                        </ng-container>
+                        </a>
+
+                        
+                        <div *ngIf="researchManagers?.length>0">  ...(Total: {{researchManagers.length}})  </div>
+                        
+                        </div>
+                        <ng-template #popTitle><div id="popcon"> {{getNameList(researchManagers,'popcon')}}</div></ng-template>
+                      </div>
+                    </div>
+          
+                    <div class="col-md-3">
+                      <p class="text-primary mb-1 text-decoration-underline">Research Analyst</p>
+                      <div class="team">
+                        <div class=" float-end"
+                         
+                        class="btn"
+                        [ngbPopover]="popTitle1"
+                        triggers="mouseenter:mouseleave"
+                        popoverTitle="Research Analysts"
+                      >
+
+                        <a
+                          href="javascript:void(0);"
+                          *ngFor="let ral of researchAnalysts; let i = index;"
+                          class="team-member d-flex align-items-center"
+                        >
+                        <ng-container *ngIf="i < 2">
+                          <span  class="badge rounded-pill text-bg-secondary">{{
+                            this.ral?.name | getInitials: 2
+                          }}</span>
+                          <div class="text-dark">{{ this.ral?.name }}</div>
+                        </ng-container>
+                        </a>
+                        <div *ngIf="researchAnalysts?.length>0">   ...(Total:  {{researchAnalysts.length}})  </div>
+                      </div>
+                      <ng-template #popTitle1><div id="popcon1"> {{getNameList(researchAnalysts,'popcon1')}}</div></ng-template>
+                  
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-3" *ngIf="roles != 'researchAnalyst' && roles != 'researchManager'">
+                      <p class="text-primary mb-1 text-decoration-underline">Client Users</p>
+                      <div class="team" *ngIf="projectClient?.clientUsers?.length>0">
+                        <div class=" float-end"
+                         
+                        class="btn"
+                        [ngbPopover]="popTitle2"
+                        triggers="mouseenter:mouseleave"
+                        popoverTitle="Client Users"
+                      >
+                        <a
+                          href="javascript:void(0);"
+                          *ngFor="let ral of projectClient?.clientUsers; let i = index;"
+                          class="team-member d-flex align-items-center"
+                        >
+                        <ng-container *ngIf="i < 2">
+                          <img
+                            *ngIf="ral?.image"
+                            src=" -3.jpg"
+                            class="badge rounded-pill text-bg-secondary">
+                            alt
+                          />
+                          <span *ngIf="!ral?.image" class="badge rounded-pill text-bg-secondary">{{
+                            this.ral?.name | getInitials: 2
+                          }}</span>
+                          <div class="text-dark">{{ this.ral?.name }}</div>
+                        </ng-container>
+                        </a>
+                      <div *ngIf="projectClient?.clientUsers?.length>0">   ....(Total: {{projectClient?.clientUsers.length}}) </div>
+                      </div>
+                      <ng-template #popTitle2><div id="popcon2"> {{getNameList(projectClient?.clientUsers,'popcon2')}}</div></ng-template>
+                    
+                    </div>
+                  </div>
+                </div>
+
+
+                  <ul ngbNav #customNav="ngbNav" [activeId]="1"  class="nav nav-pills nav-customs nav-danger mb-1" role="tablist">
+                   
+                   
+                    <li [ngbNavItem]="1" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                          Overview
+                        </a>
+                        <ng-template ngbNavContent>
+                          <div class="row">
+                           <!-- -->     <!--    --> 
+                            <app-overview [itemid]="itemid" ></app-overview>       
+      
+                              <!-- end col -->
+                          </div>
+                          <!-- end row -->
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2" class="nav-item" style="display:none;">
+                      <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                        Details
+                      </a>
+                      <ng-template ngbNavContent>
+                        <div class="row">
+                         
+                           
+      <app-project-form [itemid]="itemid" ></app-project-form>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                      </ng-template>
+                  </li>
+                    <li [ngbNavItem]="3" class="nav-item">
+                      <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                        Search Profiles
+                      </a>
+                      <ng-template ngbNavContent>
+                        <div class="row">
+                            <!-- -->     <!--    
+                          <app-lead-attach  [itemid]="itemid" ></app-lead-attach > --> 
+        
+                            <!-- end col -->
+
+                             <app-expertlist  [itemid]="itemid" ></app-expertlist > --> 
+         
+                        </div>
+                        <!-- end row -->
+                      </ng-template>
+                  </li>
+                  <li [ngbNavItem]="4" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                      Project Flow
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="row">
+                         <!-- -->     <!--   --> 
+                        <app-project-flow  [itemid]="itemid" ></app-project-flow > 
+      
+                        
+                          <!-- end col -->
+                      </div>
+                      <!-- end row -->
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="5" class="nav-item">
+                  <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                    Events
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div class="row">
+                              <!-- -->     <!--  --> 
+                      <app-events [itemid]="itemid" ></app-events>  
+      
+                      
+                        <!-- end col -->
+                    </div>
+                    <!-- end row -->
+                  </ng-template>
+              </li>
+              <li [ngbNavItem]="6" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  Attachments
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="row">
+                     <!-- -->     <!-- -->
+                    <app-attachments [itemid]="itemid" > </app-attachments>  
+      
+                    
+                      <!-- end col -->
+                  </div>
+                  <!-- end row -->
+                </ng-template>
+            </li>
+  <li [ngbNavItem]="7" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  Client Compliance
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="row">
+                    <app-client-compliance   [itemid]="projectData.clientId"   ></app-client-compliance>
+                   
+                    
+                      <!-- end col -->
+                  </div>
+                  <!-- end row -->
+                </ng-template>
+            </li>
+            
+                  </ul>
+              </div>
+              <!-- end card body -->
+          </div>
+      </div>
+      <!-- end card -->
+  </div>
+  <!-- end col -->
+</div>
+<div class="row">
+  <div class="col-lg-12">
+      <div class="tab-content text-dark">
+        <div  class="bg-soft-project-view"  style="min-height:40vh" [ngbNavOutlet]="customNav"></div>
+      </div>
+  </div>
+  <!-- end col -->
+</div>

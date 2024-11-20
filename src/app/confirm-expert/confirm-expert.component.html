@@ -1,0 +1,397 @@
+<div class="container-fluid">
+  <div class="header">
+    <div class="navbar-brand-box pt-2">
+      <a href="/" class="logo logo-dark">
+        <span class="logo-sm">
+          <img src="assets/images/krIcon.png" alt="" class="img-fluid" />
+        </span>
+        <span class="logo-lg">
+          <img src="assets/images/sherpa-logo.png" alt="" class="img-fluid" />
+        </span>
+      </a>
+
+      <a href="/" class="logo logo-light">
+        <span class="logo-sm">
+          <img src="assets/images/krIcon.png" alt="" class="img-fluid" />
+        </span>
+        <span class="logo-lg">
+          <img src="assets/images/sherpa-logo.png" alt="" class="img-fluid" />
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div style="height: 95%; overflow: auto" class="card">
+        <div class="card-body">
+          <div class="row p-4">
+            <div class="col-md-12 mb-4">
+              <div class="team">
+                <a href="javascript:void(0);" class="team-member d-flex align-items-center">
+                  <!-- <span class="rounded-circle bg-primary text-white font-size-20">
+                    {{ expertData?.firstName | uppercase | getInitials: 2 }}
+                  </span>
+                gs
+                -->
+                  <div class="rounded-circle text-white avatar-sm initial-img initial">
+                    {{ expertData?.firstName  }}
+                  </div>
+                  <div class="ml-2">
+                    <div class="text-muted">
+                      {{ expertData?.salutation }} {{ expertData?.firstName }} {{ expertData?.lastName }}
+                    </div>
+                    <div class="text-muted">{{ expertData?.isLead ? 'KR Lead' : 'KR Expert' }}</div>
+                    <div class="text-muted">{{ expertData?.designation }}</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mb-3">
+                <div class="text-muted">Email id</div>
+                <h6>{{ expertData?.primaryEmail }}</h6>
+              </div>
+
+              <div class="mb-3">
+                <div class="text-muted">Contact No.</div>
+                <h6>{{ expertData?.contactNo }}</h6>
+              </div>
+
+              <!-- <div class="mb-3">
+                <div class="text-muted">Current Employer</div>
+                <h6>{{ currentEmployer }}</h6>
+              </div> -->
+
+              <div class="mb-3">
+                <div class="text-muted">Designation</div>
+                <h6>{{ expertData?.designation }}</h6>
+              </div>
+
+              <div class="mb-3">
+                <div class="text-muted">Address</div>
+                <h6>{{ expertData?.city }}, {{ expertData?.state }}</h6>
+              </div>
+
+              <!-- <div class="mb-3">
+                <div class="text-muted">Industry</div>
+                <h6>{{ industry }}</h6>
+              </div> -->
+
+              <!-- <div class="mb-3">
+                <div class="text-muted">KR Repationship Mgr</div>
+                <h6>{{ expertData?.krRelationshipMgr ? expertData?.krRelationshipMgr : '--' }}</h6>
+              </div> -->
+            </div>
+
+            <!-- Expert Profile Only -->
+            <div class="col-md-4">
+              <div class="mb-3">
+                <div class="text-muted">Rate</div>
+                <h6>{{ expertData?.rate }}</h6>
+              </div>
+
+              <div class="mb-3">
+                <div class="text-muted">Currency</div>
+                <h6>{{ expertData?.currency }}</h6>
+              </div>
+
+              <div class="mb-3">
+                <div class="text-muted">Rate Type</div>
+                <h6>{{ expertData?.rateType }}</h6>
+              </div>
+
+              <!-- <div class="mb-3">
+                <div class="text-muted">Work Details</div>
+                <h6>{{ expertData?.workDetails }}</h6>
+              </div> -->
+
+              <div class="mb-3">
+                <div class="text-muted">Status</div>
+                <h6>{{ expertData?.status }}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div style="height: 95%; overflow: auto" class="card">
+        <div class="card-body terms-box">
+          <h5>Terms and Conditions</h5>
+          <p>
+            I agree to the Confidentiality Agreement and understand that I must keep strictly confidential, and may not
+            disclose or attempt to benefit from, any information that I learn on KR's websites about KR's clients or
+            their consulting projects. Know more about Knowledge Ridge's
+          </p>
+          <p>
+            The following terms and conditions constitute a legally binding contract between you (Expert) and Knowledge
+            Ridge (KR). You accept that these terms and conditions govern your relationship with KR and its clients, and
+            that these terms and conditions supersede any prior terms and conditions between you and KR.
+          </p>
+          <p>
+            <b>Introduction</b><br />
+            KR offers business executives and professionals the opportunity to enroll as industry domain experts
+            (“Experts”) and provide consultations to KR and its Clients. ("Clients," may include, but not limited to,
+            professional services firms, investment management firms, and corporations). These consultations may
+            include, but are not limited to, phone interviews, in-person meetings, workshops, field visits, group/panel
+            discussions, surveys, or other mutually agreed-upon consulting engagements.
+          </p>
+          <p>
+            <b>Participation</b><br />
+            Experts can participate in KR’s clients’ consulting engagements if Experts are not restricted by any
+            contractual, fiduciary, or other obligations. By agreeing to our terms and conditions and joining KR’s
+            global network of experts, you represent that you are not restricted from participating in KR’s clients’
+            consultations and have obtained all the relevant obligatory approvals. All such consultations will be
+            carried out in your personal capacity and not on behalf of any other entity, unless there is a written
+            agreement between such entity and KR.
+          </p>
+
+          <p>
+            <b>Expert Discretion</b><br />
+            Experts are provided the liberty to accept or decline any offer to provide consultation services, provided,
+            however, that you may accept only those consultation engagements that<br />
+            (a) do not present a conflict of interest, breach of agreement and/or violation of duty or obligation;<br />
+            (b) are associated with matters that you are permitted to discuss under applicable law and subject to any
+            obligations you may have (including contractual, employment, or otherwise) and<br />
+            (c) that are concerned with those matters about which you are knowledgeable
+          </p>
+
+          <p>
+            <b>Payment</b><br />
+            Once a consulting engagement is confirmed with you, please provide your payment preference(s) and details to
+            your point of contact at KR. Experts are not compensated for time expended in preparation of, or in
+            follow-up to consulting engagements, unless prior written approval for the same is provided by KR. Such work
+            cannot be authorized by KR’s clients. You will be compensated for those consultations that are arranged and/
+            or pre-approved by KR. You agree to deliver information required to comply with tax reporting and
+            withholding obligations (as applicable).<br />
+
+            Payments are systematically collated monthly and processed by the 15th of the following month. For example:
+            For all KR consulting engagements that you participate in during the month of January, payment will be
+            calculated and processed by 15th of February.
+          </p>
+
+          <p>
+            <b>Compliance</b><br />
+            Observance to compliance lies at the heart of KR’s interaction and engagement with all its stakeholders. In
+            this regard, Experts are expected to conduct themselves in a professional and courteous manner with KR and
+            its clients.<br />
+
+            Experts must not disclose any information that is confidential, proprietary, material non-public, or covered
+            by any nondisclosure agreement to which you are a party. <br />
+
+            Elaborating on KR’s compliance norms, as an Expert you also agree to the following:<br />
+            (a) You will not participate in any consultations that relate to your current employer<br />
+            (b) If you are employed or contracted as an officer, director, employee, trustee, or board member of a
+            company that is the subject of a tender offer or is in the process of submitting a tender offer for the
+            securities on another entity, you cannot participate in such consultations until the tender offer process is
+            exhaustively completed<br />
+            (c) If you are employed by a government (local, state, federal, or foreign), and your employer prohibits its
+            employees from participating in outside consulting projects, you agree not to participate in any
+            consultations on any industries or entities regulated by your employer<br />
+            (d) If you are a Health Care professional, you agree not to disclose any patient-related information or
+            trial information that is either not yet available in the public domain or is prohibited to be disclosed
+            under applicable laws and/or regulations<br />
+            (e) If you are an attorney, you agree not to consult about any clients you currently represent or to
+            disclose any information or opinions that would breach any legal or ethical duty you or your firm owes to
+            past or present clients<br />
+            (f) If you are currently an auditor or formerly an auditor, you agree not to consult about entities that you
+            currently audit or have audited within the last three years<br />
+            (g) You agree not to provide consultations for a KR Client that is a direct competitor of a company for
+            which you are employed or contracted as an officer, director, employee, trustee, or board member (or for
+            which you hold a similar position)<br />
+            (h) If you were previously employed in a public company, you will not consult about the concerned public
+            company until four months after termination of your employment<br />
+            (i) If a company, for which you are an employee, director, trustee, officer or board member (or for which
+            you hold a similar position) has filed to issue an IPO, you must decline all projects, until the IPO is
+            issued<br />
+            (j) You further agree not to provide any investment and/or financial advice to KR or its Clients, including,
+            without limitation, any ratings or securities recommendations<br />
+            (k) You represent that you have not been convicted of or charged with any felony<br /><br />
+
+            KR will not knowingly recommend to you any consulting engagement which may represent a conflict of interest.
+            Furthermore, if you ascertain at any time that your involvement in any consultation could result in a
+            violation of any of the above terms; conditions or may otherwise present a conflict of interest, you must
+            immediately cease your participation in such consultations and notify your point of contact at KR.<br />
+          </p>
+
+          <p>
+            You also agree that you will provide KR with accurate personal Information (both current and historical, as
+            relevant & necessary) with respect to your education, work experience, employment history, and any
+            contractual or other obligations you may be subject to. You agree that you will not provide any false or
+            misleading information of any kind to KR, its Clients, or during consultations. In certain cases, a Client
+            may require you to make additional representations, acknowledgements or agreements in connection with a
+            project and you understand and acknowledge that the Client may rely on such additional representations,
+            acknowledgements, and agreements and administer your compliance with such conditions.
+          </p>
+
+          <p>
+            You also agree that you have never been (i) convicted of a criminal offence or (ii) the subject of an
+            investigation by a regulatory authority or professional body or applicable industry group, or (iii) a
+            defendant in any proceeding where fraud or violation of laws or regulations including the taking of a false
+            oath, the making of a false report, perjury or bribery or conspiracy to commit any such offence is alleged.
+          </p>
+          <p>
+            By agreeing to onboard as an Expert, you represent and warrant to us that you adhere to each of the
+            conditions, agreements, acknowledgements, representations, covenants, warranties, and other obligations
+            included in these terms and conditions.
+          </p>
+          <p>
+            <b>Proprietary Information</b><br />
+            For purposes hereof, “Proprietary Information” includes all nonpublic information, in any form or medium,
+            written, oral or otherwise, pertaining to KR, its business or its Clients, including but not limited to, the
+            names of any Clients and Clients’ employees, the subject-matter of the consultation, or Experts’
+            participation in consulting engagements for such Clients.<br /><br />
+
+            Proprietary Information shall not include any information that is:<br />
+            (a) already in the possession of receiving party;<br />
+            (b) independently developed by the receiving party;<br />
+            (c) publicly disclosed by the disclosing party;<br />
+            (d) rightfully received by the receiving party from a third party;<br />
+            (e) approved for release by the disclosing party;<br />
+            (f) available by the inspection of products marketed or offered for sale by either party hereto or others in
+            the ordinary course of business; or<br />
+            (g) disclosed pursuant to the requirement or request of a governmental agency or third party to the extent
+            such disclosure is required by operation of law, regulation or court order.<br /><br />
+
+            You shall consider all Proprietary Information as confidential and shall not disclose any Proprietary
+            Information to any third party. The obligations of this section with respect to Proprietary Information
+            shall survive any termination or expiration of this Agreement.
+          </p>
+          <p>
+            <b>Relationship</b><br />
+            You understand and are agreed to the fact that all such consultations or services shall be performed in the
+            role of an independent contractor and consultant. Your status as a KR Expert does not createan employment,
+            agency, partnership, joint venture or any other form of association, for tax purposes or otherwise, between
+            you and KR or any Client.<br />
+
+            You acknowledge that any KR Client to whom you provide consultations hereunder is an intended third-party
+            beneficiary of these Terms and Conditions and hence, has the same rights and expectations as KR with respect
+            to any breach by you of your representations, warranties and covenants hereunder.<br />
+
+            Furthermore, you will not have any right or authority to negotiate any agreement or otherwise incur any
+            obligation on behalf of KR or to make any representation or warranty on behalf of KR or any Client, unless
+            expressly agreed to in writing. In additional, you agree that you will not make any unauthorized use of KR’s
+            name.<br />
+
+            KR or its Clients may record and/or transcribe your consultation with them. In addition, your participation
+            in consulting engagements may be monitored by KR and/or its Clients.
+            <b>Your KR point of contact will apprise you of such scenarios in advance.</b> You will not be responsible
+            or liable for any decisions that are taken based on the consultation that you provide to our client.<br />
+
+            You also agree that, at KR’s request, you will cooperate fully with KR and its affiliates in connection with
+            any inquiry or investigation (whether formal or informal), and any defense or prosecution of any claims or
+            actions.
+          </p>
+          <p>
+            <b>Use of Information Provided by You</b><br />
+            Before participating in a KR consultation project, you are required to sign up as a KR Expert. For this, KR
+            will require certain Personal Information about yourself that will be used by KR to match your expertise
+            with KR Clients’ requirement.<br />
+
+            You agree that KR can use your Personal Information to connect with you (by phone, email or otherwise) for
+            relevant consulting opportunities. In addition, KR reserves the right to use your Personal Information to
+            conduct certain background checks (confirming employment, academic information, etc.) that may include the
+            aid of third parties.<br />
+
+            KR will never sell or share your personal data with third parties for their marketing or solicitation
+            purposes. Furthermore, we do not use IP addresses or web page request information to try and identify you
+            (nor do we disclose that information to third parties for them to use for their own purposes). KR and
+            trusted third parties utilize personal data only for the purposes for which it was obtained. We use physical
+            and technological security measures to ensure that your information, both online and offline, is protected
+            from unauthorized access and against illegal manipulation and processing, accidental loss and damage. We
+            will preserve your information for a reasonable period or as required by law.<br />
+          </p>
+          <p>
+            <b>Non-Solicitation</b><br />
+            For a period of six months from the completion of any consultation project with a KR Client to whom you have
+            been introduced by us, you will not sidestep KR by knowingly soliciting, negotiating with, or entering into
+            any agreement or other arrangement (whether written or oral) with such Client pursuant to which you would be
+            engaged by such Client to provide services without our prior written consent.
+          </p>
+          <p>
+            <b>Copyright</b><br />
+            All materials set forth on KR's web sites, regardless of whether they are specifically marked, are protected
+            by copyright and other intellectual property laws. You may not use such materials, in any way other than for
+            your personal use in connection with your services to Clients, without the express written permission of
+            KR.<br />
+
+            In addition to any other obligations you may have by law, contract or otherwise, if you, as part of your
+            participation in consulting engagements through KR, generate, author or contribute to any copyrightable work
+            or product, you acknowledge that such works or products are the property of KR.
+          </p>
+          <p>
+            <b>Opting Out</b><br />
+            You may elect to opt-out of membership in the KR network at any time by providing your KR point of contact
+            with notice, either in written or electronic form. Upon receipt of such notice, we will terminate our
+            process of contacting you for potential consulting opportunities.<br />
+
+            Opting out shall not relieve either party of its obligations under these terms and conditions (intended to
+            survive termination) as outlined in this document.<br />
+
+            You also agree that, for a period of one year after the termination of your relationship with us for any
+            reason whatsoever, you will not, directly or indirectly, solicit for employment, employ or hire any employee
+            of KR or of any clients to whom you have been first introduced by us.
+          </p>
+          <p>
+            <b>Updates to Terms &amp; Conditions</b><br />
+            KR may update its terms &amp; conditions from time to time. You will be notified of changes to our terms and
+            conditions in a timely manner along with a request to accept the new terms and conditions.
+          </p>
+          <p>
+            <b>Indemnification</b><br />
+            You agree to indemnify and hold harmless KR and its affiliates, and their respective officers, directors,
+            employees, members, managing members, managers, agents, representatives, successors and assigns from any and
+            all actions, causes of action, claims, charges, demands, cost, expenses and damages (including attorneys’
+            fees and expenses) and liabilities of any kind whatsoever directly or indirectly resulting from, arising out
+            of or in connection with your breach or violation of any and all provisions of these Terms &amp;
+            Conditions.<br /><br />
+
+            Expert will defend, indemnify and hold harmless KR, its customers and their officers, agents, employees,
+            successors, assignees and licensees from and against any and all claims, damages, liabilities, costs and
+            expenses, including reasonable attorneys’ fees, arising out of:<br />
+            (a) any breach by Expert of any representation, warranty or agreement made by Expert; and<br />
+            (b) any acts of gross negligence or willful misconduct committed by Expert in connection with Expert’s
+            services hereunder.<br /><br />
+
+            Expert agrees to indemnify, defend and hold harmless the Company and its customers from any and all losses,
+            liabilities, damages and expenses, including reasonable attorneys’ fees and litigation costs, arising from
+            or related to any claim brought against the Company or its customers by a third party arising from or
+            relating to the breach by Expert of any of Expert’s obligations hereunder.
+          </p>
+          <p>
+            <b>Limitation of Liabilities</b><br />
+            In no event shall KR be liable to Expert or any third party for any damages resulting from or relating to
+            Expert’s provision of services under this Agreement or the business operation of the Company including,
+            without limitation, for any incidental, consequential, punitive or special damages.
+          </p>
+          <p>
+            <b>Miscellaneous</b><br />
+            Any dispute, controversy, or claim arising out of or relating to the interpretation and performance of this
+            Agreement shall be solely and finally settled by binding arbitration under the rules of the Indian Council
+            of Arbitration, and judgment on the award rendered in the arbitration may be entered in any court having
+            jurisdiction thereof. The arbitrator shall be authorized to apportion fees and expenses (including counsel
+            fees and expenses), as the arbitrator shall deem appropriate.
+          </p>
+          <p>
+            <b>
+              Entire Agreement<br />
+              This constitutes the entire Agreement between KR and KR Experts.
+            </b>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 d-flex justify-content-center align-items-center">
+      <h5>
+        <button type="submit" class="btn btn-primary pl-5 pr-5 ml-3" (click)="acceptTerms('accepted')">
+          I Agree Terms and Conditions
+        </button>
+      </h5>
+    </div>
+  </div>
+</div>

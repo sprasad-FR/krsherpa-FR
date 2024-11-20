@@ -1,0 +1,760 @@
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div *ngFor="let stat of statData" class="col-md-2">
+      <app-stat [title]="stat.title" [value]="stat.value" [icon]="stat.icon"></app-stat>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <button   (click)="testmck()"  style="display:none"  >test mck</button>
+  <div class="col-lg-8">
+ 
+    <div class="card">
+      <button  style="max-width:100px;" class="btn btn-primary pl-5 pr-5 float-end" (click)="openedit(projectform)">Edit</button>
+
+      <div class="card-body">
+        <div class="media"  style="display:none" >
+          <div *ngIf="projectDetails?.name !== undefined" class="rounded-circle avatar-sm initial-img mr-4">
+            {{ projectDetails?.name | getInitials: 2 }}
+          </div>
+
+          <div class="media-body overflow-hidden">
+            <h5 class="text-truncate font-size-15">
+              {{ projectDetails?.name }}
+
+              <a
+                [routerLink]="['/projects/edit-project', projectDetails?.id]"
+                *ngIf="
+                  roles != 'client' &&
+                  roles != 'expert' &&
+                  roles != 'compliance' &&
+                  roles != 'researchAnalyst' &&
+                  roles != 'researchManager'
+                "
+              >
+                <i class="bx bx-pencil font-size-14 text-muted pointer mr-2"></i>
+              </a>
+            </h5>
+            <p *ngIf="roles != 'expert' && roles != 'researchAnalyst' && roles != 'researchManager'" class="text-muted">
+              {{ projectClient?.companyName }}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            <p class="text-primary mb-1 text-decoration-underline">Key Account Manager</p>
+            <div class="team">
+              <a href="javascript:void(0);"  *ngFor="let kac of keyAccMgrList ; let i = index;"     class="team-member d-flex align-items-center">
+             
+                <span class="badge rounded-pill text-bg-secondary">{{
+                  kac.name | getInitials: 2
+                }}</span>
+                <div class="text-dark">{{ kac.name }}</div>
+
+              </a>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <p class="text-primary mb-1 text-decoration-underline">Research Manager</p>
+            <div class="team"  >
+              <div class=" float-end"
+               
+                class="btn"
+                [ngbPopover]="popTitle"
+                triggers="mouseenter:mouseleave"
+                popoverTitle="Research Managers"
+              >
+              <a
+                href="javascript:void(0);"
+                *ngFor="let ral of researchManagers ; let i = index;" 
+                class="team-member d-flex align-items-center"
+              >
+              <ng-container *ngIf="i < 2">
+                <span class="badge rounded-pill text-bg-secondary">{{ ral?.name | getInitials: 2 }}</span>
+                <div class="text-dark">{{ ral?.name }}</div>
+              </ng-container>
+              </a>
+
+              
+              <div *ngIf="researchManagers?.length>0">  ...(Total: {{researchManagers.length}})  </div>
+              
+              </div>
+              <ng-template #popTitle><div id="popcon"> {{getNameList(researchManagers,'popcon')}}</div></ng-template>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <p class="text-primary mb-1 text-decoration-underline">Research Analyst</p>
+            <div class="team">
+              <div class=" float-end"
+               
+              class="btn"
+              [ngbPopover]="popTitle1"
+              triggers="mouseenter:mouseleave"
+              popoverTitle="Research Analysts"
+            >
+
+              <a
+                href="javascript:void(0);"
+                *ngFor="let ral of researchAnalysts; let i = index;"
+                class="team-member d-flex align-items-center"
+              >
+              <ng-container *ngIf="i < 2">
+                <span  class="badge rounded-pill text-bg-secondary">{{
+                  this.ral?.name | getInitials: 2
+                }}</span>
+                <div class="text-dark">{{ this.ral?.name }}</div>
+              </ng-container>
+              </a>
+              <div *ngIf="researchAnalysts?.length>0">   ...(Total:  {{researchAnalysts.length}})  </div>
+            </div>
+            <ng-template #popTitle1><div id="popcon1"> {{getNameList(researchAnalysts,'popcon1')}}</div></ng-template>
+        
+
+
+            </div>
+          </div>
+          <div class="col-md-3" *ngIf="roles != 'researchAnalyst' && roles != 'researchManager'">
+            <p class="text-primary mb-1 text-decoration-underline">Client Users</p>
+            <div class="team" *ngIf="projectClient?.clientUser?.length>0">
+              <div class=" float-end"                
+              class="btn"
+              [ngbPopover]="popTitle2"
+              triggers="mouseenter:mouseleave"
+              popoverTitle="Client Users"
+            >
+            
+              <a
+                href="javascript:void(0);"
+                *ngFor="let cusr of projectClient?.clientUser; let i = index;"
+                class="team-member d-flex align-items-center"
+              >
+              <ng-container *ngIf="i < 2">
+               
+                <span  class="badge rounded-pill text-bg-secondary">{{
+                  cusr?.name | getInitials: 2
+                }}</span>
+                <div class="text-dark">{{ cusr?.name }}</div>
+              </ng-container>
+              </a>
+            <div *ngIf="projectClient?.clientUser?.length>0">   ....(Total: {{projectClient?.clientUser.length}}) </div>
+            </div>
+            <ng-template #popTitle2><div id="popcon2"> {{getNameList(projectClient?.clientUser,'popcon2')}}</div></ng-template>
+          
+          </div>
+        </div>
+
+
+        </div>
+
+        <div class="row my-3 align-items-center">
+          <div class="col-md-7">
+            <h5 class="font-size-15 mb-0">Description:</h5>
+          </div>
+          <div class="col-md-5 text-center text-md-right" *ngIf="roles != 'compliance'">
+            <a href="javascript:void(0)" (click)="newAngleModal(newAngleFormDataModal)">
+              <i class="fas fa-code-branch"></i>
+              Add New Angle
+            </a>
+          </div>
+        </div>
+        <div class="row" *ngFor="let note of notes">
+          <div class="col-12 mb-3 pt-1">
+            <div class="bg-light p-2 text-muted">
+              <p class="mt-4 bg-light p-2 text-muted" [innerHTML]="note?.content"></p>
+            </div>
+
+            <div *ngIf="note?.createdAt" class="pt-2">
+              {{ note?.createdAt | localDateTime: 'DD MMM YYYY | hh:mm A' }}
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="col-md-12">
+          <h5 class="font-size-15 mb-0">Description:</h5>
+          <p class="mt-4 bg-light p-2 text-muted" [innerHTML]="projectDetails?.projectDescription"></p>
+        </div> -->
+      </div>
+    </div>
+    <div class="live-preview flush_accordion margin"   >
+      <ngb-accordion #acc="ngbAccordion" activeIds="static-1" [closeOthers]="true">
+        <ngb-panel id="static-2">
+          <ng-template ngbPanelTitle class="accordion-header">
+            <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+              data-bs-target="#gen-ques-collapseOne" aria-expanded="false" aria-controls="gen-ques-collapseOne">  <label for="screeningQuestions">Screening questions </label>
+      
+            </button>
+          </ng-template>
+          <ng-template ngbPanelContent>
+  
+      <div class="col-md-12">
+        <div class="form-group">
+            <div class="row" *ngFor="let data of screening_questions">
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+              <strong> {{data }}</strong> 
+               </div>
+          </div>
+        
+    
+        </div>
+      </div>
+
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>
+</div>
+
+ <!--workstream start-->
+
+ <div    *ngIf="isMcKinsey==true" >
+
+ 
+    <!--workstream start-->
+
+    <div *ngIf="isMcKinsey==true">
+      <h5>workstreams {{workstreams?.length}}</h5>
+      <div id="length" class="ngfor" *ngFor="let data of workstreams">
+        <div class="live-preview flush_accordion">
+          <ngb-accordion #acc="ngbAccordion" activeIds="static-1" [closeOthers]="true">
+            <ngb-panel id="static-2">
+              <ng-template ngbPanelTitle class="accordion-header">
+                <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#gen-ques-collapseOne" aria-expanded="false"
+                  aria-controls="gen-ques-collapseOne">{{data.title}} - Status:{{data.paused?"Paused":"Active"}}
+                </button>
+              </ng-template>
+              <ng-template ngbPanelContent>
+                <div class="row">
+                  <div class="col-sm-6"  style="display:none;">
+                    <div class="text-muted">Internal Workstream Id</div>
+                    <h6>{{data.internal_workstream_id}}</h6>
+                  </div>
+                  <div class="col-sm-6"  style="display:none;">
+                    <div class="text-muted">Network Workstream Id</div>
+                    <h6>{{data.network_workstream_id}}</h6>
+                    <h6></h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="text-muted">Paused</div>
+                    <h6>{{data.paused}}</h6>
+                  </div>
+                  <div class="col-sm-6"  style="display:none;">
+                    <div class="text-muted">Publi Id</div>
+                    <h6>{{ data.public_id}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="text-muted">Geographies</div>
+                    <h6>{{ data.geographies}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="text-muted">Title</div>
+                    <h6>{{data.title}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="text-muted">Companies</div>
+                    <h6>{{ data.companies}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="text-muted">Type</div>
+                    <h6>{{ data.type}}</h6>
+                  </div>
+                  <div class="col-6">
+                    <div class="text-muted">Tenure</div>
+                    <h6>{{ data.tenure}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="text-muted">Scope</div>
+                    <h6>{{ data.scope}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="text-muted">Number Of Calls</div>
+                    <h6>{{ data.number_of_calls}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="text-muted">Function</div>
+                    <h6>{{ data.function}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="text-muted">Seniority</div>
+                    <h6>{{ data.seniority}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="text-muted">Point Of Contact</div>
+                    <h6>{{ data.point_of_contact?.[0]}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <div *ngFor="let usr of data.users">
+                      <div class="text-muted">Users</div>
+                      <h6>{{ usr}}</h6>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="text-muted">Action</div>
+                    <h6>{{ data.action}}</h6>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
+        </div>
+      </div>
+      <script>
+
+      </script>
+    </div>
+
+    <!--workstream end-->
+
+    <div class="live-preview flush_accordion margin" *ngIf="isMcKinsey==true">
+      <h5>Users {{users?.length}}</h5>
+      <ngb-accordion #acc="ngbAccordion" activeIds="static-1" [closeOthers]="true">
+        <ngb-panel id="static-2">
+          <ng-template ngbPanelTitle class="accordion-header">
+            <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+              data-bs-target="#gen-ques-collapseOne" aria-expanded="false" aria-controls="gen-ques-collapseOne">Users
+            </button>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="row ngfor" *ngFor="let data of users">
+              <div class="col-6">
+                <div class="text-muted">Name</div>
+                <h6>{{data.name}}</h6>
+              </div>
+              <div class="col-6">
+                <div class="text-muted">Phone Number</div>
+                <h6>{{data.phone_number}}</h6>
+              </div>
+              <div class="col-6">
+                <div class="text-muted">Email</div>
+                <h6>{{data.email}}</h6>
+              </div>
+              <div class="col-6">
+                <div class="text-muted">Location</div>
+                <h6>{{data.location}}</h6>
+              </div>
+              <div class="col-6">
+                <div class="text-muted">type</div>
+                <h6>{{data.type}}</h6>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </div>
+</div>
+
+<!--workstream end-->
+
+
+
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body pb-2">
+            <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav-tabs nav-tabs-custom">
+              <li [ngbNavItem]="1">
+                <a ngbNavLink class="no-bgc">
+                  <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+                  <span class="d-none d-sm-block"></span>
+                </a>
+                <ng-template ngbNavContent>
+                  <ng-template [ngTemplateOutlet]="Comments"></ng-template>
+                </ng-template>
+              </li>
+            </ul>
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end col -->
+
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title mb-4">GTC to Event Conversion</h4>
+        <div class="row">
+          <div class="col-sm-6">
+            <p class="text-muted">Conversion Rate</p>
+            <h4>{{ rateOfLeadToGTCConv }}%</h4>
+          </div>
+          <div class="col-sm-6"></div>
+        </div>
+      </div>
+    </div>
+
+ 
+
+
+   <!-- creat in level datas -->
+   <div class="card" *ngIf="isMcKinsey==true">
+    <div class="card-body">
+      <h4 class="card-title mb-4">Client Data</h4>
+      <div class="row">
+        <div class="col-sm-6">
+          <p class="text-muted">Name</p>
+          <h6>{{projectDetails?.name}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Charge Code</p>
+          <h6>{{projectDetails?.charge_code}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Team Location</p>
+          <h6>{{projectDetails?.team_location}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Scope</p>
+          <h6>{{projectDetails?.scope}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Project Type</p>
+          <h6>{{projectDetails?.project_type}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Function</p>
+          <h6>{{projectDetails?.function}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Industry</p>
+          <h6>{{projectDetails?.industry}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Networks Count</p>
+          <h6>{{projectDetails?.networks_count}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Number Of Calls</p>
+          <h6>{{projectDetails?.number_of_calls}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Start Date</p>
+          <h6>{{projectDetails?.start_date}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">End Date</p>
+          <h6>{{projectDetails?.end_date}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Company Of Interest</p>
+          <h6>{{projectDetails?.company_of_interest}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Status</p>
+          <h6>{{projectDetails?.clientstatus}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Network Project Id</p>
+          <h6>{{projectDetails?.network_project_id}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Action</p>
+          <h6>{{projectDetails?.action}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Enabled Flag</p>
+          <h6>{{projectDetails?.enabled_flag}}</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="text-muted">Created</p>
+          <h6>{{projectDetails?.created}}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- leval data end -->
+
+    <div class="card"  *ngIf="isMcKinsey==true"   >
+      <div class="card-body">
+        <div class="row" *ngFor="let data of projectlocation">
+          <h6 class="card-title">Project Location</h6>
+          <div class="col">
+            <p class="text-muted">Address</p>
+            <h6>{{data.address}}</h6>
+          </div>
+          <div class="col">
+            <p class="text-muted">Country</p>
+            <h6>{{data.country}}</h6>
+          </div>
+          <div class="col">
+            <p class="text-muted">Office Name</p>
+            <h6>{{data.office_name}}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Key Details</h6>
+        <div class="mb-3">
+          <div class="text-muted">Project Type</div>
+          <h6>{{ projectDetails?.projectType?.text }}</h6>
+        </div>
+        <div class="mb-3">
+          <div class="text-muted">Project Status</div>
+          <h6 class="badge" [class]="projectDetails?.status?.colorClass">{{ projectDetails?.status?.text }}</h6>
+        </div>
+
+        <div class="mb-3">
+          <div class="text-muted">Screening Questions</div>
+          <h6 [innerHTML]="projectDetails?.screeningQuestions"></h6>
+        </div>
+
+        <div class="mb-3">
+          <div class="text-muted">Do Not Contact Companies</div>
+          <h6 >{{ projectDetails?.doNotContactCompanies }}</h6>
+        </div>
+        
+ <div class="mb-3">
+          <div class="text-muted">Geography Focus</div>
+          <h6 >{{ projectDetails?.geographyFocus }}</h6>      </div>
+
+         
+        
+        <div class="mb-3"  >
+          <div class="text-muted"> </div>
+
+        <app-complianceFlag
+          compliancetype="project"
+          saleid="{{ projectDetails?.id }}"
+          (click)="createClientUser(clientUserFormModal, projectDetails?.id)"
+        ></app-complianceFlag> 
+<!---  
+
+      screeningQuestions : [null, [Validators.nullValidator]],
+      geographyFocus : [null, [Validators.nullValidator]],
+      doNotContactCompanies : [null, [Validators.nullValidator]], 
+
+          <app-complianceFlag
+            compliancetype="project"
+            saleid="{{ projectDetails?.id }}"
+            (click)="createClientUser(clientUserFormModal, projectDetails?.id)"
+          ></app-complianceFlag>  -->
+        </div>
+
+        <div class="mb-3" *ngIf="complianceComment">
+          <div class="text-muted">Complience Comment</div>
+          <h6>{{ complianceComment }}</h6>
+        </div>
+
+        <div class="mb-3">
+          <div class="text-muted">Engagement Type</div>
+          <h6>{{ projectDetails?.engagementType?.text }}</h6>
+        </div>
+
+        <div class="mb-3" *ngIf="projectDetails?.startDate">
+          <div class="text-muted">Start Date</div>
+          <h6>{{ projectDetails?.startDate | localDateTime }}</h6>
+        </div>
+
+        <div class="mb-3" *ngIf="projectDetails?.endDate">
+          <div class="text-muted">End Date</div>
+          <h6>{{ projectDetails?.endDate | localDateTime }}</h6>
+        </div>
+
+        <div class="mb-3" *ngIf="projectDetails?.dueDate">
+          <div class="text-muted">Due Date</div>
+          <h6>{{ projectDetails?.dueDate | localDateTime }}</h6>
+        </div>
+
+        <div class="mb-3">
+          <div class="text-muted">Expected Number of Events</div>
+          <h6>{{ projectDetails?.expectedNumEvent }}</h6>
+        </div>
+
+        <div class="mb-3">
+          <div class="text-muted">Number of Events Completed</div>
+          <!-- <h6 style="color: red;">0</h6> -->
+          <h6>{{ eventList?.length ? eventList?.length : 0 }}</h6>
+        </div>
+
+        <div class="mb-3">
+          <div class="text-muted">Sector</div>
+          <h6>{{ projectDetails?.sector }}</h6>
+        </div>
+
+        <div class="mb-3">
+          <div class="text-muted">Industry Group</div>
+          <h6>{{ projectDetails?.industryGroup }}</h6>
+        </div>
+
+        <div class="mb-3">
+          <div class="text-muted">industry</div>
+          <h6>{{ projectDetails?.industry }}</h6>
+        </div>
+        <div class="mb-3">
+          <div class="text-muted">Sub industry</div>
+          <h6>{{ projectDetails?.subIndustry }}</h6>
+          <p>
+            {{ projectDetails?.subIndustryDesc }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row  -->
+<app-chat-box  [projectid]="itemid"  ></app-chat-box> 
+<ng-template #newAngleFormDataModalxx let-modal>
+  
+
+</ng-template>
+
+<ng-template #clientUserFormModal let-modal>
+  <app-complianceActions (Refreshlist)="RefreshList()" compliancetype="profile"
+    saleid="{{ idforCompliance }}"></app-complianceActions>
+</ng-template>
+
+
+<!-- New Angle Form Modal -->
+<ng-template #newAngleFormDataModal let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Add New Angle</h5>
+    <button type="button" class="close" (click)="modal.dismiss()" aria-hidden="true">×</button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <ckeditor
+        [editor]="Editor"
+        name="descriptionField"
+        [(ngModel)]="descriptionField"
+        id="descriptionField"
+        data="<p></p>"
+      ></ckeditor>
+    </div>
+    <div class="text-danger" *ngIf="error == true">Please enter description or note.</div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+    <button type="button" class="btn btn-success" (click)="storeDescrition()">Save</button>
+  </div>
+</ng-template>
+
+<!--Compliance Modal-->
+<ng-template #complianceModal let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">{{ complianceModalTitle }}</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <textarea
+      name="complianceComment"
+      id="complianceComment"
+      [(ngModel)]="complianceComment"
+      class="form-control"
+      rows="5"
+    >
+    </textarea>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="markCompliance('grievance')">Add Grievance</button>
+      <button type="button" class="btn btn-success" (click)="markCompliance('verify')">Verify</button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #Comments>
+  <div class="mt-4 mb-4">
+    <div *ngFor="let comment of projectDetails?.comments">
+      <div class="media mb-2">
+        <div class="mr-3">
+          <!-- <img class="media-object rounded-circle avatar-xs" alt="" src=" -2.jpg" /> -->
+          <span class="rounded-circle avatar-xs m-1">{{ getUserName(comment.userId) | getInitials: 2 }}</span>
+        </div>
+        <div class="media-body">
+          <h5 class="font-size-13 mb-1">{{ getUserName(comment?.userId) }}</h5>
+          <p class="text-muted mb-1">
+            {{ comment?.description }}
+          </p>
+          <p>
+            {{ comment?.createdAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}
+          </p>
+        </div>
+        <!-- <div class="" *ngIf="roles != 'compliance'">
+          <a href="javascript: void(0);" (click)="deleteComment(comment.id)" class="text-dark">
+            <i class="bx bx-trash"></i>
+          </a>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <div class="mb-3" *ngIf="roles != 'compliance'">
+    <div class="form-group mb-4">
+      <label>Add a Comment</label>
+      <textarea class="form-control" rows="3" placeholder="Type here" #commentDescription></textarea>
+
+      <span class="text-danger" *ngIf="!commentDescription.value">Please enter comment.</span>
+    </div>
+    <button type="submit" class="btn btn-primary pl-5 pr-5" (click)="createComment(commentDescription)">Comment</button>
+  </div>
+</ng-template>
+
+<ng-template #projectform let-modal>
+
+  <div class="modal-content" width="98%">
+ 
+    <div class="modal-header">
+      <button type="button" class="btn-close"   style=" z-index:500;" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+    <div class="modal-body">
+      
+      <app-project-form [itemid]="itemid" ></app-project-form>
+
+</div>
+</div>
+
+
+
+</ng-template>
+
+
+
+
+<!---
+<ng-template #clientUserFormModal let-modal>
+  <app-complianceActions
+    (Refreshlist)="RefreshList()"
+    compliancetype="project"
+    saleid="{{ idforCompliance }}"
+  ></app-complianceActions>  
+</ng-template>   --->
+
+<!-- <ng-template #Comments>
+  <div class="mt-4 mb-4">
+    <div *ngFor="let comment of comments">
+      <div class="media mb-2">
+        <div class="mr-3">
+          <img class="media-object rounded-circle avatar-xs" alt="" src=" -2.jpg" />
+        </div>
+        <div class="media-body">
+          <h5 class="font-size-13 mb-1">{{ getUserName(comment.userId) }}</h5>
+          <p class="text-muted mb-1">
+            {{ comment.description }}
+          </p>
+          <p>
+            {{ comment.createdAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}
+          </p>
+        </div>
+        <div class="">
+          <a href="javascript: void(0);" (click)="deleteComment(comment.id)" class="text-dark">
+            <i class="bx bx-trash"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3">
+    <div class="form-group mb-4">
+      <label>Add a Comment</label>
+      <textarea class="form-control" rows="3" placeholder="Type here" #commentDescription></textarea>
+
+      <span class="text-danger" *ngIf="!commentDescription.value">Please enter comment.</span>
+    </div>
+    <button type="submit" class="btn btn-primary pl-5 pr-5" (click)="createComment(commentDescription)">Comment</button>
+  </div>
+</ng-temp  -->

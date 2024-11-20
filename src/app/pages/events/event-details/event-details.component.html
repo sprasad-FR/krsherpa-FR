@@ -1,0 +1,1685 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-5">
+      <div class="card overflow-hidden">
+        <div class="card-body">
+          <div class="top d-flex justify-content-between">
+            <div class="left">
+              <h6 class="font-weight-bold mb-0">#EVNT{{ eventData?.eventId }}</h6>
+              <p>{{ eventData?.eventAt | localDateTime: 'DD MMM YYYY | hh:mm A' }}</p>
+            </div>
+            <div class="right" *ngIf="roles != 'compliance' && roles != 'client' && roles != 'expert'">
+              
+              <div >
+                <button
+                  class="btn btn-success"
+                  [disabled]="completedBtn"
+                  (click)="eventCompleted(updatestatus, 'Completed')"
+                >
+                   Manage status
+                </button>
+                <button style="display:none;"
+                  class="btn btn-warning"
+                  [disabled]="failedBtn"
+                  (click)="eventCompleted(completedEvent, 'Failed')"
+                >
+                  Failed
+                </button>
+                <button style="display:none;"
+                class="btn btn-warning"
+                [disabled]="cancelledBtn"
+                (click)="eventCompleted(completedEvent, 'Cancelled')"
+              >
+              Cancelled
+              </button>
+                 <div *ngIf="!timePassed">
+               
+                <button
+                  [disabled]="rescheduleBtn"
+                  class="btn btn-secondary"
+                  (click)="eventReschedule(rescheduleEvent)"
+                  *ngIf="
+                    eventData?.status != 'Completed' &&
+                    eventData?.status != 'Failed' &&
+                    eventData?.status != 'Cancelled'
+                  "
+                >
+                  Reschedule
+                </button>
+                <a style="display:none;"
+              href="javascript: void(0);"
+              (click)="eventCompleted(updatestatus, 'Completed')"
+              routerLinkActive="router-link-active" > Manage status </a> 
+              </div> 
+
+
+                
+              </div>
+            </div>
+          </div>
+          <div class="text-danger" *ngIf="eventData?.status == 'Cancelled'">This event has been cancelled.</div>
+          <div class="text-success" *ngIf="eventData?.status == 'Completed'">This event has been completed.</div>
+          <div class="text-warning" *ngIf="eventData?.status == 'Failed'">This event has been failed.</div>
+
+<div   *ngIf="eventData?.status != '' && eventData?.status != undefined  && eventData?.status != 'Upcoming'" >
+
+<div   *ngIf="roles != 'expert' && roles != 'researchAnalyst' && roles != 'researchManager'" ><!--   *ngIf="eventData?.clientBillable!='' && eventData?.clientBillable!=undefined else showcbill1" changed on 03-Jan-2024-->
+<div class="text-warning" *ngIf="eventData?.status == 'Completed'">Client Status: {{eventData?.clientBillable}}</div>   <a
+              href="javascript: void(0);"
+              (click)="eventCompletedClient(ClientStatus, 'Completed')"
+              routerLinkActive="router-link-active" > Manage client Billing Details </a>   </div>
+
+ <div  >
+<div class="text-warning" *ngIf="eventData?.expertPayable!=''  && eventData?.expertPayable!=undefined else showcbill2">Expert Status: {{eventData?.expertPayable}}</div>     <a
+              href="javascript: void(0);"
+              (click)="eventCompletedExpert(ExpertStatus, 'Completed')"
+              routerLinkActive="router-link-active" > Manage Expert Billing Details </a>  <ng-template #showcbill2> </ng-template>
+
+</div>
+<br/>
+</div>
+          <div class="d-flex">
+            <div *ngIf="eventData?.projectName !== undefined" class="rounded-circle avatar-sm initial-img mr-3">
+              {{ eventData?.projectName | getInitials: 2 }}
+            </div>
+            <div class="mt-1">
+              <h5 class="font-size-15 text-truncate font-weight-bold text-wrap">
+                {{ eventData?.projectName ? eventData?.projectName: '--' }}
+              </h5>
+              <p class="text-muted mb-0 text-truncate font-weight-bold"   *ngIf="roles != 'expert' && roles != 'researchAnalyst' && roles != 'researchManager'" >
+                {{ clientData?.companyName ? clientData?.companyName : '--' }}
+              </p>
+            </div>
+          </div>
+          <div class="text-right">
+            <a href="javascript:void(0);" *ngIf="eventData?.contactPerson">
+              <span class="rounded-circle avatar-xs m-1">{{ eventData?.contactPerson | getInitials: 2 }}</span>
+            </a>
+            <span class="font-weight-bold">{{ eventData?.contactPerson ? eventData?.contactPerson : '--' }}</span>
+            <p class="text-muted mb-0 mt-1 text-truncate font-weight-bold">KR Contact Person</p>
+          </div>
+        </div>
+      </div>
+      <div class="card overflow-hidden">
+        <div class="card-body">
+          <h5 class="font-weight-bold mb-3">Summary</h5>
+          <div class="row">
+            <div class="col-6">
+              <p class="text-muted mb-0 font-size-12">Event Id</p>
+              <p class="font-size-13 font-weight-bold mb-3">{{ eventData?.eventId ? eventData?.eventId : '--' }}</p>
+            </div>
+            <div class="col-6">
+              <p class="text-muted mb-0 font-size-12">Event Status</p>
+              <p class="font-size-13 font-weight-bold mb-3">{{ eventData?.status ? eventData?.status : '--' }}</p>
+            </div>
+            <div class="col-6">
+              <p class="text-muted mb-0 font-size-12">Event Type</p>
+              <p class="font-size-13 font-weight-bold mb-3">{{ eventData?.type ? eventData?.type : '--' }}</p>
+            </div>
+            <div class="col-6">
+              <p class="text-muted mb-0 font-size-12">Event Date</p>
+              <p class="font-size-13 font-weight-bold mb-3">{{ eventData?.eventAt | localDateTime: 'DD MMM YYYY' }}</p>
+            </div>
+            <div class="col-6">
+              <p class="text-muted mb-0 font-size-12">Event Time</p>
+              <p class="font-size-13 font-weight-bold mb-3">{{ eventData?.eventAt | localDateTime: 'hh:mm A' }}</p>
+            </div>
+            <div class="col-6">
+              <p class="text-muted mb-0 font-size-12">Timezone</p>
+              <p class="font-size-13 font-weight-bold mb-3">{{ Tzone ? Tzone : '--' }}</p>
+            </div>
+            <div class="col-6" *ngIf="roles != 'expert' && roles != 'researchAnalyst' && roles != 'researchManager'">
+              <p class="text-muted mb-0 font-size-12">Client Name</p>
+              <p class="font-size-13 font-weight-bold mb-3">
+                {{ clientData?.companyName ? clientData?.companyName : '--' }}
+              </p>
+            </div>
+            <div class="col-6">
+              <p class="text-muted mb-0 font-size-12">Project Name</p>
+              <p class="font-size-13 font-weight-bold mb-3">
+                {{ eventData?.projectName ? eventData?.projectName : '--' }}
+              </p>
+            </div>
+            <div class="col-6" *ngIf="roles != 'expert' && roles != 'researchAnalyst' && roles != 'researchManager'">
+              <p class="text-muted mb-0 font-size-12">Project Manager - Client</p>
+              <p class="font-size-13 font-weight-bold mb-3">
+                {{ clientMgr ? clientMgr : '--' }}
+              </p>
+            </div>
+            <div class="col-6" *ngIf="roles != 'client'">
+              <p class="text-muted mb-0 font-size-12">Expert</p>
+              <p class="font-size-13 font-weight-bold mb-3">
+                {{ eventData?.expert?.firstName ? eventData?.expert?.firstName : '--' }}
+                {{ eventData?.expert?.lastName ? eventData?.expert?.lastName : '--' }}
+              </p>
+            </div>
+            <div class="col-6">
+              <p class="text-muted mb-0 font-size-12">Sub P & L</p>
+              <p class="font-size-13 font-weight-bold mb-3">
+                {{ getEmployeeName(eventData?.subPnL) }}
+              </p>
+            </div>
+            <div class="col-6">
+              <p class="text-muted mb-0 font-size-12">Key Account Manager</p>
+              <p class="font-size-13 font-weight-bold mb-3 d-flex justify-content-between">
+                {{ getEmployeeName(eventData?.keyAccountManager) }}
+              </p>
+            </div>
+            <div class="col-6">
+              <p class="text-muted mb-0 font-size-12">Research Manager</p>
+              <p class="font-size-13 font-weight-bold mb-3">
+                {{ getEmployeeName(eventData?.researchMgrId) }}
+              </p>
+            </div>
+            <div class="col-6">
+              <app-complianceFlag
+                compliancetype="event"
+                saleid="{{ eventData?.id }}"
+                (click)="createClientcom(clientUserFormModal, eventData?.id)"
+              ></app-complianceFlag>
+            </div>
+            <div class="col-6" *ngIf="complianceComment">
+              <p class="text-muted mb-0 font-size-12">Compliance Comment</p>
+              <p class="font-size-13 font-weight-bold mb-3">
+                {{ complianceComment }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card overflow-hidden">
+        <div class="card-body">
+          <h5 class="font-weight-bold mb-4">Accounting Information</h5>
+          <ng-container *ngIf="roles != 'keyAccountManagerxx' && roles != 'client'">
+            <h6 class="font-weight-bold mb-3">EXPERT FEES</h6>
+            <div class="row">
+              <div class="col-6">
+                <p  *ngIf="roles != 'expert'"    class="text-muted mb-0 font-size-12">Rate Type</p>
+                <p  *ngIf="roles == 'expert' "   class="text-muted mb-0 font-size-12">Honorarium Type</p>
+                <p class="font-size-13 font-weight-bold mb-3">
+                  {{ eventData?.expertRateType ? eventData?.expertRateType : '--' }}
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="text-muted mb-0 font-size-12">Minimum Duration</p>
+                <p class="font-size-13 font-weight-bold mb-3">
+                  {{ eventData?.expertMinDuration ? eventData?.expertMinDuration : '--' }}
+                </p>
+              </div>
+              <div class="col-6">
+                <p  *ngIf="roles != 'expert'"    class="text-muted mb-0 font-size-12">Rate </p>
+                <p  *ngIf="roles == 'expert' "   class="text-muted mb-0 font-size-12">Honorarium </p>
+              
+                <p class="font-size-13 font-weight-bold mb-3">
+                  {{ eventData?.expertRate ? eventData?.expertRate: '--' }}
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="text-muted mb-0 font-size-12">Currency</p>
+                <p class="font-size-13 font-weight-bold mb-3">
+                  {{ eventData?.expertCurrency? eventData?.expertCurrency : '--' }}
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="text-muted mb-0 font-size-12">Time Chargable</p>
+                <p class="font-size-13 font-weight-bold mb-3">
+                  {{ eventData?.expertMinDuration ? eventData?.expertMinDuration : '--' }}
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="text-muted mb-0 font-size-12">Amount Payable</p>
+                <p class="font-size-13 font-weight-bold mb-3">
+                  {{ eventData?.expertPayment ? eventData?.expertPayment : '--' }}
+                </p>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="roles != 'researchManager' && roles != 'expert' && roles != 'researchAnalyst'">
+            <h6 class="font-weight-bold mb-3 mt-4">CLIENT BILLING</h6>
+            <div class="row">
+              <div class="col-6">
+                <p class="text-muted mb-0 font-size-12">Client Type</p>
+                <p *ngIf="clientData?.companyType !== undefined" class="font-size-13 font-weight-bold mb-3">
+                  {{ clientData?.companyType ? getCompanyType(clientData?.companyType) : '--' }}
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="text-muted mb-0 font-size-12">Minimum Duration</p>
+                <p class="font-size-13 font-weight-bold mb-3">
+                  {{ eventData?.clientMinDuration ? eventData?.clientMinDuration : '--' }}
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="text-muted mb-0 font-size-12">Rate Type</p>
+                <p class="font-size-13 font-weight-bold mb-3">
+                  {{ eventData?.clientRateType ? eventData?.clientRateType : '--' }}
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="text-muted mb-0 font-size-12">Currency</p>
+                <p class="font-size-13 font-weight-bold mb-3">
+                  {{ eventData?.clientCurrency ? eventData?.clientCurrency : '--' }}
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="text-muted mb-0 font-size-12">Time Chargable</p>
+                <p class="font-size-13 font-weight-bold mb-3">
+                  {{ eventData?.eventDuration ? eventData?.eventDuration : '--' }}
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="text-muted mb-0 font-size-12">Multiplication Factor</p>
+                <p class="font-size-13 font-weight-bold mb-3">
+                  {{ eventData?.multiplicationFactor ? eventData?.multiplicationFactor : '--' }}
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="text-muted mb-0 font-size-12">Amount Billable</p>
+                <p class="font-size-13 font-weight-bold mb-3">
+                  {{ eventData?.clientPayableAmount ? eventData?.clientPayableAmount : '--' }}
+                </p>
+              </div>
+             <!--   <div class="col-6">
+                <p class="text-muted mb-0 font-size-12">Amount Billable (Custom)</p>
+                <p class="font-size-13 font-weight-bold mb-3">
+                  {{ eventData?.clientPayableAmountCustom ? eventData?.clientPayableAmountCustom : '--' }}
+                </p>
+              </div> -->
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="col-3" >
+ <div  class="box1 mb-3 pointer">
+        <h5 class="font-weight-bold mb-2">Outlook Login</h5>
+        <p class="text-justify"> Please login to MS Outlook account in order to send event invitations </p>
+      <div class="button text-right">
+           
+
+
+<button class="btn btn-primary" *ngIf="!loginDisplay" (click)="login()">Login</button>
+  <button class="btn btn-primary" *ngIf="loginDisplay" (click)="logout()">Logout</button>
+    
+    </div>
+  </div>
+
+
+
+      <div *ngIf="roles != 'researchManager' && roles != 'researchAnalyst'" class="box1 mb-3 pointer">
+        <h5 class="font-weight-bold mb-2">Client Invitation</h5>
+        <p class="text-justify">
+          Please login as events@knowledgeridge.com so that your calendar invite will be sent via KR Events central.
+          You can reach out to the admin to access the password for the same.
+        </p>
+         <div class="" *ngIf="loginDisplay" >
+        <div class="" *ngIf="roles != 'compliance'">
+          <button  *ngIf="clientmailmsid == '0'" class="btn btn-primary" (click)="openClientModal(content,'s')">Send</button>
+          <button *ngIf="clientmailmsid != '0'" class="btn btn-primary" (click)="openClientModal(content,'u')">Reschedule</button>
+           <button *ngIf="clientmailmsid != '0'" class="btn btn-primary" (click)="openClientModal(content,'u')">Update</button> <button *ngIf="clientmailmsid != '0'" class="btn btn-primary" (click)="openClientModal(content,'c')">cancel</button>
+        </div> </div>
+      </div>
+      <div *ngIf="roles != 'keyAccountManagerxx'" class="box2 mb-3 pointer">
+        <h5 class="font-weight-bold mb-2">Expert Invitation</h5>
+        <p class="text-justify">
+          Please login with your Knowledgeridge email id and password (Microsoft) to invite the Expert for consultation
+.
+        </p>
+         <div class="" *ngIf="loginDisplay" >
+        <div class="" *ngIf="roles != 'compliance'">
+          <button  *ngIf="expertmailmsid == '0'" class="btn btn-primary" (click)="openExpertModal(contents,'s')">Send</button> <button *ngIf="expertmailmsid != '0'" class="btn btn-primary" (click)="openExpertModal(contents,'u')">Reschedule</button>
+          <button *ngIf="expertmailmsid != '0'" class="btn btn-primary" (click)="openExpertModal(contents,'u')">Update</button> <button *ngIf="expertmailmsid != '0'" class="btn btn-primary" (click)="openExpertModal(contents,'c')">cancel</button>
+        </div>  </div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="card-body">
+          <h5 class="font-weight-bold mb-3">Reschedule History</h5>
+          <div class="row border-bottom">
+            <div class="col-12">
+              <p class="text-muted mb-0 font-size-12">Updated On</p>
+              <p class="font-size-13 font-weight-bold mb-3">
+                {{ eventData?.updatedAt | localDateTime: 'DD-MMM-YYYY' }}
+              </p>
+            </div>
+            <div class="col-12">
+              <p class="text-muted mb-0 font-size-12">History</p>
+              <p class="font-size-13 font-weight-bold mb-3" *ngFor="let time of times">
+                {{ time.newTime | localDateTime: 'DD-MMM-YYYY hh:mm A z' }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Client Modal Open -->
+<ng-template #content role="document" let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Event Details</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-6">
+        <p class="text-muted mb-0 font-size-12">Event name</p>
+        <p class="font-size-13 font-weight-bold mb-3">{{ eventData?.eventId ? eventData?.eventId : '--' }}</p>
+      </div>
+      <div class="col-6">
+        <p class="text-muted mb-0 font-size-12">Event Type</p>
+        <p class="font-size-13 font-weight-bold mb-3">{{ eventData?.type ? eventData?.type : '--' }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <p class="text-muted mb-0 font-size-12">Event Date</p>
+        <p class="font-size-13 font-weight-bold mb-3">{{ eventData?.eventAt | localDateTime: 'DD MMM YYYY' }}</p>
+      </div>
+      <div class="col-6">
+        <p class="text-muted mb-0 font-size-12">Event Time</p>
+        <p class="font-size-13 font-weight-bold mb-3">{{ eventData?.eventAt | localDateTime: 'hh:mm A' }}</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="font-size-13 font-weight-bold">To</label>
+      <input
+        name="receiverTo"
+        type="text"
+        class="form-control"
+        id="receiverTo"
+        (keyup)="checkEmail($event)"
+        [(ngModel)]="receiverTo"
+      />
+    </div>
+    <div class="form-group">
+      <label class="font-size-13 font-weight-bold">CC</label>
+      <input
+        name="receiverCC"
+        type="text"
+        class="form-control"
+        id="receiverCC"
+        (keyup)="checkEmail($event)"
+        [(ngModel)]="receiverCC"
+      />
+      <span class="text-danger m-0">{{ emailError }}</span>
+    </div>
+    <div class="form-group">
+      <label class="font-size-13 font-weight-bold">Subject1</label>
+      <input name="subject" type="text" class="form-control" id="subject" [(ngModel)]="subject" />
+      <span class="text-danger m-0">{{ emailError }}</span>
+    </div>
+    <div class="form-group">
+      <label class="font-size-13 font-weight-bold">Message:</label>
+      <div class="box">
+        <ckeditor data="" [(ngModel)]="comments"></ckeditor>
+      </div>
+    </div>
+    <div class="button text-right">
+      <button   *ngIf="currntclimailbtn == 's'"   class="btn btn-primary" (click)="sendClientMSInvitation('s')">Send</button>
+      <button   *ngIf="currntclimailbtn == 'u'"   class="btn btn-primary" (click)="sendClientMSInvitation('u')">Update</button>
+      <button   *ngIf="currntclimailbtn == 'c'"   class="btn btn-primary" (click)="sendClientMSInvitation('c')">Cancel</button>
+    </div>
+   
+  </div>
+</ng-template>
+
+<!-- Expert Modal Open -->
+<ng-template #contents role="document" let-modal>
+   <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Event Details</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-6">
+        <p class="text-muted mb-0 font-size-12">Event name</p>
+        <p class="font-size-13 font-weight-bold mb-3">{{ eventData?.eventId ? eventData?.eventId : '--' }}</p>
+      </div>
+      <div class="col-6">
+        <p class="text-muted mb-0 font-size-12">Event Type</p>
+        <p class="font-size-13 font-weight-bold mb-3">{{ eventData?.type ? eventData?.type : '--' }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <p class="text-muted mb-0 font-size-12">Event Date</p>
+        <p class="font-size-13 font-weight-bold mb-3">{{ eventData?.eventAt | localDateTime: 'DD MMM YYYY' }}</p>
+      </div>
+      <div class="col-6">
+        <p class="text-muted mb-0 font-size-12">Event Time</p>
+        <p class="font-size-13 font-weight-bold mb-3">{{ eventData?.eventAt | localDateTime: 'hh:mm A' }}</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="font-size-13 font-weight-bold">To</label>
+      <input
+        name="receiverTo"
+        type="text"
+        class="form-control"
+        id="receiverTo"
+        (keyup)="checkEmail($event)"
+        [(ngModel)]="receiverTo"
+      />
+    </div>
+    <div class="form-group">
+      <label class="font-size-13 font-weight-bold">CC</label>
+      <input
+        name="receiverCC"
+        type="text"
+        class="form-control"
+        id="receiverCC"
+        (keyup)="checkEmail($event)"
+        [(ngModel)]="receiverCC"
+      />
+      <span class="text-danger m-0">{{ emailError }}</span>
+    </div>
+    <div class="form-group">
+      <label class="font-size-13 font-weight-bold">Subject1</label>
+      <input name="subject" type="text" class="form-control" id="subject" [(ngModel)]="subject" />
+      <span class="text-danger m-0">{{ emailError }}</span>
+    </div>
+    <div class="form-group">
+      <label class="font-size-13 font-weight-bold">Message:</label>
+      <div class="box">
+        <ckeditor  data="" [(ngModel)]="comments"></ckeditor>
+      </div>
+    </div>
+
+
+
+    <div class="button text-right">
+     
+
+ <button   *ngIf="currntexpmailbtn=='s'"   class="btn btn-primary" (click)="sendExpertMSInvitation('s')">Send</button>
+      <button   *ngIf="currntexpmailbtn=='u'"   class="btn btn-primary" (click)="sendExpertMSInvitation('u')">Update</button>
+      <button   *ngIf="currntexpmailbtn=='c'"   class="btn btn-primary" (click)="sendExpertMSInvitation('c')">Cancel</button>
+
+ </div>
+    
+  </div>
+</ng-template>
+
+<!--Completed / Cancelled Event-->
+<ng-template #completedEvent role="document" let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Event</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="EventForm" novalidate>
+      <div class="row"></div>
+      <div class="row"></div>
+
+      
+      
+
+      
+
+      <div class="row">
+        <div class="col-md-12" *ngIf="roles != 'keyAccountManagerxx'">
+          <div class="row mt-3">
+            <h6 class="border-bottom mb-2 pb-2 col-12">Expert Details : {{ eventData?.expert?.prorated }}</h6>
+            <div class="col-md-12">
+<!----------gs--------->
+ <div class="row"  style="border:1px solid lightblue;background-color: lightblue;margin-bottom: 10px;padding-top: 5px;">
+        <h6 class="border-bottom mb-2 pb-2 col-12"><b>Is Expert Payable?</b></h6>
+                <div class="col-md-1">
+                  <div class="form-group" style="text-align: right;">
+                  
+                     Expert Payable
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                  
+                    <input
+                 
+                      type="radio"
+                      
+                      id="expertPay"
+                       name="expertPayable"
+                    
+                      formControlName="expertPayable"
+                     [checked]="true" 
+                     value="Expert Payable"
+                    /> 
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group" style="text-align: right;">
+                   Expert Not Payable
+                    
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                   
+                    <input
+                      type="radio"
+                   
+                      id="expertNPay"
+                       name="expertPayable"
+                    
+                      formControlName="expertPayable"
+                       value="Expert Not Payable"
+                      
+                    /> 
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group" style="text-align: right;">
+                   Comments
+                    
+                  </div>
+                </div>
+                 <div class="col-md-6">
+                  <div class="form-group">
+                  
+                    <input
+                      type="textarea"
+                      min="1"
+                      width="80%"
+                      id="expertPayComments"
+                      class="form-control"
+                      formControlName="expertPayComments"
+                     
+                      placeholder="Comments"
+                    />
+                 
+                    
+                  </div>
+                </div>
+              </div>
+
+<!---------gs---------->
+
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="expertRate">Actual Duration</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="actualDuration"
+                      class="form-control"
+                      formControlName="actualDuration"
+                      (change)="calculateExpertPayable()"
+                      placeholder="Eg. 45"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="expertPayableAmount">Payable Amount</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="expertPayableAmount"
+                      class="form-control"
+                      formControlName="expertPayableAmount"
+                      placeholder="Eg. 10000.00"
+                      readonly
+                    />
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="expertRate">Rate</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="rate"
+                      class="form-control"
+                      formControlName="rate"
+                      placeholder="Eg. USD 20000"
+                      (keyup)="calculateExpertPayable()"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="minDurationType">Min Duration Type</label>
+                    <ng-select
+                      [items]="minDurationType"
+                      bindLabel="minDurationType"
+                      bindValue="minDurationType"
+                      placeholder="Select Duration Type"
+                      name="minDurationType"
+                      formControlName="minDurationType"
+                    >
+                    </ng-select>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="rateType">Rate Type</label>
+                    <ng-select
+                      [items]="rateTypes"
+                      bindLabel="rateTypes"
+                      bindValue="rateTypes"
+                      placeholder="Select Rate Type"
+                      name="rateType"
+                      formControlName="rateType"
+                      (change)="calculateExpertPayable()"
+                    >
+                    </ng-select>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="expertCurrency">Currency</label>
+                    <ng-select
+                      formControlName="currency"
+                      [items]="currenciesList"
+                      bindLabel="name"
+                      bindValue="code"
+                      [multiple]="false"
+                      [closeOnSelect]="true"
+                      [selectableGroup]="false"
+                      placeholder="Select Currency"
+                    >
+                      <ng-template ng-option-tmp let-item="item" let-search="name">
+                        {{ item?.name }} ({{ item?.code }})
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="minDuration">Minimum Duration</label>
+                    <input
+                      type="text"
+                      min="1"
+                      id="minDuration"
+                      class="form-control"
+                      formControlName="minDuration"
+                      placeholder="Eg. 45"
+                      (keyup)="calculateExpertPayable()"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="roles != 'researchManager'">
+          <div class="row mt-3">
+            <h6 class="border-bottom mb-2 pb-2 col-12">Client Details : {{ eventData?.expert?.CPprorated }}</h6>
+            <div class="col-md-12">
+
+<!----------gs--------->
+ <div class="row"  style="border:1px solid lightblue;background-color: lightblue;margin-bottom: 10px;padding-top: 5px;">
+        <h6 class="border-bottom mb-2 pb-2 col-12"><b>Is Client Billable? </b> </h6>
+                <div class="col-md-1">
+                  <div class="form-group" style="text-align: right;">
+                  
+                     Client Billable
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                  
+                    <input
+                  
+                      type="radio"
+                      
+                      id="clientBill"
+                       name="clientBillable"
+                    
+                      formControlName="clientBillable"
+                     [checked]="true" 
+                     value="Client Billable"
+                    /> 
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group" style="text-align: right;">
+                   Client Not Billable
+                    
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                   
+                    <input
+                      type="radio"
+                   
+                      id="clientNBill"
+                       name="clientBillable"
+                    
+                      formControlName="clientBillable"
+                       value="Client Not Billable"
+                      
+                    /> 
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group" style="text-align: right;">
+                   Comments
+                    
+                  </div>
+                </div>
+                 <div class="col-md-6">
+                  <div class="form-group">
+                  
+                    <input
+                      type="text"
+                      min="1"
+                      width="80%"
+                      id="clientBillComments"
+                      class="form-control"
+                      formControlName="clientBillComments"
+                     
+                      placeholder="Comments"
+                    /> *
+                 
+                    
+                  </div>
+                </div>
+              </div>
+
+<!---------gs---------->
+
+
+
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="expertRate">Actual Duration</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="actualDuration"
+                      class="form-control"
+                      formControlName="CPactualDuration"
+                      (change)="calculateClientBillable()"
+                      placeholder="Eg. 45"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="expertRate">Billable Amount</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="actualDuration"
+                      class="form-control"
+                      formControlName="clientBillableAmount"
+                      placeholder="Eg. 10000.00"
+                      readonly
+                    />
+                  </div>  
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="clientPayableAmountCustom">Billable Amount Custom</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="clientPayableAmountCustom"
+                      class="form-control"
+                      formControlName="clientPayableAmountCustom"
+                      placeholder="Eg. 10000.00"
+                      
+                    />
+                  </div> 
+                </div>
+              </div>
+
+              
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="CPrate">Cost to Client</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="CPrate"
+                      class="form-control"
+                      formControlName="CPrate"
+                      placeholder="Eg. USD 20000"
+                      (keyup)="calculateClientBillable()"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="CPminDurationType">Min Duration Type</label>
+                    <ng-select
+                      [items]="minDurationType"
+                      bindLabel="minDurationType"
+                      bindValue="minDurationType"
+                      placeholder="Select Duration Type"
+                      name="CPminDurationType"
+                      formControlName="CPminDurationType"
+                    >
+                    </ng-select>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="CPrateType">Rate Type</label>
+                    <ng-select
+                      [items]="rateTypes"
+                      bindLabel="rateTypes"
+                      bindValue="rateTypes"
+                      placeholder="Select Rate Type"
+                      name="CPrateType"
+                      formControlName="CPrateType"
+                      (change)="calculateClientBillable()"
+                    >
+                    </ng-select>
+                  </div>
+                  <div class="form-group">
+                    <label for="CPminDuration">Minimum Duration</label>
+                    <input
+                      type="text"
+                      min="1"
+                      id="CPminDuration"
+                      class="form-control"
+                      formControlName="CPminDuration"
+                      placeholder="Eg. 45"
+                      (keyup)="calculateClientBillable()"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="CPmulFactor">Multiplicaion Factor</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="CPmulFactor"
+                      class="form-control"
+                      formControlName="CPmulFactor"
+                      placeholder="Eg. 2"
+                      (keyup)="calculateClientBillable()"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="CPcurrency">Currency</label>
+                    <ng-select
+                      formControlName="CPcurrency"
+                      [items]="currenciesList"
+                      bindLabel="name"
+                      bindValue="code"
+                      [multiple]="false"
+                      [closeOnSelect]="true"
+                      [selectableGroup]="false"
+                      placeholder="Select Currency"
+                    >
+                      <ng-template ng-option-tmp let-item="item" let-search="name">
+                        {{ item?.name }} ({{ item?.code }})
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- <div class="col-6">
+          <div class="form-group">
+            <label class="">Event Duration in Min: <span class="required-asterisk">*</span></label>
+            <input
+              name="eventDuration"
+              id="eventDuration"
+              formControlName="eventDuration"
+              type="number"
+              class="form-control"
+              placeholder="Event Duration"
+            />
+          </div>
+        </div> -->
+        <div class="col-6">
+          <button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">Cancel</button>
+          <button type="submit" class="btn btn-primary" (click)="submitEvent()">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+
+<!-- gs -- update status-->
+
+<ng-template #updatestatus role="document" let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Event Status Update</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="updatestatusForm" (ngSubmit)="updatetEventStatus()" novalidate>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+           <!----------gs--------->
+ <div class="row"  style="border:1px solid lightblue;background-color: lightblue;margin-bottom: 10px;padding-top: 5px;">
+        <h6 class="border-bottom mb-2 pb-2 col-12"><b>Event Statis </b> </h6>
+                <div class="col-md-1">
+                  <div class="form-group" style="text-align: right;">
+                  
+                    Completed                   
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                  
+                    <input
+                   
+                      type="radio"
+                      
+                      id="evstatus"
+                       name="evstatus"
+                     
+                      formControlName="evstatus"
+                     [checked]="true" 
+                     value="Complete"
+                    /> 
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group" style="text-align: right;">
+                  
+                    Cancelled                   
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                  
+                    <input
+                   
+                      type="radio"
+                      
+                      id="evstatus"
+                       name="evstatus"
+                     
+                      formControlName="evstatus"                    
+                     value="Cancelled"
+                    /> 
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group" style="text-align: right;">
+                   Failed                     
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                   
+                    <input
+                      type="radio"
+                   
+                      id="evstatus"
+                       name="evstatus"
+                    
+                      formControlName="evstatus"
+                       value="Failed"
+                      
+                    /> 
+                  </div>
+                </div>
+              
+                 
+              </div>
+
+<!---------gs---------->
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-xl-12 mb-4 text-right">
+     
+          <button type="submit" class="btn btn-primary" value="complete" (click)="updatetEventStatus()">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+
+<!-- gs -- update status-->
+
+
+<!-- gs -- update expense-->
+
+<!--ClientStatus   Completed / Cancelled Event-->
+<ng-template #ClientStatus role="document" let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Event</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="ClientStatusForm" novalidate>
+      <div class="row"></div>
+      <div class="row"></div>
+
+      
+      
+
+      
+
+      <div class="row">
+        
+
+        <div class="col-md-12" *ngIf="roles != 'researchManager1'">
+          <div class="row mt-3">
+            <h6 class="border-bottom mb-2 pb-2 col-12">Client Details : {{ eventData?.expert?.CPprorated }}</h6>
+            <div class="col-md-12">
+
+<!----------gs--------->
+ <div class="row"  style="border:1px solid lightblue;background-color: lightblue;margin-bottom: 10px;padding-top: 5px;">
+        <h6 class="border-bottom mb-2 pb-2 col-12"><b>Is Client Billable? </b> </h6>
+                <div class="col-md-1">
+                  <div class="form-group" style="text-align: right;">
+                  
+                     Client Billable
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                  
+                    <input
+                
+                      type="radio"
+                      
+                      id="clientBill"
+                       name="clientBillable"
+                 
+                      formControlName="clientBillable"
+                     [checked]="true" 
+                     value="Client Billable"
+                    /> 
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group" style="text-align: right;">
+                   Client Not Billable
+                    
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                   
+                    <input
+                      type="radio"
+                  
+                      id="clientNBill"
+                       name="clientBillable"
+                   
+                      formControlName="clientBillable"
+                       value="Client Not Billable"
+                      
+                    /> 
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group" style="text-align: right;">
+                   Comments
+                    
+                  </div>
+                </div>
+                 <div class="col-md-6">
+                  <div class="form-group">
+                  
+                    <input
+                      type="text"
+                      min="1"
+                      width="80%"
+                      id="clientBillComments"
+                      class="form-control"
+                      formControlName="clientBillComments"
+                     
+                      placeholder="Comments"
+                    />  *
+                 
+                    
+                  </div>
+                </div>
+              </div>
+
+<!---------gs---------->
+
+<div class="row">
+
+  <div class="col-md-4">
+   
+    <div >
+      <div class="form-group">
+      
+        <input
+    
+          type="radio"          
+          id="CPprorated"
+           name="CPprorated"     
+          formControlName="CPprorated"         
+         value="prorated"
+        /> prorated
+      </div>
+    </div>
+    
+    <div>
+      <div class="form-group">
+       
+        <input
+          type="radio"
+      
+          id="CPprorated"
+           name="CPprorated"       
+          formControlName="CPprorated"
+          value="non-prorated"
+          [checked]="true" 
+        /> non-prorated
+      </div>
+    </div>
+
+  </div>
+  <div  class="col-md-8"> 
+  Select Applicable Rate :  (Minutes : n% )<ng-select style="flex: 1 1 35%;" [ngModelOptions]="{ standalone: true }"   [(ngModel)]="select_minutes"><!--[items]="RateArray" bindLabel="min"-->
+   <ng-option *ngFor="let data of this.eventData.clientapplicablerate">{{ data.min }} : {{ data.rate }}</ng-option>
+  </ng-select>
+  
+  <button class="btn btn-border btn-soft-info" style="flex: 1 1 0%;padding: 6px 0px; display:none;" (click)="SelectMinute()">Select</button>
+</div> </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="expertRate">Actual Duration</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="actualDuration"
+                      class="form-control"
+                      formControlName="CPactualDuration"
+                      (change)="calculateClientBillable()"
+                      placeholder="Eg. 45"
+                    />   <button class="btn  btn-soft-info" style="flex: 1 1 0%;padding: 6px 0px; " (click)="calculateClientBillable()">calculate</button>
+            
+                  </div> 
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="expertRate">Billable Amount</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="actualDuration"
+                      class="form-control"
+                      formControlName="clientBillableAmount"
+                      placeholder="Eg. 10000.00"
+                      readonly
+                    />
+                  </div>
+                    </div>
+             <!--  <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="clientPayableAmountCustom">Billable Amount - Custom (Provide here any custom calculated Amount)</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="clientPayableAmountCustom"
+                      class="form-control"
+                      formControlName="clientPayableAmountCustom"
+                      placeholder="Eg. 10000.00"
+                      
+                    />
+                  </div> 
+                </div>  --> 
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="CPrate">Cost to Client</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="CPrate"
+                      class="form-control"
+                      formControlName="rateForClient"
+                      placeholder="Eg. USD 20000"
+                      (keyup)="calculateClientBillable()"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="CPminDurationType">Min Duration Type</label>
+                    <ng-select
+                      [items]="minDurationType"
+                      bindLabel="minDurationType"
+                      bindValue="minDurationType"
+                      placeholder="Select Duration Type"
+                      name="CPminDurationType"
+                      formControlName="CPminDurationType"
+                    >
+                    </ng-select>
+                  </div>
+                </div>
+
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="CPrateType">Rate Type</label>
+                    <ng-select
+                      [items]="rateTypes"
+                      bindLabel="rateTypes"
+                      bindValue="rateTypes"
+                      placeholder="Select Rate Type"
+                      name="CPrateType"
+                      formControlName="CPrateType"
+                      (change)="calculateClientBillable()"
+                    >
+                    </ng-select>
+                  </div>
+                  <div class="form-group">
+                    <label for="CPminDuration">Minimum Duration</label>
+                    <input
+                      type="text"
+                      min="1"
+                      id="CPminDuration"
+                      class="form-control"
+                      formControlName="clientMinDuration"
+                      placeholder="Eg. 45"
+                      (keyup)="calculateClientBillable()"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="CPmulFactor">Multiplicaion Factor</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="CPmulFactor"
+                      class="form-control"
+                      formControlName="CPmulFactor"
+                      placeholder="Eg. 2"
+                      (keyup)="calculateClientBillable()"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="CPcurrency">Currency</label>
+                    <ng-select
+                      formControlName="CPcurrency"
+                      [items]="currenciesList"
+                      bindLabel="name"
+                      bindValue="code"
+                      [multiple]="false"
+                      [closeOnSelect]="true"
+                      [selectableGroup]="false"
+                      placeholder="Select Currency"
+                    >
+                      <ng-template ng-option-tmp let-item="item" let-search="name">
+                        {{ item?.name }} ({{ item?.code }})
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- <div class="col-6">
+          <div class="form-group">
+            <label class="">Event Duration in Min: <span class="required-asterisk">*</span></label>
+            <input
+              name="eventDuration"
+              id="eventDuration"
+              formControlName="eventDuration"
+              type="number"
+              class="form-control"
+              placeholder="Event Duration"
+            />
+          </div>
+        </div> -->
+        <div class="col-6">
+          <button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">Cancel</button>
+          <button type="submit" class="btn btn-primary" (click)="submitClientExpense()">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+   <!-- ClientStatus -->
+
+
+<!--Expert Status   Completed / Cancelled Event-->
+<ng-template #ExpertStatus role="document" let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Event</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="ExpertStatusForm" novalidate>
+      <div class="row"></div>
+      <div class="row"></div>
+
+      
+      
+
+      
+
+      <div class="row">
+        <div class="col-md-12" *ngIf="roles != 'keyAccountManagerxx'">
+          <div class="row mt-3">
+            <h6 class="border-bottom mb-2 pb-2 col-12">Expert Details : {{ eventData?.expert?.prorated }}</h6>
+            <div class="col-md-12">
+<!----------gs--------->
+ <div class="row"  style="border:1px solid lightblue;background-color: lightblue;margin-bottom: 10px;padding-top: 5px;">
+        <h6 class="border-bottom mb-2 pb-2 col-12"><b>Is Expert Payable?</b></h6>
+                <div class="col-md-1">
+                  <div class="form-group" style="text-align: right;">
+                  
+                     Expert Payable
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                  
+                    <input
+                 
+                      type="radio"
+                      
+                      id="expertPay"
+                       name="expertPayable"
+                
+                      formControlName="expertPayable"
+                     [checked]="true" 
+                     value="Expert Payable"
+                    /> 
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group" style="text-align: right;">
+                   Expert Not Payable
+                    
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                   
+                    <input
+                      type="radio"
+               
+                      id="expertNPay"
+                       name="expertPayable"
+            
+                      formControlName="expertPayable"
+                       value="Expert Not Payable"
+                      
+                    /> 
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group" style="text-align: right;">
+                   Comments
+                    
+                  </div>
+                </div>
+                 <div class="col-md-6">
+                  <div class="form-group">
+                  
+                    <input
+                      type="textarea"
+                      min="1"
+                      width="80%"
+                      id="expertPayComments"
+                      class="form-control"
+                      formControlName="expertPayComments"
+                     
+                      placeholder="Comments"
+                    />
+                 
+                    
+                  </div>
+                </div>
+              </div>
+
+<!---------gs---------->
+
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="expertRate">Actual Duration</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="actualDuration"
+                      class="form-control"
+                      formControlName="actualDuration"
+                      (change)="calculateExpertPayable()"
+                      placeholder="Eg. 45"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="expertPayableAmount">Payable Amount</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="expertPayableAmount"
+                      class="form-control"
+                      formControlName="expertPayableAmount"
+                      placeholder="Eg. 10000.00"
+                      readonly
+                    />
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="expertRate">Rate</label>
+                    <input
+                      type="number"
+                      min="1"
+                      id="rate"
+                      class="form-control"
+                      formControlName="expertRate"
+                      placeholder="Eg. USD 20000"
+                      (keyup)="calculateExpertPayable()"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="minDurationType">Min Duration Type</label>
+                    <ng-select
+                      [items]="minDurationType"
+                      bindLabel="minDurationType"
+                      bindValue="minDurationType"
+                      placeholder="Select Duration Type"
+                      name="minDurationType"
+                      formControlName="minDurationType"
+                    >
+                    </ng-select>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="rateType">Rate Type</label>
+                    <ng-select
+                      [items]="rateTypes"
+                      bindLabel="rateTypes"
+                      bindValue="rateTypes"
+                      placeholder="Select Rate Type"
+                      name="rateType"
+                      formControlName="expertRateType"
+                      (change)="calculateExpertPayable()"
+                    >
+                    </ng-select>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="expertCurrency">Currency</label>
+                    <ng-select
+                      formControlName="expertCurrency"
+                      [items]="currenciesList"
+                      bindLabel="name"
+                      bindValue="code"
+                      [multiple]="false"
+                      [closeOnSelect]="true"
+                      [selectableGroup]="false"
+                      placeholder="Select Currency"
+                    >
+                      <ng-template ng-option-tmp let-item="item" let-search="name">
+                        {{ item?.name }} ({{ item?.code }})
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="minDuration">Minimum Duration</label>
+                    <input
+                      type="text"
+                      min="1"
+                      id="minDuration"
+                      class="form-control"
+                      formControlName="expertMinDuration"
+                      placeholder="Eg. 45"
+                      (keyup)="calculateExpertPayable()"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+       
+
+
+
+      </div>
+      <div class="row">
+        <!-- <div class="col-6">
+          <div class="form-group">
+            <label class="">Event Duration in Min: <span class="required-asterisk">*</span></label>
+            <input
+              name="eventDuration"
+              id="eventDuration"
+              formControlName="eventDuration"
+              type="number"
+              class="form-control"
+              placeholder="Event Duration"
+            />
+          </div>
+        </div> -->
+        <div class="col-6">
+          <button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">Cancel</button>
+          <button type="submit" class="btn btn-primary" (click)="submitExpertExpense()">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+   <!-- Expert Status -->
+
+<!-- gs -- update expense-->
+
+<!--Reschedule-->
+<ng-template #rescheduleEvent role="document" let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Event</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="RescheduleForm" (ngSubmit)="Reschedule()" novalidate>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="eventAt">Event Date & Time <span class="required-asterisk">*</span></label>
+            <input
+              name="eventAt"
+              class="form-control"
+              type="datetime-local"
+              formControlName="eventAt"
+              min="{{ today }}"
+              id="eventAt"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="eventAt">Description</label>
+            <textarea
+              name="description"
+              id="description"
+              formControlName="description"
+              class="form-control"
+              rows="10"
+            ></textarea>
+            <!-- <input name="description" id="description" class="form-control" formControlName="description" /> -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 mb-4 text-right">
+          <button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">Previous</button>
+          <button type="submit" class="btn btn-primary" value="complete" (click)="Reschedule()">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!--Compliance Modal-->
+<ng-template #complianceModal let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">{{ complianceModalTitle }}</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <textarea
+      name="complianceComment"
+      id="complianceComment"
+      [(ngModel)]="complianceComment"
+      class="form-control"
+      rows="5"
+    >
+    </textarea>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="markCompliance('grievance')">Add Grievance</button>
+      <button type="button" class="btn btn-success" (click)="markCompliance('verify')">Verify</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #clientUserFormModal let-modal>
+  <app-complianceActions compliancetype="event" saleid="{{ idforCompliance }}"></app-complianceActions>
+</ng-template>
+<div class="container">
+  <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
+  <router-outlet *ngIf="!isIframe"></router-outlet>
+</div>

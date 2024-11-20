@@ -1,0 +1,141 @@
+
+
+
+
+<div class="row ">
+    <div class="card">
+    <div class="card-header border-0 align-items-center d-flex" style="background-color:#6495ED">
+        <i class=" ri-user-star-fill text-white" style="line-height: 16px; font-size: 16px; margin-right: 5px;"></i>
+        <h4 class="card-title mb-0 flex-grow-1 text-white">My Team Experts</h4>
+
+    </div><!-- end card header -->
+
+    </div> 
+    <div class="col-4" style="display: grid; align-content: center;">
+        <apx-chart [series]="Expertcount4POClisteach?.series" [labels]="Expertcount4POClisteach?.labels"
+            [chart]="Expertcount4POClisteach?.chart" [plotOptions]="Expertcount4POClisteach?.plotOptions"
+            [dataLabels]="Expertcount4POClisteach?.dataLabels" [legend]="Expertcount4POClisteach?.legend"
+            [stroke]="Expertcount4POClisteach?.stroke" [yaxis]="Expertcount4POClisteach?.yaxis"
+            [colors]="Expertcount4POClisteach?.colors" dir="ltr"></apx-chart>
+    </div>
+    <div class="col-8">
+        <div class="align-items-center">
+            <label class="align-items-center">Live Projects (Expertcount4POClisteach)</label>
+            <apx-chart [series]="Expertcount4POClist?.series" [chart]="Expertcount4POClist?.chart"
+                [stroke]="Expertcount4POClist?.stroke" [fill]="Expertcount4POClist?.fill"
+                [markers]="Expertcount4POClist?.markers" [xaxis]="Expertcount4POClist?.xaxis"
+                [grid]="Expertcount4POClist?.grid" [legend]="Expertcount4POClist?.legend"
+                [plotOptions]="Expertcount4POClist?.plotOptions"
+                [colors]="Expertcount4POClist?.colors" [tooltip]="Expertcount4POClist?.tooltip"
+                dir="ltr"></apx-chart>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="row" style="max-height: 400px;">
+  <div class="col-4">
+      <div class="">
+        <div class="card-header border-0 align-items-center d-flex" style="background-color:#6495ED">
+          <i class="bx bx-calendar text-white" style="line-height: 16px; font-size: 16px; margin-right: 5px;"></i>
+          <h4 class="card-title mb-0 flex-grow-1 text-white">Team  TRR</h4>
+      
+      </div> <!-- end card header -->
+      
+          <apx-chart [series]="TRRcountChart?.series" [chart]="TRRcountChart?.chart"
+              [stroke]="TRRcountChart?.stroke" [fill]="TRRcountChart?.fill"
+              [markers]="TRRcountChart?.markers" [xaxis]="TRRcountChart?.xaxis"
+              [grid]="TRRcountChart?.grid" [legend]="TRRcountChart?.legend"
+              [plotOptions]="TRRcountChart?.plotOptions" [colors]="TRRcountChart?.colors"
+              [tooltip]="TRRcountChart?.tooltip" dir="ltr"></apx-chart>
+      </div>
+  </div>
+  <div class="col-8" style="max-height: 400px;overflow-y: scroll;">
+      <div class="table-view">
+          <table>
+              <tr class="table-head">
+                  <td rowspan="2" style="width: 195px;">Name</td>
+                  <td colspan="3"></td>
+                  <td rowspan="2">TRR(FTRR+CRM)</td>
+                  <td rowspan="2">Overall (total)</td>
+                  <td rowspan="2">Avg.Expert Honararium per hour</td>
+              </tr>
+              <tr class="table-head">
+                  <td>FTRR</td>
+                  <td>CRM</td>
+                  <td>SR</td>
+              </tr>
+              <tr *ngFor="let data of TRRcountCnt,name">
+                  <td>{{getempname(data.emp)}}</td>
+                  <td>{{data.FTRR}}</td>
+                  <td>{{data.CRM}}</td>
+                  <td>{{data.new}}</td>
+                  <td>{{data.FTRR + data.CRM}}</td>
+                  <td>{{data.FTRR + data.CRM + data.new}}</td>
+                  <td>{{getflor(data.USDtot / data.USDcnt) }}</td>
+              </tr>
+          </table>
+      </div>
+  </div>
+</div>
+
+
+<div class="card" >
+
+  <div class="card-header border-0 align-items-center d-flex" style="background-color:#6495ED">
+    <i class="bx bx-calendar text-white" style="line-height: 16px; font-size: 16px; margin-right: 5px;"></i>
+    <h4 class="card-title mb-0 flex-grow-1 text-white"> Team Events</h4>
+
+</div> <!-- end card header -->
+
+  <div class="card-body">
+    <div class="row" style="max-height: 400px;">
+      <div class="col-12">
+          <div class="">
+           
+              <apx-chart [series]="EventcountChart?.series" [chart]="EventcountChart?.chart"
+                  [stroke]="EventcountChart?.stroke" [fill]="EventcountChart?.fill"
+                  [markers]="EventcountChart?.markers" [xaxis]="EventcountChart?.xaxis"
+                  [grid]="EventcountChart?.grid" [legend]="EventcountChart?.legend"
+                  [plotOptions]="EventcountChart?.plotOptions" [colors]="EventcountChart?.colors"
+                  [tooltip]="EventcountChart?.tooltip" dir="ltr"></apx-chart>
+          </div>
+      </div>
+  </div>
+</div>
+</div>
+
+<div class="card" >
+
+  <div class="card-header border-0 align-items-center d-flex" style="background-color:#6495ED">
+    <i class="bx bx-calendar text-white" style="line-height: 16px; font-size: 16px; margin-right: 5px;"></i>
+    <h4 class="card-title mb-0 flex-grow-1 text-white">My Team </h4>
+
+</div> <!-- end card header -->
+
+  <div class="card-body">
+      <div class="margin-box">
+          <div class="box" style=" margin:0px 5px 5px 0px; display: inline-block;"
+              *ngFor="let data of member">
+              <div class="card brdr-card">
+                  <div class="card-body" style="padding:2px;">
+                      <div class="row" style="margin-bottom: 2px;">
+                          <div class="col-12 image">
+                              <div class=" avatar-lg rounded-circle img-thumbnail">
+                                  <i class=" ri-account-circle-fill"></i>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row" style="display: grid; text-align: center;">
+                          <div class="col-12">
+                              <h5>{{data}}</h5>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

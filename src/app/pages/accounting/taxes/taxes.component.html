@@ -1,0 +1,162 @@
+<div style="margin-top:-25px;" >
+  <div class="d-flex justify-content-center flex-nowrap">
+   <div  >
+                
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref active" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/client-invoice" href="/accounting/client-invoice">Client Billing</a>
+     
+   </div>
+   <div  >
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/expert-invoice" href="/accounting/expert-invoice">Expert Payments</a>
+   
+   </div>
+   <div style="display:none;" >
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/incentives" href="/accounting/incentives"> Incentives</a>
+   
+   </div>
+   <div  >
+    
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/Taxes" href="/accounting/Taxes"> Client Taxes</a>
+  
+   </div>
+   <div  >
+    
+     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/Miscellaneous" href="/accounting/Miscellaneous"> Miscellaneous Entries</a>
+  
+   </div>
+   <div  >
+    
+   </div>
+ 
+ 
+ </div>
+ </div>
+ 
+
+<div class="container-fluid">
+  <!-- <app-page-title title="Client taxes"></app-page-title> -->
+
+  <!-- <app-loader [isLoading]="isLoading"></app-loader> -->
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group mb-4">
+            <label>Select Client <span class="required-asterisk">*</span> </label>
+            <ng-select
+              name="clientList"
+              id="clientName"
+              [items]="clientList"
+              bindLabel="companyName"
+              bindValue="id"
+              [multiple]="false"
+              [closeOnSelect]="true"
+              [selectableGroup]="false"
+              placeholder="Select Client"
+              (change)="selectedClient(ClientName)"
+              [(ngModel)]="ClientName"
+            >
+            </ng-select>
+          </div>
+        </div>
+        
+        
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-body">             
+
+         <button type="button"  (click)="addtax(taxes)"  class="btn btn-primary" >Add Taxes</button>
+       </div>
+
+       <div class="row" *ngIf="clientData?.taxes?.length > 0">
+        <div class="col-12 mt-4">
+          <h5>Existing Taxes</h5>
+        </div>
+<br><br>
+        <div class="col-sm-8">
+          <div class="media align-items-center">
+                
+            <div class="media-body file-name w-75">
+              <h6 class="ttext-dark font-weight-bold font-size-16 text-break">Tax name</h6>
+              <!-- <p class="mb-0 font-size-12">Size: --</p> -->
+            </div>
+            <div class="media-body file-name w-75">
+              <h6 class="text-dark font-weight-bold font-size-16 text-break"> Tax percent% </h6>
+              <!-- <p class="mb-0 font-size-12">Size: --</p> -->
+            </div>
+            <div class="download-icon">
+             
+          </div>
+        </div>
+        <div  class="table-responsive" >
+        <div class="col-sm-8" *ngFor="let media of clientData?.taxes; let i = index">
+                         
+              <div class="media align-items-center">
+                
+                <div class="media-body file-name w-75">
+                  <h6 class="text-dark font-size-12 text-break">{{i+1}} . {{media.taxname}} </h6>
+                  <!-- <p class="mb-0 font-size-12">Size: --</p> -->
+                </div>
+                <div class="media-body file-name w-75">
+                  <h6 class="text-darkfont-size-12 text-break"> {{media.taxpercent}}% </h6>
+                  <!-- <p class="mb-0 font-size-12">Size: --</p> -->
+                </div>
+                <div class="download-icon">
+                  <a (click)="edittax(taxes,media.taxname,media.taxpercent)" Edit>
+                    <i class="bx bx-pencil"></i>
+                  </a>
+                </div>
+              </div>
+            
+            <!-- end card-body -->
+        
+        </div>
+      </div>
+      </div>
+
+      </div>
+    </div>
+        
+  </div>
+</div>
+
+
+<ng-template #taxes let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">Update Client Taxes</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="taxName">Tax Name</label>
+          <input
+            name="taxName"
+            [(ngModel)]="taxname"
+            type="text"
+            class="form-control"
+            placeholder="Tax Name"
+          />
+          <input name="cid1"  type="hidden" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="Tax Percentage">Tax Percentage</label>
+          <input
+            name="taxpercent"
+            [(ngModel)]="taxpercent"
+            type="number"
+            class="form-control"
+            placeholder="Tax Name"
+          /> %
+        </div>
+      </div>
+    </div>
+  </div>
+   <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+    <button type="submit" (click)="submitClienttax()" class="btn btn-success">Submit</button>
+  </div>
+</ng-template>

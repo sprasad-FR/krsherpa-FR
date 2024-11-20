@@ -1,0 +1,418 @@
+<app-loader [isLoading]="isLoading"></app-loader>
+
+<div class="container-fluid mt-4">
+  <div class="row align-items-center">
+    <div class="col-md-10">
+      <h4>Events</h4>
+    </div>
+    <!-- <div class="col-md-2 text-right" *ngIf="roles != 'client' && roles != 'expert'">
+      <a href="javascript:void(0)" (click)="createNewEventForm(newEventFormModal)" class="btn btn-info">New Event</a>
+    </div> -->
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-lg-6">
+      <h5 class="mb-3">Upcoming Events</h5>
+
+      <div *ngFor="let el of eventsList">
+        <div class="card event-block" *ngIf="el?.status != 'Completed' && el?.status != 'Cancelled'">
+          <div class="card-body px-2">
+                  <div class="row">
+              <div class="col-2 text-center">
+                <div>
+                  <i class="far fa-arrow-alt-circle-up sme-icon text-blue"></i>
+                  <div class="sme-num">SME{{ el?.smeNum }}</div>
+                </div>
+              </div>
+              <div class="col-md-10 pl-md-0">
+                <div class="d-flex flex-column">
+                  <div class="d-flex">
+                    <div class="col-10 px-0">
+                      <div class="event-date text-blue small">{{ el?.eventAt | localDateTime: 'Do MMMM YY' }}</div>
+                      <div class="event-id">{{ el?.eventId }}</div>
+                    </div>
+                    <div class="col-2 d-flex justify-content-between align-items-center">
+                      <a
+                        href="javascript:void(0)"
+                        target="_blank"
+                        class="btn btn-link p-1"
+                        title="Reschedule"
+                        [routerLink]="['/events/view', el?.id]"
+                        routerLinkActive="router-link-active"
+                      >
+                        <i class="bx bx-error-circle font-size-18">View</i>
+                      </a>
+                      
+                      <span style="padding-left: 20px"></span
+                      ><a
+                        style="{{ getcompliancestatus(el.id) }}"
+                        href="javascript:void(0)"
+                        (click)="createClientUser(clientUserFormModal, el?.id)"
+                      >
+                        <i _ngcontent-nsd-c171="" type="solid" class="bx bxs-flag"> </i>
+                      </a>
+                      <!-- <a href="javascript:void(0)" (click)="editEvent(newEventFormModal, el?.id)">
+                        <i class="bx bx-pencil font-size-18"></i>
+                      </a> -->
+                    </div>
+                  </div>
+
+                  <div class="row flex-wrap mt-3">
+                    <div class="mb-2 col-md-4">
+                      <div class="text-muted">Expert Name</div>
+                      <h6>{{ getExpertName(el?.expertId) }}</h6>
+                    </div>warning
+
+                    <div class="mb-2 col-md-4">
+                      <div class="text-muted">KR Research Mgr</div>
+                      <h6>{{ getUserName(el?.krResearchMgrId) }}</h6>
+                      <!-- gs   <h6>{{ getUserName(el?.researchMgrId) }}</h6>
+                     -->
+                    
+                      </div>
+
+                    <div class="mb-2 col-md-4">
+                      <div class="text-muted">Event Type</div>
+                      <h6>{{ el?.type ? el?.type : '--' }}</h6>
+                    </div>
+
+                    <div class="mb-2 col-md-4">
+                      <div class="text-muted">Event Status</div>
+                      <h6>{{ el?.status ? el?.status : '--' }}</h6>
+                    </div>
+
+                    <div class="mb-2 col-md-4"  *ngIf="roles != 'researchManager' && roles != 'researchAnalyst'">
+                      <div class="text-muted">Cost to Client</div>
+                      <h6 *ngIf="el?.rateForClient">
+                        {{ el?.rateForClient }} <small>{{ el?.clientCurrency }}</small>
+                      </h6>
+                    </div>
+
+                    <div class="mb-2 col-md-4">
+                      <div class="text-muted">Expert Cost</div>
+                      <h6 *ngIf="el?.expertRate">
+                        {{ el?.expertRate }} <small>{{ el?.clientCurrency }}</small>
+                      </h6>
+                    </div>
+                  </div>
+                  <div class="">
+                 <!--   <a  class="badge text-bg-secondary m-1" (click)="  sendtimeslot(el?.expertId,el.id)">Send Time Slot to client </a>
+                    <a   (click)="sendrch(el?.expertId,el.id)" class="badge text-bg-success m-1" >Rechedule Call</a>
+                    <a  (click)="cancellcall(el?.expertId,el.id)" class="badge text-bg-primary m-1" >Cancell Call</a>
+                    <a (click)="getcallinfo(el?.expertId,el.id)"  class="badge text-bg-warning m-1" >Get Call Info</a>
+                    <a (click)="getupdates(el?.expertId,el.id)"  class="badge text-bg-danger m-1" >Get Client Updates</a>
+                 --> 
+                 
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end col -->
+
+    <div class="col-lg-6">
+      <h5 class="mb-3">Completed Events</h5>
+
+      <div *ngFor="let el of eventsList">
+        <div
+          class="card event-block"
+          [ngClass]="{ 'event-success': el?.status == 'Completed', 'event-danger': el?.status == 'Cancelled' }"
+          *ngIf="el?.status == 'Completed' || el?.status == 'Cancelled'"
+        >
+          <div class="card-body px-2">
+            <div class="row">
+              <div class="col-2 text-center">
+                <div>
+                  <i class="far fa-arrow-alt-circle-up sme-icon text-blue"></i>
+                  <div class="sme-num">SME{{ el?.smeNum }}</div>
+                </div>
+              </div>
+              <div class="col-md-8 pl-md-0">
+                <div class="d-flex flex-column">
+                  <div>
+                    <div class="event-date text-blue small">{{ el?.eventAt | localDateTime: 'Do MMMM YY' }}</div>
+                    <div class="event-id">{{ el?.eventId }}</div>
+                  </div>
+
+                  <div class="row flex-wrap mt-3">
+                    <div class="mb-2 col-md-4">
+                      <div class="text-muted">Expert Name</div>
+                      <h6>{{ getExpertName(el?.expertId) }} </h6>
+                    </div>
+
+                    <div class="mb-2 col-md-4">
+                      <div class="text-muted">KR Research Mgr</div>
+                      <h6>{{ getUserName(el?.krResearchMgrId) }}</h6>
+                    </div>
+
+                    <div class="mb-2 col-md-4">
+                      <div class="text-muted">Event Type</div>
+                      <h6>{{ el?.type ? el?.type : '--' }}</h6>
+                    </div>
+
+                    <div class="mb-2 col-md-4">
+                      <div class="text-muted">Event Status</div>
+                      <h6>{{ el?.status ? el?.status : '--' }}</h6>
+                    </div>
+
+                    <div class="mb-2 col-md-4" *ngIf="roles != 'researchManager' && roles != 'researchAnalyst'">
+                      <div class="text-muted">Cost to Client</div>
+                      <h6 *ngIf="el?.rateForClient">
+                        {{ el?.rateForClient }} <small>{{ el?.clientCurrency }}</small>
+                      </h6>
+                    </div>
+
+                    <div class="mb-2 col-md-4">
+                      <div class="text-muted">Expert Cost</div>
+                      <h6 *ngIf="el?.expertRate">
+                        {{ el?.expertRate }} <small>{{ el?.expertCurrency }}</small>
+                      </h6>
+                    </div>
+                    <div class="d-flex">                  
+                    
+                    
+                      <a  class="badge text-bg-success m-1"   style="max-width: 150px;" >Get Call Info</a>
+                  
+                   </div>
+                  </div>    
+                
+
+
+
+                </div>
+              </div>
+             
+            <div class="col-1 text-center">
+              <a
+              href="javascript:void(0)"
+              target="_blank"
+              class="btn btn-link p-1"
+              title="Reschedule"
+              [routerLink]="['/events/view', el?.id]"
+              routerLinkActive="router-link-active"
+            >
+              <i class="bx bx-error-circle font-size-18">View</i>
+            </a>
+
+
+            </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+</div>
+
+<!-- New Event Form Modal -->
+<ng-template #newEventFormModal let-modal>
+  <form [formGroup]="eventFormGrp" (ngSubmit)="submitData()">
+    <div class="modal-header p-2 bg-dark">
+      <h5 class="modal-title mt-0">{{ eventModalTitle }}</h5>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="expertId">Expert Name (SME) <span class="required-asterisk">*</span></label>
+            <ng-select
+              [items]="krExpertsList"
+              bindLabel="firstName"
+              bindValue="userId"
+              placeholder="Select Expert"
+              name="expertId"
+              formControlName="expertId"
+              [(ngModel)]="selectedExpert"
+            >
+              <ng-template ng-label-tmp let-item="item">
+                <span>{{ item.firstName + ' ' + item.lastName }}</span>
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                <span>{{ item.firstName + ' ' + item.lastName }}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="krResearchMgrId">KR Research Mgr <span class="required-asterisk">*</span></label>
+            <ng-select
+              [items]="researchMgrList"
+              bindLabel="name"
+              bindValue="userId"
+              placeholder="Select KR Research Manager"
+              name="krResearchMgrId"
+              formControlName="krResearchMgrId"
+              [(ngModel)]="selectedResearchMgr"
+            >
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="eventType">Event Type <span class="required-asterisk">*</span></label>
+            <ng-select
+              [items]="eventType"
+              bindLabel="text"
+              bindValue="text"
+              placeholder="Select Event Type"
+              name="type"
+              formControlName="type"
+            >
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="eventAt">Event Date & Time <span class="required-asterisk">*</span></label>
+            <input
+              class="form-control"
+              type="datetime-local"
+              formControlName="eventAt"
+              name="eventAt"
+              id="eventAt"
+              min="{{ today }}"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="row mt-3">
+            <h6 class="border-bottom mb-2 pb-2 col-12">Expert Details <span class="required-asterisk">*</span></h6>
+            <div class="form-group col-md-6">
+              <label for="expertRateType">Rate Type</label>
+              <ng-select
+                [items]="rateTypes"
+                bindLabel="rateTypes"
+                bindValue="rateTypes"
+                placeholder="Select Rate Type"
+                name="expertRateType"
+                formControlName="expertRateType"
+              >
+              </ng-select>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="expertMinDuration">Minimum Duration (in min) <span class="required-asterisk">*</span></label>
+              <input
+                type="text"
+                min="1"
+                id="expertMinDuration"
+                class="form-control"
+                formControlName="expertMinDuration"
+                placeholder="Eg. 45"
+              />
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="expertRate">Rate <span class="required-asterisk">*</span></label>
+              <input
+                type="number"
+                min="1"
+                id="expertRate"
+                class="form-control"
+                formControlName="expertRate"
+                placeholder="Eg. USD 20000"
+              />
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="expertCurrency">Currency <span class="required-asterisk">*</span></label>
+              <ng-select
+                formControlName="expertCurrency"
+                [items]="currenciesList"
+                bindLabel="name"
+                bindValue="code"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                [selectableGroup]="false"
+                placeholder="Select Currency"
+              >
+                <ng-template ng-option-tmp let-item="item" let-search="name">
+                  {{ item?.name }} ({{ item?.code }})
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="row mt-3">
+            <h6 class="border-bottom mb-2 pb-2 col-12">Client Details</h6>
+            <div class="form-group col-md-6">
+              <label for="rateForClient">Cost to Client <span class="required-asterisk">*</span></label>
+              <input
+                type="number"
+                min="1"
+                id="rateForClient"
+                class="form-control"
+                formControlName="rateForClient"
+                placeholder="Eg. USD 20000"
+              />
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="expertMinDuration">Minimum Duration (in min) <span class="required-asterisk">*</span></label>
+              <input
+                type="text"
+                min="1"
+                id="clientMinDuration"
+                class="form-control"
+                formControlName="clientMinDuration"
+                placeholder="Eg. 45"
+              />
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="multiplicationFactor">Multiplicaion Factor</label>
+              <input
+                type="number"
+                min="1"
+                id="multiplicationFactor"
+                class="form-control"
+                formControlName="multiplicationFactor"
+                placeholder="Eg. 2"
+              />
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="clientCurrency">Currency <span class="required-asterisk">*</span></label>
+              <ng-select
+                formControlName="clientCurrency"
+                [items]="currenciesList"
+                bindLabel="name"
+                bindValue="code"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                [selectableGroup]="false"
+                placeholder="Select Currency"
+              >
+                <ng-template ng-option-tmp let-item="item" let-search="name">
+                  {{ item?.name }} ({{ item?.code }})
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+      <button type="submit" class="btn btn-success">{{ btnName }}</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #clientUserFormModal let-modal>
+  <app-complianceActions compliancetype="event" saleid="{{ idforCompliance }}"></app-complianceActions>
+</ng-template>

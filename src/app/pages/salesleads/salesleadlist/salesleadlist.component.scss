@@ -1,0 +1,73 @@
+::ng-deep .my-class .modal-dialog { 
+    padding:5px;
+    max-width: 100%;
+    width: 100%;
+}
+
+@media (min-width: 792px){
+
+.modal-lg, .modal-xl {
+    
+    --vz-modal-width: 98% !important;
+    min-width: 98% !important;
+}
+
+}
+
+.modal-dialog .modal-dialog-centered .modal-lg
+{
+    --vz-modal-width: 98% !important;
+    min-width: 98% !important;
+}
+
+
+.badge {
+    padding: 0.6rem;
+    text-align: center;
+    border-radius: 4px;
+    color: #fff;
+    min-width: 5rem;
+  }
+  .badge-connected {
+    background-color: #b8b8b8;
+  }
+  .badge-in-progress {
+    background-color: #f39819;
+  }
+  .badge-interested {
+    background-color: #439715;
+  }
+  .badge-client {
+    background-color: rgb(31, 63, 207);
+  }
+  .table-actions {
+    font-size: 1.2rem;
+  }
+  .table-actions > div:hover i {
+    color: #16aecf;
+    transform: scale(1.5);
+  }
+  .nowrap {
+    white-space: nowrap;
+  }
+  
+  table {
+    tr th {
+      &:last-child {
+        border-radius: 0 4px 4px 0;
+      }
+      &:first-child {
+        border-radius: 4px 0 0px 4px;
+      }
+    }
+    tr td {
+      &:last-child {
+        border-radius: 0 4px 4px 0;
+      }
+      &:first-child {
+        border-radius: 4px 0 0px 4px;
+      }
+    }
+  }
+  
+

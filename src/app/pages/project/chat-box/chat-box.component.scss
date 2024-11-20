@@ -1,0 +1,92 @@
+ 
+ 
+ /*.chat-box {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #fff;
+  }
+  */
+  /* Rest of the styles remain the same */
+  
+  .chat-box {
+    display: none;
+    width: 98%;
+  //  border: 1px solid #221414;
+    border-radius: 4px;
+    padding: 0px 5px 5px 5px;
+    background-color:rgb(211, 226, 231);
+    min-width:400px !important;
+    height: 480px !important;
+  }
+  
+  /* Rest of the styles remain the same */
+  
+
+
+  .messages {
+    height: 280px;
+    overflow-y: auto;
+    // margin-bottom: 10px;
+  }
+  
+  .message {
+    background-color:rgb(211, 226, 231);
+    color: black;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .input-area {
+    display: flex;
+  }
+  
+  .input-area input {
+    flex: 1;
+    margin-right: 5px;
+  }
+  
+  .input-area button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  .chat-container {
+    position: fixed;
+    bottom: 60px;
+    right: 54px;
+    // border: 1px solid #ccc;
+    z-index: 999;
+    max-width: 400px !important;
+    
+   
+    
+  }
+  
+  .open .chat-box {
+    display: block;
+  }
+  
+  
+  
+  .chat-icon {
+    background-color:transparent;
+    color:white;
+    border: none;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  .chat-icon i {
+    font-size: 50px;
+  }
+  
+  .clo :hover{color: red; cursor: pointer;}

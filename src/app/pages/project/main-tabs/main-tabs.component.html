@@ -1,0 +1,94 @@
+<!-- <div class="card pt-0">
+  <div class="card-body">
+  </div>
+</div> -->
+<ul
+  ngbNav
+  #customNav="ngbNav"
+  [activeId]="route.fragment | async"
+  class="nav-tabs nav-tabs-custom container-fluid pull-top"
+>
+  <!-- <li [ngbNavItem]="link.fragment" *ngFor="let link of tabLinks">
+    <a ngbNavLink routerLink="." [fragment]="link.fragment">
+      <span class="d-none d-sm-block">{{ link.title }}</span>
+    </a>
+    <ng-template ngbNavContent>
+      <ng-template [ngTemplateOutlet]="link.fragment"></ng-template>
+    </ng-template>
+  </li> -->
+
+  <li [ngbNavItem]="'overview'">
+    <a ngbNavLink routerLink="." [fragment]="'overview'">
+      <span class="d-none d-sm-block">Overview</span>
+    </a>
+    <ng-template ngbNavContent>
+      <ng-template [ngTemplateOutlet]="overview"></ng-template>
+    </ng-template>
+  </li>
+
+  <li [ngbNavItem]="'leadAttach'">
+    <a ngbNavLink routerLink="." [fragment]="'leadAttach'">
+      <span class="d-none d-sm-block">Search Profiles</span>
+    </a>
+    <ng-template ngbNavContent>
+      <ng-template [ngTemplateOutlet]="leadAttach"></ng-template>
+    </ng-template>
+  </li>
+
+  <li [ngbNavItem]="'projectFlow'">
+    <a ngbNavLink routerLink="." [fragment]="'projectFlow'">
+      <span class="d-none d-sm-block">Project Flow</span>
+    </a>
+    <ng-template ngbNavContent>
+      <ng-template [ngTemplateOutlet]="projectFlow"></ng-template>
+    </ng-template>
+  </li>
+
+  <li [ngbNavItem]="'events'">
+    <a ngbNavLink routerLink="." [fragment]="'events'">
+      <span class="d-none d-sm-block">Events</span>
+    </a>
+    <ng-template ngbNavContent>
+      <ng-template [ngTemplateOutlet]="events"></ng-template>
+    </ng-template>
+  </li>
+
+  <li [ngbNavItem]="'attachments'">
+    <a ngbNavLink routerLink="." [fragment]="'attachments'">
+      <span class="d-none d-sm-block">Attachments</span>
+    </a>
+    <ng-template ngbNavContent>
+      <ng-template [ngTemplateOutlet]="attachments"></ng-template>
+    </ng-template>
+  </li>
+  <li class="nav-item">
+    <a (click)="openNewTab('/clients/client-compliace/61c0870c735d51fdceb447fe')" class="nav-link">
+      <span class="d-none d-sm-block">Client Compliance</span>
+    </a>
+  </li>
+</ul>
+
+<div [ngbNavOutlet]="customNav"></div>
+
+<!-- Tab Content: Overview -->
+<ng-template #overview>
+  <app-overview></app-overview>
+</ng-template>
+<!-- Tab Content: Lead Attachment -->
+<ng-template #leadAttach>
+  <app-lead-attach></app-lead-attach>
+</ng-template>
+<!-- Tab Content: Project Flow -->
+<ng-template #projectFlow>
+  <app-project-flow></app-project-flow>
+</ng-template>
+
+<!-- Tab Content: Events -->
+<ng-template #events>
+  <app-events></app-events>
+</ng-template>
+
+<!-- Tab Content: Attachments -->
+<ng-template #attachments>
+  <app-attachments></app-attachments>
+</ng-template>

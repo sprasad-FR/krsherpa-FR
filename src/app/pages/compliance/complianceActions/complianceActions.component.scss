@@ -1,0 +1,222 @@
+.row-card {
+  margin-bottom: 24px;
+  box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
+  position: relative;
+  min-width: 0;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 0 solid #f6f6f6;
+  border-radius: 0.25rem;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0px 12px;
+}
+thead {
+  background-color: #05335f;
+  color: #fff;
+}
+.table-bordered th,
+.table-bordered td {
+  border: 0px solid #eff2f7;
+}
+.text-white {
+  color: #fff !important;
+}
+
+.badge {
+  padding: 0.6rem;
+  text-align: center;
+  border-radius: 4px;
+  color: #fff;
+  min-width: 5rem;
+}
+.badge-connected {
+  background-color: #b8b8b8;
+}
+.badge-in-progress {
+  background-color: #f39819;
+}
+.badge-interested {
+  background-color: #439715;
+}
+.badge-not-interested {
+  background-color: rgb(12, 12, 12);
+}
+.badge-do-not-call {
+  background-color: #d4260e;
+}
+.table-actions {
+  font-size: 1.2rem;
+}
+.table-actions > div:hover i {
+  color: #16aecf;
+  transform: scale(1.5);
+}
+.nowrap {
+  white-space: nowrap;
+}
+
+table {
+  tr th {
+    &:last-child {
+      border-radius: 0 4px 4px 0;
+    }
+    &:first-child {
+      border-radius: 4px 0 0px 4px;
+    }
+  }
+  tr td {
+    &:last-child {
+      border-radius: 0 4px 4px 0;
+    }
+    &:first-child {
+      border-radius: 4px 0 0px 4px;
+    }
+  }
+}
+.modal-header {
+  .modal-title,
+  .close {
+    color: white;
+  }
+}
+.modal-body {
+  .right {
+    .btn-secondary {
+      background: #74788d59;
+      border: none !important;
+      color: black !important;
+      font-weight: 500;
+    }
+  }
+}
+.modal-content {
+  border: none !important;
+}
+
+#myDIV {
+  width: 100%;
+  padding: 50px 0;
+  text-align: center;
+  background-color: lightblue;
+  margin-top: 20px;
+}
+
+/* (A) LIST TO MENU */
+.tree,
+.section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.tree {
+  background: #fbfbfb;
+  border: 1px solid #d2d2d2;
+}
+.tree li {
+  border-bottom: 1px solid #d2d2d2;
+  /* padding: 15px 10px; */
+}
+.tree li:last-child {
+  border: 0;
+}
+
+/* (B) SUB-SECTIONS */
+/* (B1) TOGGLE SHOW/HIDE */
+//.section ul { display: none; }
+/* (B2) HIDE CHECKBOX */
+
+/* (B3) ADD EXPAND/COLLAPSE ICON  
+   .section input:checked ~ ul { display: block; }
+  
+ 
+  .section input[type=checkbox] { display: none; }
+ 
+  
+  */
+
+.bx bx-detail {
+  color: #16aecf;
+  font-size: 1.2rem;
+}
+
+.bx-dislike {
+  color: #16aecf;
+  font-size: 1.2rem;
+}
+
+.bx bx-check-square {
+  color: #16aecf;
+  font-size: 1.2rem;
+}
+
+.bx bx-down-arrow {
+  color: #16aecf;
+  font-size: 1.2rem;
+}
+
+.bx-detail {
+  color: #16aecf;
+  font-size: 1.2rem;
+}
+
+.bx bx-dislike {
+  color: #16aecf;
+  font-size: 1.2rem;
+}
+
+.bx-check-square {
+  color: #16aecf;
+  font-size: 1.2rem;
+}
+
+.section {
+  position: relative;
+  padding-left: 35px !important;
+}
+
+.approved {
+  background-color: white;
+  padding: 15px 10px;
+}
+
+.reviewed {
+  background-color: lightgreen;
+  padding: 15px 10px;
+}
+
+.initiated {
+  background-color: lightsalmon;
+  padding: 15px 10px;
+}
+
+.rejected {
+  background-color: red;
+  padding: 15px 10px;
+}
+
+/*
+  .section label:after {
+    content: "\0002B";
+    position: absolute;
+    top: 0; left: 0;
+    padding: 10px;
+    text-align: center;
+    font-size: 30px;
+    color: #f00;
+    transition: all 0.5s;
+  }
+  .section input:checked ~ label:after { 
+    color: #23c37a;
+    transform: rotate(45deg);
+  }  */
+
+/* (B4) SUB-SECTION ITEMS */
+.section ul {
+  margin-top: 10px;
+}
+.section ul li {
+  color: #d43d3d;
+}
