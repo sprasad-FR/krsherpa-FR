@@ -113,6 +113,8 @@ export class LeadDetailsComponent implements OnInit {
   billingCycleArray: Array<{}>;
   countryCurrency: CountryCurrency[];
   CTCForm: FormGroup;
+  clientUsers:any=[];
+  isEmailCheck: boolean = false;
   // public Editor = ClassicEditor;
   whoami: any = [];
   files: File[] = [];
@@ -149,7 +151,7 @@ export class LeadDetailsComponent implements OnInit {
     formatsAllowed: '.jpg,.png,.pdf',
     maxSize: '1',
     uploadAPI: {
-      url: 'http://[::1]:3000/media/upload',
+      url: 'http://65.1.237.23:3000/media/upload',
       method: 'POST',
       headers: {
         'Content-Type': 'text/plain;charset=UTF-8',
@@ -421,6 +423,7 @@ leadUpdateSubmit$.subscribe(
     this.getComapnyTypes();
     this.getSalesLeadById(this.id);
     this.getSalesLeadComments();
+    this.getClientUsers();
     //this.dummyData = dummyData;
     //this.salesLeadContact = salesLeadContactData;
    // this.incentiveChartData = incentiveChartData;
@@ -719,16 +722,16 @@ console.log ('createComment');
 
     if (!this.CTCForm.value.accountManagerId  ){
       alert("Account Manager is Required");
-      return;
+      return false;
   }
   if(!this.CTCForm.value.subPnlHeadId )  {
       alert("SubPnl Head is Required");
-      return;
+      return false;
   }
   if(!this.CTCForm.value.plheadId ) 
   {
     alert("PL Head is Required");
-    return;
+    return false;
   }
 
     this.CTCForm.patchValue(this.salesLeadData);
@@ -812,36 +815,57 @@ console.log ('createComment');
      this.emailToSend.push(emp4mail3.email);
     }
 
-    
-
-
-    this.clientUserData.push({
-        id:this.salesLeadContact.id,
-      name: this.salesLeadContact.name,
-      designation: this.salesLeadContact .designation,
-      mobile: this.salesLeadContact .contactNo,
-      linkedinurl: this.salesLeadContact.linkedinurl,
-      email: this.salesLeadContact .email, 
-      notes: this.salesLeadContact.notes[0]?.["note"],                   
-      updatedAt: new Date(),
-    })
-
-
-    this.allContactPersons?.forEach((x) => {
-      
+    let salesLeadContactUserId =null;
+    if(!this.isEmailCheck){
+      salesLeadContactUserId = this.clientUsers.find((u) => u.username === this.salesLeadContact.email)?.id;
+      if(typeof salesLeadContactUserId=='undefined')
+        salesLeadContactUserId=null;
+      if(salesLeadContactUserId!=null){
+          this.isEmailCheck=true;
+      }
       this.clientUserData.push({
-        id:x.id,
-        name: x.name,
-        designation: x.designation,
-        mobile: x.contactNo,
-        email: x.email, 
-        linkedinurl: x.linkedinurl,
-        notes: x.notes[0]?.note,                   
+        id:this.salesLeadContact.id,
+        name: this.salesLeadContact.name,
+        designation: this.salesLeadContact .designation,
+        mobile: this.salesLeadContact .contactNo,
+        linkedinurl: this.salesLeadContact.linkedinurl,
+        email: this.salesLeadContact .email, 
+        notes: this.salesLeadContact.notes[0]?.["note"],                   
         updatedAt: new Date(),
+        userId:salesLeadContactUserId,
       })
+      let salesLeadContactUserId1=null;
+      this.allContactPersons?.forEach((x) => {
+        salesLeadContactUserId1 = this.clientUsers.find((u) => u.username === x.email)?.id;
+        if(typeof salesLeadContactUserId1=='undefined')
+          salesLeadContactUserId1=null;
+        if(!this.isEmailCheck)
+          if(salesLeadContactUserId1!=null){
+            this.isEmailCheck=true;
+          }
+       if(salesLeadContactUserId!=salesLeadContactUserId1){
+          this.clientUserData.push({
+            id:x.id,
+            name: x.name,
+            designation: x.designation,
+            mobile: x.contactNo,
+            email: x.email, 
+            linkedinurl: x.linkedinurl,
+            notes: x.notes[0]?.note,                   
+            updatedAt: new Date(),
+            userId:salesLeadContactUserId,
+          })
+        }
+               
+   
+      });
+      if(this.isEmailCheck){
+        $("#emailErrorDiv").show();
+        return false;
+      }
 
+    }
 
-    });
 
     this.emailToSend.push("compliance@knowledgeridge.com");
 
@@ -913,6 +937,7 @@ console.log(CTCFormData)
         this.error = error;
       }
     );
+    return true;
   }
 
   toggleVisibility(e) {
@@ -1069,6 +1094,26 @@ console.log(CTCFormData)
     }
 
   }
+
+  getClientUsers() {
+    //const filter = { roles: ['client'] };
+    const filters = new Map();
+    // const filters = new Map<string, string>();
+    // filters.set('filter', JSON.stringify(filter));
+    
+    this.userService.usersByRole(filters).subscribe(
+      (userArray: any) => {
+        var users: Users[];
+        this.clientUsers = userArray;
+        console.log("this.clientUsers "+this.clientUsers);
+       // this.clientUsers = users.map(user => user.username);
+        
+      },
+      (error: any) => {}
+    );
+  }
+
+
   getSalesLeadById(id: string) {
     this.isLoading = true;
     this.salesLeadService.getLeadById(id).subscribe(

@@ -16,12 +16,17 @@ const userRoutes = {
 const routes = {
   users: {
     getAll: (filters?: Map<string, string>) => (filters ? `/users?${filters.toSanitizedURLFilters()}` : `/users`),
+    usersByRole: (filters?: Map<string, string>) => {
+      const filterString = filters ? filters.toSanitizedURLFilters() : '';
+      return `/usersByRole${filterString ? `?${filterString}` : ''}`;
+    },
+    
     register: () => `/users`,
     update: (id: string) => `/users/${id}`,
      updatepd: (id: string) => `/upd/${id}`,
      updatepdothers: (id: string) => `/updothers/${id}`,
       getupd: (userId: string) => `/getupd/${userId}`,
-       getusr: (userId: string) => `/users/${userId}`,  ///users/{userId}
+      getusr: (userId: string) => `/users/${userId}`,  ///users/{userId}
        getusrbyml: (username: string) => `/finduserbyusr/${username}`,  ///users/{userId}
   },
 };
@@ -35,6 +40,14 @@ export class UserService {
   getUsers(filters?: Map<string, string>): Observable<User[]> {
     return this.httpDispatcher.get<User[]>(routes.users.getAll(filters));
   }
+
+ 
+usersByRole(filters?: Map<string, string>): Observable<User[]> {
+  const url = routes.users.usersByRole(filters);
+  console.log('Request URL:', url); // Log the URL for debugging
+  return this.httpDispatcher.get<User[]>(url);
+}
+  
 
   // Create new sales leads
   register(data: any): Observable<any> {

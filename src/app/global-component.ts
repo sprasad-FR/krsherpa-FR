@@ -5,8 +5,10 @@ export const GlobalComponent = {
  
     
     headerToken : {'Authorization': `Bearer ${sessionStorage.getItem('token')}`},
-    API_URL : 'http://[::1]:3000',
+    API_URL :'http://[::1]:3000', 
     AUTH_API:"http://[::1]:3000/users/login", 
+   // API_URL : 'http://65.1.237.23:3000',
+   // AUTH_API:"http://65.1.237.23:3000/users/login", 
 
     // Auth Api 
      // AUTH_API:"http://[::1]:3000/users/login",

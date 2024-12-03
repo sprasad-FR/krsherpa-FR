@@ -303,7 +303,7 @@
             *ngIf="id!=null" 
             type="button"
             class="btn btn-success m-4 pl-5 pr-5"
-            (click)="openCTC(ctc)"
+            (click)="validateEmail(ctc)"
             [disabled]="convertBtn"
           >
             Convert
@@ -444,11 +444,11 @@
                     </div>
                    
                   </div>
-                  <div class="col-12">
+                  <div class="col-12" *ngIf="isVisible">
                     <div class="alert alert-danger text-center">
                       Email ID already exists.<br/>  Would you like to assign the existing Email ID to this Client?<br/>
-                      <button _ngcontent-ale-c407="" type="button" class="btn btn-outline-success m-1"> Yes </button>
-                      <button _ngcontent-ale-c407="" type="button" class="btn btn-outline-danger m-1"> No </button>
+                      <button _ngcontent-ale-c407=""  (click)="openCTC(ctc)" type="button" class="btn btn-outline-success m-1"> Yes </button>
+                      <button _ngcontent-ale-c407=""  (click)="hidePopUp()" type="button" class="btn btn-outline-danger m-1"> No </button>
                     </div>
                   </div>
                 </div>

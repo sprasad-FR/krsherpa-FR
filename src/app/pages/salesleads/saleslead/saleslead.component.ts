@@ -59,6 +59,7 @@ import { ToastService } from '../../toast-service';
 
 const log = new Logger('Create Lead Component');
 
+
 import {
   incentiveChartData,
   stageStatusDisplay,
@@ -99,6 +100,8 @@ export class SalesleadComponent implements OnInit {
   id: string;
   pageTitle: string;
   companies: any = [];
+  clientUsers:any=[];
+  isEmailCheck: boolean = false;
   companyExist = '';
   isLoading: boolean = false;
   btnName: string;
@@ -137,7 +140,7 @@ export class SalesleadComponent implements OnInit {
   rateTypes: any[];
   clientUserData: any;
   alreadyExist: string = '';
-
+  isVisible: boolean = false;
 
   afuConfig = {
     multiple: false,
@@ -513,6 +516,7 @@ getCountry() {
     this.getComapnyTypes();
     this.getCompanyNames();
     this.getLeadContact();
+    this.getClientUsers();
     this.stageStatus = stageStatus;
     this.leadSourceArray = leadSourceArray;
     this.createForm();
@@ -584,6 +588,24 @@ getCountry() {
     );
   }
 
+  getClientUsers() {
+    //const filter = { roles: ['client'] };
+    const filters = new Map();
+    // const filters = new Map<string, string>();
+    // filters.set('filter', JSON.stringify(filter));
+    
+    this.userService.usersByRole(filters).subscribe(
+      (userArray: any) => {
+        var users: Users[];
+        this.clientUsers = userArray;
+        console.log("this.clientUsers "+this.clientUsers);
+       // this.clientUsers = users.map(user => user.username);
+        
+      },
+      (error: any) => {}
+    );
+  }
+
   getSalesLeadById(id: string) {
 
     this.salesLeadService.getLeadById(id).subscribe(
@@ -608,7 +630,9 @@ this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| thi
       (salesLeadContact: SalesLeadContact) => {
         this.salesLeadContact = salesLeadContact;
         console.log(this.salesLeadContact);
-        this.salesLeadContact.notes=salesLeadContact?.notes[0]["note"];
+       // this.salesLeadContact.notes=salesLeadContact?.notes[0]["note"];
+        this.salesLeadContact.notes=salesLeadContact?.notes[0]["note"][0].note;
+        
         // let noteArray =  this.salesLeadContact?.notes[0];
         this.leadForm.patchValue({ leadContactGroup: salesLeadContact });
        // this.leadForm.patchValue({ leadContactGroup.notes: this.secondaryData.notes?.[0]["note"] });
@@ -707,7 +731,7 @@ this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| thi
     let number = event.target.value;
     const numberMatch = this.leadContactNo.filter((x) => x.contactNo == number || x.alternateMobile == number);
     if (numberMatch.length) {
-      this.numberExist = 'Number Alredy Exist';
+      this.numberExist = 'Number Already Exist';
       this.submitBtn = true;
     } else {
       this.numberExist = '';
@@ -877,105 +901,99 @@ this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| thi
       Object.keys(this.leadForm.value).forEach(
         (key) => this.leadForm.value[key] == null && delete this.leadForm.value[key]
       );
-  //    delete this.leadForm.value.leadContactGroup;
+      delete this.leadForm.value.leadContactGroup;
 
       let leadContactSubmit$;
- //     Object.keys(leadContactGroup).forEach((key) => leadContactGroup[key] == null && delete leadContactGroup[key]);
+      Object.keys(leadContactGroup).forEach((key) => leadContactGroup[key] == null && delete leadContactGroup[key]);
 
       if (leadContactGroup?.id) {
         //Update service call
-        leadContactSubmit$ = this.salesLeadContactService.update(leadContactGroup.id, leadContactGroup).subscribe((data: any) => {
-          //Submit Lead details
-          this.updateOrSaveSLData(data);
-        });
+        leadContactSubmit$ = this.salesLeadContactService.update(leadContactGroup.id, leadContactGroup);
       } else {
         //Create new lead
 
-        leadContactSubmit$ = this.salesLeadContactService.create(leadContactGroup).subscribe((data: any) => {
-          //Submit Lead details
-          this.updateOrSaveSLData(data);
-        });
+        leadContactSubmit$ = this.salesLeadContactService.create(leadContactGroup);
       }
 
-      // leadContactSubmit$.subscribe((data: any) => {
-      //   //Submit Lead details
-      //   let leadSubmit$;
-      //   if (this.id) {
-      //     //Update service call
-      //     this.leadForm.value.leadContactId = data.id;
-      //     this.leadForm.value.additionalLeadContactIds = this.salesLeadData.additionalLeadContactIds;
-      //     leadSubmit$ = this.salesLeadService.updateLeadById(this.id, this.leadForm.value);
-      //   } else {
-      //     //Create new lead
-      //     this.leadForm.value.leadContactId = data.id;
-      //     leadSubmit$ = this.salesLeadService.createNewLead(this.leadForm.value);
-      //   }
-      //   leadSubmit$.subscribe(
-      //     (response) => {
-      //       log.debug('response: ', response);
+      leadContactSubmit$.subscribe((data: any) => {
+        //Submit Lead details
+        let leadSubmit$;
+        if (this.id) {
+          //Update service call
+          this.leadForm.value.leadContactId = data.id;
+          this.leadForm.value.additionalLeadContactIds = this.salesLeadData.additionalLeadContactIds;
+          leadSubmit$ = this.salesLeadService.updateLeadById(this.id, this.leadForm.value);
+        } else {
+          //Create new lead
+          this.leadForm.value.leadContactId = data.id;
+          leadSubmit$ = this.salesLeadService.createNewLead(this.leadForm.value);
+        }
+        leadSubmit$.subscribe(
+          (response) => {
+            log.debug('response: ', response);
 
-      //       this.isLoading = false;
-      //       this.router.navigate(['/sales/sales-board']);
-      //       this.toasterService.success('Lead updated successfully.', 'Success!');
-      //       //email notification
-      //       let emailVariableObj = {
-      //         currentUser: this.whoaim.firstName,
-      //         SalesLeadLink: window.location.origin + '/lead-details/' + this.id,
+            this.isLoading = false;
+            this.router.navigate(['/sales/sales-board']);
+            this.toasterService.success('Lead updated successfully.', 'Success!');
+            //email notification
+            let emailVariableObj = {
+              currentUser: this.whoaim.firstName,
+              SalesLeadLink: window.location.origin + '/lead-details/' + this.id,
 
-      //         emailData: EmailTitleDescription.salesleadSaved,
-      //       };
-
-
-      //         emailVariableObj['Module'] = 'Sales' ;
-      //         emailVariableObj['name'] = this.salesLeadData?.companyName ;
-      //         emailVariableObj['Action'] = 'Lead created' ;
-      //         emailVariableObj['Actiontype'] = 'Informative' ;
-      //         emailVariableObj['link'] = 'sales/lead-details/' + this.id;
+              emailData: EmailTitleDescription.salesleadSaved,
+            };
 
 
-      //       this.emailService.sendEmail(
-      //         EmailJsTemplates.salesleadSaved,
-      //         this.emailToSend,
-      //         'Informative & approval',
-      //         emailVariableObj
-      //       );
-      //       if (this.leadForm.value.leadSource == '4') {
-      //         let emailVariableObj = {};
-      //         emailVariableObj['name'] = this.leadForm.value['leadSource'].text;
-      //         emailVariableObj['BDPLink'] = this.whoaim.firstName;
-      //         emailVariableObj['notificationType'] = 'skipEmail';
+              emailVariableObj['Module'] = 'Sales' ;
+              emailVariableObj['name'] = this.salesLeadData?.companyName ;
+              emailVariableObj['Action'] = 'Lead created' ;
+              emailVariableObj['Actiontype'] = 'Informative' ;
+              emailVariableObj['link'] = 'sales/lead-details/' + this.id;
+
+
+            this.emailService.sendEmail(
+              EmailJsTemplates.salesleadSaved,
+              this.emailToSend,
+              'Informative & approval',
+              emailVariableObj
+            );
+            if (this.leadForm.value.leadSource == '4') {
+              let emailVariableObj = {};
+              emailVariableObj['name'] = this.leadForm.value['leadSource'].text;
+              emailVariableObj['BDPLink'] = this.whoaim.firstName;
+              emailVariableObj['notificationType'] = 'skipEmail';
           
 
-      //         emailVariableObj['Module'] = 'Sales' ;
-      //         emailVariableObj['name'] = this.leadForm.value['leadSource'].text;
-      //         emailVariableObj['Action'] = 'BDP Attached' ;
-      //         emailVariableObj['Actiontype'] = 'Informative' ;
-      //         emailVariableObj['link'] = 'sales/lead-details/' + this.id;
+              emailVariableObj['Module'] = 'Sales' ;
+              emailVariableObj['name'] = this.leadForm.value['leadSource'].text;
+              emailVariableObj['Action'] = 'BDP Attached' ;
+              emailVariableObj['Actiontype'] = 'Informative' ;
+              emailVariableObj['link'] = 'sales/lead-details/' + this.id;
 
 
 
-      //         this.emailToSend.push(this.emailReceiver);
-      //         this.emailService.sendEmail(
-      //           EmailJsTemplates.BDPattached,
-      //           this.emailToSend,
-      //           'Informative',
-      //           emailVariableObj
-      //         );
-      //       }
-      //       window.location.reload();
+              this.emailToSend.push(this.emailReceiver);
+              this.emailService.sendEmail(
+                EmailJsTemplates.BDPattached,
+                this.emailToSend,
+                'Informative',
+                emailVariableObj
+              );
+            }
+            window.location.reload();
 
-      //       this.router.navigate(['salesleads/mysales', '']);  //salesleads/mysales
-      //       this.modalService.dismissAll();
+            this.router.navigate(['salesleads/mysales', '']);  //salesleads/mysales
+            this.modalService.dismissAll();
 
-      //     },
-      //     (error) => {
-      //       log.info(`Create Lead error: ${error}`, error);
-      //       this.error = error;
-      //       this.isLoading = false;
-      //       log.debug('Not Created');
-      //     }
-      //   );
-      // });
+          },
+          (error) => {
+            log.info(`Create Lead error: ${error}`, error);
+            this.error = error;
+            this.isLoading = false;
+            log.debug('Not Created');
+          }
+        );
+      });
    /* }
     else{
 
@@ -987,84 +1005,7 @@ this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| thi
     this.router.navigate(['/sales/sales-board']);
   }
 
-  updateOrSaveSLData(data){
-    let leadSubmit$;
-    if (this.id) {
-      //Update service call
-      this.leadForm.value.leadContactId = data.id;
-      this.leadForm.value.additionalLeadContactIds = this.salesLeadData.additionalLeadContactIds;
-      leadSubmit$ = this.salesLeadService.updateLeadById(this.id, this.leadForm.value);
-    } else {
-      //Create new lead
-      this.leadForm.value.leadContactId = data.id;
-      leadSubmit$ = this.salesLeadService.createNewLead(this.leadForm.value);
-    }
-    leadSubmit$.subscribe(
-      (response) => {
-        log.debug('response: ', response);
 
-        this.isLoading = false;
-        this.router.navigate(['/sales/sales-board']);
-        this.toasterService.success('Lead updated successfully.', 'Success!');
-        //email notification
-        let emailVariableObj = {
-          currentUser: this.whoaim.firstName,
-          SalesLeadLink: window.location.origin + '/lead-details/' + this.id,
-
-          emailData: EmailTitleDescription.salesleadSaved,
-        };
-
-
-          emailVariableObj['Module'] = 'Sales' ;
-          emailVariableObj['name'] = this.salesLeadData?.companyName ;
-          emailVariableObj['Action'] = 'Lead created' ;
-          emailVariableObj['Actiontype'] = 'Informative' ;
-          emailVariableObj['link'] = 'sales/lead-details/' + this.id;
-
-
-        this.emailService.sendEmail(
-          EmailJsTemplates.salesleadSaved,
-          this.emailToSend,
-          'Informative & approval',
-          emailVariableObj
-        );
-        if (this.leadForm.value.leadSource == '4') {
-          let emailVariableObj = {};
-          emailVariableObj['name'] = this.leadForm.value['leadSource'].text;
-          emailVariableObj['BDPLink'] = this.whoaim.firstName;
-          emailVariableObj['notificationType'] = 'skipEmail';
-      
-
-          emailVariableObj['Module'] = 'Sales' ;
-          emailVariableObj['name'] = this.leadForm.value['leadSource'].text;
-          emailVariableObj['Action'] = 'BDP Attached' ;
-          emailVariableObj['Actiontype'] = 'Informative' ;
-          emailVariableObj['link'] = 'sales/lead-details/' + this.id;
-
-
-
-          this.emailToSend.push(this.emailReceiver);
-          this.emailService.sendEmail(
-            EmailJsTemplates.BDPattached,
-            this.emailToSend,
-            'Informative',
-            emailVariableObj
-          );
-        }
-        window.location.reload();
-
-        this.router.navigate(['salesleads/mysales', '']);  //salesleads/mysales
-        this.modalService.dismissAll();
-
-      },
-      (error) => {
-        log.info(`Create Lead error: ${error}`, error);
-        this.error = error;
-        this.isLoading = false;
-        log.debug('Not Created');
-      }
-    );
-  }
 
   convertToClient() {
 
@@ -1079,18 +1020,20 @@ this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| thi
 
     if (!this.CTCForm.value.accountManagerId  ){
         alert("Account Manager is Required");
-        return;
+        return false;
     }
     if(!this.CTCForm.value.subPnlHeadId )  {
         alert("SubPnl Head is Required");
-        return;
+        return false;
     }
     if(!this.CTCForm.value.plheadId ) 
     {
       alert("PL Head is Required");
-      return;
+      return false;
     }
-  
+
+
+
     this.CTCForm.patchValue(this.salesLeadData);
     let CTCFormData = this.CTCForm.value;
     // CTCFormData.agreementType = this.agreementTypecheck;
@@ -1171,38 +1114,9 @@ this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| thi
     if (emp4mail3?.email) {
      this.emailToSend.push(emp4mail3.email);
     }
-
     
-
-
-    this.clientUserData.push({
-        id:this.salesLeadContact.id,
-      name: this.salesLeadContact.name,
-      designation: this.salesLeadContact .designation,
-      mobile: this.salesLeadContact .contactNo,
-      linkedinurl: this.salesLeadContact.linkedinurl,
-      email: this.salesLeadContact .email, 
-      notes: this.salesLeadContact.notes[0]?.["note"],                   
-      updatedAt: new Date(),
-    })
-
-
-    this.allContactPersons?.forEach((x) => {
-      
-      this.clientUserData.push({
-        id:x.id,
-        name: x.name,
-        designation: x.designation,
-        mobile: x.contactNo,
-        email: x.email, 
-        linkedinurl: x.linkedinurl,
-        notes: x.notes[0]?.note,                   
-        updatedAt: new Date(),
-      })
-
-
-    });
-
+    
+    
     this.emailToSend.push("compliance@knowledgeridge.com");
 
 
@@ -1267,10 +1181,67 @@ console.log(CTCFormData)
         this.error = error;
       }
     );
+    return true;
   }
 
+  validateEmail(content:any){
+    let salesLeadContactUserId =null;
+    if(!this.isEmailCheck){
+      salesLeadContactUserId = this.clientUsers.find((u) => u.username === this.salesLeadContact.email)?.id;
+      if(typeof salesLeadContactUserId=='undefined')
+        salesLeadContactUserId=null;
+      if(salesLeadContactUserId!=null){
+          this.isEmailCheck=true;
+      }
+      this.clientUserData.push({
+        id:this.salesLeadContact.id,
+        name: this.salesLeadContact.name,
+        designation: this.salesLeadContact .designation,
+        mobile: this.salesLeadContact .contactNo,
+        linkedinurl: this.salesLeadContact.linkedinurl,
+        email: this.salesLeadContact .email, 
+        notes: (typeof this.salesLeadContact.notes !='undefined')?this.salesLeadContact.notes[0]?.["note"]:"",                   
+        updatedAt: new Date(),
+        userId:salesLeadContactUserId,
+      })
+      salesLeadContactUserId=null;
+      this.allContactPersons?.forEach((x) => {
+        salesLeadContactUserId = this.clientUsers.find((u) => u.username === x.email)?.id;
+        if(typeof salesLeadContactUserId=='undefined')
+          salesLeadContactUserId=null;
+        if(!this.isEmailCheck)
+          if(salesLeadContactUserId!=null){
+            this.isEmailCheck=true;
+          }
+        this.clientUserData.push({
+          id:x.id,
+          name: x.name,
+          designation: x.designation,
+          mobile: x.contactNo,
+          email: x.email, 
+          linkedinurl: x.linkedinurl,
+          notes: (typeof x.notes !='undefined')?x.notes[0]?.["note"]:"",                   
+          updatedAt: new Date(),
+          userId:salesLeadContactUserId,
+        })
+   
+      });
+      if(this.isEmailCheck){
+        this.isVisible = !this.isVisible;
+        return false;
+      }
 
+    }
+    this.openCTC(content);
+    return true;
+  }
+  hidePopUp(){
+    this.isVisible = !this.isVisible;
+    this.isEmailCheck=false;
+  }
   openCTC(content:any) {
+
+   
     // this.submitted = false;
    // this.modalService.dismissAll;
      this.modalService.open(content, { size: 'lg', centered: true });
