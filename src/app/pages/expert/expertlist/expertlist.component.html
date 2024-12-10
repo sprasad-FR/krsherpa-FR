@@ -4,23 +4,23 @@
 <app-loader [isLoading]="isLoading"></app-loader>
 <div class="row"> 
   <div class="col-md-12">
-<div class="float-end">
-  <p class="text-primary"> <a href="javascript:void(0);" class="popover-test fw-medium text-decoration-underline link-success" data-bs-toggle="popover" title="If you have linkedin URL &#013; you can  add profile from linkedIn, &#013; or you can click this button &#013; to add Expert manually" data-bs-content="" data-bs-container="body" data-bs-placement="left" data-bs-original-title="">
-                                                      
-  <button type="button" (click)="editemp('0',empmodel1)"class="btn btn-primary m-1">Add</button> </a> </p>
-</div>
+
 </div>
 </div>
 <div class="row">
     <div class="col-md-12">
       
  <div class="card">
-       
-<hr>     
+  <div class="float-end">
+    <span class="text-primary" style="position: absolute; top:10px; right:10px"> <a href="javascript:void(0);" class="popover-test fw-medium text-decoration-underline link-success" data-bs-toggle="popover" title="If you have linkedin URL &#013; you can  add profile from linkedIn, &#013; or you can click this button &#013; to add Expert manually" data-bs-content="" data-bs-container="body" data-bs-placement="left" data-bs-original-title="">
+                                                        
+    <button type="button" (click)="editemp('0',empmodel1)"class="btn btn-primary m-1">Add</button> </a> </span>
+  </div>     
+    
        
 <div  style="display: none;" >
   <form [formGroup]="leadFormGrp" id="ngForm">
-    <div class="row mt-2">
+    <div class="row mt-0">
       <div class="col-md form-group">
         <label for="sector">Keywords <i class='bx bx-info-circle' title="Give multiple words separated by comma"></i></label>
         <input
@@ -132,7 +132,7 @@
   </form>
 
 </div>
-<hr>
+
 
 
             

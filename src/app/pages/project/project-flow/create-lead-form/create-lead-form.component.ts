@@ -65,7 +65,7 @@ export class CreateLeadFormComponent implements OnInit {
     this.createForm();
   }
 
-  submitData() {
+   submitData() {
     const expertData = this.leadFormGrp.value;
 
     if (this.leadFormGrp.valid) {

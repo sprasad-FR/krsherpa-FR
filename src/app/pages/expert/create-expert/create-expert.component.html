@@ -80,7 +80,7 @@
                   class="form-control"
                   formControlName="primaryEmail"
                  
-                  (keyup)="checkEmail($event)" required
+                  (blur)="checkEmail($event)" required
                 />
                
                 <span *ngIf="emailMatch != ''" class="alert text-danger">

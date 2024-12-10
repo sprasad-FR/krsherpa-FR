@@ -631,8 +631,14 @@ this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| thi
         this.salesLeadContact = salesLeadContact;
         console.log(this.salesLeadContact);
        // this.salesLeadContact.notes=salesLeadContact?.notes[0]["note"];
-        this.salesLeadContact.notes=salesLeadContact?.notes[0]["note"][0].note;
-        
+       // this.salesLeadContact.notes=salesLeadContact?.notes[0]["note"][0].note;
+        if (Array.isArray(salesLeadContact?.notes) && salesLeadContact?.notes.length > 0) { 
+          if (typeof salesLeadContact.notes[0]["note"][0].note === 'undefined') { 
+            this.salesLeadContact.notes = [this.salesLeadContact.notes[0]]; 
+          } else{
+            this.salesLeadContact.notes=salesLeadContact?.notes[0]["note"][0].note;
+          }
+        }
         // let noteArray =  this.salesLeadContact?.notes[0];
         this.leadForm.patchValue({ leadContactGroup: salesLeadContact });
        // this.leadForm.patchValue({ leadContactGroup.notes: this.secondaryData.notes?.[0]["note"] });
@@ -752,7 +758,8 @@ this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| thi
     this.currenciesList = currencies;
     this.rateTypes = options.rateTypes;
 
-    this.CTCForm = this.formBuilder.group({
+    this.CTCForm = this.formBuilder.group({ 
+      isAgreementDone: [null, Validators.required], 
       companyName: [null, [Validators.required, Validators.minLength(3)]],
       companyType: [null, [Validators.nullValidator]],
       contactNo: [null, [Validators.nullValidator]],
@@ -764,7 +771,6 @@ this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| thi
       country: [null, [Validators.nullValidator]],
       zipCode: [null],
 
-      isAgreementDone: [null, Validators.required],
       baseRate: [null, [Validators.nullValidator]],
       baseRateType: [null, [Validators.nullValidator]],
       agreementType: [null],
@@ -1197,6 +1203,7 @@ console.log(CTCFormData)
         id:this.salesLeadContact.id,
         name: this.salesLeadContact.name,
         designation: this.salesLeadContact .designation,
+        phoneCode: this.salesLeadContact.primary_phonecode,
         mobile: this.salesLeadContact .contactNo,
         linkedinurl: this.salesLeadContact.linkedinurl,
         email: this.salesLeadContact .email, 
@@ -1217,6 +1224,7 @@ console.log(CTCFormData)
           id:x.id,
           name: x.name,
           designation: x.designation,
+          phoneCode: x.phonecode,
           mobile: x.contactNo,
           email: x.email, 
           linkedinurl: x.linkedinurl,

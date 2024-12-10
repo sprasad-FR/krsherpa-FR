@@ -440,8 +440,9 @@ return ;
 
     if (email!='' && this.btnName == 'Create')
     {
-email= Buffer.from(email.toString()).toString('base64')
-   
+      
+//email= Buffer.from(email.toString()).toString('base64')
+email='0mbzE' + Buffer.from(email.toString()).toString('base64')
 console.log('email',email);
     const filters = new Map();
     const filter = {
@@ -462,16 +463,24 @@ console.log('email',email);
 
     this.expertService.getAll(filters).subscribe(
       (data: any) => {
+        
         this.expertemail = data;
         this.isLoading=false;
-        if (this.expertemail.length > 0) {
-          this.emailMatch = "Email Already Exist ";
-      this.hrefMatch="/expert/expert-details/"+data[0].id 
-    console.log('email exists', this.hrefMatch);
-        } else {
-          this.emailMatch = '';
-          
+        if (this.expertemail.length > 0) { 
+          const existingExpert = data.find((u) => u.primaryEmail === email); 
+          const exId = existingExpert ? existingExpert.id : ''; 
+          if (exId) { 
+            this.emailMatch = "Email Already Exists"; 
+            this.hrefMatch = `/expert/expert-details/${exId}`; 
+            console.log('email exists', this.hrefMatch); 
+          } else { 
+            this.emailMatch = ''; 
+          } 
+        } 
+        else { 
+          this.emailMatch = ''; 
         }
+        
       },
       (error: any) => {
         this.emailMatch = '';
@@ -481,6 +490,18 @@ console.log('email',email);
 
 
   }
+
+  makeid(length:number) {
+
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0125478';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * 
+ charactersLength));
+   }
+   return result;
+}
 
  generatePassword() {
     var length = 8,

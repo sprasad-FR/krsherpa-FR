@@ -536,7 +536,10 @@
               type="radio"
               class="custom-control-input"
               id="isYes"
-              formControlName="isYes"
+              name="isAgreementDone"
+              
+              [checked]="this.isAgree==true"
+              (click)="onAgreementChange(true);"
             />&nbsp;
             <label class="custom-control-label mr-3" for="isYes">Yes</label>
             &nbsp;&nbsp;&nbsp;
@@ -544,8 +547,10 @@
               type="radio"
               class="custom-control-input"
               id="isNo"
-              formControlName="isNo"
-              checked
+             
+              name="isAgreementDone"
+              [checked]="this.isAgree==false"
+              (click)="onAgreementChange(false);"
             />&nbsp;
             <label class="custom-control-label" for="isNo">No</label>
           </div>

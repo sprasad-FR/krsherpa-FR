@@ -418,9 +418,10 @@ let limitChar=2;
        this.cstatusArray = cstatusArray;
      /* this.getclientKrpiNo();
       this.getUsers();
-      this.getClients();
+      
       this.getComapnyTypes();
       this.getCompanyNames(); gs*/
+      this.getClients();
       this.getComapnyTypes();
       this.getEmployee();
       // this.getPlheadList();
@@ -662,6 +663,7 @@ debugger
             log.debug('Not Updated', clientData);
             this.error = error;
             this.isLoading = false;
+            this.toasterService.error('Client not updated successfully.', 'Error!');
           }
         );
       } else {
@@ -991,7 +993,7 @@ this.clientData.status = (client?.status)? client?.status : "Active";
 
   //Create new client user -  gs to be ported to sales lead
   submitClientUser() {
-    if (!this.clientUserName && !this.clientUserDesignation && !this.clientUserEmail  && !this.linkedinurl) {
+    if (!this.clientUserName || !this.phoneCodeCU || !this.clientUserEmail ) {
       this.error = true;
       return;
     }
@@ -1008,8 +1010,8 @@ this.clientData.status = (client?.status)? client?.status : "Active";
 
     this.cid = Math.random().toString(36).substr(2, 9);
 
-    if (this.selectedClientUserId && this.selectedClientUserId !="0") {
-      let clientUserEdit = this.clientData?.clientUser.find((x:any) => x.id == this.selectedClientUserId);
+    if (this.selectedClientUserId && this.selectedClientUserId.length >0) {
+      let clientUserEdit = this.clientData?.clientUser.find((x:any) => x.id == this.selectedClientUserId[0].id);
 
       this.editClientAsUser = {
         firstName: this.clientUserName,
@@ -1083,6 +1085,7 @@ this.clientData.status = (client?.status)? client?.status : "Active";
         },
         (error) => {}
       );
+      this.modalService.dismissAll();
     } else {
       let rolesArr = [];
       if (this.isCompliance == true) {
@@ -1135,9 +1138,10 @@ this.clientData.status = (client?.status)? client?.status : "Active";
         },
         (error) => {}
       );
+      this.modalService.dismissAll();
     }
 
-    this.modalService.dismissAll();
+    
   }
 
 
@@ -1197,10 +1201,12 @@ this.clientData.status = (client?.status)? client?.status : "Active";
   updateClientUser(clientUserFormModal: any, id:string) {
 
 debugger
-    console.log('lientUser', id)
+    console.log('clientUser', id)
     this.selectedClientUserId = this.clientUser;
    var locid=this.clientUser;
-    let clientUserEdit = this.clientData?.clientUser?.find((x:any) => x.id == locid)//this.selectedClientUserId);
+   if(id==="")
+    id=this.selectedClientUserId;
+    let clientUserEdit = this.clientData?.clientUser?.find((x:any) => x.id == id)//this.selectedClientUserId);
     console.log('lientUser1', clientUserEdit)
     this.clientUserName = clientUserEdit?.name;
     this.clientUserDesignation = clientUserEdit?.designation;  
@@ -1208,7 +1214,7 @@ debugger
     this.clientUserMobile = clientUserEdit?.mobile;
     this.clientUserEmail = clientUserEdit?.email;
      this.linkedinurl = clientUserEdit?.linkedinurl;
-    this.Notes = clientUserEdit?.Notes;
+    this.Notes = clientUserEdit?.notes;
 
     this.modalService.open(clientUserFormModal, { size: 'md', windowClass: 'modal-holder' });
 

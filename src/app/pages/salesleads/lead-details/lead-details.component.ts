@@ -653,7 +653,7 @@ console.log ('createComment');
       country: [null, [Validators.nullValidator]],
       zipCode: [null],
 
-      isAgreementDone: [null, Validators.required],
+     //isAgreementDone: [null, Validators.required],
       baseRate: [null, [Validators.nullValidator]],
       baseRateType: [null, [Validators.nullValidator]],
       agreementType: [null],
@@ -737,7 +737,7 @@ console.log ('createComment');
     this.CTCForm.patchValue(this.salesLeadData);
     let CTCFormData = this.CTCForm.value;
     // CTCFormData.agreementType = this.agreementTypecheck;
-    CTCFormData.isAgreementDone = CTCFormData.isAgreementDone ? true : false;
+    CTCFormData.isAgreementDone = this.isAgree;
     // this.salesLeadData['isAgreementDone'] = CTCFormData.isAgreementDone;
     CTCFormData.agreementType = CTCFormData.agreementType ? 'MSA' : 'Non MSA';
 
@@ -924,7 +924,8 @@ console.log(CTCFormData)
                 anchorElement.click();
             }
             //window.location.reload();
-            this.router.navigate(['client/clientlist', '']);
+          
+            this.router.navigate(['client/clientlist']);
            // this.router.navigate(['clients/show/', clientId]);
             // this.getSalesLeadById(this.id);
           },
@@ -1247,4 +1248,12 @@ console.log('salesLeadData',salesLeadData);
       this.convertBtn = true;
     }
   }
+
+  isAgree:boolean=false;
+  onAgreementChange(flag:boolean){
+    console.log(flag);
+    //this.CTCForm.value.isAgreementDone=flag;
+    this.isAgree=flag;
+  }
+
 }

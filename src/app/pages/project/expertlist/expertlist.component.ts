@@ -925,7 +925,8 @@ this.isLoading=true;
   
   this.keyword="";
   
-  var words= this.dbsearch.split(',');
+  // var words= this.dbsearch.split(',');
+  var words = this.dbsearch.split(',').flatMap(entry => entry.split(' ').filter(Boolean));
   console.log(words)
   var srchlst=[];
   if (words.length>1)

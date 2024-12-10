@@ -761,6 +761,12 @@
                   >
                   </ng-select>
                 </div>
+                <div class="row">
+                  <div class="col-xl-12 mb-4 text-right">
+                    <button type="button" (click)="cancelForm()" class="btn btn-outline-link bg-white pl-5 pr-5">Cancel</button>
+                    <button type="submit" [disabled]="clientBtn" class="btn btn-primary pl-5 pr-5 ml-3">{{ btnName }}</button>
+                  </div>
+                  </div>
               </div>
             </div>
           </div>
@@ -908,26 +914,7 @@
                   >
                   </ng-select>
                 </div>
-                <div  class="row">
-                  <div class="col-md-6 text-right">
-                    <a
-                      href="javascript:void(0)"
-                      (click)="createClientUser(clientUserFormModal)"
-                      class="btn btn-primary btn-block"
-                    >
-                      Create Client User
-                    </a>
-                  </div>
-                  <div class="col-md-6 text-right">
-                    <a
-                      href="javascript:void(0)"
-                      (click)="selectClientUser(selectClientUserModal)"
-                      class="btn btn-primary btn-block"
-                    >
-                      Update Client User
-                    </a>
-                  </div>
-                </div>
+               
               </div>
             </div>
           </div>
@@ -1028,7 +1015,7 @@
   </form>
 
 
-<ng-template #clientUserFormModal let-modal>
+<ng-template #clientUserFormModal_old let-modal>
   <div class="modal-header p-2 bg-dark">
     <h5 class="modal-title mt-0">{{ modalBtn }}</h5>
     xxxxx
@@ -1104,7 +1091,7 @@
       
       <div class="col-md-4">
         <div class="form-group">
-          <label for="clientUserEmail">Email</label>
+          <label for="clientUserEmail">Email<span class="required-asterisk">*</span></label>
           <input
             [disabled]="modalBtn == 'Update'"
             name="clientUserEmail"
@@ -1123,7 +1110,7 @@
 <div class="col-md-10">
   <div class="form-group">
     <label ></label>
-    <label for="linkedinurl">LinkedIn Url<span class="required-asterisk">*</span></label>
+    <label for="linkedinurl">LinkedIn Url</label>
     <input
       name="linkedinurl"    
       [(ngModel)]="linkedinurl"
@@ -1169,31 +1156,6 @@
   </div>
   <!-- </form> -->
 </ng-template>
-
-<ng-template #selectClientUserModal let-modal>
-  <div class="modal-header p-2 bg-dark">
-    <h5 class="modal-title mt-0">Update Client User</h5>
-    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
-  </div>
-  <div class="modal-body">
-    <div class="form-group">
-      <label for="select-clientUser"></label>
-      <ng-select
-        [items]="clientData?.clientUser"
-        bindLabel="name"
-        bindValue="id"
-        [(ngModel)]="clientUser"
-        (change)="updateClientUser(clientUserFormModal, '')"
-        id="select-clientUser"
-        name="select-clientUser"
-        placeholder="Select Client User"
-      >
-      </ng-select>
-    </div>
-  </div>
-</ng-template>
-
-
 
 <ng-template #taxes let-modal>
   <div class="modal-header p-2 bg-dark">
@@ -1249,46 +1211,81 @@
                                 <div style="width: auto;height:50vh; overflow-x: scroll" class="card">
                                   <div class="card-body">
                                     <div class="cart-title">
-                                      <h5>Client Users ({{ clientData?.clientUser?.length || '0' }})</h5>
+                                      <div  style="width: 49%; float:left;">
+                                        <h5>Client Users ({{ clientData?.clientUser?.length || '0' }})</h5>
+                                      </div>
+                                      
+                                      <div class="row mb-3" style="width: 49%; float:right;">
+                                        <div class="col-md-4 text-right">
+
+                                        </div>
+                                        <div class="col-md-4 text-right">
+                                          <a style="float:right"
+                                            href="javascript:void(0)"
+                                            (click)="createClientUser(clientUserFormModal)"
+                                            class="btn btn-primary btn-block"
+                                          >
+                                            Create Client User
+                                          </a>
+                                        </div>
+                                        <div class="col-md-4 text-right">
+                                          <a style="float:right"
+                                            href="javascript:void(0)"
+                                            (click)="selectClientUser(selectClientUserModal)"
+                                            class="btn btn-primary btn-block"
+                                          >
+                                            Update Client User
+                                          </a>
+                                        </div>
+                                      </div>
                                     </div>
+                                    
                                     <table
                                       id="basic-datatable"
                                       class="table table-bordered cards-table dt-responsive nowrap no-footer dtr-inline"
                                     >
                                       <thead>
                                         <tr>
-                                          <th style="width: 20%">
+                                          <th style="width: 3%">
+                                            
+                                          </th>
+                                          <th style="width: 22%">
                                             <p class="mb-0">Name</p>
                                           </th>
                                           <th style="width: 20%">
                                             <p class="mb-0">Designation</p>
                                           </th>
-                                          <th style="width: 25%">
+                                          <th style="width: 15%">
                                             <p class="mb-0">Email</p>
                                           </th>
-                                          <th style="width: 25%">
+                                          <th style="width: 20%">
                                             <p class="mb-0">LinkedIn URL</p>
                                           </th>
-                                          <th style="width: 25%">
+                                          <th style="width: 20%">
                                             <p class="mb-0">Notes</p>
                                           </th>
                                         </tr>
                                       </thead>
                                       <tbody>
                                         <tr class="m-2 row-card align-items-center" *ngFor="let item of clientData?.clientUser"    >
-                                          <td style="width: 30%" (click)="updateClientUser(clientUserFormModal1,item?.id)">
+                                          <td>
+                                            <p class="mb-0"><input name="selectName" type="checkbox" 
+                                              [checked]="item?.userId ? true : false"/>
+                                            </p>
+                                          </td>
+                                          <td (click)="updateClientUser(clientUserFormModal1,item?.id)">
                                             <p class="mb-0">{{ item?.name }}</p>
                                           </td>
-                                          <td style="width: 25%" (click)="updateClientUser(clientUserFormModal1,item?.id)">
+                                          <td (click)="updateClientUser(clientUserFormModal1,item?.id)">
                                             <p class="mb-0">{{ item?.designation }}</p>
                                           </td>
-                                          <td style="width: 25%">
+                                          <td>
                                             <p class="mb-0">{{ item?.email }}</p>
                                           </td>
-                                          <td style="width: 25%">
+                                          <td>
                                             <p class="mb-0">{{ item?.linkedinurl }}</p>
                                           </td>
-                                          <td style="width: 25%">
+                                          <td>
                                             <p class="mb-0">{{ item?.notes }}</p>
                                           </td>
                                         </tr>
@@ -1302,6 +1299,171 @@
                               <!-- end col -->
                           </div>
                           <!-- end row -->
+                           
+                          <ng-template #clientUserFormModal let-modal>
+                            <div class="modal-header p-2 bg-dark">
+                              <h5 class="modal-title mt-0">{{ modalBtn }}</h5>
+                              xxxxx
+                              <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label for="clientUserName">Name</label>
+                                    <input
+                                      name="clientUserName"
+                                      [(ngModel)]="clientUserName"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Eg. John Doe"
+                                    />
+                                    <input name="cid" [(ngModel)]="cid" type="hidden" />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label for="clientUserDesignation">Designation</label>
+                                    <input
+                                      name="clientUserDesignation"
+                                      [(ngModel)]="clientUserDesignation"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Eg. Software Developer"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-4 ">
+                                  <label>Country Code <span class="required-asterisk">*</span></label>
+                                  <ng-select
+                                    name="phoneCodeCU"
+                                    [(ngModel)]="phoneCodeCU"
+                                    [items]="countryArray"
+                                    bindLabel="label"
+                                    bindValue="phonecode"
+                                    [multiple]="false"
+                                    [closeOnSelect]="true"
+                                    [selectableGroup]="false"
+                                    placeholder="Select"
+                                    [searchFn]="aphSearchFn"
+                                    [title]="phoneCodeCU"
+
+                                  >
+                                    <ng-template ng-option-tmp let-item="item" let-search="isoCode">
+                                      {{ item?.isoCode }} ({{ item?.phonecode }})
+                                    </ng-template>
+                                  </ng-select>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-group">
+                                    <label for="clientUserMobile">Contact No</label>
+                                    <input
+                                      name="clientUserMobile"
+                                      [(ngModel)]="clientUserMobile"
+                                      type="number"
+                                      class="form-control"
+                                      placeholder="Eg. 8089989876"
+                                      (keyup)="checkPhone(phoneCodeCU,$event,'leadContactGroup_mob');"
+                                        
+                                    />
+                                    <span id="leadContactGroup_mob" class="alert text-danger p-0"></span>
+                                          
+                                  </div>
+                                </div>
+
+                                
+                                <div class="col-md-4">
+                                  <div class="form-group">
+                                    <label for="clientUserEmail">Email<span class="required-asterisk">*</span></label>
+                                    <input
+                                      [disabled]="modalBtn == 'Update'"
+                                      name="clientUserEmail"
+                                      [(ngModel)]="clientUserEmail"
+                                      type="email"
+                                      class="form-control"
+                                      placeholder="Eg. johndoe@gmail.com"
+                                    />
+                                  </div>
+                                </div>
+                              
+
+
+                              </div>
+                          <div class="row">
+                          <div class="col-md-10">
+                            <div class="form-group">
+                              <label ></label>
+                              <label for="linkedinurl">LinkedIn Url</label>
+                              <input
+                                name="linkedinurl"    
+                                [(ngModel)]="linkedinurl"
+                                type="text"
+                                class="form-control"
+                              />
+                            </div>
+                          </div>
+                          </div>    
+
+                          <div class="row">
+                          <div class="col-md-10">
+                            <div class="form-group">
+                              <label for="Notes">Notes</label>
+                              <input
+                                name="Notes"
+                                [disabled]="modalBtn == 'Update'"
+                                [(ngModel)]="Notes"
+                                type="text"
+                                class="form-control"
+                              />
+                            </div>
+                          </div>
+                          </div>
+                              
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <!-- <div class="form-group"> -->
+
+                                  <label for="Notes"
+                                    ><input name="isCompliance" [(ngModel)]="isCompliance" type="checkbox" class="largerCheckbox" /><span
+                                      class="ml-2"
+                                      >Is compliance user</span
+                                    >
+                                  </label>
+                                  <!-- </div> -->
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+                              <button type="submit" (click)="submitClientUser()" class="btn btn-success">{{ modalBtn }}</button>
+                            </div>
+                            <!-- </form> -->
+                          </ng-template>
+
+                          <ng-template #selectClientUserModal let-modal>
+                            <div class="modal-header p-2 bg-dark">
+                              <h5 class="modal-title mt-0">Update Client User</h5>
+                              <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="form-group">
+                                <label for="select-clientUser"></label>
+                                <ng-select
+                                  [items]="clientData?.clientUser"
+                                  bindLabel="name"
+                                  bindValue="id"
+                                  [(ngModel)]="clientUser"
+                                  (change)="updateClientUser(clientUserFormModal, '')"
+                                  id="select-clientUser"
+                                  name="select-clientUser"
+                                  placeholder="Select Client User"
+                                >
+                                </ng-select>
+                              </div>
+                            </div>
+                          </ng-template>
                         </ng-template>
                     </li>
                  
