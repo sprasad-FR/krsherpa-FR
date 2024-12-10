@@ -1447,17 +1447,18 @@ console.log(this.expnames);
      this.krExpertsList = projects;
 
      this.bindData() ;
-      this.service.emps= this.prjlst;
+     
 
       this.gridjsList$=this.service?.countries$;
-
-      if (this.isMcKinsey)
-      {
+      if (this.isMcKinsey) {
+        // Filter out McKinsey projects and store in clientprjlst
+        this.clientprjlst = this.prjlst.filter((e) => e.Client != null && e.Client.toLowerCase().indexOf('mckinsey') >= 0);
         
-      this.clientprjlst= this.prjlst.filter((e) =>e.Client!=null && e.Client.toLowerCase().indexOf('mckinsey')>=0);
-      // this.empList?.filter((e) => arrOfEMpIds.indexOf(e.userId) != -1);
-
+        // Update prjlst to remove McKinsey projects
+        this.prjlst = this.prjlst.filter((e) => e.Client == null || e.Client.toLowerCase().indexOf('mckinsey') < 0);
       }
+      this.service.emps= this.prjlst;
+      
       console.log('test', this.gridjsListclient$) 
       if ( this.totalcnt>300)
       {
