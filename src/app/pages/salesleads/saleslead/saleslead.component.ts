@@ -986,9 +986,11 @@ this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| thi
                 emailVariableObj
               );
             }
-            window.location.reload();
-
-            this.router.navigate(['salesleads/mysales', '']);  //salesleads/mysales
+            //window.location.reload();
+            console.log("submitData 990 on sales lead ");
+            this.router.navigate(['salesleads/mysales']);  //salesleads/mysales
+            this.router.navigate(['salesleads/list']); 
+            console.log("submitData 930 on sales lead ");
             this.modalService.dismissAll();
 
           },
