@@ -915,6 +915,7 @@ this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| thi
       if (leadContactGroup?.id) {
         //Update service call
         leadContactSubmit$ = this.salesLeadContactService.update(leadContactGroup.id, leadContactGroup);
+        console.log("update Sales Lead Contact step1 "+leadContactGroup?.id);
       } else {
         //Create new lead
 
@@ -929,6 +930,7 @@ this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| thi
           this.leadForm.value.leadContactId = data.id;
           this.leadForm.value.additionalLeadContactIds = this.salesLeadData.additionalLeadContactIds;
           leadSubmit$ = this.salesLeadService.updateLeadById(this.id, this.leadForm.value);
+          console.info("update Sales Lead By Id step2 ");
         } else {
           //Create new lead
           this.leadForm.value.leadContactId = data.id;
@@ -937,7 +939,7 @@ this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| thi
         leadSubmit$.subscribe(
           (response) => {
             log.debug('response: ', response);
-
+            console.info("leadSubmit step3 ");
             this.isLoading = false;
             this.router.navigate(['/sales/sales-board']);
             this.toasterService.success('Lead updated successfully.', 'Success!');
@@ -988,6 +990,7 @@ this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| thi
             }
             //window.location.reload();
             console.log("submitData 990 on sales lead ");
+            console.info("submitData 990 on sales lead step4 ");
             this.router.navigate(['salesleads/mysales']);  //salesleads/mysales
             this.router.navigate(['salesleads/list']); 
             console.log("submitData 930 on sales lead ");
