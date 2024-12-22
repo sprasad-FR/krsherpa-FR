@@ -1378,12 +1378,14 @@
                                   <div class="form-group">
                                     <label for="clientUserEmail">Email<span class="required-asterisk">*</span></label>
                                     <input
+                                     
                                       [disabled]="modalBtn == 'Update'"
                                       name="clientUserEmail"
                                       [(ngModel)]="clientUserEmail"
                                       type="email"
                                       class="form-control"
                                       placeholder="Eg. johndoe@gmail.com"
+                                      (blur)="checkEmail($event)" required
                                     />
                                   </div>
                                 </div>
@@ -1431,6 +1433,20 @@
                                       >Is compliance user</span
                                     >
                                   </label>
+                                  <!-- </div> -->
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <!-- <div class="form-group"> -->
+
+                                    <div class="col-12" *ngIf="isVisible">
+                                      <div class="alert alert-danger text-center">
+                                        Email ID already exists.<br/>  Would you like to assign the existing Email ID to this Client?<br/>
+                                        <button _ngcontent-ale-c407=""  (click)="continueSave()" type="button" class="btn btn-outline-success m-1"> Yes </button>
+                                        <button _ngcontent-ale-c407=""  (click)="hidePopUp()" type="button" class="btn btn-outline-danger m-1"> No </button>
+                                      </div>
+                                    </div>
                                   <!-- </div> -->
                                 </div>
                               </div>

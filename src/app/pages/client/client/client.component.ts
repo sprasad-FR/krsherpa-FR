@@ -160,7 +160,10 @@ export class ClientComponent implements OnInit {
            allroles: any[]=[];
            
  selectedrules: any[]=[];
-
+ clientUsers:any=[];
+ isEmailCheck: boolean = false;
+ isVisible: boolean = false;
+ existingUserId: string | null = null;
  @Input() empid: string='';
  @Input() readonly: boolean=true;
   constructor(
@@ -424,6 +427,7 @@ let limitChar=2;
       this.getClients();
       this.getComapnyTypes();
       this.getEmployee();
+      this.getClientUsers();
       // this.getPlheadList();
   
     // this.pageTitle = 'CREATE A NEW CLIENT';
@@ -893,7 +897,7 @@ this.clientData.status = (client?.status)? client?.status : "Active";
 
   // Open client user form modal
   createClientUser(clientUserFormModal: any) {
-    this.selectedClientUserId="0";
+    this.selectedClientUserId=null;
     this.modalService.open(clientUserFormModal, { size: 'lg', windowClass: 'modal-holder' });
     this.modalBtn = 'Save';
     this.clientUserName = '';
@@ -985,11 +989,62 @@ this.clientData.status = (client?.status)? client?.status : "Active";
     }
 
 
+    checkEmail(event: any) {
 
-
-
-
-  
+      let email = event.target.value.trim();
+      if (!email || !this.isValidEmail(this.clientUserEmail))  { 
+        this.clientUserEmail="";
+      }
+      
+      let salesLeadContactUserId =null;
+      if(!this.isEmailCheck){
+        salesLeadContactUserId = this.clientUsers.find((u) => u.username === email)?.id;
+        if(typeof salesLeadContactUserId=='undefined')
+          salesLeadContactUserId=null;
+        if(salesLeadContactUserId!=null){
+            this.isEmailCheck=true;
+            this.existingUserId=salesLeadContactUserId;
+        }
+      }
+      if(this.isEmailCheck){
+        this.isVisible = !this.isVisible;
+        return false;
+      }
+      return true;
+    }
+    continueSave(){
+      this.isEmailCheck=false;
+      this.isVisible = !this.isVisible;
+    }
+    hidePopUp(){
+      this.isVisible = !this.isVisible;
+      this.isEmailCheck=false;
+      this.clientUserEmail="";
+      this.existingUserId=null;
+    }
+   
+    isValidEmail(email: string): boolean {
+      // Simple email validation regex
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+    getClientUsers() {
+      //const filter = { roles: ['client'] };
+      const filters = new Map();
+      // const filters = new Map<string, string>();
+      // filters.set('filter', JSON.stringify(filter));
+      
+      this.userService.usersByRole(filters).subscribe(
+        (userArray: any) => {
+          var users: Users[];
+          this.clientUsers = userArray;
+          console.log("this.clientUsers "+this.clientUsers);
+         // this.clientUsers = users.map(user => user.username);
+          
+        },
+        (error: any) => {}
+      );
+    }
 
   //Create new client user -  gs to be ported to sales lead
   submitClientUser() {
@@ -1011,7 +1066,7 @@ this.clientData.status = (client?.status)? client?.status : "Active";
     this.cid = Math.random().toString(36).substr(2, 9);
 
     if (this.selectedClientUserId && this.selectedClientUserId.length >0) {
-      let clientUserEdit = this.clientData?.clientUser.find((x:any) => x.id == this.selectedClientUserId[0].id);
+      let clientUserEdit = this.clientData?.clientUser.find((x:any) => x.id == this.selectedClientUserId);
 
       this.editClientAsUser = {
         firstName: this.clientUserName,
@@ -1202,7 +1257,7 @@ this.clientData.status = (client?.status)? client?.status : "Active";
 
 debugger
     console.log('clientUser', id)
-    this.selectedClientUserId = this.clientUser;
+    this.selectedClientUserId = id;
    var locid=this.clientUser;
    if(id==="")
     id=this.selectedClientUserId;
@@ -1262,8 +1317,6 @@ debugger
       this.convertBtn = false;
     }
   }
-
-
 
 
 }
