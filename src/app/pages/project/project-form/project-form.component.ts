@@ -187,6 +187,7 @@ export class ProjectFormComponent implements OnInit {
     projectData['projectId'] =
       momnt.year() + '' + momnt.month() + '' + momnt.day() + '' + momnt.hour() + '' + momnt.second();
     projectData['researchAnalyst'] = projectData.researchAnalyst;
+    projectData['researchManagerId'] = projectData.researchManagerId;
 
 if ( !projectData.additionalkeyAccMgrIds)
 {
@@ -512,7 +513,7 @@ console.log('in loop2',currentClient);
     this.projectFormGrp = this.formBuilder.group({
       projectId: [null, [Validators.required]],
       name: [null, [Validators.required]],
-      researchAnalyst: [null, [Validators.required]],
+      researchAnalyst: [''],
       clientUsers: [null, [Validators.nullValidator]],
       projectType: [null, [Validators.nullValidator]],
       status: [null, [Validators.required]],
@@ -535,7 +536,7 @@ console.log('in loop2',currentClient);
       clientId: [null, [Validators.required]],
       billingclientId: [null],
       keyAccMgrId: [null, Validators.required],
-      researchManagerId: [null, [Validators.required]],
+      researchManagerId: [''],
       leadAttached: [null, [Validators.nullValidator]],
       givenToAccMgr: [null, [Validators.nullValidator]],
       givenToClient: [null, [Validators.nullValidator]],

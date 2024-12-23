@@ -715,7 +715,7 @@ debugger
   }
 
   cancelForm() {
-    this.router.navigate(['/clients/assignments']);
+    window.location.reload();
   }
 
   private getClientById(id: string) {
@@ -736,6 +736,7 @@ console.log (client);
         const match = this.countryArray.find(c => c.name === this.clientData.country);
         if(match!=null){
           const countryIso=match.isoCode;
+          this.countryISO=countryIso;
           this.stateArray = State.getStatesOfCountry(countryIso);
           const match1 = this.stateArray.find(c => c.name === this.clientData.state);
           if(match1!=null)
@@ -779,7 +780,7 @@ this.clientData.status = (client?.status)? client?.status : "Active";
       phoneCode: [null, [Validators.required]],
       contactNo: [null, [Validators.required]],
       fax: [' '],
-      url: [null, Validators.required],
+      url: [''],
       addressLine1: [null, [Validators.required]],
 
       city: [null, [Validators.required]],

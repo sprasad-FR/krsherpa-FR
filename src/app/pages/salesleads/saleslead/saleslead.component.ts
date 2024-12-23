@@ -486,11 +486,13 @@ getCountry() {
   CountryId(event) {
     this.countryISO = event.isoCode;
     this.stateArray = State.getStatesOfCountry(this.countryISO);
+    this.leadForm.get('state')?.setValue('');
   }
 
   StateId(event) {
     const stateISO = event.isoCode;
     this.cityList = City.getCitiesOfState(this.countryISO, stateISO);
+    this.leadForm.get('city')?.setValue('');
   }
 
   getBDP() {
@@ -612,8 +614,17 @@ getCountry() {
       (salesLeadData: SalesLead) => {
         this.salesLeadData = salesLeadData;
         this.showLeadReference(this.salesLeadData?.leadSource);
-console.log(this.salesLeadData);
+        console.log(this.salesLeadData);
         this.leadForm.patchValue(this.salesLeadData);
+        const match = this.countryArray.find(c => c.name === this.salesLeadData.country);
+        if(match!=null){
+          const countryIso=match.isoCode;
+          this.countryISO =countryIso;
+          this.stateArray = State.getStatesOfCountry(countryIso);
+          const match1 = this.stateArray.find(c => c.name === this.salesLeadData.state);
+          if(match1!=null)
+            this.cityList = City.getCitiesOfState(countryIso, match1.isoCode);
+        }
         this.getSalesLeadContactById(salesLeadData?.leadContactId);
 
 this.readonly= false;// !((this.whoaim.id===this.salesLeadData.assigneeId)|| this.salesLeadData ;

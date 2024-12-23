@@ -828,6 +828,7 @@ console.log ('createComment');
         name: this.salesLeadContact.name,
         designation: this.salesLeadContact .designation,
         mobile: this.salesLeadContact .contactNo,
+        phoneCode:this.salesLeadContact.primary_phonecode,
         linkedinurl: this.salesLeadContact.linkedinurl,
         email: this.salesLeadContact .email, 
         notes: this.salesLeadContact.notes[0]?.["note"],                   
