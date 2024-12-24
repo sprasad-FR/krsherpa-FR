@@ -39,6 +39,7 @@ const log = new Logger('Expert Form Component');
   styleUrls: ['./create-expert.component.scss'],
 })
 export class CreateExpertComponent implements OnInit {
+  validationMsgDiv:boolean=false;
   currenciesList: any;
   researchMgrList: any;
   rateTypes: any[];
@@ -543,6 +544,19 @@ if (this.leadFormGrp.controls['alternatePhoneCountryCode'].value==null)
     //alternatePhoneCountryCode
     let expertData = this.leadFormGrp.value;
    
+        	  //validation logic
+if (expertData.primaryEmail ==null || expertData.primaryEmail.trim()=="" ||
+this.leadFormGrp.controls['contactNo'].value ==null || this.leadFormGrp.controls['contactNo'].value=="" ||
+this.leadFormGrp.controls['phoneCode'].value ==null || this.leadFormGrp.controls['phoneCode'].value=="" ||
+this.leadFormGrp.controls['firstName'].value ==null || this.leadFormGrp.controls['firstName'].value=="" ||
+this.leadFormGrp.controls['lastName'].value ==null || this.leadFormGrp.controls['lastName	'].value==""
+){
+this.validationMsgDiv =true;
+this.isLoading=false;
+  if(this.validationMsgDiv)
+    return;
+}
+
     expertData.skills= this.expertData?.skills && this.expertData?.skills!=undefined? this.expertData.skills:'';
     expertData.education= this.expertData?.education&& this.expertData?.education!=undefined?  this.expertData.education:[];
     expertData.about= this.expertData?.about&& this.expertData?.about!=undefined?  this.expertData.about:'';
