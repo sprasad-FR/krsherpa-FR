@@ -23,6 +23,7 @@ interface State {
   startIndex: number;
   endIndex: number;
   totalRecords: number;
+  pageNumbers: any;
 }
 
 
@@ -66,7 +67,8 @@ export class ClientTableService {
     sortDirection: '',
     startIndex: 0,
     endIndex: 9,
-    totalRecords: 0
+    totalRecords: 0,
+    pageNumbers: [] //
   };
   private employeelist:client[]=[];
 
@@ -131,6 +133,18 @@ export class ClientTableService {
     if (this.endIndex > this.totalRecords) {
         this.endIndex = this.totalRecords;
     }
+    
+    // Calculate total pages
+    const totalPages = Math.ceil(this.totalRecords / this.pageSize);
+
+    // Generate page numbers in intervals of 5
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i += 5) {
+      pageNumbers.push(i);
+    }
+
+    // Store page numbers in state
+    this._state.pageNumbers = pageNumbers;
     countries = countries.slice(this._state.startIndex - 1, this._state.endIndex);
     return of({countries, total});
   }

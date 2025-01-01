@@ -82,7 +82,7 @@
             <div *ngIf="eventData?.projectName !== undefined" class="rounded-circle avatar-sm initial-img mr-3">
               {{ eventData?.projectName | getInitials: 2 }}
             </div>
-            <div class="mt-1">
+            <div class="mt-1" style="width:80%; float:right; padding-left:10px">
               <h5 class="font-size-15 text-truncate font-weight-bold text-wrap">
                 {{ eventData?.projectName ? eventData?.projectName: '--' }}
               </h5>
@@ -364,7 +364,7 @@
 <ng-template #content role="document" let-modal>
   <div class="modal-header p-2 bg-dark">
     <h5 class="modal-title mt-0">Event Details</h5>
-    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+    <button type="button" class="close2" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <div class="row">
@@ -434,7 +434,7 @@
 <ng-template #contents role="document" let-modal>
    <div class="modal-header p-2 bg-dark">
     <h5 class="modal-title mt-0">Event Details</h5>
-    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+    <button type="button" class="close2" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <div class="row">
@@ -510,7 +510,7 @@
 <ng-template #completedEvent role="document" let-modal>
   <div class="modal-header p-2 bg-dark">
     <h5 class="modal-title mt-0">Event</h5>
-    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+    <button type="button" class="close2" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <form [formGroup]="EventForm" novalidate>
@@ -963,7 +963,7 @@
 <ng-template #updatestatus role="document" let-modal>
   <div class="modal-header p-2 bg-dark">
     <h5 class="modal-title mt-0">Event Status Update</h5>
-    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+    <button type="button" class="close2" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <form [formGroup]="updatestatusForm" (ngSubmit)="updatetEventStatus()" novalidate>
@@ -1046,7 +1046,7 @@
       </div>
       
       <div class="row">
-        <div class="col-xl-12 mb-4 text-right">
+        <div class="col-xl-12 mb-4 text-right" style="text-align:right">
      
           <button type="submit" class="btn btn-primary" value="complete" (click)="updatetEventStatus()">Submit</button>
         </div>
@@ -1065,7 +1065,7 @@
 <ng-template #ClientStatus role="document" let-modal>
   <div class="modal-header p-2 bg-dark">
     <h5 class="modal-title mt-0">Event</h5>
-    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+    <button type="button" class="close2" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <form [formGroup]="ClientStatusForm" novalidate>
@@ -1369,7 +1369,7 @@
 <ng-template #ExpertStatus role="document" let-modal>
   <div class="modal-header p-2 bg-dark">
     <h5 class="modal-title mt-0">Event</h5>
-    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+    <button type="button" class="close2" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <form [formGroup]="ExpertStatusForm" novalidate>
@@ -1610,7 +1610,7 @@
 <ng-template #rescheduleEvent role="document" let-modal>
   <div class="modal-header p-2 bg-dark">
     <h5 class="modal-title mt-0">Event</h5>
-    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+    <button type="button" class="close2" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <form [formGroup]="RescheduleForm" (ngSubmit)="Reschedule()" novalidate>
@@ -1658,7 +1658,7 @@
 <ng-template #complianceModal let-modal>
   <div class="modal-header p-2 bg-dark">
     <h5 class="modal-title mt-0">{{ complianceModalTitle }}</h5>
-    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+    <button type="button" class="close2" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <textarea

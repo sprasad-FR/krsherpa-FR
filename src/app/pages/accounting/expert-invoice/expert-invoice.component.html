@@ -1,4 +1,14 @@
-<div style="margin-top:-25px;" >
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+        <h4 class="mb-sm-0">Expert Invoice</h4>        
+      </div>
+    </div>
+  </div>
+
+  <!--
   <div class="d-flex justify-content-center flex-nowrap">
    <div  >
                 
@@ -28,7 +38,7 @@
    </div>
  
  
- </div>
+ </div>-->
  </div>
  
 
@@ -191,8 +201,8 @@
 </div><div class="col-2">
               
               </div>
-             <div class="col-4">
-               <button type="button" class="btn btn-success" (click)="resetform()">Reset</button>
+             <div class="col-4" style="text-align:right">
+               <button type="button" class="btn btn-danger" (click)="resetform()">Reset</button>
                <button type="submit" class="btn btn-success" (click)="getEvents()">Get Events</button>
            
 
@@ -338,7 +348,7 @@
 
 
         <div style="display:block;">
-          &nbsp;  &nbsp;  &nbsp;  &nbsp;  <button  style="margin: 10px;"  type="button" class="btn btn-primary btn-sm " (click)="markAllPaid()">Mark as paid</button>
+          <button  style="margin: 10px;"  type="button" class="btn btn-primary btn-sm " (click)="markAllPaid()">Mark as paid</button>
           <div class="float-right"> </div>
       
           <button type="button" class="btn btn-primary btn-sm float-right" (click)="download('u')">Download Expert Bank Details as CSV new</button>
@@ -453,7 +463,7 @@
         <div class="row mb-md-2">
           <div class="table-responsive">
 
-            &nbsp;  &nbsp;  &nbsp;  &nbsp;  <button  style="margin: 10px;"  type="button" class="btn btn-primary btn-sm " (click)="markAllUnPaid()">Mark as Unpaid</button>
+             <button  style="margin: 10px;"  type="button" class="btn btn-primary btn-sm " (click)="markAllUnPaid()">Mark as Unpaid</button>
              <div class="float-right"> </div>
             <button type="button" style="margin: 10px;"  class="btn btn-primary btn-sm float-right" (click)="download('pd')">Download Expert Bank Details as CSV</button>
             <br/>

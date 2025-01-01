@@ -1,4 +1,14 @@
-<div style="margin-top:-25px;" >
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+        <h4 class="mb-sm-0">Miscellaneous</h4>        
+      </div>
+    </div>
+  </div>
+
+  <!--
   <div class="d-flex justify-content-center flex-nowrap">
    <div  >
                 
@@ -28,7 +38,7 @@
    </div>
  
  
- </div>
+ </div>-->
  </div>
  
 <div class="container-fluid">
@@ -88,9 +98,12 @@
             <div class="col-6">
               <label> </label>
               <div class="form-group">
-              <button type="button" class="btn btn-success" (click)="resetform()">Reset</button>
+              <button type="button" class="btn btn-danger" (click)="resetform()">Reset</button>
               <button type="submit" class="btn btn-success" (click)="getEexpenses()">Get Eexpenses</button>
-             </div>    </div>          
+              <button type="button"  (click)="addtax(taxes)"  class="btn btn-primary" >Add Expenses</button>
+             </div>    
+            
+            </div>          
 </div>
 
         </div>
@@ -98,11 +111,8 @@
         
       </div>
       <div>
-        <div class="card">
-          <div class="card-body">             
-
-         <button type="button"  (click)="addtax(taxes)"  class="btn btn-primary" >Add Expenses</button>
-       </div>
+        <div class="card p-2 mt-2">
+          
 
        
        <div class="row" *ngIf="accountingmiscdata?.subpnlexp?.length > 0">
@@ -112,24 +122,31 @@
           <h5>Details</h5>
         </div>
         <div class="col-sm-8" *ngFor="let media of accountingmiscdata?.subpnlexp; let i = index">
-                         
-              <div class="media align-items-center">
-                
-                <div class="media-body file-name w-75">
+              
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Sub Pnl</th>
+                <th style="text-align:right">Expense </th>
+                <th></th>
+              </tr>
+          </thead>
+            <tbody>
+                <tr>
+                  <td><h6 class="text-dark font-size-12 text-break">{{i+1}} . {{getUserName(media['pnlname'])}} </h6></td>
+                  <td style="text-align:right"><h6 class="text-dark font-size-12 text-break">{{media['expense']}} </h6></td>
+                  <td style="text-align:center">
+                    <div class="download-icon">
+                      <a (click)="edittax(taxes,media['pnlname'],media['expense'])" Edit>
+                        <i class="bx bx-pencil"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+            </tbody>
+          </table>
 
-                  <h6 class="text-muted font-size-12 text-break">{{i+1}} . {{getUserName(media['pnlname'])}} </h6>
-                  <!-- <p class="mb-0 font-size-12">Size: --</p> -3--->
-                </div>
-                <div class="media-body file-name w-75">
-                  <h6 class="text-muted font-size-12 text-break"> {{media['expense']}} </h6>
-                  <!-- <p class="mb-0 font-size-12">Size: --</p> -->
-                </div>
-                <div class="download-icon">
-                  <a (click)="edittax(taxes,media['pnlname'],media['expense'])" Edit>
-                    <i class="bx bx-pencil"></i>
-                  </a>
-                </div>
-              </div>
+             
             
             <!-- end card-body -->
         
@@ -146,7 +163,7 @@
 <ng-template #taxes let-modal>
   <div class="modal-header p-2 bg-dark">
     <h5 class="modal-title mt-0">Update Expenses</h5>
-    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+    <button type="button" class="close2" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
   </div>
 <br>
 <label  style="padding-left:25px;" > Period : {{fmonth+','+fyear}}</label>
@@ -190,7 +207,7 @@
     </div>
   </div>
    <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancel</button>
     <button type="submit" (click)="submitExpense()" class="btn btn-success">Submit</button>
   </div>
 </ng-template>

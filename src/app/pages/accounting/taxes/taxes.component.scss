@@ -17,10 +17,11 @@ ul {
 }
 table {
   border-collapse: separate;
-  border-spacing: 0px 12px;
-  padding: 0 10px;
+  border-spacing: 1px 12px;
+  padding: 0 0px;
   tr {
     th {
+        padding: 5px 12px !important;
       &:last-child {
         border-radius: 0 4px 4px 0;
       }
@@ -31,7 +32,7 @@ table {
     }
     td {
       vertical-align: middle !important;
-      padding: 6px 12px !important;
+      padding: 3px 12px !important;
       &:last-child {
         border-radius: 0 4px 4px 0;
       }
@@ -360,3 +361,9 @@ ibody{margin-top:20px;
 }
 
  }
+
+
+
+ .bg-dark{background:linear-gradient(to right, #03045e, #0c4a6e) !important;}
+
+ 

@@ -12,16 +12,16 @@
     <div class="col-md-12">
       
         <div class="card">
-          <div    > Filter :  &nbsp; 
+          <div class="p-3 pb-1" > Filter :  &nbsp; 
             <input checked (change)="setfilterstatus($event)"  type ="radio" id="stRdoNo"  name="stRdo" text="Unallocated" value="0"    > 
             <label    for ="stRdoNo"  class="d-inline-flex align-items-center"
-            > upcoming &nbsp;&nbsp;  </label> 
+            > &nbsp; Upcoming &nbsp;&nbsp;  </label> 
             <input (change)="setfilterstatus($event)" type ="radio" id="stRdoyes" name="stRdo" text="Allocated" value="1"   > 
             <label for ="stRdoyes"  class="d-inline-flex align-items-center"
-            > All &nbsp;&nbsp; </label> 
+            > &nbsp; All &nbsp;&nbsp; </label> 
             
            </div>
-            <hr>
+            <hr style="padding:0px 0px !important;margin:0px 0px !important">
             <div class="card-body">
               <div class="search-box d-inline-block mb-2">
                   <input type="text" class="form-control search" placeholder="Filter..." [(ngModel)]="service.searchTerm">

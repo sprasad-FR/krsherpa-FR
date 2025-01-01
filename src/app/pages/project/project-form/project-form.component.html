@@ -17,7 +17,29 @@
       </ul>
     </div>
     <div class="row">
-      <div class="col-md-10">
+      <div class="col-12 mb-1" style="float:right; width:100%; display:block; text-align:right">
+        <button type="button" (click)="cancelForm()" class="btn btn-danger pl-5 pr-5">Cancel</button>
+        <button type="submit"    class="btn btn-primary pl-5 pr-5 ml-3">{{ btnName }}</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        
+           <div class="row"> 
+            <div class="row" *ngFor="let note of notes">
+              <div class="col-12 mb-3 pt-1">
+                <div class="bg-light p-2 text-muted">
+                  <p class="mt-4 bg-light p-2 text-muted" [innerHTML]="note?.content"></p>
+                </div>
+    
+                <div *ngIf="note?.createdAt" class="pt-2">
+                  {{ note?.createdAt | localDateTime: 'DD MMM YYYY | hh:mm A' }}
+                </div>
+              </div>
+            </div>
+           </div>
+      </div>
+      <div class="col-md-12">
         <div class="card">
           <div class="card-body">
             <div class="row">
@@ -336,8 +358,8 @@
               </div>
 
  </div>
-<div class="row"     >
-  <div class="card">
+<div class="row mt-1"     >
+  <div class="card p-2">
   <div class="col-md-12">
     <div class="form-group">
       <label for="screeningQuestions">Screening questions <span class="required-asterisk">*</span></label>
@@ -461,27 +483,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-2">
-        <div class="row">
-          <div class="col-xl-12 mb-4 text-right">
-            <button type="button" (click)="cancelForm()" class="btn btn-outline-link bg-white pl-5 pr-5">Cancel</button>
-            <button type="submit"    class="btn btn-primary pl-5 pr-5 ml-3">{{ btnName }}</button>
-          </div>
-        </div>
-           <div class="row"> 
-            <div class="row" *ngFor="let note of notes">
-              <div class="col-12 mb-3 pt-1">
-                <div class="bg-light p-2 text-muted">
-                  <p class="mt-4 bg-light p-2 text-muted" [innerHTML]="note?.content"></p>
-                </div>
-    
-                <div *ngIf="note?.createdAt" class="pt-2">
-                  {{ note?.createdAt | localDateTime: 'DD MMM YYYY | hh:mm A' }}
-                </div>
-              </div>
-            </div>
-           </div>
-      </div>
+      
     </div>
 
     <ng-template #Attachments>

@@ -18,17 +18,17 @@
 
                           <div class="col-md">
                             <div>
-                              <h4 class="" style="color:blue;" >    {{ expertData?.firstName }}  {{ expertData?.lastName }}</h4>
+                              <h4 class="">    {{ expertData?.firstName }}  {{ expertData?.lastName }}</h4>
                                  <div class="hstack gap-3 flex-wrap">
                                    
-                                    <div > <p class="badge rounded-pill bg-info fs-12">
+                                    <div > <p *ngIf="expertData?.terms !== false" class="badge rounded-pill bg-info fs-12">
                                        {{ expertData?.terms == true ? 'Signed Up' : expertData.status }}
                                     </p> </div>
-                                    <div > <p class="badge rounded-pill bg-success fs-12">
+                                    <div > <p *ngIf="expertData?.industryGroup !== ''" class="badge rounded-pill bg-success fs-12">
                                       {{ expertData?.industryGroup }}
                                      </p> </div>
 
-                                     <div > <p class="badge rounded-pill bg-info fs-12">
+                                     <div > <p *ngIf="expertData?.designation !== ''" class="badge rounded-pill bg-info fs-12">
                                        {{ expertData?.designation }}
                                      </p> </div>
    
@@ -76,7 +76,7 @@
                                 <i    class="bx bx-plus-circle" (click)="openEditWorkingDetails(workingDetails, 'addData')"></i>
                               </h5>
                               <table  style="width:90%" class="table-responsive table-borderless table-striped ">
-                                <thead class="thead-dark" style="Color:white;background-color: grey;" >
+                                <thead class="thead-dark" style="Color:white;background-color: #05335f;" >
                                   <tr>
                                     <th>Company Name</th>
                                     <th>Company Type</th>
@@ -139,7 +139,7 @@
                           >
                             Add Bank Details
                           </button> -->
-                          <button type="button" class="btn btn-secondary" (click)="Openpopup(editbankdetails)">Edit Bank</button>
+                          <button type="button" class="btn btn-primary" (click)="Openpopup(editbankdetails)">Edit Bank</button>
                         </div>
                         <div class="card mt-4">
                           <div class="card-body">
@@ -915,10 +915,10 @@
                                   <td></td>
                                   <td></td>
                                   <td></td>
-                                  <td> <a  style="margin-right:3px;" class="btn btn-secondary btn-sm" (click)="openViewGTAMModal(viewGTAMModal, item)" routerLinkActive="active">
+                                  <td> <a  style="margin-right:3px;" class="btn btn-primary btn-sm" (click)="openViewGTAMModal(viewGTAMModal, item)" routerLinkActive="active">
                                     View GTAM
                                   </a></td>
-                                  <td *ngIf="roles != 'expert'"><a class="btn btn-sm btn-secondary " (click)="openViewGTCModal(viewGTCMModal, item)" routerLinkActive="active">
+                                  <td *ngIf="roles != 'expert'"><a class="btn btn-sm btn-primary " (click)="openViewGTCModal(viewGTCMModal, item)" routerLinkActive="active">
                                     View GTC
                                   </a></td>
                                  
@@ -1029,7 +1029,7 @@
     >
     </textarea>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="markCompliance('grievance')">Add Grievance</button>
+      <button type="button" class="btn btn-primary" (click)="markCompliance('grievance')">Add Grievance</button>
       <button type="button" class="btn btn-success" (click)="markCompliance('verify')">Verify</button>
     </div>
   </div>
@@ -1254,7 +1254,7 @@
 <ng-template #editExpertDetails let-modal>
   <div class="modal-header p-2 bg-dark">
     <h5 class="modal-title mt-0">Edit Profile</h5>
-    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+    <button type="button" class="close2" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <form [formGroup]="expertDetailsForm" (ngSubmit)="editDetail()" id="ngForm">
@@ -1299,7 +1299,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-secondary" (click)="editDetail()">Edit</button>
+        <button type="submit" class="btn btn-primary" (click)="editDetail()">Edit</button>
       </div>
     </form>
   </div>

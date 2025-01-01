@@ -1,15 +1,17 @@
 <!-- Start Breadcrumbs -->
-<app-breadcrumbs title="Projects" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+
 <!-- End Breadcrumbs -->
 <!--preloader-->
 <app-loader [isLoading]="isLoading"></app-loader>
 
 
 <div class="row"> 
-  
-  <div class="col-md-12">
+  <div class="col-md-6">
+     <app-breadcrumbs title="Projects" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+     </div>
+  <div class="col-md-6">
 <div class="float-end">
-  <button type="button" (click)="newprj('0',newprjc)"class="btn btn-primary m-1">Add</button>
+  <button type="button" (click)="newprj('0',newprjc)"class="btn btn-primary mt-3">Add</button>
 </div>
 </div>
 </div>
@@ -17,21 +19,21 @@
     <div class="col-md-12">
       
         <div class="card">
-          <div class="search-box d-inline-block mb-2">
+          <div class="search-box d-inline-block mb-2 p-3">
             <input type="text" class="form-control search" (keyup.enter)="search()"  placeholder="type keywords and press entery key to search..." [(ngModel)]="dbsearch">
-            <i class="ri-search-line search-icon"></i>
+            <i style="left:32px !important" class="ri-search-line search-icon"></i>
         </div>
-        <div    > Filter :  &nbsp; 
+        <div class="p-3" style="padding-top:0px !important; padding-bottom:0px !important"> Filter :  &nbsp; 
           <input checked (change)="setfilterstatus($event)"  type ="radio" id="stRdoNo"  name="stRdo" text="Unallocated" value="0"    > 
           <label    for ="stRdoNo"  class="d-inline-flex align-items-center"
-          > In Progress &nbsp;&nbsp;  </label> 
+          > &nbsp; In Progress &nbsp;&nbsp;  </label> 
           <input (change)="setfilterstatus($event)" type ="radio" id="stRdoyes" name="stRdo" text="Allocated" value="1"   > 
           <label for ="stRdoyes"  class="d-inline-flex align-items-center"
-          > All &nbsp;&nbsp; </label>      
+          > &nbsp; All &nbsp;&nbsp; </label>      
          </div>
          <label style="text-align: end; color:red;font-size: large;" >{{sreserr}}</label>
           
-       <hr>
+       <hr style="margin:0px !important">
 
             
             <div class="card-body">
@@ -39,7 +41,7 @@
               <div class=" col-sm-4  search-box d-inline-block mb-2">
                 Filter
                   <input type="text" class="form-control search" placeholder="Filter..." [(ngModel)]="service.searchTerm">
-                  <i class="ri-filter-line search-icon"></i>
+                  <i class="ri-filter-line search-icon" style="top:9px !important"></i>
                  
               </div>
               <div class="col-sm-3">

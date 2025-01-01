@@ -1,5 +1,5 @@
 .bg-soft-project
-{  margin-top: 20px;;
+{  
    // background-color: rgb(169, 228, 247) !important; // background-color: rgb(169, 228, 247) !important;
  //  background-image: linear-gradient( 180.6deg, rgba(156,252,248,1) 11.2%, rgba(110,123,251,1) 91.1% );
   // background-image: radial-gradient( circle 759px at -6.7% 50%, rgba(80,131,73,1) 0%, rgba(140,209,131,1) 26.2%, rgba(178,231,170,1) 50.6%, rgba(144,213,135,1) 74.1%, rgba(75,118,69,1) 100.3% );   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -7,13 +7,15 @@
  // background-image:linear-gradient(to right, #d1fae5,  #b9b8ad);// linear-gradient(to right, #DECBA4, #3E5151);
  // background-image:linear-gradient(to bottom, #d6dfde,  #9ea1a1);// linear-gradient(to right, #DECBA4, #3E5151);
 //color:rgb(61, 57, 57);
- 
+background-image: linear-gradient(to bottom, #ffffff, #d6d6d6);
   //background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
  //box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
  box-shadow: rgba(126, 125, 125, 0.3) 0px 19px 38px;
  
  border-radius: 15px;
 }
+
+
 
 .badge
 {

@@ -1,13 +1,22 @@
+<div class="container-fluid">
 
-
-<div style="margin-top:-25px;" >
- <div class="d-flex justify-content-center flex-nowrap">
-  <div  >
-               
-    <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref active" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/client-invoice" href="/accounting/client-invoice">Client Billing</a>
-    
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+        <h4 class="mb-sm-0">Client Invoice</h4>        
+      </div>
+    </div>
   </div>
-  <div  >
+
+  <!--<div class="d-flex justify-content-left flex-nowrap">
+    <div>
+
+      <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref active"
+        ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/client-invoice"
+        href="/accounting/client-invoice">Client Invoice</a>
+
+    </div>
+     <div  >
     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/expert-invoice" href="/accounting/expert-invoice">Expert Payments</a>
   
   </div>
@@ -28,190 +37,117 @@
   <div  style="display:none;" >
     <a _ngcontent-ciu-c168="" routerlinkactive="active" class="col dropdown-item side-nav-link-ref" ng-reflect-router-link-active="active" ng-reflect-router-link="/accounting/msaClients" href="/accounting/msaClients"> MSA Clients</a>
  
-  </div>
+  </div> 
 
 
-</div>
+  </div>-->
 </div>
 
 <div class="container-fluid">
-  <!-- <app-page-title title="Generate Invoice"></app-page-title> -->
+  <!--<app-page-title title="Generate Invoice"></app-page-title> 
 
-  <!-- <app-loader [isLoading]="isLoading"></app-loader> -->
-  
+  <app-loader [isLoading]="isLoading"></app-loader> -->
+
   <div class="card">
     <div class="card-body">
       <div class="row">
         <div class="col-6">
           <div class="form-group mb-4">
             <label>Select Client <span class="required-asterisk">*</span> </label>
-            <ng-select
-              name="clientList"
-              id="clientName"
-              [items]="clientList"
-              bindLabel="companyName"
-              bindValue="id"
-              [multiple]="false"
-              [closeOnSelect]="true"
-              [selectableGroup]="false"
-              placeholder="Select Client"
-              (change)="selectedClient(ClientName)"
-              [(ngModel)]="ClientName"
-            >
+            <ng-select name="clientList" id="clientName" [items]="clientList" bindLabel="companyName" bindValue="id"
+              [multiple]="false" [closeOnSelect]="true" [selectableGroup]="false" placeholder="Select Client"
+              (change)="selectedClient(ClientName)" [(ngModel)]="ClientName">
             </ng-select>
           </div>
         </div>
         <div class="col-6">
           <div class="form-group mb-4">
             <label>Select Project <span class="required-asterisk">*</span> </label>
-            <ng-select
-              name="projectName"
-              id="projectName"
-              [items]="projectList"
-              bindLabel="name"
-              bindValue="id"
-              [multiple]="false"
-              [closeOnSelect]="true"
-              [selectableGroup]="false"
-              placeholder="Select Project"
-              (change)="selectedProject(ProjectName)"
-              [(ngModel)]="ProjectName"
-            >
+            <ng-select name="projectName" id="projectName" [items]="projectList" bindLabel="name" bindValue="id"
+              [multiple]="false" [closeOnSelect]="true" [selectableGroup]="false" placeholder="Select Project"
+              (change)="selectedProject(ProjectName)" [(ngModel)]="ProjectName">
             </ng-select>
           </div>
         </div>
       </div>
-      <div class="row" >
+      <div class="row">
         <div class="col-6">
-      <div class="form-group">
-        <label for="invoiceFDate">From Date <span class="required-asterisk">*</span></label>
-        <input
-         
-          type="date"
-          name="invoiceFDate"
-          id="invoiceFDate"
-          class="form-control"
-          placeholder="Eg. 01-01-2021"
-          [(ngModel)]="fdate"
-        />
+          <div class="form-group">
+            <label for="invoiceFDate">From Date <span class="required-asterisk">*</span></label>
+            <input type="date" name="invoiceFDate" id="invoiceFDate" class="form-control" placeholder="Eg. 01-01-2021"
+              [(ngModel)]="fdate" />
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="form-group">
+            <label for="invoiceToDate">To Date <span class="required-asterisk">*</span></label>
+            <input type="date" name="invoiceToDate" id="invoiceToDate" class="form-control" placeholder="Eg. 01-01-2021"
+              [(ngModel)]="tdate" />
+          </div>
+        </div>
+
+
+
       </div>
-    </div>
+      <div class="row" *ngIf="ProjectName=='fdg'">
+        <div class="col-3">
+          <div class="form-group">
+            <label>From Month </label>
 
-    <div class="col-6">
-      <div class="form-group">
-        <label for="invoiceToDate">To Date <span class="required-asterisk">*</span></label>
-        <input
-         
-          type="date"
-          name="invoiceToDate"
-          id="invoiceToDate"
-          class="form-control"
-          placeholder="Eg. 01-01-2021"
-          [(ngModel)]="tdate"
-        />
+            <ng-select name="fmonth" id="fmonth" [items]="months" [multiple]="false" [closeOnSelect]="true"
+              [selectableGroup]="false" placeholder="Select From Month" [(ngModel)]="fmonth">
+            </ng-select>
+
+
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label>Year </label>
+
+            <ng-select name="fyear" id="fyear" [items]="years" [multiple]="false" [closeOnSelect]="true"
+              [selectableGroup]="false" placeholder="Select From Year" [(ngModel)]="fyear">
+            </ng-select>
+
+          </div>
+        </div>
+
+
+        <div class="col-3">
+          <div class="form-group">
+            <label>To Month </label>
+
+            <ng-select name="tmonth" id="tmonth" [items]="months" [multiple]="false" [closeOnSelect]="true"
+              [selectableGroup]="false" placeholder="Select To Month" [(ngModel)]="tmonth">
+            </ng-select>
+
+
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label>Year </label>
+
+            <ng-select name="tyear" id="tyear" [items]="years" [multiple]="false" [closeOnSelect]="true"
+              [selectableGroup]="false" placeholder="Select To Year" [(ngModel)]="tyear">
+            </ng-select>
+
+          </div>
+        </div>
       </div>
-    </div>
+      <div class="row">
+        <div class="col-6">
+        </div>
+        <div class="col-2">
 
+        </div>
+        <div class="col-4" style="text-align:right">
+          <button type="button" class="btn btn-danger" (click)="resetform()">Reset</button>
+          <button type="submit" class="btn btn-success" (click)="getEvents()">Get Events</button>
 
-
-    </div>
- <div class="row"  *ngIf="ProjectName=='fdg'">
-                      <div class="col-3">
-                        <div class="form-group">
-                          <label>From Month </label>
-
- <ng-select
-              name="fmonth"
-              id="fmonth"
-              [items]="months"
-             
-              [multiple]="false"
-              [closeOnSelect]="true"
-              [selectableGroup]="false"
-              placeholder="Select From Month"
-           
-              [(ngModel)]="fmonth"
-            >
-            </ng-select>
-
-                         
-                        </div>
-                      </div>
-                      <div class="col-3">
-                        <div class="form-group">
-                          <label>Year </label>
-
- <ng-select
-              name="fyear"
-              id="fyear"
-              [items]="years"
-             
-              [multiple]="false"
-              [closeOnSelect]="true"
-              [selectableGroup]="false"
-              placeholder="Select From Year"
-              
-              [(ngModel)]="fyear"
-            >
-            </ng-select>
-                         
-                        </div>
-                      </div>
-                      
-  
-                      <div class="col-3">
-                        <div class="form-group">
-                          <label>To Month </label>
-
- <ng-select
-              name="tmonth"
-              id="tmonth"
-              [items]="months"
-             
-              [multiple]="false"
-              [closeOnSelect]="true"
-              [selectableGroup]="false"
-              placeholder="Select To Month"
-           
-              [(ngModel)]="tmonth"
-            >
-            </ng-select>
-
-                         
-                        </div>
-                      </div>
-                      <div class="col-3">
-                        <div class="form-group">
-                          <label>Year </label>
-
- <ng-select
-              name="tyear"
-              id="tyear"
-              [items]="years"
-             
-              [multiple]="false"
-              [closeOnSelect]="true"
-              [selectableGroup]="false"
-              placeholder="Select To Year"
-              
-              [(ngModel)]="tyear"
-            >
-            </ng-select>
-                         
-                        </div>
-                      </div>
-    </div>
-    <div class="row">
-         <div class="col-6">
-</div><div class="col-2">
-              
-              </div>
-             <div class="col-4">
-               <button type="button" class="btn btn-success" (click)="resetform()">Reset</button>
-               <button type="submit" class="btn btn-success" (click)="getEvents()">Get Events</button>
-             
-              </div>
-       </div>
+        </div>
+      </div>
       <div class="row" *ngIf="eventList">
         <div class="col-lg-12">
           <ul ngbNav #customNav="ngbNav" [activeId]="route.fragment | async" class="nav-tabs nav-tabs-custom">
@@ -259,79 +195,71 @@
       <ng-template #TabContent>
         <div class="row mb-md-2">
           <div class="col-xl-12 mb-2 mt-2 text-right" *ngIf="showBtn">
-            <a
-              href="javascript:void(0)"
-             
-              (click)="createInvoice(newInvoice)"
-              (click)="CalculateInvoice()"
-              class="btn btn-info"
-              >Create Invoice</a>    <!-- (click)="CalculateAndPrintInvoice(printInvoice)" (click)="CalculateInvoice()   (click)="createInvoice(newInvoice)""   CalculateAndPrintInvoice(printInvoices)(change)="createInvoiceBtn()" --->
+            <a href="javascript:void(0)" (click)="createInvoice(newInvoice)" (click)="CalculateInvoice()"
+              class="btn btn-info">Create Invoice</a>
+            <!-- (click)="CalculateAndPrintInvoice(printInvoice)" (click)="CalculateInvoice()   (click)="createInvoice(newInvoice)""   CalculateAndPrintInvoice(printInvoices)(change)="createInvoiceBtn()" --->
           </div>
 
           <div class="table-responsive">
             <ng-container *ngIf="unbilledEvents?.length > 0">
-              
-          <!------ new table -->
-              <div class=""   *ngIf="unbilledEvents?.length > 0" >
-  
+
+              <!------ new table -->
+              <div class="" *ngIf="unbilledEvents?.length > 0">
+
                 <div class="col-xl-12">
-          <div class="divTable blueTable">
-          
-          
-          
-          
-          <div class="divTableHeading">
-          <div class="divTableRow">
-            <div class="divTableHead"> <input type="checkbox" (change)="checkAllCheckBox($event)" /></div>
-          <div class="divTableHead">Project</div>
-          <div class="divTableHead">Event Date</div>
-          <div class="divTableHead">Client Name</div>
-          <div class="divTableHead">Expert Name</div>
-          <div class="divTableHead">R.Analyst Name</div>
-            <div class="divTableHead">RM Name</div>
-            <div class="divTableHead">KAM Name</div>
-          <div class="divTableHead">Billable Amount</div>
-          <div class="divTableHead">Currency </div>
-        
-          
-          </div>
-          </div>
-          
-          
-          
-          
-          <div class="divTableBody">
-          
-          <div class="divTableRow"  *ngFor="let event of unbilledEvents; let i = index" >
-          <div class="divTableCell">
-            <input
-            type="checkbox"
-            value="{{ event?.id }}"
-            [(ngModel)]="unbilledEvents[i].checked"
-            (change)="createInvoiceBtn(event?.clientId)"   
-          />    
-          
-          </div>
-          <div class="divTableCell">{{ getProjectname(event?.projectId )}}</div>
-            <div class="divTableCell">{{ event?.eventAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}</div>
-          <div class="divTableCell">{{ getclientname(event?.clientId)}}</div>
-          <div class="divTableCell">{{ getExpert(event?.expertId)}}</div>
-          <div class="divTableCell">{{ getUserName(event?.researchAnalystId)}}</div>
-          <div class="divTableCell">{{ getUserName(event?.researchMgrId)}}</div>
-          <div class="divTableCell">{{ getUserName(event?.keyAccountManager)}}</div>
-         
-          <div class="divTableCell">{{ event?.clientPayableAmount }}</div>
-          
-          <div class="divTableCell">{{ event?.clientCurrency }}</div>
-          </div>
-          
-          
-          </div>
-          </div>
-          </div>
-          
-           </div>
-          <!------ new table -->
+                  <div class="divTable blueTable">
+
+
+
+
+                    <div class="divTableHeading">
+                      <div class="divTableRow">
+                        <div class="divTableHead"> <input type="checkbox" (change)="checkAllCheckBox($event)" /></div>
+                        <div class="divTableHead">Project</div>
+                        <div class="divTableHead">Event Date</div>
+                        <div class="divTableHead">Client Name</div>
+                        <div class="divTableHead">Expert Name</div>
+                        <div class="divTableHead">R.Analyst Name</div>
+                        <div class="divTableHead">RM Name</div>
+                        <div class="divTableHead">KAM Name</div>
+                        <div class="divTableHead">Billable Amount</div>
+                        <div class="divTableHead">Currency </div>
+
+
+                      </div>
+                    </div>
+
+
+
+
+                    <div class="divTableBody">
+
+                      <div class="divTableRow" *ngFor="let event of unbilledEvents; let i = index">
+                        <div class="divTableCell">
+                          <input type="checkbox" value="{{ event?.id }}" [(ngModel)]="unbilledEvents[i].checked"
+                            (change)="createInvoiceBtn(event?.clientId)" />
+
+                        </div>
+                        <div class="divTableCell">{{ getProjectname(event?.projectId )}}</div>
+                        <div class="divTableCell">{{ event?.eventAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}</div>
+                        <div class="divTableCell">{{ getclientname(event?.clientId)}}</div>
+                        <div class="divTableCell">{{ getExpert(event?.expertId)}}</div>
+                        <div class="divTableCell">{{ getUserName(event?.researchAnalystId)}}</div>
+                        <div class="divTableCell">{{ getUserName(event?.researchMgrId)}}</div>
+                        <div class="divTableCell">{{ getUserName(event?.keyAccountManager)}}</div>
+
+                        <div class="divTableCell">{{ event?.clientPayableAmount }}</div>
+
+                        <div class="divTableCell">{{ event?.clientCurrency }}</div>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <!------ new table -->
 
 
             </ng-container>
@@ -340,7 +268,7 @@
             </ng-container>
           </div>
         </div>
-<!------ new table -->
+        <!------ new table -->
 
 
 
@@ -355,10 +283,8 @@
         <div class="row mb-md-2">
           <div class="table-responsive">
             <ng-container *ngIf="billedEvents?.length > 0">
-              <table
-                id="basic-datatable"
-                class="table table-bordered cards-table dt-responsive nowrap no-footer dtr-inline"
-              >
+              <table id="basic-datatable"
+                class="table table-bordered cards-table dt-responsive nowrap no-footer dtr-inline">
                 <thead>
                   <tr>
                     <th>#</th>
@@ -367,9 +293,9 @@
                     <th>R.Analyst Name</th>
                     <th>RM Name</th>
                     <th>KAM Name</th>
-  
+
                     <th>Client Billable Amount</th>
-                     <th>Currency</th>
+                    <th>Currency</th>
                     <th>Invoice No</th>
                   </tr>
                 </thead>
@@ -381,15 +307,13 @@
                     <td>{{ getUserName(event?.researchAnalystId) }}</td>
                     <td>{{ getUserName(event?.researchMgrId) }}</td>
                     <td>{{ getUserName(event?.keyAccountManager) }}</td>
-        
+
                     <td>{{ event?.clientPayableAmount }} </td>
-                     <td>{{ event?.clientCurrency }}</td>
-                  
+                    <td>{{ event?.clientCurrency }}</td>
+
                     <td>
-                      <i
-                      class="fa fa-info-circle font-size-18 status"
-                      (click)="EditInvoice(updateInvoice, event?.clientInvoiceId, event?.clientId, true)"
-                    ></i>
+                      <i class="fa fa-info-circle font-size-18 status"
+                        (click)="EditInvoice(updateInvoice, event?.clientInvoiceId, event?.clientId, true)"></i>
 
                     </td>
                   </tr>
@@ -418,17 +342,8 @@
         <div class="col-12">
           <div class="form-group">
             <label>Entity <span class="required-asterisk">*</span></label>
-            <ng-select
-              formControlName="entity"
-              placeholder="Select"
-              name="entity"
-              [items]="entity"
-              bindLabel="name"
-              bindValue="id"
-              [multiple]="false"
-              [closeOnSelect]="true"
-              [selectableGroup]="false"
-            >
+            <ng-select formControlName="entity" placeholder="Select" name="entity" [items]="entity" bindLabel="name"
+              bindValue="id" [multiple]="false" [closeOnSelect]="true" [selectableGroup]="false">
             </ng-select>
           </div>
         </div>
@@ -437,44 +352,25 @@
         <div class="col-6">
           <div class="form-group">
             <label for="invoiceNo">Invoice No <span class="required-asterisk">*</span></label>
-            <input
-              type="text"
-              name="invoiceNo"
-              id="invoiceNo"
-              class="form-control"
-              placeholder="Ex.- 12345"
-              formControlName="invoiceNo"
-            />
+            <input type="text" name="invoiceNo" id="invoiceNo" class="form-control" placeholder="Ex.- 12345"
+              formControlName="invoiceNo" />
           </div>
         </div>
 
- <div class="col-6">
- <div class="form-group">
-  <label for="billingclientId">Client Billing Name <span class="required-asterisk">*</span></label>
-  <ng-select
-    [items]="clientsBillingList"
-    bindLabel="companyName"
-    bindValue="id"
-    placeholder="Select Billing Client"
-    formControlName="billingclientId"
-    id="billingclientId"
-    name="billingclientId"
-   
-  >
-  </ng-select>
-</div>
-        </div>  
+        <div class="col-6">
+          <div class="form-group">
+            <label for="billingclientId">Client Billing Name <span class="required-asterisk">*</span></label>
+            <ng-select [items]="clientsBillingList" bindLabel="companyName" bindValue="id"
+              placeholder="Select Billing Client" formControlName="billingclientId" id="billingclientId"
+              name="billingclientId">
+            </ng-select>
+          </div>
+        </div>
         <div class="col-6">
           <div class="form-group">
             <label for="invoiceDate">Invoice Date <span class="required-asterisk">*</span></label>
-            <input
-              formControlName="invoiceDate"
-              type="date"
-              name="invoiceDate"
-              id="invoiceDate"
-              class="form-control"
-              placeholder="Eg. 01-01-2021"
-            />
+            <input formControlName="invoiceDate" type="date" name="invoiceDate" id="invoiceDate" class="form-control"
+              placeholder="Eg. 01-01-2021" />
           </div>
         </div>
       </div>
@@ -484,25 +380,13 @@
             <label for="">Invoice Period <span class="required-asterisk">*</span></label>
             <div class="row">
               <div class="col-5">
-                <input
-                  formControlName="invoiceStartDate"
-                  type="date"
-                  name="invoiceStartDate"
-                  id="invoiceStartDate"
-                  class="form-control"
-                  placeholder="Eg. 01-01-2021"
-                />
+                <input formControlName="invoiceStartDate" type="date" name="invoiceStartDate" id="invoiceStartDate"
+                  class="form-control" placeholder="Eg. 01-01-2021" />
               </div>
               <div class="col-1 d-flex justify-content-center align-items-center">to</div>
               <div class="col-6">
-                <input
-                  formControlName="invoiceEndDate"
-                  type="date"
-                  name="invoiceEndDate"
-                  id="invoiceEndDate"
-                  class="form-control"
-                  placeholder="Eg. 01-01-2021"
-                />
+                <input formControlName="invoiceEndDate" type="date" name="invoiceEndDate" id="invoiceEndDate"
+                  class="form-control" placeholder="Eg. 01-01-2021" />
               </div>
             </div>
           </div>
@@ -515,20 +399,12 @@
             <label for="">discount<span class="required-asterisk">*</span></label>
             <div class="row">
               <div class="col-5">
-                <input
-                  formControlName="discount"
-                  type="number"
-                  name="discount"
-                  id="discount"
-                  class="form-control"
-                  placeholder="0"
-                  (change)="gettotal()"
-                  value={{cdiscount}}
-                />
+                <input formControlName="discount" type="number" name="discount" id="discount" class="form-control"
+                  placeholder="0" (change)="gettotal()" value={{cdiscount}} />
               </div>
               <div class="col-1 d-flex justify-content-center align-items-center"></div>
               <div class="col-6">
-               
+
               </div>
             </div>
           </div>
@@ -542,20 +418,12 @@
             <label for="">Conversion Rate<span class="required-asterisk">*</span></label>
             <div class="row">
               <div class="col-5">
-                <input
-                  formControlName="convertionrate"
-                  type="number"
-                  name="convertionrate"
-                  id="convertionrate"
-                  class="form-control"
-                  placeholder="0"
-                  (change)="gettotal()"
-                  value={{Convertionrate}}
-                />
+                <input formControlName="convertionrate" type="number" name="convertionrate" id="convertionrate"
+                  class="form-control" placeholder="0" (change)="gettotal()" value={{Convertionrate}} />
               </div>
               <div class="col-1 d-flex justify-content-center align-items-center"></div>
               <div class="col-6">
-               
+
               </div>
             </div>
           </div>
@@ -606,7 +474,7 @@
           <p id="total" class="text-right font-weight-bold mb-0">{{ Taxamount }}</p>
         </div>
       </div>
-<hr>
+      <hr>
       <div class="row mt-2">
         <div class="col-md-6">
           <p class="font-weight-bold mb-0">Total</p>
@@ -638,17 +506,8 @@
         <div class="col-12">
           <div class="form-group">
             <label>Entity <span class="required-asterisk">*</span></label>
-            <ng-select
-              formControlName="entity"
-              placeholder="Select"
-              name="entity"
-              [items]="entity"
-              bindLabel="name"
-              bindValue="id"
-              [multiple]="false"
-              [closeOnSelect]="true"
-              [selectableGroup]="false"
-            >
+            <ng-select formControlName="entity" placeholder="Select" name="entity" [items]="entity" bindLabel="name"
+              bindValue="id" [multiple]="false" [closeOnSelect]="true" [selectableGroup]="false">
             </ng-select>
           </div>
         </div>
@@ -657,44 +516,25 @@
         <div class="col-6">
           <div class="form-group">
             <label for="invoiceNo">Invoice No <span class="required-asterisk">*</span></label>
-            <input
-              type="text"
-              name="invoiceNo"
-              id="invoiceNo"
-              class="form-control"
-              placeholder="Ex.- 12345"
-              formControlName="invoiceNo"
-            />
+            <input type="text" name="invoiceNo" id="invoiceNo" class="form-control" placeholder="Ex.- 12345"
+              formControlName="invoiceNo" />
           </div>
         </div>
 
- <div class="col-6">
- <div class="form-group">
-  <label for="billingclientId">Client Billing Name <span class="required-asterisk">*</span></label>
-  <ng-select
-    [items]="clientsBillingList"
-    bindLabel="companyName"
-    bindValue="id"
-    placeholder="Select Billing Client"
-    formControlName="billingclientId"
-    id="billingclientId"
-    name="billingclientId"
-   
-  >
-  </ng-select>
-</div>
-        </div>  
+        <div class="col-6">
+          <div class="form-group">
+            <label for="billingclientId">Client Billing Name <span class="required-asterisk">*</span></label>
+            <ng-select [items]="clientsBillingList" bindLabel="companyName" bindValue="id"
+              placeholder="Select Billing Client" formControlName="billingclientId" id="billingclientId"
+              name="billingclientId">
+            </ng-select>
+          </div>
+        </div>
         <div class="col-6">
           <div class="form-group">
             <label for="invoiceDate">Invoice Date <span class="required-asterisk">*</span></label>
-            <input
-              formControlName="invoiceDate"
-              type="date"
-              name="invoiceDate"
-              id="invoiceDate"
-              class="form-control"
-              placeholder="Eg. 01-01-2021"
-            />
+            <input formControlName="invoiceDate" type="date" name="invoiceDate" id="invoiceDate" class="form-control"
+              placeholder="Eg. 01-01-2021" />
           </div>
         </div>
       </div>
@@ -704,25 +544,13 @@
             <label for="">Invoice Period <span class="required-asterisk">*</span></label>
             <div class="row">
               <div class="col-5">
-                <input
-                  formControlName="invoiceStartDate"
-                  type="date"
-                  name="invoiceStartDate"
-                  id="invoiceStartDate"
-                  class="form-control"
-                  placeholder="Eg. 01-01-2021"
-                />
+                <input formControlName="invoiceStartDate" type="date" name="invoiceStartDate" id="invoiceStartDate"
+                  class="form-control" placeholder="Eg. 01-01-2021" />
               </div>
               <div class="col-1 d-flex justify-content-center align-items-center">to</div>
               <div class="col-6">
-                <input
-                  formControlName="invoiceEndDate"
-                  type="date"
-                  name="invoiceEndDate"
-                  id="invoiceEndDate"
-                  class="form-control"
-                  placeholder="Eg. 01-01-2021"
-                />
+                <input formControlName="invoiceEndDate" type="date" name="invoiceEndDate" id="invoiceEndDate"
+                  class="form-control" placeholder="Eg. 01-01-2021" />
               </div>
             </div>
           </div>
@@ -735,20 +563,12 @@
             <label for="">discount<span class="required-asterisk">*</span></label>
             <div class="row">
               <div class="col-5">
-                <input
-                  formControlName="discount"
-                  type="number"
-                  name="discount"
-                  id="discount"
-                  class="form-control"
-                  placeholder="0"
-                  (change)="getedittotal()"
-                  value={{cdiscount}}
-                />
+                <input formControlName="discount" type="number" name="discount" id="discount" class="form-control"
+                  placeholder="0" (change)="getedittotal()" value={{cdiscount}} />
               </div>
               <div class="col-1 d-flex justify-content-center align-items-center"></div>
               <div class="col-6">
-               
+
               </div>
             </div>
           </div>
@@ -762,34 +582,27 @@
             <label for="">Conversion Rate<span class="required-asterisk">*</span></label>
             <div class="row">
               <div class="col-5">
-                <input
-                  formControlName="convertionrate"
-                  type="number"
-                  name="convertionrate"
-                  id="convertionrate"
-                  class="form-control"
-                  placeholder="0"
-                  (change)="getedittotal()"
-                  value={{Convertionrate}}
-                />
+                <input formControlName="convertionrate" type="number" name="convertionrate" id="convertionrate"
+                  class="form-control" placeholder="0" (change)="getedittotal()" value={{Convertionrate}} />
               </div>
               <div class="col-1 d-flex justify-content-center align-items-center"></div>
               <div class="col-6">
-               
+
               </div>
             </div>
           </div>
         </div>
       </div>
-     
-      <div class="row mt-3" *ngIf="!isViewonly" >
-        <div class="col-xl-12 mb-2 text-right">   
-            <button type="button" class="btn btn-success" (click)=" AddEventstoInvoice(addEventModal,invoiceData.id )">Add Events</button>   
-          </div>
+
+      <div class="row mt-3" *ngIf="!isViewonly">
+        <div class="col-xl-12 mb-2 text-right">
+          <button type="button" class="btn btn-success" (click)=" AddEventstoInvoice(addEventModal,invoiceData.id )">Add
+            Events</button>
         </div>
+      </div>
       <div class="events mt-3">
         <h5 class="font-weight-bold mb-2">Invoice Details</h5>
-        <div class="row" style="padding:5px;color:black ;background-color: #9fa8b9;"  >
+        <div class="row" style="padding:5px;color:black ;background-color: #9fa8b9;">
           <div class="col-md-4">
             <h6> Project</h6>
           </div>
@@ -809,13 +622,11 @@
           </div>
           <div class="col-md-3 text-right">
             <p class="mb-2">{{ invoice?.clientPayableAmount }}</p>
-           
+
           </div>
           <div class="col-md-1 text-right">
-              <i *ngIf="!isViewonly"
-            class="bx bx-trash ml-1 font-size-14" title="Delete Event"
-            (click)="DeleteEvent( invoice?.id, EditInvoiceevnts.id)"
-          ></i>
+            <i *ngIf="!isViewonly" class="bx bx-trash ml-1 font-size-14" title="Delete Event"
+              (click)="DeleteEvent( invoice?.id, EditInvoiceevnts.id)"></i>
           </div>
         </div>
       </div>
@@ -844,7 +655,7 @@
           <p id="total" class="text-right font-weight-bold mb-0">{{ Taxamount }}</p>
         </div>
       </div>
-<hr>
+      <hr>
       <div class="row mt-2">
         <div class="col-md-6">
           <p class="font-weight-bold mb-0">Total</p>
@@ -858,7 +669,8 @@
     <div class="row mt-3">
       <div class="col-xl-12 mb-2 text-right">
         <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
-        <button *ngIf="!isViewonly" type="submit" class="btn btn-success" (click)="submitedit(invoiceData.id)">update</button>
+        <button *ngIf="!isViewonly" type="submit" class="btn btn-success"
+          (click)="submitedit(invoiceData.id)">update</button>
       </div>
     </div>
   </div>
@@ -868,633 +680,633 @@
 
 <ng-template #printInvoice let-modal>
 
-<div id="pcon" class="container">
-   <style  type="text/css" media="print">
-    @media print {
-.ibody{margin-top:20px;
-    color: #2e323c;
-    background: #f5f6fa;
-    position: relative;
-    height: 100%;
-}
-.invoice-container {
-    padding: 1rem;
-}
-.invoice-container .invoice-header .invoice-logo {
-    margin: 0.8rem 0 0 0;
-    display: inline-block;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #2e323c;
-}
-.invoice-container .invoice-header .invoice-logo img {
-    max-width: 130px;
-}
-.invoice-container .invoice-header address {
-    font-size: 0.8rem;
-    color: #9fa8b9;
-    margin: 0;
-}
-.invoice-container .invoice-details {
-    margin: 1rem 0 0 0;
-    padding: 1rem;
-    line-height: 180%;
-    background: #f5f6fa;
-}
-.invoice-container .invoice-details .invoice-num {
-    text-align: right;
-    font-size: 0.8rem;
-}
-.invoice-container .invoice-body {
-    padding: 1rem 0 0 0;
-}
-.invoice-container .invoice-footer {
-    text-align: center;
-    font-size: 0.7rem;
-    margin: 5px 0 0 0;
-}
+  <div id="pcon" class="container">
+    <style type="text/css" media="print">
+      @media print {
+        .ibody {
+          margin-top: 20px;
+          color: #2e323c;
+          background: #f5f6fa;
+          position: relative;
+          height: 100%;
+        }
 
-.invoice-status {
-    text-align: center;
-    padding: 1rem;
-    background: #ffffff;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    margin-bottom: 1rem;
-}
-.invoice-status h2.status {
-    margin: 0 0 0.8rem 0;
-}
-.invoice-status h5.status-title {
-    margin: 0 0 0.8rem 0;
-    color: #9fa8b9;
-}
-.invoice-status p.status-type {
-    margin: 0.5rem 0 0 0;
-    padding: 0;
-    line-height: 150%;
-}
-.invoice-status i {
-    font-size: 1.5rem;
-    margin: 0 0 1rem 0;
-    display: inline-block;
-    padding: 1rem;
-    background: #f5f6fa;
-    -webkit-border-radius: 50px;
-    -moz-border-radius: 50px;
-    border-radius: 50px;
-}
-.invoice-status .badge {
-    text-transform: uppercase;
-}
+        .invoice-container {
+          padding: 1rem;
+        }
 
-@media (max-width: 767px) {
-    .invoice-container {
-        padding: 1rem;
-    }
-}
+        .invoice-container .invoice-header .invoice-logo {
+          margin: 0.8rem 0 0 0;
+          display: inline-block;
+          font-size: 1.6rem;
+          font-weight: 700;
+          color: #2e323c;
+        }
 
+        .invoice-container .invoice-header .invoice-logo img {
+          max-width: 130px;
+        }
 
-.custom-table {
-    border: 1px solid #e0e3ec;
-}
-.custom-table thead {
-    background: #007ae1;
-}
-.custom-table thead th {
-    border: 0;
-    color: #ffffff;
-}
-.custom-table > tbody tr:hover {
-    background: #fafafa;
-}
-.custom-table > tbody tr:nth-of-type(even) {
-    background-color: #ffffff;
-}
-.custom-table > tbody td {
-    border: 1px solid #e6e9f0;
-}
+        .invoice-container .invoice-header address {
+          font-size: 0.8rem;
+          color: #9fa8b9;
+          margin: 0;
+        }
+
+        .invoice-container .invoice-details {
+          margin: 1rem 0 0 0;
+          padding: 1rem;
+          line-height: 180%;
+          background: #f5f6fa;
+        }
+
+        .invoice-container .invoice-details .invoice-num {
+          text-align: right;
+          font-size: 0.8rem;
+        }
+
+        .invoice-container .invoice-body {
+          padding: 1rem 0 0 0;
+        }
+
+        .invoice-container .invoice-footer {
+          text-align: center;
+          font-size: 0.7rem;
+          margin: 5px 0 0 0;
+        }
+
+        .invoice-status {
+          text-align: center;
+          padding: 1rem;
+          background: #ffffff;
+          -webkit-border-radius: 4px;
+          -moz-border-radius: 4px;
+          border-radius: 4px;
+          margin-bottom: 1rem;
+        }
+
+        .invoice-status h2.status {
+          margin: 0 0 0.8rem 0;
+        }
+
+        .invoice-status h5.status-title {
+          margin: 0 0 0.8rem 0;
+          color: #9fa8b9;
+        }
+
+        .invoice-status p.status-type {
+          margin: 0.5rem 0 0 0;
+          padding: 0;
+          line-height: 150%;
+        }
+
+        .invoice-status i {
+          font-size: 1.5rem;
+          margin: 0 0 1rem 0;
+          display: inline-block;
+          padding: 1rem;
+          background: #f5f6fa;
+          -webkit-border-radius: 50px;
+          -moz-border-radius: 50px;
+          border-radius: 50px;
+        }
+
+        .invoice-status .badge {
+          text-transform: uppercase;
+        }
+
+        @media (max-width: 767px) {
+          .invoice-container {
+            padding: 1rem;
+          }
+        }
 
 
-.card {
-    background: #ffffff;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    border: 0;
-    margin-bottom: 1rem;
-}
+        .custom-table {
+          border: 1px solid #e0e3ec;
+        }
 
-.text-success {
-    color: #00bb42 !important;
-}
+        .custom-table thead {
+          background: #007ae1;
+        }
 
-.text-muted {
-    color: #9fa8b9 !important;
-}
+        .custom-table thead th {
+          border: 0;
+          color: #ffffff;
+        }
 
-.custom-actions-btns {
-    margin: auto;
-    display: flex;
-    justify-content: flex-end;
-}
+        .custom-table>tbody tr:hover {
+          background: #fafafa;
+        }
 
-.custom-actions-btns .btn {
-    margin: .3rem 0 .3rem .3rem;
-}} </style>
-<div class="row gutters">
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-      <div class="card" >
-        <div class="card-body p-0">
-          <div class="invoice-container">
-            <div class="invoice-header">
-              <!-- Row start -->
-              <div class="row gutters">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                  <div class="custom-actions-btns mb-5">
-                    <a href="#" class="btn btn-primary">
-                      <i class="icon-download"></i> 
-                    </a>
+        .custom-table>tbody tr:nth-of-type(even) {
+          background-color: #ffffff;
+        }
+
+        .custom-table>tbody td {
+          border: 1px solid #e6e9f0;
+        }
+
+
+        .card {
+          background: #ffffff;
+          -webkit-border-radius: 5px;
+          -moz-border-radius: 5px;
+          border-radius: 5px;
+          border: 0;
+          margin-bottom: 1rem;
+        }
+
+        .text-success {
+          color: #00bb42 !important;
+        }
+
+        .text-muted {
+          color: #9fa8b9 !important;
+        }
+
+        .custom-actions-btns {
+          margin: auto;
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        .custom-actions-btns .btn {
+          margin: .3rem 0 .3rem .3rem;
+        }
+      }
+    </style>
+    <div class="row gutters">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+          <div class="card-body p-0">
+            <div class="invoice-container">
+              <div class="invoice-header">
+                <!-- Row start -->
+                <div class="row gutters">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div class="custom-actions-btns mb-5">
+                      <a href="#" class="btn btn-primary">
+                        <i class="icon-download"></i>
+                      </a>
                       <button type="button" class="btn btn-secondary" (click)="PInvoice()">
-                      <i class="icon-printer"></i> Print
-                    </button>
+                        <i class="icon-printer"></i> Print
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <!-- Row end -->
-              <!-- Row start -->
-              <div class="row gutters">
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                  <a href="index.html" class="invoice-logo">
-                   Knowledgerigdge Inc
-                  </a>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                  <address class="text-right">
-                    TVS Capital Funds.<br>
-                    India<br>
-                    
-                  </address>
-                </div>
-              </div>
-              <!-- Row end -->
-              <!-- Row start -->
-              <div class="row gutters">
-                <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-                  <div class="invoice-details">
-                    <address>
-                      Alex Maxwell<br>
-                      150-600 Church Street, Florida, USA
+                <!-- Row end -->
+                <!-- Row start -->
+                <div class="row gutters">
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                    <a href="index.html" class="invoice-logo">
+                      Knowledgerigdge Inc
+                    </a>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                    <address class="text-right">
+                      TVS Capital Funds.<br>
+                      India<br>
+
                     </address>
                   </div>
                 </div>
-                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                  <div class="invoice-details">
-                    <div class="invoice-num">
-                      <div style="color: #9fa8b9;">Invoice - #009</div>
-                      <div>June 17th 2022</div>
+                <!-- Row end -->
+                <!-- Row start -->
+                <div class="row gutters">
+                  <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                    <div class="invoice-details">
+                      <address>
+                        Alex Maxwell<br>
+                        150-600 Church Street, Florida, USA
+                      </address>
                     </div>
-                  </div>                          
-                </div>
-              </div>
-              <!-- Row end -->
-            </div>
-            <div class="invoice-body">
-              <!-- Row start -->
-              <div class="row gutters">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                  <div class="table-responsive">
-                    <table class="table custom-table m-0" style="border: 1px;">
-                      <thead>
-                        <tr>
-                          <th>Item</th>
-                          <th>Event</th>
-                          <th>Expert</th>
-                          <th>Billable</th>
-                        </tr>
-                      </thead>
-                      <tbody>
- <tr class="m-2 row-card" *ngFor="let event of  eventInvoice; let i = index">
-                    <td>
-                     index
-                    </td>
-                    <td>{{ getProjectname(event?.projectId )}}</td>
-                    <td>{{ event?.eventAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}</td>
-                    <td>{{ getExpert(event?.expertId) }}</td>
-                    <td>{{ event?.clientPayableAmount }}</td>
-                  </tr>
-
-
- <tr class="m-2 row-card" >
-                    <td>
-                     
-                    </td>
-                    <td></td>
-                     <td></td>
-                    <td>Total</td>
-                    <td>{{ this.ClInvoiceTotal }}</td>
-                  </tr>
-                        
-                      </tbody>
-                    </table>
+                  </div>
+                  <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="invoice-details">
+                      <div class="invoice-num">
+                        <div style="color: #9fa8b9;">Invoice - #009</div>
+                        <div>June 17th 2022</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
+                <!-- Row end -->
               </div>
-              <!-- Row end -->
-            </div>
-            <div class="invoice-footer">
-              Thank you for your Business.
+              <div class="invoice-body">
+                <!-- Row start -->
+                <div class="row gutters">
+                  <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="table-responsive">
+                      <table class="table custom-table m-0" style="border: 1px;">
+                        <thead>
+                          <tr>
+                            <th>Item</th>
+                            <th>Event</th>
+                            <th>Expert</th>
+                            <th>Billable</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="m-2 row-card" *ngFor="let event of  eventInvoice; let i = index">
+                            <td>
+                              index
+                            </td>
+                            <td>{{ getProjectname(event?.projectId )}}</td>
+                            <td>{{ event?.eventAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}</td>
+                            <td>{{ getExpert(event?.expertId) }}</td>
+                            <td>{{ event?.clientPayableAmount }}</td>
+                          </tr>
+
+
+                          <tr class="m-2 row-card">
+                            <td>
+
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td>Total</td>
+                            <td>{{ this.ClInvoiceTotal }}</td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <!-- Row end -->
+              </div>
+              <div class="invoice-footer">
+                Thank you for your Business.
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </ng-template>
 
-  <!-- Unpaid Invoice List -->
-  <ng-template #TabContent3>
-    <div class="">
-      <div class="table-responsive">
-        <ng-container *ngIf="UnpaidinvoiceList?.length > 0">
-          
-          
-          
-          
-<!------ new table  <input type="checkbox" (change)="checkAllCheckBox($event)" />    -->
-
-<div class=""   *ngIf="UnpaidinvoiceList?.length > 0">
-
-  &nbsp;  &nbsp;  &nbsp;  &nbsp;  <button  style="margin: 10px;"  type="button" class="btn btn-primary btn-sm " (click)="markAllPaid()">Mark as paid</button>
- &nbsp;  &nbsp; <button  style="margin: 10px;"  type="button" class="btn btn-primary btn-sm " (click)="download('u')">Download Details as CSV</button> &nbsp;  &nbsp;  &nbsp;  &nbsp;
- <div class="float-right"> </div>
-  <div class="col-xl-12">
-<div class="divTable blueTable">
+<!-- Unpaid Invoice List -->
+<ng-template #TabContent3>
+  <div class="">
+    <div class="table-responsive">
+      <ng-container *ngIf="UnpaidinvoiceList?.length > 0">
 
 
 
 
-<div class="divTableHeading">
-<div class="divTableRow">
+        <!------ new table  <input type="checkbox" (change)="checkAllCheckBox($event)" />    -->
 
-<div class="divTableHead">
-  <input type="checkbox" (change)="checkAllUnpaidCheckBox($event)" *ngIf="UnpaidinvoiceList?.length > 1" />
-</div>
-<div class="divTableHead">Invoice No</div>
-<div class="divTableHead">Client</div>
-<div class="divTableHead">Invoice Date</div>
-<div class="divTableHead">Client Billable Amount</div>
-<div class="divTableHead">Currency </div>
-<div *ngIf="roles == 'admin' || roles == 'mainPLHead' || roles == 'subPnl'">Action</div>
+        <div class="" *ngIf="UnpaidinvoiceList?.length > 0">
 
-</div>
-</div>
+          &nbsp; &nbsp; &nbsp; &nbsp; <button style="margin: 10px;" type="button" class="btn btn-primary btn-sm "
+            (click)="markAllPaid()">Mark as paid</button>
+          &nbsp; &nbsp; <button style="margin: 10px;" type="button" class="btn btn-primary btn-sm "
+            (click)="download('u')">Download Details as CSV</button> &nbsp; &nbsp; &nbsp; &nbsp;
+          <div class="float-right"> </div>
+          <div class="col-xl-12">
+            <div class="divTable blueTable">
 
 
 
 
-<div class="divTableBody">
+              <div class="divTableHeading">
+                <div class="divTableRow">
 
-<div class="divTableRow"  *ngFor="let invoice of UnpaidinvoiceList; let i = index">
+                  <div class="divTableHead">
+                    <input type="checkbox" (change)="checkAllUnpaidCheckBox($event)"
+                      *ngIf="UnpaidinvoiceList?.length > 1" />
+                  </div>
+                  <div class="divTableHead">Invoice No</div>
+                  <div class="divTableHead">Client</div>
+                  <div class="divTableHead">Invoice Date</div>
+                  <div class="divTableHead">Client Billable Amount</div>
+                  <div class="divTableHead">Currency </div>
+                  <div *ngIf="roles == 'admin' || roles == 'mainPLHead' || roles == 'subPnl'">Action</div>
 
-<div class="divTableCell" class="d-table font-size-14 font-weight-bold">
-
-  <input
-    type="checkbox"
-    value="{{ invoice.id }}"
-    [(ngModel)]="UnpaidinvoiceList[i].checked"
-  />
-</div>
-<div class="divTableCell">{{ invoice?.invoiceNo }}</div >
-  <div class="divTableCell">{{ invoice?.clientName}}</div>
-<div class="divTableCell">{{ invoice?.invoiceDate | localDateTime }}</div >
-<div class="divTableCell">{{ getTotalAmt(invoice?.total, invoice?.discount,invoice?.taxamount )}}</div >
-     <div class="divTableCell">USD</div >
-  <div class="divTableCell" class="d-flex status" *ngIf="roles == 'admin' || roles == 'mainPLHead' || roles == 'subPnl'">
-  <i class="bx bx-check-circle font-size-20" (click)="markPaid(invoice?.id)"></i>
-  <i
-    class="bx bx-pencil ml-1 font-size-20" title="Edit Invoice"
-    (click)="EditInvoice(updateInvoice, invoice?.id, invoice?.clientId,false)"
-  ></i>
-  <i
-  class="fa fa-info-circle font-size-18 status"
-  (click)="EditInvoice(updateInvoice, invoice?.id, invoice?.clientId, true)"
-></i>
-<i
-class="bx bx-cloud-download ml-1 font-size-20"
-(click)="generatePDF('open', invoice?.id)"
-></i>
-<!--(click)="Edit(editInvoice, invoice?.id, invoice?.clientId)"   arrow-from-top  --->
-
-</div >
-
-
-</div>
-
-
-</div>
-</div>
-</div>
-</div>
-
-<!------ new table -->
+                </div>
+              </div>
 
 
 
 
-        </ng-container>
-        <ng-container *ngIf="UnpaidinvoiceList?.length == 0">
-          <p class="text-center mt-5 mb-0">No data available.</p>
-        </ng-container>
+              <div class="divTableBody">
+
+                <div class="divTableRow" *ngFor="let invoice of UnpaidinvoiceList; let i = index">
+
+                  <div class="divTableCell" class="d-table font-size-14 font-weight-bold">
+
+                    <input type="checkbox" value="{{ invoice.id }}" [(ngModel)]="UnpaidinvoiceList[i].checked" />
+                  </div>
+                  <div class="divTableCell">{{ invoice?.invoiceNo }}</div>
+                  <div class="divTableCell">{{ invoice?.clientName}}</div>
+                  <div class="divTableCell">{{ invoice?.invoiceDate | localDateTime }}</div>
+                  <div class="divTableCell">{{ getTotalAmt(invoice?.total, invoice?.discount,invoice?.taxamount )}}
+                  </div>
+                  <div class="divTableCell">USD</div>
+                  <div class="divTableCell" class="d-flex status"
+                    *ngIf="roles == 'admin' || roles == 'mainPLHead' || roles == 'subPnl'">
+                    <i class="bx bx-check-circle font-size-20" (click)="markPaid(invoice?.id)"></i>
+                    <i class="bx bx-pencil ml-1 font-size-20" title="Edit Invoice"
+                      (click)="EditInvoice(updateInvoice, invoice?.id, invoice?.clientId,false)"></i>
+                    <i class="fa fa-info-circle font-size-18 status"
+                      (click)="EditInvoice(updateInvoice, invoice?.id, invoice?.clientId, true)"></i>
+                    <i class="bx bx-cloud-download ml-1 font-size-20" (click)="generatePDF('open', invoice?.id)"></i>
+                    <!--(click)="Edit(editInvoice, invoice?.id, invoice?.clientId)"   arrow-from-top  --->
+
+                  </div>
+
+
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!------ new table -->
+
+
+
+
+      </ng-container>
+      <ng-container *ngIf="UnpaidinvoiceList?.length == 0">
+        <p class="text-center mt-5 mb-0">No data available.</p>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Paid Invoice List -->
+<ng-template #TabContent4>
+
+  <div class="row mb-md-2">
+    <div class="table-responsive">
+      <ng-container *ngIf="paidInvoiceList?.length > 0">
+
+
+
+        <!------ new table -->
+
+        <div class="" *ngIf="paidInvoiceList?.length > 0">
+
+
+
+          <button style="margin: 10px;" type="button" class="btn btn-primary btn-sm " (click)="markAllunPaid()">Mark as
+            unpaid</button>
+          <button style="margin: 10px;" type="button" class="btn btn-primary btn-sm " (click)="download('p')">Download
+            Details as CSV</button>
+          <div class="float-right"></div>
+
+
+
+
+
+          <div class="col-xl-12">
+            <div class="divTable blueTable">
+
+
+
+
+              <div class="divTableHeading">
+                <div class="divTableRow">
+
+                  <div class="divTableHead">
+                    <input type="checkbox" (change)="checkAllpaidCheckBox($event)"
+                      *ngIf="paidInvoiceList?.length > 1" />
+                  </div>
+                  <div class="divTableHead">Invoice No</div>
+                  <div class="divTableHead">Client</div>
+                  <div class="divTableHead">Invoice Date</div>
+                  <div class="divTableHead">Client Billable Amount</div>
+                  <div class="divTableHead">Currency </div>
+                  <div *ngIf="roles == 'admin' || roles == 'mainPLHead' || roles == 'subPnl'">Action</div>
+
+                </div>
+              </div>
+
+
+
+
+              <div class="divTableBody">
+
+                <div class="divTableRow" *ngFor="let invoice of paidInvoiceList; let i = index">
+
+                  <div class="divTableCell" class="d-table font-size-14 font-weight-bold">
+
+                    <input type="checkbox" value="{{ invoice.id }}" [(ngModel)]="paidInvoiceList[i].checked" />
+                  </div>
+                  <div class="divTableCell">{{ invoice?.invoiceNo }}</div>
+                  <div class="divTableCell">{{ invoice?.clientName}}</div>
+                  <div class="divTableCell">{{ invoice?.invoiceDate | localDateTime }}</div>
+                  <div class="divTableCell">{{ getTotalAmt(invoice?.total, invoice?.discount,invoice?.taxamount )}}
+                  </div>
+                  <div class="divTableCell">USD</div>
+
+                  <div class="divTableCell" class="d-flex status"
+                    *ngIf="roles == 'admin' || roles == 'mainPLHead' || roles == 'subPnl'">
+                    <i class="bx bx-block font-size-20" title="Mark as unpaid" (click)="markunPaid(invoice?.id)"></i>
+                    <i class="fa fa-info-circle font-size-18 status"
+                      (click)="EditInvoice(updateInvoice, invoice?.id, invoice?.clientId, true)"></i>
+
+                    <i class="fa fa-xxxx font-size-18 status" (click)="viewInvoice(invoiceDetails, invoice?.id)"></i>
+                    <!--(click)="Edit(editInvoice, invoice?.id, invoice?.clientId)"   arrow-from-top (event?.clientPayableAmount -event?.discount)+ invoice?.taxamount  --->
+
+                  </div>
+
+
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!------ new table -->
+
+
+      </ng-container>
+      <ng-container *ngIf="paidInvoiceList?.length == 0">
+        <p class="text-center mt-2 mb-0">No data available.</p>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
+<!-- View Invoice Modal -->
+<ng-template #invoiceDetails let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0 text-white">Invoice</h5>
+    <button type="button" class="close text-white" aria-hidden="true" (click)="modal.dismiss('Cross click')">
+      ×
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <h6 class="text-muted">Invoice No.</h6>
+        <h6>
+          <a href="javascript: void(0);">{{ InvoiceDetails?.invoiceNo }}</a>
+        </h6>
+      </div>
+      <div class="col-md-6 d-flex justify-content-end">
+        <h6 class="text-muted">Date :</h6>
+        <h6 class="ml-2">{{ InvoiceDetails?.invoiceDate | localDateTime: 'DD MMM YYYY' }}</h6>
       </div>
     </div>
-  </ng-template>
-
-  <!-- Paid Invoice List -->
-  <ng-template #TabContent4>
-
-    <div class="row mb-md-2">
-      <div class="table-responsive">
-        <ng-container *ngIf="paidInvoiceList?.length > 0">
-
-          
-
-<!------ new table -->
-
-<div class=""   *ngIf="paidInvoiceList?.length > 0">
-  
-
-  
-     <button  style="margin: 10px;"  type="button" class="btn btn-primary btn-sm " (click)="markAllunPaid()">Mark as unpaid</button>
-   <button  style="margin: 10px;"  type="button" class="btn btn-primary btn-sm " (click)="download('p')">Download Details as CSV</button> 
-   <div class="float-right"></div>
-
-
-   
-
-
-  <div class="col-xl-12">
-<div class="divTable blueTable">
-
-
-
-
-<div class="divTableHeading">
-<div class="divTableRow">
-
-<div class="divTableHead">
-  <input type="checkbox" (change)="checkAllpaidCheckBox($event)" *ngIf="paidInvoiceList?.length > 1" />
-</div>
-<div class="divTableHead">Invoice No</div>
-<div class="divTableHead">Client</div>
-<div class="divTableHead">Invoice Date</div>
-<div class="divTableHead">Client Billable Amount</div>
-<div class="divTableHead">Currency </div>
-<div *ngIf="roles == 'admin' || roles == 'mainPLHead' || roles == 'subPnl'">Action</div>
-
-</div>
-</div>
-
-
-
-
-<div class="divTableBody">
-
-<div class="divTableRow"  *ngFor="let invoice of paidInvoiceList; let i = index">
-
-<div class="divTableCell" class="d-table font-size-14 font-weight-bold">
- 
-  <input
-    type="checkbox"
-    value="{{ invoice.id }}"
-    [(ngModel)]="paidInvoiceList[i].checked"
-  />
-</div>
-<div class="divTableCell">{{ invoice?.invoiceNo }}</div >
-  <div class="divTableCell">{{ invoice?.clientName}}</div>
-<div class="divTableCell">{{ invoice?.invoiceDate | localDateTime }}</div >
-<div class="divTableCell">{{ getTotalAmt(invoice?.total, invoice?.discount,invoice?.taxamount )}}</div >
-  <div class="divTableCell">USD</div >
-
-  <div class="divTableCell" class="d-flex status" *ngIf="roles == 'admin' || roles == 'mainPLHead' || roles == 'subPnl'">
-  <i class="bx bx-block font-size-20"   title="Mark as unpaid"  (click)="markunPaid(invoice?.id)"></i>
-  <i
-  class="fa fa-info-circle font-size-18 status"
-  (click)="EditInvoice(updateInvoice, invoice?.id, invoice?.clientId, true)"
-></i>
- 
-  <i
-    class="fa fa-xxxx font-size-18 status"
-    (click)="viewInvoice(invoiceDetails, invoice?.id)"
-  ></i>
-<!--(click)="Edit(editInvoice, invoice?.id, invoice?.clientId)"   arrow-from-top (event?.clientPayableAmount -event?.discount)+ invoice?.taxamount  --->
-
-</div >
-
-
-</div>
-
-
-</div>
-</div>
-</div>
-</div>
-
-<!------ new table -->
-
-
-        </ng-container>
-        <ng-container *ngIf="paidInvoiceList?.length == 0">
-          <p class="text-center mt-2 mb-0">No data available.</p>
-        </ng-container>
+    <h6 class="text-muted mt-4">Entity Details</h6>
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <h6 class="text-muted">Name</h6>
+        <h6>{{ entityDetails.name }}</h6>
       </div>
     </div>
-  </ng-template>
-  <!-- View Invoice Modal -->
-  <ng-template #invoiceDetails let-modal>
-    <div class="modal-header p-2 bg-dark">
-      <h5 class="modal-title mt-0 text-white">Invoice</h5>
-      <button type="button" class="close text-white" aria-hidden="true" (click)="modal.dismiss('Cross click')">
-        ×
-      </button>
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <h6 class="text-muted">Address</h6>
+        <h6>{{ entityDetails.address <div class="float-right"></div>}}</h6>
+      </div>
     </div>
-    <div class="modal-body">
-      <div class="row">
-        <div class="col-md-6">
-          <h6 class="text-muted">Invoice No.</h6>
-          <h6>
-            <a href="javascript: void(0);">{{ InvoiceDetails?.invoiceNo }}</a>
-          </h6>
-        </div>
-        <div class="col-md-6 d-flex justify-content-end">
-          <h6 class="text-muted">Date :</h6>
-          <h6 class="ml-2">{{ InvoiceDetails?.invoiceDate | localDateTime: 'DD MMM YYYY' }}</h6>
-        </div>
+    <div class="row mt-2">
+      <div class="col-md-6">
+        <h6 class="text-muted">Bank Name</h6>
+        <h6>{{ entityDetails.bankName }}</h6>
       </div>
-      <h6 class="text-muted mt-4">Entity Details</h6>
-      <div class="row mt-2">
-        <div class="col-md-12">
-          <h6 class="text-muted">Name</h6>
-          <h6>{{ entityDetails.name }}</h6>
-        </div>
+      <div class="col-md-6">
+        <h6 class="text-muted">Branch</h6>
+        <h6>{{ entityDetails.branch }}</h6>
       </div>
-      <div class="row mt-2">
-        <div class="col-md-12">
-          <h6 class="text-muted">Address</h6>
-          <h6>{{ entityDetails.address <div class="float-right"></div>}}</h6>
-        </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-6">
+        <h6 class="text-muted">Account No</h6>
+        <h6>{{ entityDetails.accountNo }}</h6>
       </div>
-      <div class="row mt-2">
-        <div class="col-md-6">
-          <h6 class="text-muted">Bank Name</h6>
-          <h6>{{ entityDetails.bankName }}</h6>
-        </div>
-        <div class="col-md-6">
-          <h6 class="text-muted">Branch</h6>
-          <h6>{{ entityDetails.branch }}</h6>
-        </div>
+      <div class="col-md-6">
+        <h6 class="text-muted">IFSC Code</h6>
+        <h6>{{ entityDetails.ifscCode }}</h6>
       </div>
-      <div class="row mt-2">
-        <div class="col-md-6">
-          <h6 class="text-muted">Account No</h6>
-          <h6>{{ entityDetails.accountNo }}</h6>
-        </div>
-        <div class="col-md-6">
-          <h6 class="text-muted">IFSC Code</h6>
-          <h6>{{ entityDetails.ifscCode }}</h6>
-        </div>
-      </div>
+    </div>
 
-      <div class="row mt-3">
-        <div class="col-xl-12 text-right">
-          <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
-        </div>
+    <div class="row mt-3">
+      <div class="col-xl-12 text-right">
+        <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
       </div>
     </div>
-  </ng-template>
+  </div>
+</ng-template>
 
-  <!-- Edit Invoice Modal -->
-  <ng-template #editInvoice let-modal>
-    <div class="modal-header p-2 bg-dark">
-      <h5 class="modal-title mt-0">{{ leadModalTitle }}</h5>
-      <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="text-center row py-5">
-        <div class="col-12 mb-4">Add new events or Remove events from invoice</div>
-        <div class="col-md-8 d-flex mt-4 justify-content-around m-auto">
-          <button type="button" class="btn btn-success" (click)="modal.close(); addNewEvent(newEventModal)">ADD</button>
-          <button type="button" class="btn btn-info px-4" (click)="removeFromInvoice(removeEventModal)">REMOVE</button>
-        </div>
+<!-- Edit Invoice Modal -->
+<ng-template #editInvoice let-modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">{{ leadModalTitle }}</h5>
+    <button type="button" class="close" aria-hidden="true" (click)="modal.dismiss('Cross click')">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="text-center row py-5">
+      <div class="col-12 mb-4">Add new events or Remove events from invoice</div>
+      <div class="col-md-8 d-flex mt-4 justify-content-around m-auto">
+        <button type="button" class="btn btn-success" (click)="modal.close(); addNewEvent(newEventModal)">ADD</button>
+        <button type="button" class="btn btn-info px-4" (click)="removeFromInvoice(removeEventModal)">REMOVE</button>
       </div>
     </div>
-  </ng-template>
+  </div>
+</ng-template>
 
-  <!-- Add new events Model-->
-  <ng-template #newEventModal role="document" let modal>
-    <div class="modal-header p-2 bg-dark">
-      <h5 class="modal-title mt-0">{{ leadModalTitle }}</h5>
-    </div>
-    <div class="modal-body">
-      <!-- <app-edit-client-invoice [childProp]="clientNinvoiceId"></app-edit-client-invoice> -->
-      <app-edit-client-invoice [dataToEdit]="clienNinvoiceId"></app-edit-client-invoice>
-    </div>
-  </ng-template>
+<!-- Add new events Model-->
+<ng-template #newEventModal role="document" let modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">{{ leadModalTitle }}</h5>
+  </div>
+  <div class="modal-body">
+    <!-- <app-edit-client-invoice [childProp]="clientNinvoiceId"></app-edit-client-invoice> -->
+    <app-edit-client-invoice [dataToEdit]="clienNinvoiceId"></app-edit-client-invoice>
+  </div>
+</ng-template>
 
-  <!--Remove Events from invoice-->
-  <ng-template #removeEventModal role="document" let modal>
-    <div class="modal-header p-2 bg-dark">
-      <h5 class="modal-title mt-0">{{ leadModalTitle }}</h5>
+<!--Remove Events from invoice-->
+<ng-template #removeEventModal role="document" let modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">{{ leadModalTitle }}</h5>
+  </div>
+  <div class="modal-body">
+    <div class="table-responsive">
+      <table id="basic-datatable" class="table table-bordered cards-table dt-responsive nowrap no-footer dtr-inline">
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" (change)="checkAllRemoveCheckBox($event)" *ngIf="delEventDetails?.length > 1" />
+            </th>
+            <th>#</th>
+            <th>Event Date</th>
+            <th>Client Billable Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="m-2 row-card" *ngFor="let event of delEventDetails; let i = index">
+            <td>
+              <input type="checkbox" value="{{ event.id }}" [(ngModel)]="delEventDetails[i].checked"
+                *ngIf="AddInvoiceevnts?.length > 1" />
+            </td>
+            <td>{{ getProjectname(event?.projectId )}}</td>
+            <td>{{ event.eventAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}</td>
+            <td>{{ event.clientPayableAmount }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="modal-body">
-      <div class="table-responsive">
-        <table id="basic-datatable" class="table table-bordered cards-table dt-responsive nowrap no-footer dtr-inline">
-          <thead>
-            <tr>
-              <th>
-                <input type="checkbox" (change)="checkAllRemoveCheckBox($event)" *ngIf="delEventDetails?.length > 1" />
-              </th>
-              <th>#</th>
-              <th>Event Date</th>
-              <th>Client Billable Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="m-2 row-card" *ngFor="let event of delEventDetails; let i = index">
-              <td>
-                <input
-                  type="checkbox"
-                  value="{{ event.id }}"
-                  [(ngModel)]="delEventDetails[i].checked"
-                  *ngIf="AddInvoiceevnts?.length > 1"
-                />
-              </td>
-              <td>{{ getProjectname(event?.projectId )}}</td> 
-              <td>{{ event.eventAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}</td>
-              <td>{{ event.clientPayableAmount }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="row mb-md-2" *ngIf="delEventDetails?.length > 1">
-        <div class="col-xl-12 mb-1 mt-3 text-right">
-          <button type="submit" class="btn btn-success" (click)="remove()">Remove</button>
-        </div>
+    <div class="row mb-md-2" *ngIf="delEventDetails?.length > 1">
+      <div class="col-xl-12 mb-1 mt-3 text-right">
+        <button type="submit" class="btn btn-success" (click)="remove()">Remove</button>
       </div>
     </div>
-  </ng-template>
+  </div>
+</ng-template>
 
 
 
-  <!--Remove Events from invoice-->
-  <ng-template #addEventModal role="document" let modal>
-    <div class="modal-header p-2 bg-dark">
-      <h5 class="modal-title mt-0">{{ leadModalTitle }}</h5>
+<!--Remove Events from invoice-->
+<ng-template #addEventModal role="document" let modal>
+  <div class="modal-header p-2 bg-dark">
+    <h5 class="modal-title mt-0">{{ leadModalTitle }}</h5>
+  </div>
+  <div class="modal-body">
+    <div class="table-responsive">
+      <table id="basic-datatable" class="table table-bordered cards-table dt-responsive nowrap no-footer dtr-inline">
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" (change)="checkAllRemoveCheckBox($event)" *ngIf="AddInvoiceevnts?.length > 1" />
+            </th>
+            <th>#</th>
+            <th>Event Date</th>
+            <th>Client Billable Amount</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="m-2 row-card" *ngFor="let event of AddInvoiceevnts; let i = index">
+            <td>
+              <input type="checkbox" value="{{ event.id }}" [(ngModel)]="AddInvoiceevnts[i].checked"
+                *ngIf="AddInvoiceevnts?.length > 1" />
+            </td>
+            <td>{{ getProjectname(event?.projectId )}}</td>
+            <td>{{ event.eventAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}</td>
+            <td>{{ event.clientPayableAmount }}</td>
+            <td>
+              <i class="bx bx-plus-circle ml-1 font-size-14" title="Add Event"
+                (click)="AddEvent( event?.id, event.id)"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="modal-body">
-      <div class="table-responsive">
-        <table id="basic-datatable" class="table table-bordered cards-table dt-responsive nowrap no-footer dtr-inline">
-          <thead>
-            <tr>
-              <th>
-                <input type="checkbox" (change)="checkAllRemoveCheckBox($event)" *ngIf="AddInvoiceevnts?.length > 1" />
-              </th>
-              <th>#</th>
-              <th>Event Date</th>
-              <th>Client Billable Amount</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="m-2 row-card" *ngFor="let event of AddInvoiceevnts; let i = index">
-              <td>
-                <input
-                  type="checkbox"
-                  value="{{ event.id }}"
-                  [(ngModel)]="AddInvoiceevnts[i].checked"
-                  *ngIf="AddInvoiceevnts?.length > 1"
-                />
-              </td>
-              <td>{{ getProjectname(event?.projectId )}}</td> 
-              <td>{{ event.eventAt | localDateTime: 'DD MMM YYYY | hh:mm A z' }}</td>
-              <td>{{ event.clientPayableAmount }}</td>
- <td> 
-  <i
-class="bx bx-plus-circle ml-1 font-size-14" title="Add Event"
-(click)="AddEvent( event?.id, event.id)"
-></i>
-</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="row mb-md-2" *ngIf="AddInvoiceevnts?.length > 1">
-        <div class="col-xl-12 mb-1 mt-3 text-right">
-          <button type="button" class="btn btn-success" >Close</button>
-        </div>
+    <div class="row mb-md-2" *ngIf="AddInvoiceevnts?.length > 1">
+      <div class="col-xl-12 mb-1 mt-3 text-right">
+        <button type="button" class="btn btn-success">Close</button>
       </div>
     </div>
-  </ng-template>
-
+  </div>
+</ng-template>

@@ -81,7 +81,7 @@
                     <div class="col-md-3">
                       <p class="text-primary mb-1 text-decoration-underline">Key Account Manager</p>
                       <div class="team">
-                        <a href="javascript:void(0);" class="team-member d-flex align-items-center">
+                        <a href="javascript:void(0);" class="team-member d-flex align-items-center m-1">
                           <span *ngIf="this.keyAccMgrList?.name" class="badge rounded-pill text-bg-secondary">{{
                             this.keyAccMgrList?.name | getInitials: 2
                           }}</span>
@@ -103,7 +103,7 @@
                         <a
                           href="javascript:void(0);"
                           *ngFor="let ral of researchManagers ; let i = index;" 
-                          class="team-member d-flex align-items-center"
+                          class="team-member d-flex align-items-center m-1"
                         >
                         <ng-container *ngIf="i < 2">
                           <span class="badge rounded-pill text-bg-secondary">{{ ral?.name | getInitials: 2 }}</span>
@@ -133,7 +133,7 @@
                         <a
                           href="javascript:void(0);"
                           *ngFor="let ral of researchAnalysts; let i = index;"
-                          class="team-member d-flex align-items-center"
+                          class="team-member d-flex align-items-center m-1"
                         >
                         <ng-container *ngIf="i < 2">
                           <span  class="badge rounded-pill text-bg-secondary">{{
@@ -163,7 +163,7 @@
                         <a
                           href="javascript:void(0);"
                           *ngFor="let ral of projectClient?.clientUsers; let i = index;"
-                          class="team-member d-flex align-items-center"
+                          class="team-member d-flex align-items-center m-1"
                         >
                         <ng-container *ngIf="i < 2">
                           <img
