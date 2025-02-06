@@ -256,7 +256,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
  /****update status***/
   updatestatusForm = this.formBuilder.group({
     
-  evstatus: ['Complete', [Validators.required]],
+      evstatus: ['Completed'],
     
    });
  
@@ -1190,8 +1190,8 @@ debugger
        }
      */
  
- 
-  eventUpdateData.status = this.modalStatus;
+      this.modalStatus= this.updatestatusForm.value.evstatus;
+    eventUpdateData.status = this.modalStatus;
  
        this.eventService.updateOnly(this.id, eventUpdateData).subscribe((response) => {
          log.debug('response: ', response);

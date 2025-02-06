@@ -195,7 +195,7 @@ qa: any;
   startMonth: any;
   company: any;
   projectStatus:any;
-
+  validationMsgDiv:boolean=false;
   constructor(
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
@@ -2579,7 +2579,14 @@ isnewv:string="CRM";
 
     eventData.projectId = this.id;
    
-
+    let eventTime=eventData.eventAt;
+    let eventType=eventData.type;
+    if(eventTime==null || eventType==null){
+      this.validationMsgDiv =true;
+      if(this.validationMsgDiv)
+        return;
+    
+    }
 
     this.projectService.show(eventData.projectId).subscribe(
       (project: any) => {

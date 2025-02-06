@@ -758,7 +758,7 @@
             </ng-select>
           </div>
           <div class="form-group">
-            <label for="eventType">Event Type</label>
+            <label for="eventType">Event Type<span class="required-asterisk">*</span></label>
             <ng-select [items]="eventTypes" bindLabel="text" bindValue="text" placeholder="Select Event Type"
               name="type" formControlName="type">
             </ng-select>
@@ -780,7 +780,7 @@
           </div>
 
           <div class="form-group">
-            <label for="eventAt">Event Date & Time</label>
+            <label for="eventAt">Event Date & Time <span class="required-asterisk">*</span></label>
             <input class="form-control" type="datetime-local" formControlName="eventAt" name="eventAt" id="eventAt"
               required />
             <!--  min="{{ today }}" -->
@@ -889,9 +889,11 @@
       </div>
     </div>
     <div class="modal-footer">
+      <div *ngIf="validationMsgDiv" class="validationMsg-div" >Mandatory Field has not been updated. Please update before saving.</div>
       <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
       <button type="submit" class="btn btn-success">{{ btnName }}</button>
     </div>
+    
   </form>
 </ng-template>
 
