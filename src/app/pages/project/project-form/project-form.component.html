@@ -80,7 +80,7 @@
                   <ng-select
                     [items]="clientUsers"
                     bindLabel="name"
-                    bindValue="userId"
+                    bindValue="id"
                     placeholder="Select Client Users"                  
                     [multiple]="true"
                     formControlName="clientUsers"
@@ -447,7 +447,9 @@
                     <div *ngIf="notes?.length > 0" class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                         
+                            
+
+                          
                         </div>
                       </div>
                     </div>
@@ -485,7 +487,12 @@
       </div>
       
     </div>
-
+    <div class="row">
+      <div class="col-12 mb-1" style="float:right; width:100%; display:block; text-align:right">
+        <button type="button" (click)="cancelForm()" class="btn btn-danger pl-5 pr-5">Cancel</button>
+        <button type="submit"    class="btn btn-primary pl-5 pr-5 ml-3">{{ btnName }}</button>
+      </div>
+    </div>
     <ng-template #Attachments>
       <div class="mt-4 mb-4">
         <div class="hori-timeline">

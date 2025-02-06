@@ -79,7 +79,7 @@ collection: any[];
 projectlocation:any[];
 users:any[];
 screening_questions: any[];
-
+noteDetails :any=[];
 workstreams: any = [];
 project_location: any[];
 
@@ -232,9 +232,23 @@ debugger
 //console.log (project)*ngIf="isMcKinsey==true"
         this.projectDetails = project;
 
+        this.noteDetails=this.projectDetails?.notes;
+        for (let index = 0; index < this.noteDetails.length; index++) {
+          const element = this.noteDetails[index];
+          this.workstreams.push({
+              id:element.id?element.id:1,
+              content:element.content,
+              createdAt:element.createdAt,
+              updatedAt:element.updatedAt
+          });
+        }
+        this.noteDetails=this.workstreams;
+        if(this.noteDetails.length>0){
+          this.projectDetails['notes']=this.noteDetails;
+        }
   //mck chages start
   this.screening_questions = this.projectDetails?.screening_questions,
-  this.workstreams = this.projectDetails?.workstreams,
+  //this.workstreams = this.projectDetails?.workstreams,
   this.users = this.projectDetails?.users,
   this.project_location = this.projectDetails?.project_location,
   //mck end
@@ -345,6 +359,22 @@ console.log('res',res)
     this.getKeyAccMgr(this.projectDetails?.keyAccMgrId);
     this.getAddnlKeyAccMgr(this.projectDetails?.additionalkeyAccMgrIds);
   }
+
+  formatDate(date: string): string {
+    // Your logic to format the date
+   // const formattedDate =date?date.toLocaleString().split('T')[0]:'';
+   if(date){
+    const dateObj = new Date(date);
+    const day = dateObj.getDate().toString().padStart(2, '0');
+    const month = dateObj.toLocaleString('default', { month: 'short' });
+    const year=dateObj.getFullYear();
+    return `${day} ${month} ${year}`;
+   }
+    
+    return '';
+   // return formattedDate;
+  }
+
   private getCompletedEvents() {
     const filters = new Map();
     const filter = {

@@ -203,6 +203,7 @@ debugger
     if (projectData.firstTempNote) {
       projectData['notes'] = [
         {
+          id:1,
           content: projectData.firstTempNote,
           createdAt: new Date(),
         },
@@ -234,7 +235,7 @@ console.log('projectData',projectData)
     delete projectData.givenToAccMgr;
     delete projectData.givenToClient;
     delete projectData.image;
-
+    delete projectData.screeningQuestions;
     log.warn(projectData);
     if (this.id) {
       this.projectService.updateOnly(this.id, projectData).subscribe(
@@ -266,6 +267,7 @@ console.log('projectData',projectData)
           );
 
           this.isLoading = false;
+          window.location.reload();
         },
         (error) => {
           log.error(error);
@@ -308,6 +310,7 @@ if (  !projectData['notes'])
             'Informative & approval',
             emailVariableObj
           );
+          window.location.reload();
         },
         (error) => {
           log.error(error);
@@ -340,7 +343,7 @@ if (this.screening_questions==null) this.screening_questions=[]
   this.screening_questions.push(newItem);
 console.log(this.screening_questions)
 
-
+this.newq='';
 
   
    }
@@ -367,7 +370,7 @@ console.log(this.screening_questions)
         this.notes = this.projectData?.notes;
         this.projectData.startDate = this.projectData?.startDate?.toLocaleString().split('T')[0];
         this.projectData.dueDate = this.projectData?.dueDate?.toLocaleString().split('T')[0];
-
+        this.projectData.createdAt = this.projectData?.createdAt?.toLocaleString().split('T')[0];
       this.screening_questions=this.projectData?.screening_questions
    
             if (this.notes?.length) {
@@ -523,7 +526,7 @@ console.log('in loop2',currentClient);
       screening_questions :[null, [Validators.nullValidator]],
       geographyFocus : ['', [Validators.nullValidator]],
       doNotContactCompanies : ['', [Validators.nullValidator]],
-
+      createdAt: [null, [Validators.nullValidator]],
       startDate: [null, [Validators.nullValidator]],
       dueDate: [null, [Validators.nullValidator]],
       endDate: [null, [Validators.nullValidator]],
@@ -719,6 +722,7 @@ console.log('in loop2',currentClient);
     this.summary = this.descriptionObj[subindustry.text];
   }
   cancelForm() {
-    //this.router.navigate(['/projects']);
+    window.location.reload();
+    this.router.navigate(['/projects']);
   }
 }

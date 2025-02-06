@@ -125,7 +125,7 @@ roles: string[];
   questions: any[] = []; 
   projectquestions: any[] = []; 
   country: any[] =country;
-  
+  rejectedToAccMgr?: any[];  
 //import { Component, Input, Output, OnInit } from '@angular/core';
 @Input() itemid: string='';
 @Input() readonly: boolean=true;
@@ -860,19 +860,20 @@ debugger
         this.projectquestions=this.questions;
         
 
-        if ( this.projectDetails["workstreams"] && this.projectDetails["workstreams"]!=null)
+        if ( this.projectDetails["notes"] && this.projectDetails["notes"]!=null)
         {
           
-          for (let index = 0; index < this.projectDetails["workstreams"].length; index++) {
-            var element = this.projectDetails["workstreams"][index];
+          for (let index = 0; index < this.projectDetails["notes"].length; index++) {
+            var element = this.projectDetails["notes"][index];
         
             
         
             console.log("workstreams",element)
           const qq={
-          "name":element["title"],
-          "id":element["id"],
-          "internalWSId":element["internal_workstream_id"]
+          "name":element["content"]?element["content"].replace('<p>','').replace('</p>',''):'',
+          "id":element["id"]?element["id"]:1,
+          "createdAt":element["createdAt"]
+          //"internalWSId":element["internal_workstream_id"]
           }
           this.workstreams.push(qq)
         
@@ -1442,11 +1443,23 @@ debugger
         cancelButtonText: 'Cancel',
         confirmButtonText: 'Yes',
         showCancelButton: true,
+        input: 'textarea',     
+        inputPlaceholder: 'Enter a reason for deletion...', 
+        inputAttributes: {
+          id: 'deleteReasonTextarea', 
+          'aria-label': 'Enter a reason for deletion'
+        },
       })
       .then((result) => {
-        if (result.value) {
-          this.deleteLead(id, from);
+        if (result.isConfirmed) {       
+          const deleteNote: string = result.value; 
+          if (deleteNote === '') {
+            return; // Ensure the function returns here
+          }
+          console.log(deleteNote);
+          this.deleteLead(id, from,deleteNote);
         }
+       
       });
   }
 
@@ -1614,6 +1627,7 @@ this.isEditGTC=true;
       default:
         break;
     }
+    window.location.reload();
   }
   openDetails(val) {
     window.open('/expert/expert-details/' + val);
@@ -1681,6 +1695,7 @@ console.log('gtamData',gtamData);
 
       // Store
       this.updateOnServer(this.id, this.projectFlowData, 'transfer');
+    
     } else {
       return;
     }
@@ -2424,6 +2439,7 @@ isnewv:string="CRM";
         );
         */
         this.getProjectDetail();
+        window.location.reload();
        // this.modalService.dismissAll();
       },
       (error) => {
@@ -2487,6 +2503,7 @@ isnewv:string="CRM";
           this.emailVariableObj
         );
         this.getProjectDetail();
+        window.location.reload();
        // this.modalService.dismissAll();
       },
       (error) => {
@@ -2498,19 +2515,32 @@ isnewv:string="CRM";
   }
 
   // Delete/Remove lead from array's
-  deleteLead(id: string, from: string) {
+  deleteLead(id: string, from: string ,deleteNote: string) {
     // Check if exist
     let existingLead = _.findIndex(this.projectDetails[from], { id: id });
 
+    let removedObject=this.projectDetails[from][existingLead];
     // Delete from [from] array
     delete this.projectDetails[from][existingLead];
-
+      // Initialize rejectedToAccMgr if it doesn't exist
+      this.rejectedToAccMgr = this.projectDetails['rejectedToAccMgr'] || [];
+    
+    
+    // Check if the lead is already in rejectedToAccMgr
+    let rejectIdExists = _.findIndex(this.rejectedToAccMgr, { id: id });
+    if (rejectIdExists === -1) {
+      removedObject.RejectedReason = deleteNote;
+      this.rejectedToAccMgr.push(removedObject);
+    }
+    
+    
     // Remove empty/null objects
     this.projectDetails[from] = this.projectDetails[from].filter((item) => item);
 
     // Create arrays of object
     const updateData = {
       [from]: this.projectDetails[from],
+      ['rejectedToAccMgr']:this.rejectedToAccMgr,
     };
 
     // Update in db
@@ -2526,7 +2556,13 @@ isnewv:string="CRM";
 
     debugger
     this.eventSME = this.lead?.sme;
-    this.expertName = this.krExpertsList?.find((x:any) => x.userId == this.lead.userId).userId;
+    if (this.lead?.userId && Array.isArray(this.krExpertsList)) {
+      const expert = this.krExpertsList.find((x) => x.userId === this.lead.userId);
+      this.expertName = expert ? expert.userId : 'User ID not found';
+    } else {
+      this.expertName = 'Invalid lead user ID or experts list';
+    }
+  //  this.expertName = this.krExpertsList?.find((x:any) => x.userId == this.lead.userId).userId;
     this.modalService.open(newEventFormModal, {
       backdrop: 'static',
       size: 'xl',
@@ -2602,11 +2638,13 @@ debugger
               'Informative & System Prompt',
               this.emailVariableObj
             );
+            window.location.reload();
           },
           (error) => {
             log.error(error);
             log.debug('Not Created', eventData);
             this.error = error;
+            
           }
         );
         let emailVariableObj = {

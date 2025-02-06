@@ -47,6 +47,7 @@ import { currencies, KRRolesSet, options } from '../../../../../../shared-libs';
 import { nanoid } from 'nanoid';
 
 import { ProjectService } from '../../../core/services/project.service';
+import { EventService } from '../../../core/services/event.service';
 import { Project } from '../models/project.model';
 
 
@@ -99,7 +100,7 @@ export class ProjecttabComponent implements OnInit, AfterViewInit {
   billingCycleData : Array<{}>;
   countryCurrency: CountryCurrency[]=[];
  
-
+  eventsList:any=[];
   companies: any = [];
   EmailJsTemplates : object;
   taxname:string='';
@@ -189,6 +190,7 @@ export class ProjecttabComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
    // private toasterService: ToastrService,
       private IncentiveConfigservice: IncentivesConfigService,
+      private readonly eventService: EventService
   ) {
     this.whoiam = JSON.parse(localStorage.getItem('user') );
    // this.roles = this.whoiam?.roles[0];
@@ -316,8 +318,8 @@ export class ProjecttabComponent implements OnInit, AfterViewInit {
     //  this.getEmployeeById(this.id); 
 
      // this.getExperts(this.id);
-  this.getProjectById(this.id) 
-
+      this.getProjectById(this.id) 
+      
     }
     else{
       this.pageTitle = 'Create Employee';
@@ -365,13 +367,15 @@ for (let index = 0; index < obj.length; index++) {
     const filter = {};
     filters.set('filter', JSON.stringify(filter));
 
-
+    this.getEvents();
     this.projectService.show(id, filters).subscribe(
       (project: any) => {
         debugger
         this.projectData = project;
+        
+               
         this.getClient(this.projectData.clientId);
-
+       
 
         this.statData = [
           {
@@ -401,7 +405,7 @@ for (let index = 0; index < obj.length; index++) {
           {
             icon: 'bx bx-purchase-tag-alt',
             title: 'Events Completed',
-          //  value: this.eventList?.length ? this.eventList?.length : 0,
+            value: this.eventsList?.length ? this.eventsList?.length : 0,
             description: 'Scheduled by me is 1',
           },
         ];
@@ -427,7 +431,37 @@ console.log( this.statData)
     );
   }
 
+  private getEvents() {
+    const filters = new Map();
+    const filter = {
+      where: {
+        projectId: this.id,
+      },
+      include: [
+     
+      ],
+    };
 
+    filters.set('filter', JSON.stringify(filter));
+
+    this.eventService.getAll(filters).subscribe(
+      (response) => {
+        console.log('events',response)      
+        this.eventsList = response.filter(event => event.status === 'Completed');
+        this.projectData['eventsList']=this.eventsList;
+      },
+      (error: any) => {}
+    );
+
+    // try {
+    //   const response = await this.eventService.getAll(filters).toPromise();
+    //   console.log('events', response);      
+    //   // Filter the eventsList to include only events with status 'Completed'
+    //   this.eventsList = response.filter(event => event.status === 'Completed');
+    // } catch (error) {
+    //   console.error('Error fetching events', error);
+    // }
+  }
 
   private   getExperts(id: string) {
     this.expertService.show(this.id).subscribe(

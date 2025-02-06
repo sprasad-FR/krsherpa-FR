@@ -406,7 +406,7 @@
         </div>
         <div class="col-sm-6">
           <p class="text-muted">Team Location</p>
-          <h6>{{projectDetails?.team_location}}</h6>
+          <h6>{{projectDetails?.geographyFocus}}</h6>
         </div>
         <div class="col-sm-6">
           <p class="text-muted">Scope</p>
@@ -414,7 +414,7 @@
         </div>
         <div class="col-sm-6">
           <p class="text-muted">Project Type</p>
-          <h6>{{projectDetails?.project_type}}</h6>
+          <h6>{{ projectDetails?.projectType?.text }}</h6>
         </div>
         <div class="col-sm-6">
           <p class="text-muted">Function</p>
@@ -434,11 +434,11 @@
         </div>
         <div class="col-sm-6">
           <p class="text-muted">Start Date</p>
-          <h6>{{projectDetails?.start_date}}</h6>
+          <h6>{{ projectDetails?.startDate | localDateTime }}</h6>
         </div>
         <div class="col-sm-6">
           <p class="text-muted">End Date</p>
-          <h6>{{projectDetails?.end_date}}</h6>
+          <h6>{{ projectDetails?.endDate | localDateTime }}</h6>
         </div>
         <div class="col-sm-6">
           <p class="text-muted">Company Of Interest</p>
@@ -446,7 +446,7 @@
         </div>
         <div class="col-sm-6">
           <p class="text-muted">Status</p>
-          <h6>{{projectDetails?.clientstatus}}</h6>
+          <h6>{{ projectDetails?.status?.text }}</h6>
         </div>
         <div class="col-sm-6">
           <p class="text-muted">Network Project Id</p>
@@ -462,7 +462,7 @@
         </div>
         <div class="col-sm-6">
           <p class="text-muted">Created</p>
-          <h6>{{projectDetails?.created}}</h6>
+          <h6>{{ formatDate(projectDetails?.createdAt) }}</h6>
         </div>
       </div>
     </div>

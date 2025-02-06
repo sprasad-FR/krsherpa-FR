@@ -557,7 +557,8 @@ console.log(this.projectDetails)
           this.projectDetails?.leadAttached.push(experts);
           newFound = true;
           if (this.projectDetails?.researchAnalyst?.indexOf(experts?.krRelationshipMgrId) == -1) {
-            this.projectDetails?.researchAnalyst?.push(experts?.krRelationshipMgrId);
+            if(experts?.krRelationshipMgrId!=null)
+              this.projectDetails?.researchAnalyst?.push(experts?.krRelationshipMgrId);
           }
           let ra = this.empList?.find((a) => a.userId == experts?.krRelationshipMgrId);
 if (ra)
@@ -619,7 +620,7 @@ this.isLoading =false;
       };
       this.emailService.sendEmail(EmailJsTemplates.project, this.emailToSend, 'Informative', emailVariableObj);
     });
-
+    window.location.reload();
 
   },
   (error: any) => {
@@ -715,7 +716,7 @@ console.log(this.projectDetails)
       this.emailService.sendEmail(EmailJsTemplates.project, this.emailToSend, 'Informative', emailVariableObj);
     });
 
-
+    window.location.reload();
   },
   (error: any) => {
 
