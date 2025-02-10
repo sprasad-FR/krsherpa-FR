@@ -620,7 +620,7 @@ this.isLoading =false;
       };
       this.emailService.sendEmail(EmailJsTemplates.project, this.emailToSend, 'Informative', emailVariableObj);
     });
-    window.location.reload();
+    //window.location.reload();
 
   },
   (error: any) => {
@@ -716,7 +716,7 @@ console.log(this.projectDetails)
       this.emailService.sendEmail(EmailJsTemplates.project, this.emailToSend, 'Informative', emailVariableObj);
     });
 
-    window.location.reload();
+   // window.location.reload();
   },
   (error: any) => {
 
