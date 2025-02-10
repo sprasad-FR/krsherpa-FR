@@ -1614,6 +1614,7 @@ this.isEditGTC=true;
 
   // Update transfer notes and lead
   transferSubmit() {
+    console.log(" transferSubmit  transferLevel "+this.transferLevel);
     switch (this.transferLevel) {
       case 1:
         this.transferToGTAM();
@@ -1627,7 +1628,7 @@ this.isEditGTC=true;
       default:
         break;
     }
-    window.location.reload();
+    //window.location.reload();
   }
   openDetails(val) {
     window.open('/expert/expert-details/' + val);
@@ -1643,7 +1644,7 @@ this.isEditGTC=true;
         givenToAccMgr: [],
       };
     }
-
+    console.log(" transferSubmit  transferToGTAM "+this.projectFlowData.givenToAccMgr);
     if (!this.transferLead) {
       return;
     }
@@ -2439,7 +2440,7 @@ isnewv:string="CRM";
         );
         */
         this.getProjectDetail();
-        window.location.reload();
+       // window.location.reload();
        // this.modalService.dismissAll();
       },
       (error) => {
@@ -2503,7 +2504,7 @@ isnewv:string="CRM";
           this.emailVariableObj
         );
         this.getProjectDetail();
-        window.location.reload();
+        //window.location.reload();
        // this.modalService.dismissAll();
       },
       (error) => {
@@ -2645,7 +2646,7 @@ debugger
               'Informative & System Prompt',
               this.emailVariableObj
             );
-            window.location.reload();
+            //window.location.reload();
           },
           (error) => {
             log.error(error);
