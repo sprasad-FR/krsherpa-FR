@@ -118,6 +118,17 @@ export class EventsComponent implements OnInit {
   }
   compliancealldata: any;
 
+  navigateToView(eventId){
+    console.log(eventId);
+    localStorage.setItem("eventID",eventId);
+    this.openInNewWindow1('/events/view',eventId);
+  }
+  openInNewWindow1(windowPath,eventId){
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree([windowPath,eventId])
+    );
+    window.open( url, '_blank');
+  }
   getcomplianceDetails() {
     const filters = new Map();
 
