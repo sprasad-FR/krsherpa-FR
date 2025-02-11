@@ -863,11 +863,11 @@ debugger
               // this.data = event;
                event["expertInvoiceId"] = response["id"];
                //update Event Data by id
+               console.log("this.eventData.id "+this.eventData.id);
                this.eventService.update(this.eventData.id , event).subscribe(
                  (response) => {
                    log.debug('response: ', response);
- 
-                   this.isLoading = false;
+                    this.isLoading = false;
                    this.toasterService.success('Event updated successfully.', 'Success!');
                    
                  },
