@@ -121,7 +121,7 @@ export class EventsComponent implements OnInit {
   navigateToView(eventId){
     console.log(eventId);
     localStorage.setItem("eventID",eventId);
-    this.openInNewWindow1('/events/view',eventId);
+    this.openInNewWindow1('/krsherpa/events/view',eventId);
   }
   openInNewWindow1(windowPath,eventId){
     const url = this.router.serializeUrl(
