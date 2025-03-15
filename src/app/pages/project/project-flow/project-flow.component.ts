@@ -1268,21 +1268,30 @@ else{
 
 
   
-  private async getExperts() {
+  // private async getExperts() {
+  //   //this.krExpertsList= this.expertService.getexmindata();
+  //   await this.expertService.getexmin().subscribe(
+  //     (experts: any) => {
+  //       this.krExpertsList = experts;
+  //       localStorage.setItem('expertsOfProject', JSON.stringify(this.krExpertsList));
+  //       //this.syncAttatchedLeads();
+  //     },
+  //     (error: any) => {}
+  //   );
+  // }
 
-    this.krExpertsList= this.expertService.getexmindata();
-    /*
-    await this.expertService.getAll().subscribe(
-      (experts: any) => {
-        this.krExpertsList = experts;
 
-        this.syncAttatchedLeads();
-      },
-      (error: any) => {}
-    );
-*/
-
+  async getExperts() {
+    try {
+      const experts = await this.expertService.getexmin().toPromise();
+      this.krExpertsList = experts;
+     // localStorage.setItem('expertsOfProject', JSON.stringify(this.krExpertsList));
+      // this.syncAttatchedLeads();
+    } catch (error) {
+      console.error('Error fetching experts:', error);
+    }
   }
+
   /**
    * Open new lead modal
    * @param newLeadDataModal center modal data
