@@ -549,7 +549,7 @@ if (expertData.primaryEmail ==null || expertData.primaryEmail.trim()=="" ||
 this.leadFormGrp.controls['contactNo'].value ==null || this.leadFormGrp.controls['contactNo'].value=="" ||
 this.leadFormGrp.controls['phoneCode'].value ==null || this.leadFormGrp.controls['phoneCode'].value=="" ||
 this.leadFormGrp.controls['firstName'].value ==null || this.leadFormGrp.controls['firstName'].value=="" ||
-this.leadFormGrp.controls['lastName'].value ==null || this.leadFormGrp.controls['lastName	'].value==""
+this.leadFormGrp.controls['lastName'].value ==null || this.leadFormGrp.controls['lastName'].value==""
 ){
 this.validationMsgDiv =true;
 this.isLoading=false;
