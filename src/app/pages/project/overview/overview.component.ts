@@ -233,22 +233,22 @@ debugger
         this.projectDetails = project;
 
         this.noteDetails=this.projectDetails?.notes;
-        for (let index = 0; index < this.noteDetails.length; index++) {
-          const element = this.noteDetails[index];
-          this.workstreams.push({
-              id:element.id?element.id:1,
-              content:element.content,
-              createdAt:element.createdAt,
-              updatedAt:element.updatedAt
-          });
-        }
-        this.noteDetails=this.workstreams;
-        if(this.noteDetails.length>0){
-          this.projectDetails['notes']=this.noteDetails;
-        }
+        // for (let index = 0; index < this.noteDetails.length; index++) {
+        //   const element = this.noteDetails[index];
+        //   this.workstreams.push({
+        //       id:element.id?element.id:1,
+        //       content:element.content,
+        //       createdAt:element.createdAt,
+        //       updatedAt:element.updatedAt
+        //   });
+        // }
+        // this.noteDetails=this.workstreams;
+        // if(this.noteDetails.length>0){
+        //   this.projectDetails['notes']=this.noteDetails;
+        // }
   //mck chages start
   this.screening_questions = this.projectDetails?.screening_questions,
-  //this.workstreams = this.projectDetails?.workstreams,
+  this.workstreams = this.projectDetails?.workstreams,
   this.users = this.projectDetails?.users,
   this.project_location = this.projectDetails?.project_location,
   //mck end

@@ -860,20 +860,19 @@ debugger
         this.projectquestions=this.questions;
         
 
-        if ( this.projectDetails["notes"] && this.projectDetails["notes"]!=null)
+        if ( project?.workstreams && project?.workstreams!=null)
         {
           
-          for (let index = 0; index < this.projectDetails["notes"].length; index++) {
-            var element = this.projectDetails["notes"][index];
+          for (let index = 0; index < project?.workstreams.length; index++) {
+            var element = project?.workstreams[index];
         
             
         
             console.log("workstreams",element)
           const qq={
-          "name":element["content"]?element["content"].replace('<p>','').replace('</p>',''):'',
+          "name":element["title"]?element["title"]:'',
           "id":element["id"]?element["id"]:1,
-          "createdAt":element["createdAt"]
-          //"internalWSId":element["internal_workstream_id"]
+          "internalWSId":element["internal_workstream_id"]
           }
           this.workstreams.push(qq)
         
@@ -881,7 +880,6 @@ debugger
           }
           
         }
-        
 
 
 
