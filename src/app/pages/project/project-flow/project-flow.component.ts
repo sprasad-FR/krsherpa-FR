@@ -246,7 +246,7 @@ qa: any;
 
       this.today = year + '-01'  + '-' + strDate + 'T00:00';
     }
-
+    this.getExperts();
     this.DataDisplay();
 
 
@@ -821,9 +821,9 @@ return   this.projectDetails?.leadAttached?.filter((e) =>e.attachedBy != undefin
   // Getproject Details
   private getProjectDetail() {
     this.isLoading = true;
-    this.projectService.show(this.id).subscribe(
-
-      async (project: any) => {
+    this.projectService.show(this.id).subscribe(async (project: any) => {
+   
+   
 
         console.log('this.projectDetails',project)
 debugger
@@ -907,16 +907,18 @@ console.log('this.leadAttached',this.projectDetails?.leadAttached)
 
 }
 else{
-        if (this.projectDetails?.leadAttached?.length) {
-          for (let i = 0; i < this.projectDetails?.leadAttached?.length; i++) {
-            this.projectDetails.leadAttached[i]['currentEmployer'] = this.projectDetails?.leadAttached[i]
+        if (project.leadAttached?.length) {
+          for (let i = 0; i < project.leadAttached?.length; i++) {
+            project.leadAttached[i]['currentEmployer'] = project.leadAttached[i]
               ?.workingDetails?.length
-              ? this.projectDetails.leadAttached[i]?.workingDetails[
-                  this.projectDetails.leadAttached[i]?.workingDetails.length - 1
+              ? project.leadAttached[i]?.workingDetails[
+                project.leadAttached[i]?.workingDetails.length - 1
                 ]['companyName']
               : '';
           }
         }  
+
+        
       }
 
 /*  */
@@ -936,7 +938,7 @@ try {
         if (this.projectDetails.leadAttached) {
           await this.syncAttatchedLeads();
         }
-        this.getClient(this.projectDetails?.clientId);
+        this.getClient(project.clientId);
         this.isLoading = false;
       },
       (error: any) => {
@@ -1152,9 +1154,15 @@ DataDisplay(){
     this.clientService.show(id).subscribe((response) => {
       debugger
       this.projectClient = response;
+      
       this.projectUsers = this.projectClient?.clientUser?.filter(
-        (a) => this.projectDetails?.clientUsers.indexOf(a.userId) != -1
+        (a) =>
+          this.projectDetails?.clientUsers?.includes(a.userId) ||
+          this.projectDetails?.clientUsers?.includes(a.id)
       );
+
+     
+
     });
   }
 
@@ -1283,6 +1291,7 @@ else{
     try {
       const experts = await this.expertService.getexmin().toPromise();
       this.krExpertsList = experts;
+      //this.eventFormGrp.patchValue({ this.lead?.id });
      // localStorage.setItem('expertsOfProject', JSON.stringify(this.krExpertsList));
       // this.syncAttatchedLeads();
     } catch (error) {
@@ -2715,7 +2724,7 @@ debugger
 
     });
     this.eventFormGrp.patchValue({
-      expertId: this.lead?.userId,
+      expertId: this.lead?.id,
       researchAnalystId: this.lead?.krRelationshipMgrId,
       researchMgrId: this.getManagerId(this.lead?.krRelationshipMgrId),
       expertRate: parseFloat(this.lead?.rate),
@@ -2737,6 +2746,8 @@ debugger
 			//"prorated" : "Prorated",
 
     });
+    
+    //this.eventFormGrp.get('expertId')?.setValue(this.lead?.id);
     this.eventFormGrp.patchValue({
       keyAccountManager: this.getManagerId(this.eventFormGrp.value.researchMgrId),
     });
