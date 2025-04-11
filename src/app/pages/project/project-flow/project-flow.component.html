@@ -720,12 +720,12 @@
             <label for="expertId">Expert Name (SME-{{ currentSME }})</label>
             <ng-select [items]="krExpertsList" bindLabel="firstName" bindValue="id" placeholder="Select Expert"
               name="expertId" formControlName="expertId">
-              <!-- <ng-template ng-label-tmp let-item="item">
-                <span>{{ item.firstName + ' ' + item.lastName }}</span>
+              <ng-template ng-label-tmp let-item="item">
+                <span>{{ (item.firstName || '') + ' ' + (item.lastName || '') }}</span>
               </ng-template>
               <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
-                <span>{{ item.firstName + ' ' + item.lastName }}</span>
-              </ng-template> -->
+                <span>{{ (item.firstName || '') + ' ' + (item.lastName || '') }}</span>
+              </ng-template>
             </ng-select>
           </div>
           <div class="form-group">
