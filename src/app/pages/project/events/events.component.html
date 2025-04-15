@@ -33,12 +33,13 @@
                     </div>
                     <div class="col-2 d-flex justify-content-between align-items-center">
                       <a
-                        
-                      
+                        href="javascript:void(0)"
+                        target="_blank"
                         class="btn btn-link p-1"
                         title="Reschedule"
-                        (click)="navigateToView(el?.id)"
-                       
+                        [routerLink]="['/events/view', el?.id]"
+                        routerLinkActive="router-link-active"
+                      
                         
                       >
                         <i class="bx bx-error-circle font-size-18">View</i>
@@ -46,10 +47,10 @@
                       
                       <span style="padding-left: 20px"></span
                       ><a
-                        style="{{ getcompliancestatus(el.id) }}"
-                        href="javascript:void(0)"
-                        (click)="createClientUser(clientUserFormModal, el?.id)"
-                      >
+                      [style]="getcompliancestatus(el.id)"
+                      role="button"
+                      (click)="createClientUser(clientUserFormModal, el?.id)"
+                    >
                         <i _ngcontent-nsd-c171="" type="solid" class="bx bxs-flag"> </i>
                       </a>
                       <!-- <a href="javascript:void(0)" (click)="editEvent(newEventFormModal, el?.id)">
