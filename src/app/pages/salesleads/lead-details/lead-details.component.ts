@@ -293,7 +293,8 @@ export class LeadDetailsComponent implements OnInit {
         this.employeeList = employees;
         this.keyAccountMgrList = this.employeeList?.filter((x) => x.designation === 7);
         this.pnlHeadList = this.employeeList?.filter((x) => x.designation === 3);
-        this.subPnlHeadList = this.employeeList?.filter((x) => x.designation === 4);
+        //this.subPnlHeadList = this.employeeList?.filter((x) => x.designation === 4);
+        this.subPnlHeadList = this.employeeList;
        
       },
       (error: any) => {}
